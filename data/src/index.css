@@ -29,7 +29,7 @@ body{
   -moz-background-clip: padding-box;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-   border-color: #090b6f85;
+   border-color: black;
 }
 
 .stepWrapper {
@@ -39,7 +39,7 @@ body{
 }
 
 .stepBlock .circleWrapper {
-  padding: 0px 430px;
+  padding: 0px 350px;
   position: relative;
   margin-top: 10%;
 }
@@ -79,10 +79,6 @@ body{
   color: white;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.form-group{
-  margin-bottom: 10;
 }
 
 /* .primaryButton:disabled {

@@ -5,7 +5,6 @@ import SignUp from './Screens/SignUp';
 
 import Dashboard from './Screens/Dashboard/Dashboard';
 import Login from './Screens/Login';
-import Testing from './Screens/Testing';
 function App() {
   return (
     <div className="App">
@@ -16,7 +15,6 @@ function App() {
           <Route path="/" element={<SignUp />} exact />
           <Route path="/dashboard" element={<Dashboard />} exact />
           <Route path="/login" element={<Login />} exact />
-          <Route path="/test" element={<Testing />} exact />
         </Routes>
       </BrowserRouter>
       {/* Routes To end */}
