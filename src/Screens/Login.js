@@ -1,14 +1,74 @@
-import React from 'react'
-import "./style.css"
+import React, { useState } from "react";
+
 import cartoons from "../Images/cartoon.png";
+import "../StyleSheets/LoginPage.css"
 
-import google from "../Images/googleIcon.svg"
-import facebook from "../Images/facebookIcon.svg";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import firebase from "../Firebase/Firebase";
 
 function Login() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const [mobileNumber, setMobileNumber] = useState(0);
+  const [userVerified, setUserVerified] = useState(false);
+  const [OTP, setOTP] = useState(0);
+  console.log(mobileNumber);
+  console.log(OTP);
+
+  const configureCaptcha = (e) => {
+    // e.preventdefault();
+    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+      "sign-in-button",
+      {
+        size: "invisible",
+        callback: (response) => {
+          onSignInSubmit();
+          console.log("Recaptcha Verified");
+        },
+        // defaultCountry:"IN"
+      }
+    );
+  };
+  const onSignInSubmit = (e) => {
+    e.preventDefault();
+    configureCaptcha();
+
+    const phoneNumber = "+91" + mobileNumber;
+    const appVerifier = window.recaptchaVerifier;
+    firebase
+      .auth()
+      .signInWithPhoneNumber(phoneNumber, appVerifier)
+      .then((confirmationResult) => {
+        window.confirmationResult = confirmationResult;
+
+        alert("OTP Sent");
+      })
+      .catch((error) => {
+        console.log("OTP not Sent");
+      });
+  };
+
+  const onSubmitOTP = (e) => {
+    e.preventDefault();
+    const code = OTP;
+    console.log(code);
+    window.confirmationResult
+      .confirm(code)
+      .then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+        console.log(JSON.stringify(user));
+        setUserVerified(true);
+        alert("User is verified");
+        // ...
+      })
+      .catch((error) => {
+        // User couldn't sign in (bad verification code?)
+        // ...
+      });
+  };
+
   return (
     // <div className="card">
     //   <div className="crd-body">
@@ -39,9 +99,11 @@ function Login() {
 
     <div
       className="box-form"
-      style={{
-        marginTop: "10%",
-      }}
+      style={
+        {
+          // marginTop: "10%",
+        }
+      }
     >
       <div className="left">
         <div className="overlay">
@@ -105,7 +167,7 @@ function Login() {
         <h5
           style={{
             fontWeight: 700,
-            fontSize: 50,
+            fontSize: 40,
             marginTop: 20,
           }}
         >
@@ -116,14 +178,21 @@ function Login() {
             marginTop: 50,
           }}
         >
-          Don't have an account? <a href="/">Creat Your Account</a> it takes
-          less than a minute
+          Don't have an account? <Link to="/signup">Creat Your Account</Link> it
+          takes less than a minute
         </p>
+
+        <div id="sign-in-button"></div>
         <div className="inputs">
-          <input type="text" placeholder="Username" />
+          <input
+            type="text"
+            onChange={(e) => setMobileNumber(e.target.value)}
+            placeholder="Mobile Number"
+          />
           <br />
           <a
-            href="#"
+            type="button"
+            onClick={(e) => onSignInSubmit(e)}
             style={{
               float: "right",
               color: "blue",
@@ -132,7 +201,13 @@ function Login() {
             Send OTP
           </a>
 
-          <input type="text" placeholder="Enter OTP" />
+          <input
+            type="text"
+            onChange={(e) => {
+              setOTP(e.target.value);
+            }}
+            placeholder="Enter OTP"
+          />
         </div>
         <br />
         <br />
@@ -146,15 +221,38 @@ function Login() {
         </div>
         <br />
         <button
-          onClick={() => {
-            navigate("/dashboard");
+          onClick={(e) => {
+            {
+              userVerified ? navigate("/dashboard") : console.log("");
+            }
+
+            onSubmitOTP(e);
           }}
         >
           Login
         </button>
+        {/* <p
+          style={
+            {
+              // marginTop: 50,
+            }
+          }
+        >
+          Check Status of application<a href="/signup"> Here</a>
+        </p> */}
+
+        <p
+          style={{
+            // marginTop: "20%",
+            marginRight: "50%",
+          }}
+        >
+          Already Applied? Check Status of application{" "}
+          <Link  to="/checkStatus"> Here </Link>
+        </p>
       </div>
     </div>
   );
 }
 
-export default Login
+export default Login;

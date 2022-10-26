@@ -1,6 +1,5 @@
 body {
-  background-image: linear-gradient(135deg, #FAB2FF 10%, #1904E5 100%);
-  background-image: linear-gradient(135deg, #728B9F 10%, #0d0525 100%);
+  background-color: #728B9F;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -10,8 +9,8 @@ body {
 
 .box-form {
   margin: 0 auto;
-  width: 100%;
-
+  width: 70%;
+  margin-top: 2%;
   background: #FFFFFF;
   border-radius: 10px;
   overflow: hidden;
