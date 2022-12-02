@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState,  useEffect  } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract } from "react-icons/fa";
+import { FaMegaport, FaFileContract,FaUsers } from "react-icons/fa";
 import { BsFillCartCheckFill, BsFillBagXFill } from "react-icons/bs";
 import { AiFillReconciliation } from "react-icons/ai";
 
 function HomeScreen() {
   const navigate = useNavigate();
+  
+useEffect(()=>{
+  if(localStorage.getItem('token')){
+    navigate('/Login')
+  }
+})
   const labels = ["January", "February", "March", "April", "May", "June"];
   const data = {
     labels: labels,
@@ -231,6 +237,7 @@ function HomeScreen() {
                       style={{
                         fontWeight: 700,
                         fontSize: 60,
+                        color: "#6495ED",
                       }}
                     >
                       145
@@ -294,6 +301,62 @@ function HomeScreen() {
           </Link>
         </div>
         <div className="col-lg-3 col-6">
+          <Link to="/cntc">
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Contacts
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+                {/* <h5 className="card-title">
+                    Sales <span>| Today</span>
+                  </h5> */}
+                <div className="d-flex align-items-center">
+                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <IconContext.Provider
+                      value={{ color: "#0275d8", size: "60px" }}
+                    >
+                      {" "}
+                      <FaUsers />
+                    </IconContext.Provider>
+                  </div>
+                  <div className="ps-3">
+                    <h1
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 60,
+                        color: "#FF7F50",
+                      }}
+                    >
+                      198
+                    </h1>
+                    <span className="text-success small pt-1 fw-bold"></span>{" "}
+                    <span className="text-muted small pt-2 ps-1"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+
+
+
+        <div className="col-lg-3 col-6">
           <Link to="/mcs">
             <div
               className="card info-card sales-card"
@@ -333,7 +396,7 @@ function HomeScreen() {
                       style={{
                         fontWeight: 700,
                         fontSize: 60,
-                        color: "#ffc107",
+                        color: "#FFBF00",
                       }}
                     >
                       1200
@@ -398,7 +461,7 @@ function HomeScreen() {
             </div>
           </Link>
         </div>
-        {/* <div className="col-lg-3 col-6">
+        <div className="col-lg-3 col-6">
           <div className="small-box bg-primary">
             <div className="inner">
               <h3>65</h3>
@@ -411,13 +474,13 @@ function HomeScreen() {
               More info <i className="fas fa-arrow-circle-right" />
             </a>
           </div>
-        </div> */}
-
+        </div> 
+{/* 
         <div
           style={{
             display: "flex",
           }}
-        >
+        > */}
           {/* <div
           className="card"
           style={{
@@ -426,7 +489,7 @@ function HomeScreen() {
             margin: 20,
           }}
         ></div> */}
-          <div
+          {/* <div
             className="card"
             style={{
               height: 350,
@@ -436,7 +499,7 @@ function HomeScreen() {
           >
             <Bar data={data} />
           </div>
-        </div>
+        </div> */}
 
         {/* <>
           <center>

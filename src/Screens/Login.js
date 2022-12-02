@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import cartoons from "../Images/cartoon.png";
 import "../StyleSheets/LoginPage.css"
-
+import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 import firebase from "../Firebase/Firebase";
@@ -10,64 +10,83 @@ import firebase from "../Firebase/Firebase";
 function Login() {
   const navigate = useNavigate();
 
-  const [mobileNumber, setMobileNumber] = useState(0);
+  const [userName, setUserName] = useState(0);
   const [userVerified, setUserVerified] = useState(false);
-  const [OTP, setOTP] = useState(0);
-  console.log(mobileNumber);
-  console.log(OTP);
+  // const [OTP, setOTP] = useState(0);
+  const [password, setPassword] = useState(0);
+  // console.log(mobileNumber);
+  // console.log(OTP);
 
-  const configureCaptcha = (e) => {
-    // e.preventdefault();
-    window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      "sign-in-button",
-      {
-        size: "invisible",
-        callback: (response) => {
-          onSignInSubmit();
-          console.log("Recaptcha Verified");
-        },
-        // defaultCountry:"IN"
-      }
-    );
-  };
-  const onSignInSubmit = (e) => {
-    e.preventDefault();
-    configureCaptcha();
+  // const configureCaptcha = (e) => {
+  //   // e.preventdefault();
+  //   window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+  //     "sign-in-button",
+  //     {
+  //       size: "invisible",
+  //       callback: (response) => {
+  //         onSignInSubmit();
+  //         console.log("Recaptcha Verified");
+  //       },
+  //       // defaultCountry:"IN"
+  //     }
+  //   );
+  // };
+  // this is for otp verification
+  // const onSignInSubmit = (e) => {
+  //   e.preventDefault();
+  //   configureCaptcha();
 
-    const phoneNumber = "+91" + mobileNumber;
-    const appVerifier = window.recaptchaVerifier;
-    firebase
-      .auth()
-      .signInWithPhoneNumber(phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
+  //   const phoneNumber = "+91" + mobileNumber;
+  //   const appVerifier = window.recaptchaVerifier;
+  //   firebase
+  //     .auth()
+  //     .signInWithPhoneNumber(phoneNumber, appVerifier)
+  //     .then((confirmationResult) => {
+  //       window.confirmationResult = confirmationResult;
 
-        alert("OTP Sent");
-      })
-      .catch((error) => {
-        console.log("OTP not Sent");
-      });
-  };
+  //       alert("OTP Sent");
+  //     })
+  //     .catch((error) => {
+  //       console.log("OTP not Sent");
+  //     });
+  // };
+ 
+  // const onSubmitOTP = (e) => {
+  //   e.preventDefault();
+  //   const code = OTP;
+  //   console.log(code);
+  //   window.confirmationResult
+  //     .confirm(code)
+  //     .then((result) => {
+  //       // User signed in successfully.
+  //       const user = result.user;
+  //       console.log(JSON.stringify(user));
+  //       setUserVerified(true);
+  //       alert("User is verified");
+  //       // ...
+  //     })
+  //     .catch((error) => {
+  //       // User couldn't sign in (bad verification code?)
+  //       // ...
+  //     });
+  // };
 
-  const onSubmitOTP = (e) => {
-    e.preventDefault();
-    const code = OTP;
-    console.log(code);
-    window.confirmationResult
-      .confirm(code)
-      .then((result) => {
-        // User signed in successfully.
-        const user = result.user;
-        console.log(JSON.stringify(user));
-        setUserVerified(true);
-        alert("User is verified");
-        // ...
-      })
-      .catch((error) => {
-        // User couldn't sign in (bad verification code?)
-        // ...
-      });
-  };
+  const [wrongDetail,setWrongDetail]=useState("")
+  const axios = require('axios')
+  const loginHandle=()=>{
+
+    axios.post('http://20.235.65.74:4000/createcompany/login_mob', {
+      user: userName,
+      pass: password
+    })
+    .then((response)=> {
+  
+        //window.location.href="/dashboard"
+        console.log("response",response);
+        navigate('/dashboard');
+      response.data.map((item)=>{localStorage.setItem('token',(item._id))})
+    }).catch((err)=>{console.log(err); setWrongDetail("Please check Username or Password")})
+  }
 
   return (
     // <div className="card">
@@ -184,7 +203,7 @@ function Login() {
 
         <div id="sign-in-button"></div>
         <div className="inputs">
-          <input
+          {/* <input
             type="text"
             onChange={(e) => setMobileNumber(e.target.value)}
             placeholder="Mobile Number"
@@ -199,16 +218,41 @@ function Login() {
             }}
           >
             Send OTP
-          </a>
-
+          </a> */}
+          
           <input
+            type="text"
+            onChange={(e) => setUserName(e.target.value)}
+            placeholder="Username"
+          />
+          <br />
+          {/* <a
+            type="button"
+            onClick={(e) => onSignInSubmit(e)}
+            style={{
+              float: "right",
+              color: "blue",
+            }}
+          >
+            Send OTP
+          </a> */}
+
+          {/* <input
             type="text"
             onChange={(e) => {
               setOTP(e.target.value);
             }}
             placeholder="Enter OTP"
+          /> */}
+          <input
+            type="text"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            placeholder="Password"
           />
         </div>
+        <p className="text-left" style={{color:"red"}}>{wrongDetail}</p>
         <br />
         <br />
         <div className="remember-me--forget-password">
@@ -220,17 +264,22 @@ function Login() {
           <p>forget password?</p>
         </div>
         <br />
+      
         <button
-          onClick={(e) => {
-            {
-              userVerified ? navigate("/dashboard") : console.log("");
-            }
 
-            onSubmitOTP(e);
-          }}
+        onClick={()=>{loginHandle()}}
+          // onClick={(e) => {
+          //   {
+          //     userVerified ? navigate("/dashboard") : console.log("");
+          //   }
+
+          //   onSubmitOTP(e);
+          // }}
+         
         >
           Login
         </button>
+       
         {/* <p
           style={
             {

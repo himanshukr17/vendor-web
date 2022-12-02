@@ -92,6 +92,7 @@ function MyContracts() {
   return (
     <>
       <NavHeader />
+      <form>
       <div
         className="card"
         style={{
@@ -133,501 +134,449 @@ function MyContracts() {
             }}
           ></div>
         </div>
-        <div className="card-body">
-          <table className="table table-light table-bordered table-hover">
-            <thead className="table-light">
-              <tr
-                className="text-center"
-                style={{
-                  backgroundColor: COLORS.gray20,
-                  borderColor: COLORS.gray10,
-                }}
-              >
-                {thead.map((thead, index) => {
-                  return (
-                    <th
-                      key={index}
-                      className="text-center"
-                      style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      scope="col"
-                    >
-                      {thead}
-                    </th>
-                  );
-                })}
-              </tr>
-            </thead>
-
-            <tbody>
-              {isPurchaseOrderEmpty ? (
-                tbody.map((val, index) => {
-                  return (
-                    <tr
-                      key={`row` + index}
-                      style={{
-                        backgroundColor: "white",
-                        borderColor: "#000",
-                      }}
-                      className="table-light"
-                    >
-                      <td
-                        key={`col-1` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.AGREEMENT_DATE}
-                      </td>
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        <Link
-                          onClick={(e) => {
-                            togglePODetailsFlag();
-                            setClickedPOsData({
-                              AGREEMENT_DATE: val.AGREEMENT_DATE,
-                              CONTRACT_NUMBER: val.CONTRACT_NUMBER,
-                              PLANT_NAME: val.PLANT_NAME,
-                              ITEM_NAME: val.ITEM_NAME,
-                              MATERIAL_NUMBER: val.MATERIAL_NUMBER,
-                              DESCRIPTION: val.DESCRIPTION,
-                              TARGET_QUANTITY: val.TARGET_QUANTITY,
-                              TARGET_VALUE: val.TARGET_VALUE,
-                              OPEN_QUANTITY: val.OPEN_QUANTITY,
-                              NET_VALUE: val.NET_VALUE,
-                              RECEIVING_PLANT: val.RECEIVING_PLANT,
-                              VALIDITY_START: val.VALIDITY_START,
-                              VALIDITY_END: val.VALIDITY_END,
-                            });
-                          }}
-                        >
-                          {val.CONTRACT_NUMBER}
-                        </Link>
-                        <br />
-                      </td>
-                      <td
-                        key={`col-3` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.PLANT_NAME}
-                      </td>
-                      {/* <td
-                        key={`col-5` + index}
-                        className="text-center"
-                        style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      >
-                        <Link
-                          to=""
-                          onClick={(e) => {
-                            DownloadButton(e, val.INVOICE_URL);
-                          }}
-                        >
-                          <IconContext.Provider
-                            value={{ color: "#000", size: "22px" }}
-                          >
-                            <AiOutlineDownload />
-                          </IconContext.Provider>
-                        </Link>
-                      </td> */}
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan={7} className="text-center">
-                    No Data Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div classname="card-body">
+        <div className="row" style={{margin:"10px"}}>
+          <div className="col-md-6">
+          <p className="text-left " style={{marginBottom:"-1px"}}>Pan Card:</p>
+    <input className="form-control"  required type="file" id="formFile" />
+          </div>
+          <div className="col-md-6">
+          <p className="text-left " style={{marginBottom:"-1px"}}>Aadhar Card:</p>
+    <input className="form-control" required type="file" id="formFile" />
+          </div>
         </div>
+        <div className="row" style={{margin:"10px"}}>
+          <div className="col-md-6">
+          <p className="text-left " style={{marginBottom:"-1px"}}>GST registration certificate copy:</p>
+    <input className="form-control" required type="file" id="formFile" />
+          </div>
+          <div className="col-md-6">
+          <p className="text-left " style={{marginBottom:"-1px"}}>Address Proof:</p>
+    <input className="form-control"  required type="file" id="formFile" />
+          </div>
+        </div>
+        <div className="row" style={{margin:"10px"}}>
+          <div className="col-md-6">
+          <p className="text-left " style={{marginBottom:"-1px"}}>MSME Certificate:</p>
+    <input className="form-control"  required type="file" id="formFile" />
+          </div>
+          <div className="col-md-6">
+          <p className="text-left " style={{marginBottom:"-1px"}}>POR Declearation:</p>
+    <input className="form-control"  required type="file" id="formFile" />
+          </div>
+        </div>
+        <div className="row" style={{margin:"10px"}}>
+          <div className="col-md-6">
+          <p className="text-left " style={{marginBottom:"-1px"}}>Due Diligence Form:</p>
+    <input className="form-control"  required type="file" id="formFile" />
+          </div>
+          <div className="col-md-6">
+          {/* <p className="text-left " style={{marginBottom:"-1px"}}>Default file input example</p>
+    <input className="form-control" type="file" id="formFile" /> */}
+          </div>
+        </div>
+  
+</div>
+ <button
+                 type="submit"//onClick={()=>{submitForm()}}
+                    style={{
+                      width: "20%",
+                      justifyContent: "center",
+                      alignSelf: "center",
+                      margin: "3%",
+                    }}
+                    className="btn btn-primary"
+                  >
+                    Submit
+                  </button>
       </div>
-
-      <Modal
-        isOpen={showPODetailsFlag}
-        toggle={togglePODetailsFlag}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "90vh",
-        }}
-      >
-        <ModalBody
-          style={
-            {
-              // marginTop: 0,
-            }
-          }
-        >
-          <div className="modal-header model-lg">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Contract Details
-            </h5>
-
-            {/* <button
-              type="button"
-              className="btn"
-              style={{
-                backgroundColor: COLORS.gray10,
-                color: COLORS.black,
-                marginLeft: "30%",
-                float: "right",
-              }}
-              onClick={(e) => {
-                DownloadButton(e, ClickedPOsData.INVOICE_URL);
-              }}
-            >
-              Download Invoice
-            </button> */}
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            />
-          </div>
-          <div className="modal-body">
-            {/* body starting */}
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <TbBuildingFactory2 />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                {ClickedPOsData.ITEM_NAME}
-              </label>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <BsFillCalendarWeekFill />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                {ClickedPOsData.MATERIAL_NUMBER}
-              </label>
-            </div>
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <MdDescription />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Short Description
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.DESCRIPTION}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <MdOutlineCategory />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Net Value
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.NET_VALUE}
-              </span>
-            </div>
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <SiConstruct3 />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Target Quantity
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.TARGET_QUANTITY}
-              </span>
-            </div>
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <BsFillDoorOpenFill />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Open Quantity
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.OPEN_QUANTITY}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <GiReceiveMoney />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Receiving Plant
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.PLANT_NAME}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                  <GrValidate />
-                </IconContext.Provider>
-                <label
-                  style={{
-                    marginLeft: "2%",
-                  }}
-                >
-                  Validity Start
-                </label>
-                <label
-                  style={{
-                    marginLeft: "30%",
-                  }}
-                >
-                  Validity End
-                </label>
-
-                <br></br>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                <span
-                  style={{
-                    marginLeft: "9%",
-                  }}
-                >
-                  {ClickedPOsData.VALIDITY_START}
-                </span>
-                <span
-                  style={{
-                    marginLeft: "35%",
-                  }}
-                >
-                  {ClickedPOsData.VALIDITY_END}
-                </span>
-              </div>
-            </div>
-
-            {/* body ending */}
-          </div>
-          <div className="modal-footer">
-            <a
-              className="navbar-brand"
-              type="button"
-              style={{
-                color: "#007bff",
-                float: "right",
-                // padding: 10,
-              }}
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            >
-              Close
-            </a>
-
-            {/* <button
-              type="button"
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-              className="btn btn"
-              style={{
-                backgroundColor: COLORS.danger,
-                color: COLORS.white,
-              }}
-            >
-              Reject
-            </button> */}
-          </div>
-        </ModalBody>
-      </Modal>
+</form>
     </>
   );
 }
 
 export default MyContracts;
+
+
+
+
+// <Modal
+// isOpen={showPODetailsFlag}
+// toggle={togglePODetailsFlag}
+// style={{
+//   display: "flex",
+//   justifyContent: "center",
+//   alignItems: "center",
+//   height: "90vh",
+// }}
+// >
+// <ModalBody
+//   style={
+//     {
+//       // marginTop: 0,
+//     }
+//   }
+// >
+//   <div className="modal-header model-lg">
+//     <h5 className="modal-title" id="exampleModalLabel">
+//       Contract Details
+//     </h5>
+
+//     {/* <button
+//       type="button"
+//       className="btn"
+//       style={{
+//         backgroundColor: COLORS.gray10,
+//         color: COLORS.black,
+//         marginLeft: "30%",
+//         float: "right",
+//       }}
+//       onClick={(e) => {
+//         DownloadButton(e, ClickedPOsData.INVOICE_URL);
+//       }}
+//     >
+//       Download Invoice
+//     </button> */}
+//     <button
+//       type="button"
+//       className="btn-close"
+//       data-bs-dismiss="modal"
+//       aria-label="Close"
+//       onClick={() => {
+//         togglePODetailsFlag();
+//       }}
+//     />
+//   </div>
+//   <div className="modal-body">
+//     {/* body starting */}
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//         <TbBuildingFactory2 />
+//       </IconContext.Provider>
+
+//       <label
+//         style={{
+//           marginLeft: "2%",
+//         }}
+//       >
+//         {ClickedPOsData.ITEM_NAME}
+//       </label>
+//     </div>
+//     <div
+//       style={{
+//         height: 1,
+//         backgroundColor: COLORS.black,
+//         margin: "1%",
+//       }}
+//     ></div>
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//         <BsFillCalendarWeekFill />
+//       </IconContext.Provider>
+
+//       <label
+//         style={{
+//           marginLeft: "2%",
+//         }}
+//       >
+//         {ClickedPOsData.MATERIAL_NUMBER}
+//       </label>
+//     </div>
+
+//     <div
+//       style={{
+//         height: 1,
+//         backgroundColor: COLORS.black,
+//         margin: "1%",
+//       }}
+//     ></div>
+
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//         <MdDescription />
+//       </IconContext.Provider>
+
+//       <label
+//         style={{
+//           marginLeft: "2%",
+//         }}
+//       >
+//         Short Description
+//       </label>
+
+//       <br></br>
+//       <span
+//         style={{
+//           marginLeft: "9%",
+//         }}
+//       >
+//         {ClickedPOsData.DESCRIPTION}
+//       </span>
+//     </div>
+//     <div
+//       style={{
+//         height: 1,
+//         backgroundColor: COLORS.black,
+//         margin: "1%",
+//       }}
+//     ></div>
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//         <MdOutlineCategory />
+//       </IconContext.Provider>
+
+//       <label
+//         style={{
+//           marginLeft: "2%",
+//         }}
+//       >
+//         Net Value
+//       </label>
+
+//       <br></br>
+//       <span
+//         style={{
+//           marginLeft: "9%",
+//         }}
+//       >
+//         {ClickedPOsData.NET_VALUE}
+//       </span>
+//     </div>
+
+//     <div
+//       style={{
+//         height: 1,
+//         backgroundColor: COLORS.black,
+//         margin: "1%",
+//       }}
+//     ></div>
+
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//         <SiConstruct3 />
+//       </IconContext.Provider>
+
+//       <label
+//         style={{
+//           marginLeft: "2%",
+//         }}
+//       >
+//         Target Quantity
+//       </label>
+
+//       <br></br>
+//       <span
+//         style={{
+//           marginLeft: "9%",
+//         }}
+//       >
+//         {ClickedPOsData.TARGET_QUANTITY}
+//       </span>
+//     </div>
+
+//     <div
+//       style={{
+//         height: 1,
+//         backgroundColor: COLORS.black,
+//         margin: "1%",
+//       }}
+//     ></div>
+
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//         <BsFillDoorOpenFill />
+//       </IconContext.Provider>
+
+//       <label
+//         style={{
+//           marginLeft: "2%",
+//         }}
+//       >
+//         Open Quantity
+//       </label>
+
+//       <br></br>
+//       <span
+//         style={{
+//           marginLeft: "9%",
+//         }}
+//       >
+//         {ClickedPOsData.OPEN_QUANTITY}
+//       </span>
+//     </div>
+//     <div
+//       style={{
+//         height: 1,
+//         backgroundColor: COLORS.black,
+//         margin: "1%",
+//       }}
+//     ></div>
+
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//         <GiReceiveMoney />
+//       </IconContext.Provider>
+
+//       <label
+//         style={{
+//           marginLeft: "2%",
+//         }}
+//       >
+//         Receiving Plant
+//       </label>
+
+//       <br></br>
+//       <span
+//         style={{
+//           marginLeft: "9%",
+//         }}
+//       >
+//         {ClickedPOsData.PLANT_NAME}
+//       </span>
+//     </div>
+//     <div
+//       style={{
+//         height: 1,
+//         backgroundColor: COLORS.black,
+//         margin: "1%",
+//       }}
+//     ></div>
+
+//     <div
+//       style={
+//         {
+//           // padding: "3%",
+//         }
+//       }
+//       className="form-group"
+//     >
+//       <div
+//         style={{
+//           display: "flex",
+//         }}
+//       >
+//         <IconContext.Provider value={{ color: "#000", size: "30px" }}>
+//           <GrValidate />
+//         </IconContext.Provider>
+//         <label
+//           style={{
+//             marginLeft: "2%",
+//           }}
+//         >
+//           Validity Start
+//         </label>
+//         <label
+//           style={{
+//             marginLeft: "30%",
+//           }}
+//         >
+//           Validity End
+//         </label>
+
+//         <br></br>
+//       </div>
+//       <div
+//         style={{
+//           display: "flex",
+//         }}
+//       >
+//         <span
+//           style={{
+//             marginLeft: "9%",
+//           }}
+//         >
+//           {ClickedPOsData.VALIDITY_START}
+//         </span>
+//         <span
+//           style={{
+//             marginLeft: "35%",
+//           }}
+//         >
+//           {ClickedPOsData.VALIDITY_END}
+//         </span>
+//       </div>
+//     </div>
+
+//     {/* body ending */}
+//   </div>
+//   <div className="modal-footer">
+//     <a
+//       className="navbar-brand"
+//       type="button"
+//       style={{
+//         color: "#007bff",
+//         float: "right",
+//         // padding: 10,
+//       }}
+//       onClick={() => {
+//         togglePODetailsFlag();
+//       }}
+//     >
+//       Close
+//     </a>
+
+//     {/* <button
+//       type="button"
+//       onClick={() => {
+//         togglePODetailsFlag();
+//       }}
+//       className="btn btn"
+//       style={{
+//         backgroundColor: COLORS.danger,
+//         color: COLORS.white,
+//       }}
+//     >
+//       Reject
+//     </button> */}
+//   </div>
+// </ModalBody>
+// </Modal>

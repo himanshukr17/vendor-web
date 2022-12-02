@@ -16,8 +16,8 @@ function Dashboard() {
         }}
       >
         <HomeScreen />
-        <Footer />
       </div>
+        <Footer />
     </>
   );
 }
