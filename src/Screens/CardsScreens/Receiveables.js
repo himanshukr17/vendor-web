@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavHeader from "../../Components/NavHeader";
-
+import axios from "axios";
+import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdScheduleSend } from "react-icons/md";
 
@@ -89,6 +90,18 @@ function Receiveables() {
       });
     });
   };
+
+  const vendorId =localStorage.getItem('vendorId');
+
+  useEffect(() => {
+         axios.get(AxioxExpPort+"received/get?id="+vendorId)
+         .then((response) => {
+           setTBody(response.data);
+    
+          console.log("response.data",response.data);
+         })
+         }, []);
+  const [clickRecData,setClickRecvData]=useState([]);
 
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
@@ -202,9 +215,10 @@ function Receiveables() {
                               PRICE: val.PRICE,
                               INVOICE_URL: val.INVOICE_URL,
                             });
+                      setClickRecvData(val.received_datas)
                           }}
                         >
-                          {val.PO_NUMBER}
+                          {val.PO_NO}
                         </Link>
                         <br />
                       </td>
@@ -213,7 +227,7 @@ function Receiveables() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.REFERENCE_NUMBER}
+                        {val.REFERENCE_DOCUMENT_NO}
                       </td>
                       {/* <td
                         key={`col-5` + index}
@@ -265,7 +279,7 @@ function Receiveables() {
         >
           <div className="modal-header model-lg">
             <h5 className="modal-title" id="exampleModalLabel">
-              PO's Details
+            Receiveables Details
             </h5>
 
             {/* <button
@@ -294,117 +308,39 @@ function Receiveables() {
             />
           </div>
           <div className="modal-body">
-            {/* body starting */}
-           
-
           
 
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <TbBuildingFactory2 />
-              </IconContext.Provider>
 
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Plant/ Receiving area
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.MATERIAL}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <SiConstruct3 />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Material
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.MATERIAL}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <BsFillCalendarWeekFill />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Receiving Date
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.DOCUMENT_DATE}
-              </span>
-            </div>
-
-            {/* body ending */}
-          </div>
+          <table  className="table table-bordered table-striped">
+          <thead>
+             <th>Plant/ Receiving area</th>
+             <th>Material</th>
+             <th>Receiving Date</th>
+             
+          </thead>
+            <tbody>
+              {
+                clickRecData.map((grsData, index) => {
+                return (
+                  <tr>
+                    <td>
+                      {grsData.MATERIAL}
+                    </td>
+                    <td>
+                      {grsData.QUANTITY}
+                    </td>
+                    <td>
+                      {grsData.PLANT}
+                    </td>
+                   
+                  </tr>
+                );
+                })
+            }
+              
+            </tbody>
+          </table>
+     </div>
           <div className="modal-footer">
             <a
               className="navbar-brand"
@@ -420,20 +356,6 @@ function Receiveables() {
             >
               Close
             </a>
-
-            {/* <button
-              type="button"
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-              className="btn btn"
-              style={{
-                backgroundColor: COLORS.danger,
-                color: COLORS.white,
-              }}
-            >
-              Reject
-            </button> */}
           </div>
         </ModalBody>
       </Modal>

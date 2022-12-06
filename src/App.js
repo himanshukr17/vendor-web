@@ -14,9 +14,11 @@ import MyContracts from "./Screens/CardsScreens/MyContracts";
 import Receiveables from "./Screens/CardsScreens/Receiveables";
 import Contacts from "./Screens/CardsScreens/Contacts";
 import Protected from './Protected';
+import ErrorPage from "./Screens/Error"
 
 
 function App() {
+  const [isLoggedIn, setisLoggedIn] = useState(null);
   return (
     <div className="App">
       {/* Routes To screens start  */}
@@ -24,11 +26,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} exact />
-          <Route path="/dashboard" element={<Dashboard />} exact />
+          <Route path="/notfound" element={<ErrorPage />} exact />
+          <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/signup" element={<SignUp />} exact />
 
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
-          <Route path="/checkStatus" element={<Protected><CheckStatus/></Protected>} exact />
+          <Route path="/checkStatus" element={<CheckStatus/>} exact />
           <Route path="/pos" element={<Protected><PurchaseOrders/></Protected>} exact />
           <Route path="/grs" element={<Protected><GoodsReturn/></Protected>} exact />
           <Route path="/mcs" element={<Protected><MyContracts/></Protected>} exact />

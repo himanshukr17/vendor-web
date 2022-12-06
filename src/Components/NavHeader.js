@@ -11,6 +11,10 @@ const NavHeader = () => {
       setNabar(false);
     }
   };
+  const navigate = useNavigate();
+  
+
+
 
   window.addEventListener("scroll", changeBackground);
 
@@ -219,7 +223,8 @@ const NavHeader = () => {
                       //   textAlign: "center",
                       // }}
                       onClick={() => {
-                        localStorage.removeItem('token')                  
+                        localStorage.removeItem('token') 
+                        navigate('/')                 
                       }}
                     >
                       <div

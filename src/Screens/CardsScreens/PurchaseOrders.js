@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
 
+import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdScheduleSend } from "react-icons/md";
 
@@ -37,45 +38,16 @@ function PurchaseOrders() {
     "Reference Number",
     "Action",
   ]);
+  const vendorId =localStorage.getItem('vendorId');
 
-  const [tbody, setTBody] = useState([
-    {
-      DOCUMENT_DATE: "2022/10/26",
-      PO_NUMBER: "445209283876",
-      REFERENCE_NUMBER: "89976383726410",
-      MANUFACTURING: "XYZ Pvt Ltd",
-      ITEM_CATEGORY: "Gold",
-      MATERIAL: "Gold Platted chain",
-      DESCRIPTION: "Your material is delivered successfully",
-      QUATITY: "5000",
-      PRICE: "10000000",
-      INVOICE_URL: "SamplePDF.pdf",
-      POS: [
-        {
-          PLANT_ID: 2,
-          DOCUMENT_DATE: "2001-01-31T18:30:00.000Z",
-          ITEM_CATEGORY: "",
-          ORDER_QUANTITY: 1,
-          NET_PRICE: 134234,
-        },
-        {
-          PLANT_ID: 2,
-          DOCUMENT_DATE: "2001-01-31T18:31:40.000Z",
-          ITEM_CATEGORY: "",
-          ORDER_QUANTITY: 2,
-          NET_PRICE: 1,
-        },
-      ],
-    },
-   
-  ]);
+  const [tbody, setTBody] = useState([]);
 
   useEffect(() => {
-         axios.get("http://localhost:4000/purchase_order/get?id=1234")
+         axios.get(AxioxExpPort+"purchase_order/get?id="+vendorId)
          .then((response) => {
            setTBody(response.data);
     
-            // console.log(response.data);
+          console.log("response.data",response.data);
          })
          }, []);
   const DownloadButton=(e,INVOICE_URL)=>{
@@ -206,7 +178,7 @@ function PurchaseOrders() {
                               DESCRIPTION: val.DESCRIPTION,
                               QUATITY: val.QUATITY,
                               PRICE: val.PRICE,
-                              INVOICE_URL: val.INVOICE_URL,
+                              INVOICE_URL: "http://localhost:3007/pdf/testing.pdf",
                               // POS:val.POS
                             });
                             setClickedPOsDataArr(val.purchase_order)
@@ -231,7 +203,7 @@ function PurchaseOrders() {
                         <Link
                           to=""
                           onClick={(e) => {
-                            DownloadButton(e, val.INVOICE_URL);
+                            DownloadButton(e, "http://localhost:3007/pdf/testing.pdf");
                           }}
                         >
                           <IconContext.Provider
@@ -286,7 +258,7 @@ function PurchaseOrders() {
                 float: "right",
               }}
               onClick={(e) => {
-                DownloadButton(e, ClickedPOsData.INVOICE_URL);
+                DownloadButton(e, "http://localhost:3000/pdf/testing.pdf");
               }}
             >
               Download PO

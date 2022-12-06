@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavHeader from "../../Components/NavHeader";
-
+import axios from "axios";
+import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdScheduleSend } from "react-icons/md";
 
@@ -85,7 +86,17 @@ function MyContracts() {
       });
     });
   };
+  const vendorId =localStorage.getItem('vendorId');
 
+  useEffect(() => {
+         axios.get(AxioxExpPort+"contract/getdata?id="+vendorId)
+         .then((response) => {
+           setTBody(response.data);
+    
+          console.log("response.data",response.data);
+         })
+         }, []);
+  const [clickContractData,setClickContractData]=useState([]);
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
 
@@ -200,9 +211,10 @@ function MyContracts() {
                               VALIDITY_START: val.VALIDITY_START,
                               VALIDITY_END: val.VALIDITY_END,
                             });
+                            setClickContractData(val.Contract_details)
                           }}
                         >
-                          {val.CONTRACT_NUMBER}
+                          {val.CONTRACT_NO}
                         </Link>
                         <br />
                       </td>
@@ -211,7 +223,7 @@ function MyContracts() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.PLANT_NAME}
+                        {val.PLANT_ID}
                       </td>
                       {/* <td
                         key={`col-5` + index}
@@ -247,6 +259,7 @@ function MyContracts() {
       </div>
 
       <Modal
+      size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
@@ -263,337 +276,50 @@ function MyContracts() {
             }
           }
         >
-          <div className="modal-header model-lg">
-            <h5 className="modal-title" id="exampleModalLabel">
-              Contract Details
-            </h5>
+         
 
-            {/* <button
-              type="button"
-              className="btn"
-              style={{
-                backgroundColor: COLORS.gray10,
-                color: COLORS.black,
-                marginLeft: "30%",
-                float: "right",
-              }}
-              onClick={(e) => {
-                DownloadButton(e, ClickedPOsData.INVOICE_URL);
-              }}
-            >
-              Download Invoice
-            </button> */}
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            />
-          </div>
-          <div className="modal-body">
-            {/* body starting */}
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <TbBuildingFactory2 />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                {ClickedPOsData.ITEM_NAME}
-              </label>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <BsFillCalendarWeekFill />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                {ClickedPOsData.MATERIAL_NUMBER}
-              </label>
-            </div>
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <MdDescription />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Short Description
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.DESCRIPTION}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <MdOutlineCategory />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Net Value
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.NET_VALUE}
-              </span>
-            </div>
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <SiConstruct3 />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Target Quantity
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.TARGET_QUANTITY}
-              </span>
-            </div>
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <BsFillDoorOpenFill />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Open Quantity
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.OPEN_QUANTITY}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <GiReceiveMoney />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Receiving Plant
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.PLANT_NAME}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                  <GrValidate />
-                </IconContext.Provider>
-                <label
-                  style={{
-                    marginLeft: "2%",
-                  }}
-                >
-                  Validity Start
-                </label>
-                <label
-                  style={{
-                    marginLeft: "30%",
-                  }}
-                >
-                  Validity End
-                </label>
-
-                <br></br>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                }}
-              >
-                <span
-                  style={{
-                    marginLeft: "9%",
-                  }}
-                >
-                  {ClickedPOsData.VALIDITY_START}
-                </span>
-                <span
-                  style={{
-                    marginLeft: "35%",
-                  }}
-                >
-                  {ClickedPOsData.VALIDITY_END}
-                </span>
-              </div>
-            </div>
-
+            <table  className="table table-bordered table-striped">
+          <thead>
+             <th>Material</th>
+             <th>Net Value</th>
+             <th>Quantity</th>
+             <th>Open Quantity</th>
+             <th>Validity Start</th>
+             <th>Validity End</th>
+          </thead>
+            <tbody>
+              {
+                clickContractData.map((contractsDtl, index) => {
+                return (
+                  <tr>
+                    <td>
+                      {contractsDtl.MATERIAL_NO}
+                    </td>
+                    <td>
+                      {contractsDtl.NET_VALUE}
+                    </td>
+                    <td>
+                      {contractsDtl.QUANTITY}
+                    </td>
+                    <td>
+                      {contractsDtl.OPEN_QUANTITY}
+                    </td>
+                    <td>
+                      {contractsDtl.VALIDITY_START}
+                    </td>
+                    <td>
+                      {contractsDtl.VALIDITY_END}
+                    </td>
+                 
+                  </tr>
+                );
+                })
+            }
+              
+            </tbody>
+          </table>
             {/* body ending */}
-          </div>
+       
           <div className="modal-footer">
             <a
               className="navbar-brand"

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
 
+import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdScheduleSend } from "react-icons/md";
 
@@ -35,62 +37,38 @@ function GoodsReturn() {
     "Action",
   ]);
 
-  const [tbody, setTBody] = useState([
-    {
-      DOCUMENT_DATE: "2022/10/26",
-      PO_NUMBER: "445209283876",
-      REFERENCE_NUMBER: "89976383726410",
-      MANUFACTURING: "XYZ Pvt Ltd",
-      ITEM_CATEGORY: "Gold",
-      MATERIAL: "Gold Platted chain",
-      DESCRIPTION: "10 units Defect",
-      QUATITY: "5000",
-      PRICE: "10000000",
-      INVOICE_URL: "SamplePDF.pdf",
-    },
-    {
-      DOCUMENT_DATE: "2022/10/27",
-      PO_NUMBER: "286709283876",
-      REFERENCE_NUMBER: "97683726410",
-      MANUFACTURING: "ABC Pvt Ltd",
-      ITEM_CATEGORY: "SIlver",
-      MATERIAL: "Silver",
-      DESCRIPTION: "50 Units Defect",
-      QUATITY: "1000",
-      PRICE: "400000",
-      INVOICE_URL: "www.abcajsdv.com",
-    },
-    {
-      DOCUMENT_DATE: "2022/10/28",
-      PO_NUMBER: "1209283876",
-      REFERENCE_NUMBER: "474787683726410",
-      MANUFACTURING: "PQR Pvt Ltd",
-      ITEM_CATEGORY: "Gold Silver",
-      MATERIAL: "Mixer",
-      DESCRIPTION: "20 units is short in size",
-      QUATITY: "400",
-      PRICE: "300000",
-      INVOICE_URL: "www.abc.com",
-    },
-  ]);
-
-  const DownloadButton = (e, INVOICE_URL) => {
+  const [tbody, setTBody] = useState([]);
+  var INVOICE_URL 
+  const DownloadButton=(e,INVOICE_URL)=>{
     e.preventDefault();
 
-    fetch(INVOICE_URL).then((response) => {
-      response.blob().then((blob) => {
-        // Creating new object of PDF file
-        const fileURL = window.URL.createObjectURL(blob);
-        // Setting various property values
-        let alink = document.createElement("a");
-        alink.href = fileURL;
-        alink.download = "SamplePDF.pdf";
-        alink.click();
-      });
-    });
-  };
+       fetch(INVOICE_URL).then((response) => {
+         response.blob().then((blob) => {
+           // Creating new object of PDF file
+           const fileURL = window.URL.createObjectURL(blob);
+           // Setting various property values
+           let alink = document.createElement("a");
+           alink.href = fileURL;
+           alink.download = "SamplePDF.pdf";
+           alink.click();
+         });
+       });
+      }
 
+  const vendorId =localStorage.getItem('vendorId');
+  // "https://localhost:3007/images/" + image name gotten from REST api response
+
+  useEffect(() => {
+         axios.get(AxioxExpPort+"good_return/get?id="+vendorId)
+         .then((response) => {
+           setTBody(response.data);
+    
+          console.log("response.data",response.data);
+         })
+         }, []);
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
+
+  const [clickGRData,setClickGRData]=useState([]);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
 
   return (
@@ -191,8 +169,8 @@ function GoodsReturn() {
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickedPOsData({
-                              DOCUMENT_DATE: val.DOCUMENT_DATE,
-                              PO_NUMBER: val.PO_NUMBER,
+                              DOCUMENT_DATE: val.PO_NO,
+                              PO_NUMBER: val.PO_NO,
                               REFERENCE_NUMBER: val.REFERENCE_NUMBER,
                               MANUFACTURING: val.MANUFACTURING,
                               ITEM_CATEGORY: val.ITEM_CATEGORY,
@@ -200,11 +178,12 @@ function GoodsReturn() {
                               DESCRIPTION: val.DESCRIPTION,
                               QUATITY: val.QUATITY,
                               PRICE: val.PRICE,
-                              INVOICE_URL: val.INVOICE_URL,
+                              // INVOICE_URL: val.INVOICE_URL,
                             });
+                            setClickGRData(val.return_order)
                           }}
                         >
-                          {val.PO_NUMBER}
+                          {val.PO_NO}
                         </Link>
                         <br />
                       </td>
@@ -213,7 +192,7 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.REFERENCE_NUMBER}
+                        {val.QUOTATION_NO}
                       </td>
                       <td
                         key={`col-5` + index}
@@ -223,7 +202,7 @@ function GoodsReturn() {
                         <Link
                           to=""
                           onClick={(e) => {
-                            DownloadButton(e, val.INVOICE_URL);
+                            DownloadButton(e);
                           }}
                         >
                           <IconContext.Provider
@@ -278,7 +257,7 @@ function GoodsReturn() {
                 float: "right",
               }}
               onClick={(e) => {
-                DownloadButton(e, ClickedPOsData.INVOICE_URL);
+                DownloadButton(e);
               }}
             >
               Download Invoice
@@ -293,237 +272,40 @@ function GoodsReturn() {
               }}
             />
           </div>
-          <div className="modal-body">
-            {/* body starting */}
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <TbBuildingFactory2 />
-              </IconContext.Provider>
+        
 
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                {ClickedPOsData.MANUFACTURING}
-              </label>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <BsFillCalendarWeekFill />
-              </IconContext.Provider>
 
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                {ClickedPOsData.DOCUMENT_DATE}
-              </label>
-            </div>
-            {/* <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <MdOutlineCategory />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Item Catagory
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.ITEM_CATEGORY}
-              </span>
-            </div> */}
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <SiConstruct3 />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Material
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.MATERIAL}
-              </span>
-            </div>
-
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <SiQuantconnect />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Quantity
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.QUATITY}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <MdDescription />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                Reason for Movement
-              </label>
-
-              <br></br>
-              <span
-                style={{
-                  marginLeft: "9%",
-                }}
-              >
-                {ClickedPOsData.DESCRIPTION}
-              </span>
-            </div>
-            {/* <div
-              style={{
-                height: 1,
-                backgroundColor: COLORS.black,
-                margin: "1%",
-              }}
-            ></div>
-
-            <div
-              style={
-                {
-                  // padding: "3%",
-                }
-              }
-              className="form-group"
-            >
-              <IconContext.Provider value={{ color: "#000", size: "30px" }}>
-                <BiRupee />
-              </IconContext.Provider>
-
-              <label
-                style={{
-                  marginLeft: "2%",
-                }}
-              >
-                {ClickedPOsData.PRICE}
-              </label>
-
-             
-            </div> */}
-
-            {/* body ending */}
-          </div>
+          <table  className="table table-bordered table-striped">
+          <thead>
+             <th>Material</th>
+             <th>Quantity</th>
+             <th>PLANT</th>
+             <th>REMARKS</th>
+          </thead>
+            <tbody>
+              {
+                clickGRData.map((grsData, index) => {
+                return (
+                  <tr>
+                    <td>
+                      {grsData.MATERIAL}
+                    </td>
+                    <td>
+                      {grsData.QUANTITY}
+                    </td>
+                    <td>
+                      {grsData.PLANT}
+                    </td>
+                    <td>
+                      {grsData.REMARKS}
+                    </td>
+                  </tr>
+                );
+                })
+            }
+              
+            </tbody>
+          </table>
           <div className="modal-footer">
             <a
               className="navbar-brand"

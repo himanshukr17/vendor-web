@@ -4,18 +4,12 @@ import { Bar } from "react-chartjs-2";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract,FaUsers } from "react-icons/fa";
-import { BsFillCartCheckFill, BsFillBagXFill } from "react-icons/bs";
+import { FaMegaport, FaFileContract,FaUsers,FaReceipt } from "react-icons/fa";
+import { BsFillCartCheckFill, BsFillBagXFill,BsReceiptCutoff } from "react-icons/bs";
 import { AiFillReconciliation } from "react-icons/ai";
 
 function HomeScreen() {
-  const navigate = useNavigate();
-  
-useEffect(()=>{
-  if(localStorage.getItem('token')){
-    navigate('/Login')
-  }
-})
+
   const labels = ["January", "February", "March", "April", "May", "June"];
   const data = {
     labels: labels,
@@ -448,7 +442,7 @@ useEffect(()=>{
                       style={{
                         fontWeight: 700,
                         fontSize: 60,
-                        color: "#dc3545",
+                        color: "#AC3E31",
                       }}
                     >
                       145
@@ -462,19 +456,58 @@ useEffect(()=>{
           </Link>
         </div>
         <div className="col-lg-3 col-6">
-          <div className="small-box bg-primary">
-            <div className="inner">
-              <h3>65</h3>
-              <p>Goods Receipts Acknowledgment </p>
+          <Link >
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Goods Receipts Acknowledgment 
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+                {/* <h5 className="card-title">
+                    Sales <span>| Today</span>
+                  </h5> */}
+                <div className="d-flex align-items-center">
+                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <IconContext.Provider
+                      value={{ color: "#0275d8", size: "60px" }}
+                    >
+                      <BsReceiptCutoff />
+                    </IconContext.Provider>
+                  </div>
+                  <div className="ps-3">
+                    <h1
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 60,
+                        color: "#6AB187",
+                      }}
+                    >
+                      145
+                    </h1>
+                    <span className="text-success small pt-1 fw-bold">12%</span>{" "}
+                    <span className="text-muted small pt-2 ps-1">increase</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="icon">
-              <i className="fas fa-chart-pie" />
-            </div>
-            <a href="#" className="small-box-footer">
-              More info <i className="fas fa-arrow-circle-right" />
-            </a>
-          </div>
-        </div> 
+          </Link>
+        </div>
+        
 {/* 
         <div
           style={{

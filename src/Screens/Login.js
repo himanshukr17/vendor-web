@@ -75,7 +75,7 @@ function Login() {
   const axios = require('axios')
   const loginHandle=()=>{
 
-    axios.post('http://20.235.65.74:4000/createcompany/login_mob', {
+    axios.post('http://localhost:4000/createcompany/login_mob', {
       user: userName,
       pass: password
     })
@@ -84,7 +84,7 @@ function Login() {
         //window.location.href="/dashboard"
         console.log("response",response);
         navigate('/dashboard');
-      response.data.map((item)=>{localStorage.setItem('token',(item._id))})
+      response.data.map((item)=>{localStorage.setItem('token',(item._id));localStorage.setItem('vendorId',(item.VENDOR_ID))})
     }).catch((err)=>{console.log(err); setWrongDetail("Please check Username or Password")})
   }
 

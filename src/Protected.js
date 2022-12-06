@@ -1,12 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 
-const Protected=(children)=>{
+const Protected=({ children })=>{
 
     const token =localStorage.getItem('token');
 
     if(!token){
-        return <Navigate to="/" replace />
+        return <Navigate to="/notfound" replace />
     }
     return children;
 
