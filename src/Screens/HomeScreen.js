@@ -5,11 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { FaMegaport, FaFileContract,FaUsers,FaReceipt } from "react-icons/fa";
-import { BsFillCartCheckFill, BsFillBagXFill,BsReceiptCutoff } from "react-icons/bs";
+import { BsFillCartCheckFill, BsFillBagXFill,BsFillCartXFill,BsReceiptCutoff } from "react-icons/bs";
 import { AiFillReconciliation } from "react-icons/ai";
+import {AxioxExpPort} from "./AxioxExpPort"
+
 
 function HomeScreen() {
-
+  
   const labels = ["January", "February", "March", "April", "May", "June"];
   const data = {
     labels: labels,
@@ -28,7 +30,8 @@ function HomeScreen() {
       },
     ],
   };
-
+  
+  const vendorId =localStorage.getItem('vendorId');
   const [thead, setTHead] = useState([
     "Client Name",
     "Location",
@@ -79,6 +82,15 @@ function HomeScreen() {
         alert("error");
       });
   };
+const [contact,setContacts]=useState("")
+  useEffect(() => {
+    axios.get(AxioxExpPort+"contract/getdata?id="+vendorId)
+    .then((response) => {
+      setContacts(response.data.length);
+
+     console.log("response.data",response.data.length);
+    })
+    }, []);
 
   return (
     <div>
@@ -282,17 +294,17 @@ function HomeScreen() {
                     Sales <span>| Today</span>
                   </h5> */}
                   <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-12">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
+                      value={{ color: "#0275d8", size: "90px" }}
                     >
                       {" "}
-                      <BsFillCartCheckFill />
+                      <BsFillCartXFill />
                     </IconContext.Provider>
                   </div>
                   </div>
-                  <div className="col-md-8 text-right">
+                  {/* <div className="col-md-8 text-right">
 
                   <span    style={{
                     
@@ -313,7 +325,7 @@ function HomeScreen() {
                       
                        
                       }}  className="text-muted small pt-2 ps-1 ">Pending Goods Delivery</span>
-                  </div>
+                  </div> */}
 
                   </div>
 
@@ -338,7 +350,7 @@ function HomeScreen() {
                   color: "black",
                 }}
               >
-                Contacts
+                Contract
               </h5>
               <div className="filter">
                 <a className="icon" href="#" data-bs-toggle=""></a>
@@ -365,7 +377,7 @@ function HomeScreen() {
                         color: "#FF7F50",
                         fontWeight: 700,
                         fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">189</span>{" "}
+                      }} className=" small pt-1 fw-bold text-right">{contact}</span>{" "}
                     <span   style={{
                       
                        
@@ -407,7 +419,7 @@ function HomeScreen() {
                   color: "black",
                 }}
               >
-                My Contracts
+                My Contacts
               </h5>
               <div className="filter">
                 <a className="icon" href="#" data-bs-toggle=""></a>
@@ -417,17 +429,17 @@ function HomeScreen() {
                     Sales <span>| Today</span>
                   </h5> */}
                   <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-12">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
+                      value={{ color: "#0275d8", size: "90px" }}
                     >
                       {" "}
                       <FaFileContract />
                     </IconContext.Provider>
                   </div>
                   </div>
-                  <div className="col-md-8 text-right">
+                  {/* <div className="col-md-8 text-right">
 
                   <span    style={{
                         color: "#FFBF01",
@@ -447,7 +459,7 @@ function HomeScreen() {
                       
                        
                       }}  className="text-muted small pt-2 ps-1 ">Total Contact</span>
-                  </div>
+                  </div> */}
 
                   </div>
 
@@ -564,12 +576,12 @@ function HomeScreen() {
                 <div className="d-flex align-items-center">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
+                      value={{ color: "#0275d8", size: "90px" }}
                     >
                       <BsReceiptCutoff />
                     </IconContext.Provider>
                   </div>
-                  <div className="ps-3">
+                  {/* <div className="ps-3">
                     <h1
                       style={{
                         fontWeight: 700,
@@ -581,7 +593,7 @@ function HomeScreen() {
                     </h1>
                     <span className="text-success small pt-1 fw-bold">12%</span>{" "}
                     <span className="text-muted small pt-2 ps-1">increase</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

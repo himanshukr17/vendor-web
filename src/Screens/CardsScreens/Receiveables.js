@@ -34,47 +34,11 @@ function Receiveables() {
     "Document Date",
     "PO Number",
     "Reference Number",
+    "Status"
     
   ]);
 
-  const [tbody, setTBody] = useState([
-    {
-      DOCUMENT_DATE: "2022/10/26",
-      PO_NUMBER: "445209283876",
-      REFERENCE_NUMBER: "89976383726410",
-      MANUFACTURING: "XYZ Pvt Ltd",
-      ITEM_CATEGORY: "Gold",
-      MATERIAL: "Gold Platted chain",
-      DESCRIPTION: "Your material is delivered successfully",
-      QUATITY: "5000",
-      PRICE: "10000000",
-      INVOICE_URL: "SamplePDF.pdf",
-    },
-    {
-      DOCUMENT_DATE: "2022/10/27",
-      PO_NUMBER: "286709283876",
-      REFERENCE_NUMBER: "97683726410",
-      MANUFACTURING: "ABC Pvt Ltd",
-      ITEM_CATEGORY: "SIlver",
-      MATERIAL: "Silver",
-      DESCRIPTION: "Your material not  delivered",
-      QUATITY: "1000",
-      PRICE: "400000",
-      INVOICE_URL: "www.abcajsdv.com",
-    },
-    {
-      DOCUMENT_DATE: "2022/10/28",
-      PO_NUMBER: "1209283876",
-      REFERENCE_NUMBER: "474787683726410",
-      MANUFACTURING: "PQR Pvt Ltd",
-      ITEM_CATEGORY: "Gold Silver",
-      MATERIAL: "Mixer",
-      DESCRIPTION: "Your material is delivered successfully with extra gold",
-      QUATITY: "400",
-      PRICE: "300000",
-      INVOICE_URL: "www.abc.com",
-    },
-  ]);
+  const [tbody, setTBody] = useState([]);
 
   const DownloadButton = (e, INVOICE_URL) => {
     e.preventDefault();

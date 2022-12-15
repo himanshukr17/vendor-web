@@ -39,23 +39,8 @@ function MyContracts() {
 
   const [tbody, setTBody] = useState([]);
 
-  const DownloadButton = (e, INVOICE_URL) => {
-    e.preventDefault();
 
-    fetch(INVOICE_URL).then((response) => {
-      response.blob().then((blob) => {
-        // Creating new object of PDF file
-        const fileURL = window.URL.createObjectURL(blob);
-        // Setting various property values
-        let alink = document.createElement("a");
-        alink.href = fileURL;
-        alink.download = "SamplePDF.pdf";
-        alink.click();
-      });
-    });
-  };
   const vendorId =localStorage.getItem('vendorId');
-
   useEffect(() => {
          axios.get(AxioxExpPort+"contract/getdata?id="+vendorId)
          .then((response) => {
@@ -102,7 +87,7 @@ function MyContracts() {
             <h4 className="form-check-label" htmlFor="inlineRadio2">
               {/* {location.PROJECT} */}
               {/* {location.state.name} */}
-              Contacts
+              Contract 
             </h4>
           </div>
           <div
@@ -248,7 +233,7 @@ function MyContracts() {
         >
          <div className="modal-header model-lg">
             <h5 className="modal-title" id="exampleModalLabel">
-Contacts
+            Contract
             </h5>
 
             <button

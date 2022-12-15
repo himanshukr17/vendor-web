@@ -595,7 +595,7 @@ const response = axios({
             <h4 className="form-check-label" htmlFor="inlineRadio2">
               {/* {location.PROJECT} */}
               {/* {location.state.name} */}
-              My Contracts
+              My Contacts
             </h4>
           </div>
           <div
