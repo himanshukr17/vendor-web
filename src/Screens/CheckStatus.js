@@ -7,8 +7,7 @@ function CheckStatus() {
     const [MobileNumber,setMobileNumber]=useState(0);
     const [showApplicationStatus, setShowApplicationStatus] = useState(false);
 
-     
-   const CheckApplicationStatus=(e)=>{
+    const CheckApplicationStatus=(e)=>{
     e.preventDefault();
 
     if(MobileNumber.toString().length==10){

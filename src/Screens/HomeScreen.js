@@ -217,7 +217,9 @@ function HomeScreen() {
                 {/* <h5 className="card-title">
                     Sales <span>| Today</span>
                   </h5> */}
-                <div className="d-flex align-items-center">
+
+                  <div className="row">
+                  <div className="col-md-4">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
                       value={{ color: "#0275d8", size: "60px" }}
@@ -226,20 +228,31 @@ function HomeScreen() {
                       <BsFillCartCheckFill />
                     </IconContext.Provider>
                   </div>
-                  <div className="ps-3">
-                    <h1
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 60,
-                        color: "#6495ED",
-                      }}
-                    >
-                      145
-                    </h1>
-                    <span className="text-success small pt-1 fw-bold">12%</span>{" "}
-                    <span className="text-muted small pt-2 ps-1">increase</span>
                   </div>
-                </div>
+                  <div className="col-md-8 text-right">
+
+                  <span    style={{
+                        color: "#FF6347",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className=" small pt-1 fw-bold">10</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1">Open PO's</span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold">9</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1">Close PO's</span>
+                  </div>
+
+                  </div>
+
               </div>
             </div>
           </Link>
@@ -268,28 +281,42 @@ function HomeScreen() {
                 {/* <h5 className="card-title">
                     Sales <span>| Today</span>
                   </h5> */}
-                <div className="d-flex align-items-center">
+                  <div className="row">
+                  <div className="col-md-4">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
                       value={{ color: "#0275d8", size: "60px" }}
                     >
-                      <BsFillBagXFill />
+                      {" "}
+                      <BsFillCartCheckFill />
                     </IconContext.Provider>
                   </div>
-                  <div className="ps-3">
-                    <h1
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 60,
-                        color: "#17a2b8",
-                      }}
-                    >
-                      150
-                    </h1>
-                    <span className="text-success small pt-1 fw-bold">12%</span>{" "}
-                    <span className="text-muted small pt-2 ps-1">increase</span>
                   </div>
-                </div>
+                  <div className="col-md-8 text-right">
+
+                  <span    style={{
+                    
+                        color: "#6495ED",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className="text-success small pt-1 fw-bold text-right">10</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right">Goods Delivered</span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#FF6347",
+                      }} className=" small pt-1 fw-bold text-right">9</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 ">Pending Goods Delivery</span>
+                  </div>
+
+                  </div>
+
               </div>
             </div>
           </Link>
@@ -320,7 +347,9 @@ function HomeScreen() {
                 {/* <h5 className="card-title">
                     Sales <span>| Today</span>
                   </h5> */}
-                <div className="d-flex align-items-center">
+              
+                  <div className="row">
+                  <div className="col-md-4">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
                       value={{ color: "#0275d8", size: "60px" }}
@@ -329,20 +358,31 @@ function HomeScreen() {
                       <FaUsers />
                     </IconContext.Provider>
                   </div>
-                  <div className="ps-3">
-                    <h1
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 60,
-                        color: "#FF7F50",
-                      }}
-                    >
-                      198
-                    </h1>
-                    <span className="text-success small pt-1 fw-bold"></span>{" "}
-                    <span className="text-muted small pt-2 ps-1"></span>
                   </div>
-                </div>
+                  <div className="col-md-8 text-right">
+
+                  <span    style={{
+                        color: "#FF7F50",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className=" small pt-1 fw-bold text-right">189</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 ">Total Contact</span>
+                  </div>
+
+                  </div>
+
               </div>
             </div>
           </Link>
@@ -376,7 +416,8 @@ function HomeScreen() {
                 {/* <h5 className="card-title">
                     Sales <span>| Today</span>
                   </h5> */}
-                <div className="d-flex align-items-center">
+                  <div className="row">
+                  <div className="col-md-4">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
                       value={{ color: "#0275d8", size: "60px" }}
@@ -385,20 +426,35 @@ function HomeScreen() {
                       <FaFileContract />
                     </IconContext.Provider>
                   </div>
-                  <div className="ps-3">
-                    <h1
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 60,
-                        color: "#FFBF00",
-                      }}
-                    >
-                      1200
-                    </h1>
-                    <span className="text-success small pt-1 fw-bold">12%</span>{" "}
-                    <span className="text-muted small pt-2 ps-1">increase</span>
                   </div>
-                </div>
+                  <div className="col-md-8 text-right">
+
+                  <span    style={{
+                        color: "#FFBF01",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className=" small pt-1 fw-bold text-right">189</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 ">Total Contact</span>
+                  </div>
+
+                  </div>
+
+
+
+
+                
               </div>
             </div>
           </Link>
@@ -429,28 +485,52 @@ function HomeScreen() {
                 {/* <h5 className="card-title">
                     Sales <span>| Today</span>
                   </h5> */}
-                <div className="d-flex align-items-center">
+                  <div className="row">
+                  <div className="col-md-4">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
+                      value={{ color: "#0275d8", size: "90px" }}
                     >
                       <AiFillReconciliation />
                     </IconContext.Provider>
                   </div>
-                  <div className="ps-3">
-                    <h1
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 60,
-                        color: "#AC3E31",
-                      }}
-                    >
-                      145
-                    </h1>
-                    <span className="text-success small pt-1 fw-bold">12%</span>{" "}
-                    <span className="text-muted small pt-2 ps-1">increase</span>
                   </div>
-                </div>
+                  <div className="col-md-8 text-right">
+
+                  <span    style={{
+                        color: "#AC3E31",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className=" small pt-1 fw-bold text-right">189</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right">Pending</span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right">2</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 ">Received</span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "	#FFA500",
+                      }} className="small pt-1 fw-bold text-right">8</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 ">Processing</span>
+                  </div>
+
+                  </div>
+
+
+
+
               </div>
             </div>
           </Link>

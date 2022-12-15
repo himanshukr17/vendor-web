@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
+import { CSVLink } from "react-csv";
 
 import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,7 +12,7 @@ import { SiConstruct3, SiQuantconnect } from "react-icons/si";
 import { TbBuildingFactory2 } from "react-icons/tb";
 import { MdOutlineCategory, MdDescription } from "react-icons/md";
 import { BiRupee } from "react-icons/bi";
-
+import { FaFileCsv } from "react-icons/fa";
 import { BrowserRouter, Route, Routes, Link, Router } from "react-router-dom";
 
 import { Button, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
@@ -37,38 +38,49 @@ function GoodsReturn() {
     "Action",
   ]);
 
-  const [tbody, setTBody] = useState([]);
-  var INVOICE_URL 
-  const DownloadButton=(e,INVOICE_URL)=>{
-    e.preventDefault();
 
-       fetch(INVOICE_URL).then((response) => {
-         response.blob().then((blob) => {
-           // Creating new object of PDF file
-           const fileURL = window.URL.createObjectURL(blob);
-           // Setting various property values
-           let alink = document.createElement("a");
-           alink.href = fileURL;
-           alink.download = "SamplePDF.pdf";
-           alink.click();
-         });
-       });
-      }
+const headers = [
+  { label: "Material", key: "MATERIAL" },
+  { label: "Quantity", key: "QUANTITY" },
+  { label: "Plant", key: "PLANT" },
 
-  const vendorId =localStorage.getItem('vendorId');
-  // "https://localhost:3007/images/" + image name gotten from REST api response
+  { label: "Remark", key: "REMARKS" }
+];
 
-  useEffect(() => {
-         axios.get(AxioxExpPort+"good_return/get?id="+vendorId)
-         .then((response) => {
-           setTBody(response.data);
+
+const [tbody, setTBody] = useState([]);
+var INVOICE_URL 
+const DownloadButton=(e,INVOICE_URL)=>{
+  e.preventDefault();
+  
+  fetch(INVOICE_URL).then((response) => {
+    response.blob().then((blob) => {
+      // Creating new object of PDF file
+      const fileURL = window.URL.createObjectURL(blob);
+      // Setting various property values
+      let alink = document.createElement("a");
+      alink.href = fileURL;
+      alink.download = "SamplePDF.pdf";
+      alink.click();
+    });
+  });
+}
+
+const vendorId =localStorage.getItem('vendorId');
+// "https://localhost:3007/images/" + image name gotten from REST api response
+
+useEffect(() => {
+  axios.get(AxioxExpPort+"good_return/get?id="+vendorId)
+  .then((response) => {
+    setTBody(response.data);
     
-          console.log("response.data",response.data);
-         })
-         }, []);
-  const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
+    console.log("response.data",response.data);
+  })
+}, []);
+const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
 
-  const [clickGRData,setClickGRData]=useState([]);
+const [clickGRData,setClickGRData]=useState([]);
+const data = clickGRData ;
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
 
   return (
@@ -199,18 +211,17 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "5%", borderColor: COLORS.gray10 }}
                       >
-                        <Link
-                          to=""
-                          onClick={(e) => {
-                            DownloadButton(e);
-                          }}
-                        >
-                          <IconContext.Provider
+                        <CSVLink   className="btn"  data={val.return_order} headers={headers}
+             // setClickedPOsDataArr(val.purchase_order)
+            //  laery
+              >
+
+             <IconContext.Provider
                             value={{ color: "#000", size: "22px" }}
                           >
                             <AiOutlineDownload />
                           </IconContext.Provider>
-                        </Link>
+            </CSVLink>
                       </td>
                     </tr>
                   );
@@ -242,36 +253,42 @@ function GoodsReturn() {
             marginTop: 0,
           }}
         >
-          <div className="modal-header model-lg">
-            <h5 className="modal-title" id="exampleModalLabel">
+            <div className="row">
+              <div className="col-md-8">
+       
+              <h5 className="modal-title " id="exampleModalLabel">
               GR's Details
             </h5>
+             
+              </div>
+              <div className="col-md-4">
 
-            <button
-              type="button"
-              className="btn"
+              <CSVLink   className="btn float-right" 
+                onClick={() => {
+                togglePODetailsFlag();
+              }}
               style={{
                 backgroundColor: COLORS.gray10,
                 color: COLORS.black,
-                marginLeft: "30%",
-                float: "right",
-              }}
-              onClick={(e) => {
-                DownloadButton(e);
-              }}
-            >
-              Download Invoice
-            </button>
-            <button
+              
+              }} data={data} headers={headers} >
+            Download <FaFileCsv />
+            
+            </CSVLink>
+           
+            {/* <button
               type="button"
-              className="btn-close"
+              className="btn-close float-right"
               data-bs-dismiss="modal"
               aria-label="Close"
               onClick={() => {
                 togglePODetailsFlag();
               }}
-            />
-          </div>
+            /> */}
+            </div>
+            </div>
+         
+      
         
 
 

@@ -37,39 +37,7 @@ function MyContracts() {
     "Plant",
   ]);
 
-  const [tbody, setTBody] = useState([
-    {
-      AGREEMENT_DATE: "2022/10/26",
-      CONTRACT_NUMBER: "445209283876",
-      PLANT_NAME: "abc",
-      ITEM_NAME: "XYZ Pvt Ltd",
-      MATERIAL_NUMBER: "27346234982347",
-      DESCRIPTION: "Your material is delivered successfully",
-      TARGET_QUANTITY: "5000",
-      TARGET_VALUE: "5000",
-      OPEN_QUANTITY:"98723",
-      NET_VALUE: "7600",
-      RECEIVING_PLANT: "10000000",
-      VALIDITY_START: "2022/08/01",
-      VALIDITY_END: "2023/01/01",
-    },
-    {
-      AGREEMENT_DATE: "2022/10/26",
-      CONTRACT_NUMBER: "445209283876",
-      PLANT_NAME: "XYG",
-      ITEM_NAME: "XYZ Pvt Ltd",
-      MATERIAL_NUMBER: "27346234982347",
-      DESCRIPTION: "Your material is delivered successfully",
-      TARGET_QUANTITY: "5000",
-      TARGET_VALUE: "5000",
-      OPEN_QUANTITY:"98723",
-      NET_VALUE: "7600",
-      RECEIVING_PLANT: "10000000",
-      VALIDITY_START: "2022/08/01",
-      VALIDITY_END: "2023/01/01",
-    },
-   
-  ]);
+  const [tbody, setTBody] = useState([]);
 
   const DownloadButton = (e, INVOICE_URL) => {
     e.preventDefault();
@@ -144,6 +112,7 @@ function MyContracts() {
             }}
           ></div>
         </div>
+        
         <div className="card-body">
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
@@ -269,6 +238,7 @@ function MyContracts() {
           height: "90vh",
         }}
       >
+      
         <ModalBody
           style={
             {
@@ -276,7 +246,23 @@ function MyContracts() {
             }
           }
         >
-         
+         <div className="modal-header model-lg">
+            <h5 className="modal-title" id="exampleModalLabel">
+Contacts
+            </h5>
+
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onClick={() => {
+                togglePODetailsFlag();
+              }}
+            />
+          </div>
+        
+
 
             <table  className="table table-bordered table-striped">
           <thead>

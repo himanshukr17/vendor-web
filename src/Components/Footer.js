@@ -13,7 +13,7 @@ const Footer = () => {
       <div className="container-fluid footer-bg-inactive ">
       
         <footer className="py-3"  style={{marginTop:"50px"}}>
-          <div className="row">
+          <div className="row" >
           {/* <div className="col-md-1">
           
           <Link to="/dashboard">
@@ -62,8 +62,8 @@ const Footer = () => {
           </div>
          
           <div className="col-md-6">
-          <div class="float-right d-none d-sm-inline-block text-secondary">
-  <b>Version</b> 0.0.1<br></br>
+          <div className="float-right d-none d-sm-inline-block text-secondary">
+  <b>Version</b> 1.0.1<br></br>
 <small> <strong><a href="https://www.samishti.com/" target="_blank">Samishti Infotech Private Ltd.</a></strong></small>
 </div>
           </div>

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-import cartoons from "../Images/cartoon.png";
+import cartoons from "../Images/cartoon.jpg";
 import "../StyleSheets/LoginPage.css"
 import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 import firebase from "../Firebase/Firebase";
-
+import {AxioxExpPort} from "./AxioxExpPort"
 function Login() {
   const navigate = useNavigate();
 
@@ -73,9 +73,9 @@ function Login() {
 
   const [wrongDetail,setWrongDetail]=useState("")
   const axios = require('axios')
-  const loginHandle=()=>{
-
-    axios.post('http://localhost:4000/createcompany/login_mob', {
+  const loginHandle=(e)=>{
+   e.preventDefault();
+    axios.post(AxioxExpPort+'createcompany/login_mob', {
       user: userName,
       pass: password
     })
@@ -127,7 +127,7 @@ function Login() {
       <div className="left">
         <div className="overlay">
           {/* <h1>Hello World.</h1> */}
-          <img src={cartoons} width={600} height={400} alt="Cartoons" />
+          <img src={cartoons} width={600} height={510} alt="Cartoons" />
           {/* <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
             et est sed felis aliquet sollicitudin
@@ -202,6 +202,7 @@ function Login() {
         </p>
 
         <div id="sign-in-button"></div>
+        <form onSubmit={loginHandle}>
         <div className="inputs">
           {/* <input
             type="text"
@@ -245,7 +246,7 @@ function Login() {
             placeholder="Enter OTP"
           /> */}
           <input
-            type="text"
+            type="password"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -266,8 +267,8 @@ function Login() {
         <br />
       
         <button
-
-        onClick={()=>{loginHandle()}}
+         type="submit"
+        // onClick={()=>{loginHandle()}}
           // onClick={(e) => {
           //   {
           //     userVerified ? navigate("/dashboard") : console.log("");
@@ -279,7 +280,7 @@ function Login() {
         >
           Login
         </button>
-       
+        </form>
         {/* <p
           style={
             {

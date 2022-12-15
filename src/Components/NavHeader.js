@@ -180,7 +180,7 @@ const NavHeader = () => {
                       </li>
                     </> */}
                     <li>
-                    <Link to="/signup">
+                    <Link to="/profile">
                     <button
                       className="dropdown-item"
                       type="button"

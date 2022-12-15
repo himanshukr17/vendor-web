@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
-
+import { CSVLink } from "react-csv";
 import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdScheduleSend } from "react-icons/md";
-
+import { FaFileCsv } from "react-icons/fa";
 import { BsFillCalendarWeekFill } from "react-icons/bs";
 import { SiConstruct3, SiQuantconnect } from "react-icons/si";
 import { TbBuildingFactory2 } from "react-icons/tb";
@@ -31,13 +31,25 @@ function PurchaseOrders() {
   const [ClickedPOsData, setClickedPOsData] = useState([]);
   const [ClickedPOsDataArr, setClickedPOsDataArr] = useState([]);
 
-  console.log("POS,", ClickedPOsDataArr);
+  // console.log("POS,", ClickedPOsDataArr);
   const [thead, setTHead] = useState([
     "Document Date",
     "PO Number",
     "Reference Number",
     "Action",
   ]);
+
+  
+const headers = [
+  { label: "Plant ID", key: "PLANT_ID" },
+  { label: "Document Date", key: "DOCUMENT_DATE" },
+  { label: "Item Category", key: "ITEM_CATEGORY" },
+  { label: "Order Quantity", key: "ORDER_QUANTITY" },
+  { label: "Net Price", key: "NET_PRICE" }
+];
+
+
+const data = ClickedPOsDataArr;
   const vendorId =localStorage.getItem('vendorId');
 
   const [tbody, setTBody] = useState([]);
@@ -200,18 +212,19 @@ function PurchaseOrders() {
                         className="text-center"
                         style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                       >
-                        <Link
-                          to=""
-                          onClick={(e) => {
-                            DownloadButton(e, "http://localhost:3007/pdf/testing.pdf");
-                          }}
-                        >
-                          <IconContext.Provider
+                          <CSVLink   className="btn"  data={val.purchase_order} headers={headers}
+             // setClickedPOsDataArr(val.purchase_order)
+            //  laery
+              >
+
+             <IconContext.Provider
                             value={{ color: "#000", size: "22px" }}
                           >
                             <AiOutlineDownload />
                           </IconContext.Provider>
-                        </Link>
+            </CSVLink>
+                         
+                       
                       </td>
                     </tr>
                   );
@@ -243,12 +256,20 @@ function PurchaseOrders() {
             marginTop: 0,
           }}
         >
-          <div className="modal-header model-lg" >
+      {/*    <div className="modal-header model-lg" >
             <h5 className="modal-title" id="exampleModalLabel">
               PO's Details
             </h5>
-
-            <button
+            
+            <CSVLink   className="btn" style={{
+                backgroundColor: COLORS.gray10,
+                color: COLORS.black,
+                marginLeft: "60%",
+                float: "right",
+              }} data={data} headers={headers}>
+            Download <FaFileCsv/>
+            </CSVLink>
+             <button
               type="button"
               className="btn"
               style={{
@@ -262,7 +283,7 @@ function PurchaseOrders() {
               }}
             >
               Download PO
-            </button>
+            </button> 
             <button
               type="button"
               className="btn-close"
@@ -274,8 +295,7 @@ function PurchaseOrders() {
             />
           </div>
           <div className="modal-body" >
-            {/* body starting */}
-            {/* <div
+             <div
               style={
                 {
                   // padding: "3%",
@@ -499,10 +519,46 @@ function PurchaseOrders() {
               </label>
 
               <br></br>
+
+          
+          </div>
             </div> */}
 
-            {/* body ending */}
-          </div>
+          <div className="row">
+              <div className="col-md-8">
+       
+              <h5 className="modal-title " id="exampleModalLabel">
+              GR's Details
+            </h5>
+             
+              </div>
+              <div className="col-md-4">
+
+              <CSVLink   className="btn float-right" 
+                onClick={() => {
+                togglePODetailsFlag();
+              }}
+              style={{
+                backgroundColor: COLORS.gray10,
+                color: COLORS.black,
+              
+              }} data={data} headers={headers} >
+            Download <FaFileCsv />
+            
+            </CSVLink>
+           
+            {/* <button
+              type="button"
+              className="btn-close float-right"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onClick={() => {
+                togglePODetailsFlag();
+              }}
+            /> */}
+            </div>
+            </div>
+         
           {/* <button type="button"onClick={()=> makeCsv(getTableDataForExport(data,columns), `$(filename).csv`)} ></button> */}
           {/* <table data={data} columns={columns} className="table table-bordered table-striped"> */}
           <table  className="table table-bordered table-striped">
@@ -516,8 +572,6 @@ function PurchaseOrders() {
           </thead>
             <tbody>
               {
-            
-           
                 ClickedPOsDataArr.map((posData, index) => {
                 return (
                   <tr>

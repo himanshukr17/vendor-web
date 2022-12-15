@@ -14,7 +14,8 @@ import MyContracts from "./Screens/CardsScreens/MyContracts";
 import Receiveables from "./Screens/CardsScreens/Receiveables";
 import Contacts from "./Screens/CardsScreens/Contacts";
 import Protected from './Protected';
-import ErrorPage from "./Screens/Error"
+import ErrorPage from "./Screens/Error";
+import Profile from "./Screens/CardsScreens/Profile"
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path="/grs" element={<Protected><GoodsReturn/></Protected>} exact />
           <Route path="/mcs" element={<Protected><MyContracts/></Protected>} exact />
           <Route path="/res" element={<Protected><Receiveables/></Protected>} exact />
+          <Route path="/profile" element={<Protected><Profile/></Protected>} exact />
           <Route path="/cntc" element={<Protected><Contacts/></Protected>} exact />
         </Routes>
       </BrowserRouter>

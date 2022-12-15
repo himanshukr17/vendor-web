@@ -3,6 +3,7 @@ import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
 import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
+import { CSVLink } from "react-csv";
 import { MdScheduleSend } from "react-icons/md";
 
 import { BsFillCalendarWeekFill } from "react-icons/bs";
@@ -93,16 +94,23 @@ function Receiveables() {
 
   const vendorId =localStorage.getItem('vendorId');
 
+   const headers = [
+    { label: "First Name", key: "firstname" },
+    { label: "Last Name", key: "lastname" },
+    { label: "Email", key: "email" }
+  ];
+
   useEffect(() => {
          axios.get(AxioxExpPort+"received/get?id="+vendorId)
          .then((response) => {
            setTBody(response.data);
-    
+      
+
           console.log("response.data",response.data);
          })
          }, []);
   const [clickRecData,setClickRecvData]=useState([]);
-
+  const data = clickRecData;
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
 
@@ -281,6 +289,9 @@ function Receiveables() {
             <h5 className="modal-title" id="exampleModalLabel">
             Receiveables Details
             </h5>
+            {/* <CSVLink data={data} headers={headers}>
+  Download me
+</CSVLink>; */}
 
             {/* <button
               type="button"
@@ -320,6 +331,7 @@ function Receiveables() {
           </thead>
             <tbody>
               {
+                
                 clickRecData.map((grsData, index) => {
                 return (
                   <tr>
