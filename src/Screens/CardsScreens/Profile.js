@@ -142,7 +142,7 @@ function Profile() {
                   color: "#14CA96",
                   fontSize: 20,
                   fontWeight: 500,
-                }}>{vendorDtl.FIRST_NAME} {vendorDtl.LAST_NAME}</p>
+                }}>{vendorDtl.VENDOR_NAME}</p>
               <h1 className="text-sm-left"
                 style={{
                   color: "#0275d8",
@@ -156,8 +156,8 @@ function Profile() {
                   color: "#14CA96",
                   fontSize: 20,
                   fontWeight: 500,
-                }}>{vendorDtl.E_MAIL}</p>
-              {/* <h1 className="text-sm-left " 
+                }}>{vendorDtl.EMAIL}</p>
+               <h1 className="text-sm-left " 
                 style={{
                   color: "#0275d8",
                   fontSize: 20,
@@ -170,7 +170,7 @@ function Profile() {
                   color: "#14CA96",
                   fontSize: 20,
                   fontWeight: 500,
-                }}>{}</p> */}
+                }}>{vendorDtl.TELEPHONE}</p> 
                 <h1 className="text-sm-left " 
                 style={{
                   color: "#0275d8",
@@ -307,7 +307,7 @@ function Profile() {
                   fontSize: 20,
                   fontWeight: 500,
                 }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.STATE}/></p>
+                    id="floatingInput" name="lname" value={vendorDtl.DESCRIPTION}/></p>
 </div>
 </div>
 
@@ -325,7 +325,7 @@ function Profile() {
                   fontSize: 20,
                   fontWeight: 500,
                 }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.PINCODE}/></p>
+                    id="floatingInput" name="lname" value={vendorDtl.POSTAL_CODE}/></p>
 
 
               {/* <p className="text-sm-left" >Name</p>

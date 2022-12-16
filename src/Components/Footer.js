@@ -12,7 +12,7 @@ const Footer = () => {
     >
       <div className="container-fluid footer-bg-inactive ">
       
-        <footer className="py-3"  style={{marginTop:"50px"}}>
+        <footer className="py-5"  style={{marginTop:"70px"}}>
           <div className="row" >
           {/* <div className="col-md-1">
           

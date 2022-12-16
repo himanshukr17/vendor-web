@@ -82,11 +82,11 @@ function HomeScreen() {
         alert("error");
       });
   };
-const [contact,setContacts]=useState("")
+const [dashboardData,setDashboardData]=useState("")
   useEffect(() => {
-    axios.get(AxioxExpPort+"contract/getdata?id="+vendorId)
+    axios.get(AxioxExpPort+"count/getting?id="+vendorId)
     .then((response) => {
-      setContacts(response.data.length);
+      setDashboardData(response.data);
 
      console.log("response.data",response.data.length);
     })
@@ -247,7 +247,7 @@ const [contact,setContacts]=useState("")
                         color: "#FF6347",
                         fontWeight: 700,
                         fontSize: 30,
-                      }} className=" small pt-1 fw-bold">10</span>{" "}
+                      }} className=" small pt-1 fw-bold">{dashboardData.OPEN_PO}</span>{" "}
                     <span   style={{
                       
                        
@@ -256,7 +256,7 @@ const [contact,setContacts]=useState("")
                         fontWeight: 700,
                         fontSize: 30,
                         color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold">9</span>{" "}
+                      }} className="text-success small pt-1 fw-bold">{dashboardData.CLOSE_PO}</span>{" "}
                     <span   style={{
                       
                        
@@ -294,38 +294,37 @@ const [contact,setContacts]=useState("")
                     Sales <span>| Today</span>
                   </h5> */}
                   <div className="row">
-                  <div className="col-md-12">
+                  <div className="col-md-4">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
-                      value={{ color: "#0275d8", size: "90px" }}
+                      value={{ color: "#0275d8", size: "60px" }}
                     >
                       {" "}
                       <BsFillCartXFill />
                     </IconContext.Provider>
                   </div>
                   </div>
-                  {/* <div className="col-md-8 text-right">
-
-                  <span    style={{
-                    
-                        color: "#6495ED",
+                   <div className="col-md-8 text-right" >
+                   <span    style={{
+                        color: "#FF7F50",
                         fontWeight: 700,
                         fontSize: 30,
-                      }} className="text-success small pt-1 fw-bold text-right">10</span>{" "}
+                      }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_DATA}</span>{" "}
                     <span   style={{
                       
                        
-                      }}  className="text-muted small pt-2 ps-1 text-right">Goods Delivered</span><br></br>
+                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
                        <span    style={{
                         fontWeight: 700,
                         fontSize: 30,
-                        color: "#FF6347",
-                      }} className=" small pt-1 fw-bold text-right">9</span>{" "}
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
                     <span   style={{
                       
                        
-                      }}  className="text-muted small pt-2 ps-1 ">Pending Goods Delivery</span>
-                  </div> */}
+                      }}  className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
+                     
+                  </div> 
 
                   </div>
 
@@ -377,7 +376,7 @@ const [contact,setContacts]=useState("")
                         color: "#FF7F50",
                         fontWeight: 700,
                         fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">{contact}</span>{" "}
+                      }} className=" small pt-1 fw-bold text-right">{dashboardData.CONTRACTS}</span>{" "}
                     <span   style={{
                       
                        
@@ -390,7 +389,7 @@ const [contact,setContacts]=useState("")
                     <span   style={{
                       
                        
-                      }}  className="text-muted small pt-2 ps-1 ">Total Contact</span>
+                      }}  className="text-muted small pt-2 ps-1 ">Total Contracts</span>
                   </div>
 
                   </div>
@@ -507,7 +506,7 @@ const [contact,setContacts]=useState("")
                     </IconContext.Provider>
                   </div>
                   </div>
-                  <div className="col-md-8 text-right">
+                  {/* <div className="col-md-8 text-right">
 
                   <span    style={{
                         color: "#AC3E31",
@@ -536,7 +535,28 @@ const [contact,setContacts]=useState("")
                       
                        
                       }}  className="text-muted small pt-2 ps-1 ">Processing</span>
-                  </div>
+                  </div> */}
+                  <div className="col-md-8 text-right" >
+                   <span    style={{
+                        color: "#FF7F50",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className="text-success small pt-1 fw-bold text-right">{dashboardData.RECEIVED_PO}</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
+                     
+                  </div> 
 
                   </div>
 
@@ -581,6 +601,28 @@ const [contact,setContacts]=useState("")
                       <BsReceiptCutoff />
                     </IconContext.Provider>
                   </div>
+                  <div className="col-md-8 text-right" >
+                   <span    style={{
+                        color: "#FF7F50",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className="text-success small pt-1 fw-bold text-right">{dashboardData.GOODS_RECEIPT_ACKNOWLEDGE}</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1">Total Receipts</span><br></br>
+                     
+                  </div> 
+
                   {/* <div className="ps-3">
                     <h1
                       style={{

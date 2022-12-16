@@ -117,30 +117,32 @@ function Receiveables() {
               Receiveables
             </h4>
           </div>
-          <div
-            className="form-check form-check-inline"
-            style={{
-              float: "right",
-            }}
-          ></div>
+         
         </div>
         </div>
-        <div className="col-md-7">
-        <div className="row">
+        {/* <div className="col-md-7">
+        <div className="float-right" style={{marginTop:"25px"}}>
           <div className="form-check form-check-inline">
         <div className="col-md-4">
-  Pending 
+        <div className="form-check form-check-inline">
+        Received  <span class="dot" style={{backgroundColor:"#77DDBD"}}></span>
+        </div>
         </div>
         <div className="col-md-4 ">
-  received
+        <div className="form-check form-check-inline">
+        Processing <span class="dot" style={{backgroundColor:"#FFC300"}}></span>
+        </div>
         </div>
         <div className="col-md-4 ">
-Processing
+        <div className="form-check form-check-inline">
+        Pending <span class="dot" style={{backgroundColor:"#FF6464"}}></span>
+
+        </div>
         </div>
         </div> 
         </div>
 
-      </div>
+      </div> */}
       </div>
         
         <div className="card-body">
@@ -227,7 +229,6 @@ Processing
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.REFERENCE_DOCUMENT_NO}
                       </td>
                       {/* <td
                         key={`col-5` + index}
