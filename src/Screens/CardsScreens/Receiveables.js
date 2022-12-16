@@ -329,13 +329,13 @@ function Receiveables() {
                 return (
                   <tr>
                     <td>
-                      {grsData.MATERIAL}
+                      {grsData.PLANT_AREA}
                     </td>
                     <td>
-                      {grsData.QUANTITY}
+                      {grsData.MATERIAL_NO}
                     </td>
                     <td>
-                      {grsData.PLANT}
+                      {grsData.RECEIVING_DATE}
                     </td>
                    
                   </tr>
