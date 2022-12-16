@@ -87,6 +87,8 @@ function Receiveables() {
           marginTop: "5%",
         }}
       >
+      <div className="row">
+        <div className="col-md-5">
         <div
           className="card-body"
           style={{
@@ -122,6 +124,25 @@ function Receiveables() {
             }}
           ></div>
         </div>
+        </div>
+        <div className="col-md-7">
+        <div className="row">
+          <div className="form-check form-check-inline">
+        <div className="col-md-4">
+  Pending 
+        </div>
+        <div className="col-md-4 ">
+  received
+        </div>
+        <div className="col-md-4 ">
+Processing
+        </div>
+        </div> 
+        </div>
+
+      </div>
+      </div>
+        
         <div className="card-body">
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
@@ -193,6 +214,13 @@ function Receiveables() {
                           {val.PO_NO}
                         </Link>
                         <br />
+                      </td>
+                      <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.REFERENCE_DOCUMENT_NO}
                       </td>
                       <td
                         key={`col-3` + index}
