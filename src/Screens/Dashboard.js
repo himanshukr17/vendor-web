@@ -17,7 +17,12 @@ function Dashboard() {
       >
         <HomeScreen />
       </div>
+      <div
+        style={{ marginBottom: -70,
+        }}
+      >
         <Footer />
+      </div>
     </>
   );
 }

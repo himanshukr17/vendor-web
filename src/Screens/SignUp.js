@@ -12,6 +12,11 @@ function SignUp() {
 
   const toggleCheckFlag = () => setShowCheckFlag(!showCheckFlag);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
+  const [showPODetailsFlages, setShowPODetailsFlages] = useState(false);
+  const [showCheckFlages, setShowCheckFlages] = useState(false);
+
+  const toggleCheckFlages = () => setShowCheckFlages(!showCheckFlages);
+  const togglePODetailsFlages = () => setShowPODetailsFlages(!showPODetailsFlages);
 
   const [companyLegalName, setCompanyLegalName] = useState("");
   const [addressLine1, setAddressLine1] = useState("");
@@ -138,8 +143,9 @@ const validateOtp=(e)=>{
 const [error,setErrorsss]=useState(false)
 const submitForm = (e) =>{
     e.preventDefault();
-
-  //  alert(state)
+    // toggleCheckFlages();
+    
+    //alert("state")
  
     if(firstName.length==0 || lastName.length ==0 || email.length ==0 || companyLegalName.length ==0 ||  pinCode.length ==0 ||  city.length ==0 ||  state.length ==0 ||  country.length ==0 ||  addressLine1.length ==0 ||  businessRole.length ==0 ||  password.length ==0 ||  repeatPassword.length ==0 ||  userName.length ==0   ) 
     {
@@ -179,7 +185,7 @@ const submitForm = (e) =>{
             
      
            })
-           .then((res)=>{console.log(res)})
+           .then((res)=>{toggleCheckFlages()})
              .catch((err)=>{console.log(err)});
             }else{
               console.log("check terms and condition")
@@ -660,7 +666,7 @@ const submitForm = (e) =>{
                   <button
                   type="submit"
                   
-                  onSubmit={submitForm}
+                  onClick={submitForm}
                     style={{
                       width: "20%",
                       justifyContent: "center",
@@ -769,7 +775,29 @@ Terms and Conditions agreements are also known as Terms of Service or Terms of U
        
         </ModalBody>
       </Modal>
+      <Modal
+     
+        isOpen={showCheckFlages}
+        toggle={toggleCheckFlages}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+          width:"400px"
+        }}
+      >
+      
+        <ModalBody>
+        <div className="col-md-12 text-center">
 
+         <p style={{color:"green"}}>Your account has been successfully created</p> <a type="button" href="/" style={{color:"#1F87D0"}}  >Ok</a>
+
+        </div>
+         
+       
+        </ModalBody>
+      </Modal>
         </>
       );
   

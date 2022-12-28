@@ -87,8 +87,6 @@ function Receiveables() {
           marginTop: "5%",
         }}
       >
-      <div className="row">
-        <div className="col-md-5">
         <div
           className="card-body"
           style={{
@@ -106,7 +104,7 @@ function Receiveables() {
               }}
             >
               <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                <AiOutlineArrowLeft />
+              <AiOutlineArrowLeft />
               </IconContext.Provider>
             </button>
           </div>
@@ -117,33 +115,13 @@ function Receiveables() {
               Receiveables
             </h4>
           </div>
-         
+          <div
+            className="form-check form-check-inline"
+            style={{
+              float: "right",
+            }}
+          ></div>
         </div>
-        </div>
-        {/* <div className="col-md-7">
-        <div className="float-right" style={{marginTop:"25px"}}>
-          <div className="form-check form-check-inline">
-        <div className="col-md-4">
-        <div className="form-check form-check-inline">
-        Received  <span class="dot" style={{backgroundColor:"#77DDBD"}}></span>
-        </div>
-        </div>
-        <div className="col-md-4 ">
-        <div className="form-check form-check-inline">
-        Processing <span class="dot" style={{backgroundColor:"#FFC300"}}></span>
-        </div>
-        </div>
-        <div className="col-md-4 ">
-        <div className="form-check form-check-inline">
-        Pending <span class="dot" style={{backgroundColor:"#FF6464"}}></span>
-
-        </div>
-        </div>
-        </div> 
-        </div>
-
-      </div> */}
-      </div>
         
         <div className="card-body">
           <table className="table table-light table-bordered table-hover">
@@ -198,18 +176,7 @@ function Receiveables() {
                           to=""
                           onClick={(e) => {
                             togglePODetailsFlag();
-                            setClickedPOsData({
-                              DOCUMENT_DATE: val.DOCUMENT_DATE,
-                              PO_NUMBER: val.PO_NUMBER,
-                              REFERENCE_NUMBER: val.REFERENCE_NUMBER,
-                              MANUFACTURING: val.MANUFACTURING,
-                              ITEM_CATEGORY: val.ITEM_CATEGORY,
-                              MATERIAL: val.MATERIAL,
-                              DESCRIPTION: val.DESCRIPTION,
-                              QUATITY: val.QUATITY,
-                              PRICE: val.PRICE,
-                              INVOICE_URL: val.INVOICE_URL,
-                            });
+                            
                       setClickRecvData(val.received_datas)
                           }}
                         >
@@ -222,13 +189,18 @@ function Receiveables() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.REFERENCE_DOCUMENT_NO}
+                        {val.STATUS}
                       </td>
+                      
                       <td
                         key={`col-3` + index}
                         className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                        style={{textAlign:"center", width: "10%", borderColor: COLORS.gray10 }}
                       >
+                      {val.STATUS==="106" ||val.STATUS==="101"?
+                        <span id="green" class="dot"></span>:<span id="red" class="dot"></span> 
+                  }
+               
                       </td>
                       {/* <td
                         key={`col-5` + index}

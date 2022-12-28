@@ -93,7 +93,13 @@ const [dashboardData,setDashboardData]=useState("")
     }, []);
 
   return (
-    <div>
+    <div
+    style={{
+      marginBottom:26
+    }}  
+    >
+  
+
       {/* <table className="table table-bordered table-hover">
             <thead
               className="table-primary
@@ -164,6 +170,7 @@ const [dashboardData,setDashboardData]=useState("")
           margin: 10,
         }}
       >
+        <div id="google_translate_element"></div>
         {/* <div className="col-lg-3 col-6">
           <div className="small-box bg-light">
             <div className="icon"></div>
@@ -203,6 +210,7 @@ const [dashboardData,setDashboardData]=useState("")
             </Link>
           </div>
         </div> */}
+            
         <div className="col-lg-3 col-6">
           <Link to="/pos">
             <div
