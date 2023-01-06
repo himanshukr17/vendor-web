@@ -495,7 +495,7 @@ const [dashboardData,setDashboardData]=useState("")
                   color: "black",
                 }}
               >
-                Receiveables
+                Goods Receipts
               </h5>
               <div className="filter">
                 <a className="icon" href="#" data-bs-toggle=""></a>
