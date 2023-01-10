@@ -406,9 +406,6 @@ const [dashboardData,setDashboardData]=useState("")
             </div>
           </Link>
         </div>
-
-
-
         <div className="col-lg-3 col-6">
           <Link to="/mcs">
             <div
@@ -446,27 +443,7 @@ const [dashboardData,setDashboardData]=useState("")
                     </IconContext.Provider>
                   </div>
                   </div>
-                  {/* <div className="col-md-8 text-right">
-
-                  <span    style={{
-                        color: "#FFBF01",
-                        fontWeight: 700,
-                        fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">189</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 ">Total Contact</span>
-                  </div> */}
+                  
 
                   </div>
 

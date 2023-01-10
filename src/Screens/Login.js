@@ -14,62 +14,6 @@ function Login() {
   const [userVerified, setUserVerified] = useState(false);
   // const [OTP, setOTP] = useState(0);
   const [password, setPassword] = useState(0);
-  // console.log(mobileNumber);
-  // console.log(OTP);
-
-  // const configureCaptcha = (e) => {
-  //   // e.preventdefault();
-  //   window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-  //     "sign-in-button",
-  //     {
-  //       size: "invisible",
-  //       callback: (response) => {
-  //         onSignInSubmit();
-  //         console.log("Recaptcha Verified");
-  //       },
-  //       // defaultCountry:"IN"
-  //     }
-  //   );
-  // };
-  // this is for otp verification
-  // const onSignInSubmit = (e) => {
-  //   e.preventDefault();
-  //   configureCaptcha();
-
-  //   const phoneNumber = "+91" + mobileNumber;
-  //   const appVerifier = window.recaptchaVerifier;
-  //   firebase
-  //     .auth()
-  //     .signInWithPhoneNumber(phoneNumber, appVerifier)
-  //     .then((confirmationResult) => {
-  //       window.confirmationResult = confirmationResult;
-
-  //       alert("OTP Sent");
-  //     })
-  //     .catch((error) => {
-  //       console.log("OTP not Sent");
-  //     });
-  // };
- 
-  // const onSubmitOTP = (e) => {
-  //   e.preventDefault();
-  //   const code = OTP;
-  //   console.log(code);
-  //   window.confirmationResult
-  //     .confirm(code)
-  //     .then((result) => {
-  //       // User signed in successfully.
-  //       const user = result.user;
-  //       console.log(JSON.stringify(user));
-  //       setUserVerified(true);
-  //       alert("User is verified");
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       // User couldn't sign in (bad verification code?)
-  //       // ...
-  //     });
-  // };
 
   const [wrongDetail,setWrongDetail]=useState("")
   const axios = require('axios')

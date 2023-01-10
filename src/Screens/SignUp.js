@@ -7,6 +7,8 @@ import axios from "axios";
 import { Button, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
 
 function SignUp() {
+  const [toaster,setToaster]=useState("")
+  const [toasterColor,setToasterColor]=useState("")
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const [showCheckFlag, setShowCheckFlag] = useState(false);
 
@@ -52,6 +54,9 @@ function SignUp() {
     //Updaing steps on Click
     updateCurrentStep(step);
   }
+
+
+
   const [panDiv, setPanDiv]=useState(true)
   const [wornignInput, setWorningInput] = useState(false)
   const [wornignOtp, setWorningOtp] = useState(false)
@@ -80,6 +85,17 @@ function SignUp() {
     axios.get(AxioxExpPort + "country/all")
       .then((response) => {
         setCountrys(response.data);
+
+      })
+  }, []);
+  const [languageArr,setLanguageArr]=useState([])
+  useEffect(() => {
+    axios.get(AxioxExpPort + "language/all")
+      .then((response) => {
+        // (response.data).map((val,index)=>{
+        //   setLanguageArr({vaval.})
+        // })
+        setLanguageArr(response.data);
 
       })
   }, []);
@@ -128,15 +144,27 @@ function SignUp() {
 
 
   }
-
+  
   const validateOtp = (e) => {
+    
+    
     var x = Number(e.target.value)
     console.log(typeof optConst)
     if (optConst == x) {
       document.getElementById("otpInput").className = "form-control is-valid"
       setWorningOtp(false)
       document.getElementById("emailInputVerify").disabled = true;
-      // document.getElementById("otpSendBtn").style.display = "none";
+
+      
+      setToaster("OTP is Verified")
+      var xz = document.getElementById("snackbar");
+      setToasterColor("#00D100")
+      xz.className = "show";
+      setTimeout(function(){
+         xz.className = xz.className.replace("show", ""); }, 3000)
+      setTimeout(function(){  document.getElementById("otpSendBtn").style.display = "none";}, 3000)
+      setTimeout(function(){document.getElementById("otpInput").style.display = "none"}, 3000)
+     
       // className="form-control is-invalid"
       // document.getElementById("otpInput").className.add('is-valid');
     } else {
@@ -200,10 +228,8 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
   const [error, setErrorsss] = useState(false)
   const submitForm = (e) => {
     e.preventDefault();
+
     // toggleCheckFlages();
-
-
-
     if (firstName.length == 0 || lastName.length == 0 || email.length == 0 || companyLegalName.length == 0 || pinCode.length == 0 || city.length == 0 || state.length == 0 || country.length == 0 || addressLine1.length == 0 || businessRole.length == 0 || password.length == 0 || repeatPassword.length == 0 || userName.length == 0 ) {
       setErrorsss(true);
       setworningMailVerify(false)
@@ -218,6 +244,8 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
       // }else if(firstName.length!=0 && lastName.length !=0 && email.length !=0 && companyLegalName.length !=0 &&  pinCode.length !=0 &&  city.length !=0 &&  state.length !=0 &&  country.length !=0 &&  addressLine1.length !=0 &&  businessRole.length !=0 &&  password.length !=0 &&  repeatPassword.length !=0 &&  userName.length !=0  && termCheck==true ) 
     } else if (termCheck == true) {
       if (optConst  == otp) {
+      
+       
         // console.log("here inside")
         axios.post(AxioxExpPort + "createcompany/", {
           "VENDOR_ID": pinCode,
@@ -236,8 +264,15 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
           "city": city,
           "pincode": pinCode
         })
-          .then((res) => { toggleCheckFlages() })
-          .catch((err) => { console.log(err) });
+          .then((res) => { toggleCheckFlages();  setToasterColor("#00D100"); 
+        
+          setToaster("Your Application is Successfully Submitted");
+          var xy = document.getElementById("snackbar");
+          xy.className = "show";  setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) })
+          .catch((err) => { console.log(err);setToasterColor("#f44336");   
+          var xy = document.getElementById("snackbar");
+          xy.className = "show";    
+          setToaster("Something went wrong please try again"); setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) } );
       } else {
         console.log("check terms and condition")
         setWorningOtp(true)
@@ -256,7 +291,7 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
 
   return (
     <>
-
+<div id="snackbar" style={{backgroundColor:toasterColor}}>{toaster}</div>
       <h2
         style={{
           color: "#fff",
@@ -798,11 +833,11 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                     <select className="form-control" type="text" onChange={(e) => { setLanguage(e.target.value); stSt(e.target.value) }}
                     >
                       <option>--Select Language--</option>
-                      {countrys.map((countries) => {
+                       {languageArr.map((val,index) => {
                         return (
-                          <option key={countries.COUNTRY_KEY} value={countries.COUNTRY_KEY}>{countries.COUNTRY_NAME}</option>
+                          <option key={index} value={val.LANGUAGE}>{val.DESCRIPTION}</option>
                         );
-                      })}
+                      })} 
 
                     </select>
                     <label htmlFor="floatingInput">Language*</label>
@@ -989,6 +1024,8 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
 
         </ModalBody>
       </Modal>
+      <div id="snackbar" style={{backgroundColor:toasterColor}}>{toaster}</div>
+
     </>
   );
 
