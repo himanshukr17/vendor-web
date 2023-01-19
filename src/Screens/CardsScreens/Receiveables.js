@@ -56,7 +56,7 @@ function Receiveables() {
     });
   };
 
-  const vendorId =localStorage.getItem('vendorId');
+  const vendorId =localStorage.getItem('userId');
 
    const headers = [
     { label: "First Name", key: "firstname" },
@@ -198,7 +198,7 @@ function Receiveables() {
                         style={{textAlign:"center", width: "10%", borderColor: COLORS.gray10 }}
                       >
                       {val.STATUS==="106" ||val.STATUS==="101"?
-                        <span id="green" class="dot"></span>:<span id="red" class="dot"></span> 
+                        <span id="green" className="dot"></span>:<span id="red" className="dot"></span> 
                   }
                
                       </td>

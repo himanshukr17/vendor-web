@@ -25,7 +25,7 @@ import { IconContext } from "react-icons";
 
 import { COLORS } from "../../Constants/theme";
 
-function MyContracts() {
+function Contract() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
@@ -40,7 +40,7 @@ function MyContracts() {
   const [tbody, setTBody] = useState([]);
 
 
-  const vendorId =localStorage.getItem('vendorId');
+  const vendorId =localStorage.getItem('userId');
   useEffect(() => {
          axios.get(AxioxExpPort+"contract/getdata?id="+vendorId)
          .then((response) => {
@@ -327,4 +327,4 @@ function MyContracts() {
   );
 }
 
-export default MyContracts;
+export default Contract;

@@ -66,7 +66,7 @@ const DownloadButton=(e,INVOICE_URL)=>{
   });
 }
 
-const vendorId =localStorage.getItem('vendorId');
+const vendorId =localStorage.getItem('userId');
 // "https://localhost:3007/images/" + image name gotten from REST api response
 
 useEffect(() => {

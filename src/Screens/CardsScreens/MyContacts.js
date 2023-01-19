@@ -39,7 +39,7 @@ import { Card } from "reactstrap";
 
 
 
-function Receiveables() {
+function MyContact() {
   const navigate = useNavigate();
   const [userInfo, setuserInfo] = useState({
     file:[],
@@ -92,7 +92,7 @@ function Receiveables() {
   const [isSucces, setSuccess] = useState(null);
   const [imgPrv, setImgPrevew] = useState(false);
   const [btnCtrl, setBtnCtrl] = useState(false);
-  const vendorId =localStorage.getItem('vendorId');
+  const vendorId =localStorage.getItem('userId');
   const[hideFiles,setHideFiles]=useState(false); 
 
   const[panNmbr,setPanNmbr]=useState("")
@@ -323,7 +323,7 @@ function Receiveables() {
   );
 }
 
-export default Receiveables;
+export default MyContact;
 
 
 
@@ -457,7 +457,7 @@ export default Receiveables;
 //      var tem=e.target[0].value;
       
 //       //alert("formData")
-//       const vendorId =localStorage.getItem('vendorId');
+//       const vendorId =localStorage.getItem('userId');
 //       // alert(vendorId)
       
 //       const formData = new FormData();
@@ -500,7 +500,7 @@ export default Receiveables;
 //      var tem=e.target[0].value;
       
 //      //alert(tem)
-//      const vendorId =localStorage.getItem('vendorId');
+//      const vendorId =localStorage.getItem('userId');
 //      // alert(vendorId)
      
 //      const formData = new FormData();
@@ -565,7 +565,7 @@ export default Receiveables;
 //      var tem=e.target[0].value;
       
 //      //alert(tem)
-//      const vendorId =localStorage.getItem('vendorId');
+//      const vendorId =localStorage.getItem('userId');
 //      // alert(vendorId)
      
 //      const formData = new FormData();
@@ -633,7 +633,7 @@ export default Receiveables;
 //       var tem=e.target[0].value;
       
 //       //alert(tem)
-//       const vendorId =localStorage.getItem('vendorId');
+//       const vendorId =localStorage.getItem('userId');
 //       // alert(vendorId)
       
 //       const formData = new FormData();
@@ -700,7 +700,7 @@ export default Receiveables;
 //       var tem=e.target[0].value;
       
 //       //alert(tem)
-//       const vendorId =localStorage.getItem('vendorId');
+//       const vendorId =localStorage.getItem('userId');
 //       // alert(vendorId)
       
 //       const formData = new FormData();
@@ -761,7 +761,7 @@ export default Receiveables;
 //       var tem=e.target[0].value;
       
 //       //alert(tem)
-//       const vendorId =localStorage.getItem('vendorId');
+//       const vendorId =localStorage.getItem('userId');
 //       // alert(vendorId)
       
 //       const formData = new FormData();
@@ -826,7 +826,7 @@ export default Receiveables;
 //       var tem=e.target[0].value;
       
 //       //alert(tem)
-//       const vendorId =localStorage.getItem('vendorId');
+//       const vendorId =localStorage.getItem('userId');
 //       // alert(vendorId)
       
 //       const formData = new FormData();
@@ -933,7 +933,7 @@ export default Receiveables;
    
 //           </div>
 //     <div className="col-md-2">
-//     {hiddenBnt?<button type="submit" id="PANBtn" class="btn btn-info"><BsCloudUploadFill/></button>:null}
+//     {hiddenBnt?<button type="submit" id="PANBtn" className="btn btn-info"><BsCloudUploadFill/></button>:null}
     
 //           </div>
 //           </div>
@@ -973,7 +973,7 @@ export default Receiveables;
    
 //           </div>
 //     <div className="col-md-2">
-//           {aadhaFileBnt?<button type="submit"  class="btn btn-info"><BsCloudUploadFill/></button>:null}
+//           {aadhaFileBnt?<button type="submit"  className="btn btn-info"><BsCloudUploadFill/></button>:null}
 //           </div>
 //           </div>
 //           </div>
@@ -1008,7 +1008,7 @@ export default Receiveables;
 
 //           </div>
 //           <div className="col-md-2">
-//           {gstFileBnt?<button type="submit" class="btn btn-info"><BsCloudUploadFill/></button>:null}
+//           {gstFileBnt?<button type="submit" className="btn btn-info"><BsCloudUploadFill/></button>:null}
 //           </div>
 //           </div>
 //           </div>
@@ -1043,7 +1043,7 @@ export default Receiveables;
 
 //           </div>
 //           <div className="col-md-2">
-//           {addFileBnt?<button type="submit" class="btn btn-info"><BsCloudUploadFill/></button>:null}
+//           {addFileBnt?<button type="submit" className="btn btn-info"><BsCloudUploadFill/></button>:null}
 //           </div>
 //           </div>
 //           </div>
@@ -1078,7 +1078,7 @@ export default Receiveables;
 
 //           </div>
 //           <div className="col-md-2">
-//           {msmeFileBnt?<button type="submit" class="btn btn-info"><BsCloudUploadFill/></button>:null}
+//           {msmeFileBnt?<button type="submit" className="btn btn-info"><BsCloudUploadFill/></button>:null}
 //           </div>
 //           </div>
 //           </div>
@@ -1113,7 +1113,7 @@ export default Receiveables;
 
 //           </div>
 //           <div className="col-md-2">
-//           {porFileBnt?<button type="submit" class="btn btn-info"><BsCloudUploadFill/></button>:null}
+//           {porFileBnt?<button type="submit" className="btn btn-info"><BsCloudUploadFill/></button>:null}
 //           </div>
 //           </div>
 //           </div>
@@ -1148,7 +1148,7 @@ export default Receiveables;
 
 //           </div>
 //           <div className="col-md-2">
-//           {dueFileBnt?<button type="submit" class="btn btn-info"><BsCloudUploadFill/></button>:null}
+//           {dueFileBnt?<button type="submit" className="btn btn-info"><BsCloudUploadFill/></button>:null}
 //           </div>
 //           </div>
 //           </div>

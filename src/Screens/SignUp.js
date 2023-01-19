@@ -5,6 +5,7 @@ import { AiOutlineSend, AiOutlineCloudUpload } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Button, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
+import { BsCheckLg, BsCloudCheckFill } from "react-icons/bs";
 
 function SignUp() {
   const [toaster,setToaster]=useState("")
@@ -41,7 +42,7 @@ function SignUp() {
   const [businessRole, setBusinessRole] = useState("");
   const [faxNo, setFaxNo] = useState("");
   const [termAndCondition, setTermAndCondition] = useState(false);
-
+  const [chooseFile,setChooseFile]=useState("")
 
   const [countrys, setCountrys] = useState([])
 
@@ -81,16 +82,16 @@ function SignUp() {
   }
 
   const [stateArr, setStateArr] = useState([])
+  const [languageArr,setLanguageArr]=useState([])
+  const [roleDesc,setRoleDesc]=useState([])
+
   useEffect(() => {
     axios.get(AxioxExpPort + "country/all")
       .then((response) => {
         setCountrys(response.data);
 
       })
-  }, []);
-  const [languageArr,setLanguageArr]=useState([])
-  useEffect(() => {
-    axios.get(AxioxExpPort + "language/all")
+      axios.get(AxioxExpPort + "language/all")
       .then((response) => {
         // (response.data).map((val,index)=>{
         //   setLanguageArr({vaval.})
@@ -98,9 +99,16 @@ function SignUp() {
         setLanguageArr(response.data);
 
       })
+      axios.get(AxioxExpPort + "industry/all")
+      .then((response) => {
+        // (response.data).map((val,index)=>{
+        //   setLanguageArr({vaval.})
+        // })
+        setRoleDesc(response.data);
+
+      })
   }, []);
-
-
+  const [checkPaUpload,setCheckPanupload]=useState(false)
   const stSt = (e) => {
     const countriess = countrys.find((user) => user.COUNTRY_KEY === e);
     //console.log("countriess",countriess.STATE)
@@ -126,7 +134,9 @@ function SignUp() {
 
   const [optConst, setOtpConst] = useState(null);
   const [worningMailVerify, setworningMailVerify] = useState(false)
+  const [otpSendBtn,setOtpSendBtn]=useState(true)
   const sendOtp = () => {
+    setShowOtp('');
     var email = document.getElementById('emailInputVerify').value;
     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if (!filter.test(email)) {
@@ -138,24 +148,29 @@ function SignUp() {
       axios.post(AxioxExpPort + "createcompany/sendotp", {
         "email": email,
       })
-        .then((res) => { setShowOtp(true); setOtpConst(res.data.OTP) })
+        .then((res) => { setShowOtp(true); 
+          console.log('resres',res);
+        
+          setOtpSendBtn(false)
+          setOtpConst(res.data.OTP) })
         .catch((err) => { console.log(err) });
     }
 
 
   }
   
-  const validateOtp = (e) => {
+  // const [checkOtpSym,setCheckOtpSym]=useEffect(false)
+  const validateOtp = () => {
     
-    
-    var x = Number(e.target.value)
-    console.log(typeof optConst)
-    if (optConst == x) {
+    //alert('validateOtp')
+    setWorningOtp(false)
+    if (optConst == otp) {
       document.getElementById("otpInput").className = "form-control is-valid"
-      setWorningOtp(false)
-      document.getElementById("emailInputVerify").disabled = true;
-
       
+      document.getElementById("emailInputVerify").disabled = true;
+      document.getElementById("checkEmailBtn").style.visibility = "hidden";
+      document.getElementById("checkEmailBtnS").style.visibility = "visible";
+     
       setToaster("OTP is Verified")
       var xz = document.getElementById("snackbar");
       setToasterColor("#00D100")
@@ -163,11 +178,13 @@ function SignUp() {
       setTimeout(function(){
          xz.className = xz.className.replace("show", ""); }, 3000)
       setTimeout(function(){  document.getElementById("otpSendBtn").style.display = "none";}, 3000)
+
       setTimeout(function(){document.getElementById("otpInput").style.display = "none"}, 3000)
      
       // className="form-control is-invalid"
       // document.getElementById("otpInput").className.add('is-valid');
     } else {
+      setWorningOtp(true)
       document.getElementById("otpInput").className = "form-control is-invalid"
 
     }
@@ -181,6 +198,7 @@ function SignUp() {
    });
 
   const handleInputChange = (event) => {
+    console.log("event.target.value",event.target.value.length);
     setuserInfo({
       ...userInfo,
       file:event.target.files[0],
@@ -188,81 +206,111 @@ function SignUp() {
     });
     console.log(event.target.files[0]);
   }
-  
+  const [errorUploadPan, setErrorUploadPan] = useState(false)
   const uploadPan = async()=>{
     const formData = new FormData(); 
     formData.append("image", userInfo.file);
     formData.append("pancard",pannumber);
-if( phone.toString().length==10 && document.getElementById("upload_file").files.length >= 0 && pannumber.length >= 0){
-  try {
-
-    const response = axios({
-         method: "post",
-        
-         url: AxioxExpPort+"createcompany/file?phone_number="+phone,
-         data:formData,
-         headers: { "Content-Type": "multipart/form-data" },
-       }).then((res)=>{
-        
-        
-        console.log("res",res.status)
-        if(res.status===200){
-          setPanDiv(false)
-          document.getElementById("phoneNumber").disabled = true;
-
-        }else{
-          console.log("try again")
-        }
-       
-      });
     
-       } catch(error) {
-       console.log(error)
-       }
+if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0){
+  setErrorUploadPan(true)
+  setToaster("Fill with Correct Input")
+  var xz = document.getElementById("snackbar");
+  setToasterColor("red")
+  xz.className = "show";
+  setTimeout(function(){
+     xz.className = xz.className.replace("show", ""); }, 3000)
+ 
 }
     else{
-      setPhonePan(true);
+      try {
+
+        const response = axios({
+             method: "post",
+            
+             url: AxioxExpPort+"createcompany/file?phone_number="+phone,
+             data:formData,
+             headers: { "Content-Type": "multipart/form-data" },
+           }).then((res)=>{
+            
+            
+            console.log("res",res.status)
+            if(res.status===200){
+              setPanDiv(false)
+              document.getElementById("phoneNumber").disabled = true;
+              document.getElementById("PAN_Number").disabled = true;
+              document.getElementById("upload_file").disabled = true;
+              setToaster("PAN Card uploaded successful")
+              var xz = document.getElementById("snackbar");
+              setToasterColor("#00D100")
+              xz.className = "show";
+              setTimeout(function(){
+                 xz.className = xz.className.replace("show", ""); }, 3000)
+              
+            }else{
+              setToaster("Try again")
+              var xz = document.getElementById("snackbar");
+              setToasterColor("red")
+              xz.className = "show";
+              setTimeout(function(){
+                 xz.className = xz.className.replace("show", ""); }, 3000)
+            }
+           
+          });
+        
+           } catch(error) {
+            setToaster("Try again")
+              var xz = document.getElementById("snackbar");
+              setToasterColor("red")
+              xz.className = "show";
+              setTimeout(function(){
+                 xz.className = xz.className.replace("show", ""); }, 3000)
+           }
     }
 
   }
   const [error, setErrorsss] = useState(false)
+  
   const submitForm = (e) => {
     e.preventDefault();
 
     // toggleCheckFlages();
-    if (firstName.length == 0 || lastName.length == 0 || email.length == 0 || companyLegalName.length == 0 || pinCode.length == 0 || city.length == 0 || state.length == 0 || country.length == 0 || addressLine1.length == 0 || businessRole.length == 0 || password.length == 0 || repeatPassword.length == 0 || userName.length == 0 ) {
+    if (firstName.length == 0 || lastName.length == 0 || email.length == 0 || companyLegalName.length == 0 || pinCode.length == 0 || city.length == 0 || state.length == 0 || country.length == 0 || addressLine1.length == 0 || businessRole.length == 0 || password.length == 0 || repeatPassword.length == 0 || userName.length == 0 || chooseFile.length==0 ) {
       setErrorsss(true);
       setworningMailVerify(false)
       console.log("here ouside")
-      if (optConst  == otp ) {
-        setWorningOtp(false)
-      } else {
-        console.log("check terms and condition")
-        setWorningOtp(true)
-      }
+      // if (optConst  == otp ) {
+      //   setWorningOtp(false)
+      // } else {
+      //   console.log("check terms and condition")
+      //   setWorningOtp(true)
+      // }
 
       // }else if(firstName.length!=0 && lastName.length !=0 && email.length !=0 && companyLegalName.length !=0 &&  pinCode.length !=0 &&  city.length !=0 &&  state.length !=0 &&  country.length !=0 &&  addressLine1.length !=0 &&  businessRole.length !=0 &&  password.length !=0 &&  repeatPassword.length !=0 &&  userName.length !=0  && termCheck==true ) 
     } else if (termCheck == true) {
-      if (optConst  == otp) {
+      if (optConst  == otp && checkPaUpload == true) {
       
        
         // console.log("here inside")
         axios.post(AxioxExpPort + "createcompany/", {
           "VENDOR_ID": pinCode,
-          "fn": firstName,
-          "ln": lastName,
-          "email": email,
-          "user": userName,
-          "pwd": repeatPassword,
-          "business": businessRole,
-          "cn": companyLegalName,
-          "add1": addressLine1,
-          "add2": addressLine2,
-          "add3": addressLine3,
-          "cr": country,
-          "state": state,
-          "city": city,
-          "pincode": pinCode
+          "FIRST_NAME": firstName,
+          "LAST_NAME": lastName,
+          "E_MAIL": email,
+          "USERNAME": userName,
+          "PASS": repeatPassword,
+          "ROLE": businessRole,
+          "COMPANY_NAME": companyLegalName,
+          "ADD1": addressLine1,
+          "ADD2": addressLine2,
+          "ADD3": addressLine3,
+          "COUNTRY": country,
+          "STATAE": state,
+          "CITY": city,
+          "FAX_NO": faxNo,
+          "lan":language,
+          "PINCODE": pinCode
+       
         })
           .then((res) => { toggleCheckFlages();  setToasterColor("#00D100"); 
         
@@ -274,14 +322,24 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
           xy.className = "show";    
           setToaster("Something went wrong please try again"); setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) } );
       } else {
-        console.log("check terms and condition")
-        setWorningOtp(true)
+        // setWorningOtp(true)
+        setToaster("Try again after some time")
+        var xz = document.getElementById("snackbar");
+        setToasterColor("#00D100")
+        xz.className = "show";
+        setTimeout(function(){
+           xz.className = xz.className.replace("show", ""); }, 3000)
       }
 
     } else {
       console.log("check terms and condition")
       setWorningInput(true);
-
+      setToaster("Check terms and condition")
+      var xz = document.getElementById("snackbar");
+      setToasterColor("#00D100")
+      xz.className = "show";
+      setTimeout(function(){
+         xz.className = xz.className.replace("show", ""); }, 3000)
 
     }
 
@@ -291,7 +349,7 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
 
   return (
     <>
-<div id="snackbar" style={{backgroundColor:toasterColor}}>{toaster}</div>
+<div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
       <h2
         style={{
           color: "#fff",
@@ -391,9 +449,10 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                   }}
                 />
                 <label htmlFor="floatingInput">Phone*</label>
-                {error &&  phone.length<=0 ?
+                {errorUploadPan || error &&  phone.length<=0 ?
                   <p className="text-left text-danger">Phone is required</p>
                   : ""}
+                
               </div>
               </div>
                 <div className="col-md-6">
@@ -427,8 +486,14 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                   </div> 
                 </div>
                 <div className="col-md-1">
-                          
-                                  <AiOutlineSend  size={35} id="otpSendBtn" style={{  marginTop:"10px", color: "green", fontStyle: 'italic', textDecorationLine: 'underline' }} type="button" onClick={sendOtp}/>
+                {
+                      otpSendBtn ? 
+                                  <AiOutlineSend  size={35} id="otpSendBtn" style={{  marginTop:"10px", color: "orange" }} type="button" onClick={sendOtp}/>
+                 :                
+                 
+                 <a  >  <BsCheckLg size={30} id="checkEmailBtnS"  style={{width:"45px", visibility:"hidden",marginTop:"12px", color: "green"}}>Resend </BsCheckLg> <p onClick={sendOtp} type="button" className="text-left text-danger" id="checkEmailBtn"  style={{width:"45px", marginTop:"-7px",fontStyle: 'italic',textDecorationLine: 'underline', fontSize:"13px" }}>Resend </p> </a>
+}
+               
                 </div>
 
 
@@ -443,12 +508,15 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                 <div className="col-md-5">
                 
                 </div>
-                <div className="col-md-7">
-                <div
+                <div className="col-md-6"
+                 >
+                <div className="row">
+                  <div className="col-md-11">
+                  <div
                   className="form-group"
                   style={{
-                    marginLeft: "3.5%",
-                    marginRight: "2%",
+                    marginLeft: "4.2%",
+                    marginRight:"-20px",
                   }}
                 >
                   <input required
@@ -459,13 +527,26 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                     // className="form-control is-invalid"
                     placeholder="Enter OTP send to your email"
                     onChange={(e) => {
-                      validateOtp(e);
+                    
                       setOtp(e.target.value);
                     }}
 
                   />
                 </div>
 
+                  </div>
+                  <div className="col-md-1">
+                 
+                    
+                                  <AiOutlineSend  size={25} id="otpSendBtn"  onClick={() => {
+                      validateOtp();
+                     
+                    }} style={{ marginLeft: "70%",marginTop:"5px",
+                     color: "orange", fontStyle: 'italic', textDecorationLine: 'underline' }} type="button"/>
+                    
+                  </div>
+                </div>
+               
                 </div>
               </div>
                 
@@ -540,21 +621,33 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                     <p className="text-left text-danger">Repeat Password is required</p>
                     : ""}</p>
                 <p className="text-left text-danger">{checkPassword}</p>
-                <p className="text-left text-success" style={{ marginTop: "-15px", marginBottom: "-5px", }}>{matchPassword}</p>
+                <p className="text-left text-success" style={{ marginTop: "-5px" }}>{matchPassword}</p>
 
               </div>
 
-       
+       <p>{''}</p>
 
               <div
                 className="form-floating mb-3"
                 style={{
+                 
                   marginLeft: "2%",
                   marginRight: "2%",
                   
                 }}
               >
-                <input
+
+<select className="form-control" type="text" onChange={(e) => { setBusinessRole(e.target.value)}}
+                    >
+                      <option selected disabled>--Select Business Role--</option>
+                       {roleDesc.map((val,index) => {
+                        return (
+                          <option key={index} value={val.INDUSTRY}>{val.DESCRIPTION}</option>
+                        );
+                      })} 
+
+                    </select>
+                {/* <input
                   type="text"
                   className="form-control"
                   
@@ -562,7 +655,7 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                   onChange={(e) => {
                     setBusinessRole(e.target.value);
                   }}
-                />
+                /> */}
                 <label htmlFor="floatingInput">Business Role* </label>
                 {error && businessRole.length <= 0 ?
                   <p className="text-left text-danger">Business Role is required</p>
@@ -586,11 +679,11 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                 />
                 <label htmlFor="floatingInput">FAX No.*</label>
                 {error && faxNo.length <= 0 ?
-                  <p className="text-left text-danger">FAX No. is required</p>
+                  <p className="text-left text-danger"  style={{ marginTop: "-15px" }}>FAX No. is required</p>
                   : ""}
               </div>
 
-              {panDiv && (
+              
                 <div className="row" >
               <div className="col-md-5"   style={{
                   marginLeft: "2%",
@@ -604,14 +697,16 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                   className="form-control"
                   
                   placeholder="PAN Number"
+                  id="PAN_Number"
                   onChange={(e) => {
                     setPannumber(e.target.value);
                   }}
                 />
                 <label htmlFor="floatingInput">PAN Number*</label>
-                {error && pannumber.length <= 0 ?
+                { errorUploadPan || error && pannumber.length <= 0 ?
                   <p className="text-left text-danger">PAN Number required</p>
                   : ""}
+                
               </div>
               </div>
               <div className="col-md-6">
@@ -630,22 +725,30 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                   }}
                 /> */}
                 {/* <input type="text" className="form-control" name="optionInputVal"   required placeholder="Select PAN Card*" onChange={(e)=>{}} /> */}
-                <input type="file" className="form-control" id="upload_file" name="upload_file" onChange={handleInputChange} />
+                <input type="file" className="form-control" id="upload_file" name="upload_file" onChange={(e) => {
+                    setChooseFile(e.target.value);
+                    handleInputChange(e)
+                  }} />
 
                  <label  style={{marginTop:"-8px"}} htmlFor="floatingInput" >Choose PAN Card*</label> 
-                {phonePan && pannumber.length <= 0 ?
+                {errorUploadPan || error && chooseFile.length <= 0 ?
                   <p className="text-left text-danger">Please Check correct Phone Number / PAN Number / PAN Card </p>
                   : ""}
+               
               </div>
               </div>
               
                 <div className="col-md-1">
-                <AiOutlineCloudUpload  size={35} style={{  marginTop:"10px", color: "green", fontStyle: 'italic', textDecorationLine: 'underline' }} type="button" onClick={uploadPan}/>
+                {panDiv? 
+                <AiOutlineCloudUpload  size={35} style={{  marginTop:"10px", color: "orange", fontStyle: 'italic', textDecorationLine: 'underline' }} type="button" onClick={uploadPan}/>
+                : 
+                <BsCloudCheckFill  size={35} style={{  marginTop:"10px", color: "green", fontStyle: 'italic', textDecorationLine: 'underline' }} />
 
+                }
                 </div>
                 </div>
               </div>
-              </div>) }
+              </div>
              
               <div
                 className="form-floating mb-3"
@@ -665,7 +768,7 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                 />
                 <label htmlFor="floatingInput">Company(legal) Name*</label>
                 {error && companyLegalName.length <= 0 ?
-                  <p className="text-left text-danger">Company(legal) Name is required</p>
+                  <p className="text-left text-danger"  style={{ marginTop: "-15px" }}>Company(legal) Name is required</p>
                   : ""}
               </div>
             
@@ -773,7 +876,7 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                     /> */}
                     <select className="form-control" type="text" onChange={(e) => { setCountry(e.target.value); stSt(e.target.value) }}
                     >
-                      <option>--Select Country--</option>
+                      <option selected disabled>--Select Country--</option>
                       {countrys.map((countries) => {
                         return (
                           <option key={countries.COUNTRY_KEY} value={countries.COUNTRY_KEY}>{countries.COUNTRY_NAME}</option>
@@ -804,7 +907,7 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                       setState(e.target.value);
                     }}
                     >
-                      <option>--Select State--</option>
+                      <option selected disabled>--Select State--</option>
                       {stateArr.map((val, index) => {
                         return (
                           <option key={index} value={val}>{val}</option>
@@ -832,7 +935,7 @@ if( phone.toString().length==10 && document.getElementById("upload_file").files.
                   >
                     <select className="form-control" type="text" onChange={(e) => { setLanguage(e.target.value); stSt(e.target.value) }}
                     >
-                      <option>--Select Language--</option>
+                      <option selected disabled>--Select Language--</option>
                        {languageArr.map((val,index) => {
                         return (
                           <option key={index} value={val.LANGUAGE}>{val.DESCRIPTION}</option>

@@ -41,7 +41,7 @@ function Profile() {
       })
 
       const [vendorDtl,setVendorDtl]= useState([]);
-      const vendorId =localStorage.getItem('vendorId');
+      const vendorId =localStorage.getItem('userId');
 
       useEffect(() => {
         axios.post(AxioxExpPort+"createcompany/details",{
@@ -337,7 +337,7 @@ function Profile() {
             </div>
             <div className="text-right">
                 
-            <button type="button" class="btn btn-secondary">Update</button>
+            <button type="button" className="btn btn-secondary">Update</button>
             </div>
           </div>
         </div> 

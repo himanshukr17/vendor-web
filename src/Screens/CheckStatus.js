@@ -131,12 +131,12 @@ function CheckStatus() {
     });
     console.log(event.target.files[0]);
   }
-  const vendorId =localStorage.getItem('vendorId');
+  const vendorId =localStorage.getItem('userId');
 
 const submitForm = async()=>{
   const formData = new FormData(); 
     formData.append("image", userInfo.file);
-    formData.append("id", vendorId);
+  //  formData.append("id", vendorId);
     formData.append("account",confirmAcNumber);
     formData.append("country",country);
     formData.append("key",ifsc);
@@ -274,7 +274,7 @@ const submitForm = async()=>{
       )}
       {uploadBtn &&
       
-      <div class="movable-button" >
+      <div className="movable-button" >
             <Button
               onClick={handleUpload}
               id="handleUploadBtn"
@@ -524,7 +524,7 @@ Document</Button>
                     }}
                   >
 
-                    <button onClick={submitForm} type="button" id="uploadDoc" class="btn btn-secondary">Upload</button>
+                    <button onClick={submitForm} type="button" id="uploadDoc" className="btn btn-secondary">Upload</button>
                   </div>
                 </div>
 

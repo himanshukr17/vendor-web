@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaMegaport, FaUserTie,FaUsers } from "react-icons/fa";
 import { IconContext } from "react-icons";
-const NavHeader = () => {
+const NavHeaderSupplier = () => {
   const [navbar, setNabar] = useState(false);
   const changeBackground = () => {
     if (window.scrollY >= 80) {
@@ -33,7 +33,7 @@ const NavHeader = () => {
 
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
-            <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
+            <span style={{color:"#1F87D0",  fontSize:"25px"}}>Supplier</span>
             <span style={{color:"#14CA96", fontSize:"25px"}}> Connect</span>
           </a>
          
@@ -226,7 +226,8 @@ const NavHeader = () => {
                         localStorage.removeItem('token') 
                         localStorage.removeItem('userType') 
                         localStorage.removeItem('userId') 
-                        window.location.href="/"                 
+                        // navigate('/')
+                        window.location.href="/"                      
                       }}
                     >
                       <div
@@ -260,4 +261,4 @@ const NavHeader = () => {
   );
 };
 
-export default NavHeader;
+export default NavHeaderSupplier;
