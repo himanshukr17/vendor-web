@@ -3,26 +3,11 @@ import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
 import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
-import { MdScheduleSend } from "react-icons/md";
-
-import { BsFillCalendarWeekFill, BsFillDoorOpenFill } from "react-icons/bs";
-import { SiConstruct3, SiQuantconnect } from "react-icons/si";
-import { TbBuildingFactory2 } from "react-icons/tb";
-import { GiReceiveMoney } from "react-icons/gi";
-import { GrValidate } from "react-icons/gr";
-import { MdOutlineCategory, MdDescription } from "react-icons/md";
-import { BiRupee } from "react-icons/bi";
-
-import { BrowserRouter, Route, Routes, Link, Router } from "react-router-dom";
-
-import { Button, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
-import {
-  AiOutlineArrowLeft,
-  AiOutlineCloudDownload,
-  AiOutlineDownload,
-} from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { Modal, ModalBody } from "reactstrap";
+import { AiOutlineArrowLeft} from "react-icons/ai";
 import { IconContext } from "react-icons";
-
+import Pagination from "../../Components/Pagination";
 import { COLORS } from "../../Constants/theme";
 
 function Contract() {
@@ -36,11 +21,14 @@ function Contract() {
     "Contract Number",
     "Plant",
   ]);
-
+  const [clickContractData,setClickContractData]=useState([]);
   const [tbody, setTBody] = useState([]);
-
-
   const vendorId =localStorage.getItem('userId');
+  const [currentPage,setCurrentPage]=useState(1);
+  const [postsPerPage, setPostsPerPage]=useState(5);
+  const indexOfLastPost= currentPage*postsPerPage;
+  const indexOfFirstPost= indexOfLastPost -postsPerPage;
+  const currentPosts=clickContractData.slice(indexOfFirstPost, indexOfLastPost)
   useEffect(() => {
          axios.get(AxioxExpPort+"contract/getdata?id="+vendorId)
          .then((response) => {
@@ -49,9 +37,11 @@ function Contract() {
           console.log("response.data",response.data);
          })
          }, []);
-  const [clickContractData,setClickContractData]=useState([]);
+  
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
+  const paginate = pageNumber =>setCurrentPage(pageNumber)
+
 
   return (
     <>
@@ -150,21 +140,6 @@ function Contract() {
                         <Link
                           onClick={(e) => {
                             togglePODetailsFlag();
-                            setClickedPOsData({
-                              AGREEMENT_DATE: val.AGREEMENT_DATE,
-                              CONTRACT_NUMBER: val.CONTRACT_NUMBER,
-                              PLANT_NAME: val.PLANT_NAME,
-                              ITEM_NAME: val.ITEM_NAME,
-                              MATERIAL_NUMBER: val.MATERIAL_NUMBER,
-                              DESCRIPTION: val.DESCRIPTION,
-                              TARGET_QUANTITY: val.TARGET_QUANTITY,
-                              TARGET_VALUE: val.TARGET_VALUE,
-                              OPEN_QUANTITY: val.OPEN_QUANTITY,
-                              NET_VALUE: val.NET_VALUE,
-                              RECEIVING_PLANT: val.RECEIVING_PLANT,
-                              VALIDITY_START: val.VALIDITY_START,
-                              VALIDITY_END: val.VALIDITY_END,
-                            });
                             setClickContractData(val.Contract_details)
                           }}
                         >
@@ -288,6 +263,8 @@ function Contract() {
             }
               
             </tbody>
+            <Pagination  postPerPage={postsPerPage} totalPosts={clickContractData.length} paginate={paginate}/>
+
           </table>
             {/* body ending */}
        
@@ -306,20 +283,6 @@ function Contract() {
             >
               Close
             </a>
-
-            {/* <button
-              type="button"
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-              className="btn btn"
-              style={{
-                backgroundColor: COLORS.danger,
-                color: COLORS.white,
-              }}
-            >
-              Reject
-            </button> */}
           </div>
         </ModalBody>
       </Modal>

@@ -35,11 +35,10 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Login />} exact />
-          
+          <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/checkStatus" element={<CheckStatus/>} exact />
           <Route path="/signup" element={<SignUp />} exact />
-          <Route path="/home" element={<Protected><DashboardSupplier/></Protected>} exact />
-          <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
+
     
 
         </Routes>
@@ -49,7 +48,6 @@ function App() {
 {
   userTypeDef === 'true' && 
         <Routes>
-          <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/home" element={<Protected><DashboardSupplier/></Protected>} exact />
         </Routes>
@@ -59,7 +57,6 @@ function App() {
   userTypeDef === 'false' &&
   
         <Routes>
-          <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />

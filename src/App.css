@@ -522,3 +522,9 @@ background: #9d9d9d;
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
+
+.onChangeImageSize:hover{
+  align-items: center;
+  width: 900px;
+  height: 600px;
+}

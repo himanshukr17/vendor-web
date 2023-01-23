@@ -150,7 +150,7 @@ function SignUp() {
       })
         .then((res) => { setShowOtp(true); 
           console.log('resres',res);
-        
+          document.getElementById("emailInputVerify").disabled = true;
           setOtpSendBtn(false)
           setOtpConst(res.data.OTP) })
         .catch((err) => { console.log(err) });

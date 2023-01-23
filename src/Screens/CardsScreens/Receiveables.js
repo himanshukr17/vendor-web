@@ -3,30 +3,19 @@ import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
 import {AxioxExpPort} from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
-import { CSVLink } from "react-csv";
-import { MdScheduleSend } from "react-icons/md";
-
-import { BsFillCalendarWeekFill } from "react-icons/bs";
-import { SiConstruct3, SiQuantconnect } from "react-icons/si";
-import { TbBuildingFactory2 } from "react-icons/tb";
-import { MdOutlineCategory, MdDescription } from "react-icons/md";
-import { BiRupee } from "react-icons/bi";
-
-import { BrowserRouter, Route, Routes, Link, Router } from "react-router-dom";
-
-import { Button, Modal, ModalFooter, ModalHeader, ModalBody } from "reactstrap";
+import {Link} from "react-router-dom";
+import Pagination from "../../Components/Pagination";
+import {Modal, ModalBody } from "reactstrap";
 import {
   AiOutlineArrowLeft,
-  AiOutlineCloudDownload,
-  AiOutlineDownload,
 } from "react-icons/ai";
 import { IconContext } from "react-icons";
-
 import { COLORS } from "../../Constants/theme";
 
 function Receiveables() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const [clickRecData,setClickRecvData]=useState([]);
+  const data = clickRecData;
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
   const [ClickedPOsData, setClickedPOsData] = useState([]);
 
@@ -39,25 +28,12 @@ function Receiveables() {
   ]);
 
   const [tbody, setTBody] = useState([]);
-
-  const DownloadButton = (e, INVOICE_URL) => {
-    e.preventDefault();
-
-    fetch(INVOICE_URL).then((response) => {
-      response.blob().then((blob) => {
-        // Creating new object of PDF file
-        const fileURL = window.URL.createObjectURL(blob);
-        // Setting various property values
-        let alink = document.createElement("a");
-        alink.href = fileURL;
-        alink.download = "SamplePDF.pdf";
-        alink.click();
-      });
-    });
-  };
-
   const vendorId =localStorage.getItem('userId');
-
+  const [currentPage,setCurrentPage]=useState(1);
+  const [postsPerPage, setPostsPerPage]=useState(5);
+  const indexOfLastPost= currentPage*postsPerPage;
+  const indexOfFirstPost= indexOfLastPost -postsPerPage;
+  const currentPosts=clickRecData.slice(indexOfFirstPost, indexOfLastPost)
    const headers = [
     { label: "First Name", key: "firstname" },
     { label: "Last Name", key: "lastname" },
@@ -73,10 +49,10 @@ function Receiveables() {
           console.log("response.data",response.data);
          })
          }, []);
-  const [clickRecData,setClickRecvData]=useState([]);
-  const data = clickRecData;
+
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
+  const paginate = pageNumber =>setCurrentPage(pageNumber)
 
   return (
     <>
@@ -202,24 +178,7 @@ function Receiveables() {
                   }
                
                       </td>
-                      {/* <td
-                        key={`col-5` + index}
-                        className="text-center"
-                        style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      >
-                        <Link
-                          to=""
-                          onClick={(e) => {
-                            DownloadButton(e, val.INVOICE_URL);
-                          }}
-                        >
-                          <IconContext.Provider
-                            value={{ color: "#000", size: "22px" }}
-                          >
-                            <AiOutlineDownload />
-                          </IconContext.Provider>
-                        </Link>
-                      </td> */}
+                
                     </tr>
                   );
                 })
@@ -236,6 +195,7 @@ function Receiveables() {
       </div>
 
       <Modal
+        size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
@@ -246,33 +206,12 @@ function Receiveables() {
         }}
       >
         <ModalBody
-          style={{
-            marginTop: 0,
-          }}
         >
           <div className="modal-header model-lg">
             <h5 className="modal-title" id="exampleModalLabel">
             Receiveables Details
             </h5>
-            {/* <CSVLink data={data} headers={headers}>
-  Download me
-</CSVLink>; */}
-
-            {/* <button
-              type="button"
-              className="btn"
-              style={{
-                backgroundColor: COLORS.gray10,
-                color: COLORS.black,
-                marginLeft: "30%",
-                float: "right",
-              }}
-              onClick={(e) => {
-                DownloadButton(e, ClickedPOsData.INVOICE_URL);
-              }}
-            >
-              Download Invoice
-            </button> */}
+        
             <button
               type="button"
               className="btn-close"
@@ -297,7 +236,7 @@ function Receiveables() {
             <tbody>
               {
                 
-                clickRecData.map((grsData, index) => {
+                currentPosts.map((grsData, index) => {
                 return (
                   <tr>
                     <td>
@@ -317,23 +256,9 @@ function Receiveables() {
               
             </tbody>
           </table>
+          <Pagination  postPerPage={postsPerPage} totalPosts={clickRecData.length} paginate={paginate}/>
+
      </div>
-          <div className="modal-footer">
-            <a
-              className="navbar-brand"
-              type="button"
-              style={{
-                color: "#007bff",
-                float: "right",
-                padding: 10,
-              }}
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            >
-              Close
-            </a>
-          </div>
         </ModalBody>
       </Modal>
     </>
