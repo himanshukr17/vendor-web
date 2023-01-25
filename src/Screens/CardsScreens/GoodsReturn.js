@@ -195,6 +195,7 @@ function GoodsReturn() {
       <Modal
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
+        size="lg"
         style={{
           display: "flex",
           justifyContent: "center",
@@ -261,9 +262,9 @@ function GoodsReturn() {
               }
 
             </tbody>
-            <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
 
           </table>
+            <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
           <div className="modal-footer">
             <a
               className="navbar-brand"
@@ -272,6 +273,7 @@ function GoodsReturn() {
                 color: "#007bff",
                 float: "right",
                 padding: 1,
+                height:'10px'
               }}
               onClick={() => {
                 togglePODetailsFlag();

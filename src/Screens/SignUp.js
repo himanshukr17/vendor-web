@@ -309,7 +309,9 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
           "CITY": city,
           "FAX_NO": faxNo,
           "lan":language,
-          "PINCODE": pinCode
+          "PINCODE": pinCode,
+          "STATUS":2
+
        
         })
           .then((res) => { toggleCheckFlages();  setToasterColor("#00D100"); 

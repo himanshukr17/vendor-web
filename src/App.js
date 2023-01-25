@@ -19,6 +19,7 @@ import Protected from './Protected';
 import ErrorPage from "./Screens/Error";
 import Profile from "./Screens/CardsScreens/Profile"
 // Supplier
+import PurchaseOrderSupplier from './Screens/CardsScreens/PurchaseOrderSupplier';
 import DashboardSupplier from './Screens/DashboardSupplier';
 
 
@@ -38,18 +39,29 @@ function App() {
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/checkStatus" element={<CheckStatus/>} exact />
           <Route path="/signup" element={<SignUp />} exact />
-
+          <Route path="/home" element={<Protected><DashboardSupplier/></Protected>} exact />
+          <Route path="/pordersuppli" element={<PurchaseOrderSupplier />} exact />
+          <Route path="/notfound" element={<ErrorPage />} exact />
+          <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
+          <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
+          <Route path="/pos" element={<Protected><PurchaseOrders/></Protected>} exact />
+          <Route path="/grs" element={<Protected><GoodsReturn/></Protected>} exact />
+          <Route path="/mcs" element={<Protected><MyContact/></Protected>} exact />
+          <Route path="/res" element={<Protected><Receiveables/></Protected>} exact />
+          <Route path="/profile" element={<Protected><Profile/></Protected>} exact />
+          <Route path="/cntc" element={<Protected><Contract/></Protected>} exact />
     
 
         </Routes>
   
           {/* for Supplier */}
-
+{/* 
 {
   userTypeDef === 'true' && 
         <Routes>
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/home" element={<Protected><DashboardSupplier/></Protected>} exact />
+          <Route path="/pordersuppli" element={<PurchaseOrderSupplier />} exact />
         </Routes>
 }
      
@@ -67,11 +79,9 @@ function App() {
           <Route path="/profile" element={<Protected><Profile/></Protected>} exact />
           <Route path="/cntc" element={<Protected><Contract/></Protected>} exact />
         </Routes>
-}
+} */}
       </BrowserRouter>
 
-      
-      {/* Routes To end */}
     </div>
   );
 }

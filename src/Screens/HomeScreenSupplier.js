@@ -110,6 +110,7 @@ const [dashboardData,setDashboardData]=useState("")
         <div id="google_translate_element"></div>
         
         <div className="col-lg-3 col-6">
+        <Link to="/pordersuppli">
           
             <div
               className="card info-card sales-card"
@@ -149,31 +150,29 @@ const [dashboardData,setDashboardData]=useState("")
                   </div>
                   <div className="col-md-8 text-right">
 
-                  <Link to="/pos">
+                 
                     <span   style={{
                       
                        
                       }}  className="text-muted small pt-2 ps-1">Create 
-</span> </Link>
+</span> 
 <br></br>
-<Link to="/pos">   
                     <span   style={{
                       
                        
                       }}  className="text-muted small pt-2 ps-1">Display</span>
-                      </Link>
+                      
                       <br></br>
-                      <Link to="/pos">
                     <span   style={{                     
                       }}  className="text-muted small pt-2 ps-1">Change</span>
-                      </Link>
+                   
                       <br></br>
                   </div>
 
                   </div>
-
               </div>
             </div>
+                  </Link>
          
         </div>
         <div className="col-lg-3 col-6">
