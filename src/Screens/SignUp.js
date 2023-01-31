@@ -49,7 +49,7 @@ function SignUp() {
   const navigate = useNavigate();
   const labelArray = ["Company", "Administrator Account Information"];
   const [age, setAge] = useState();
-  console.log(companyLegalName);
+  // console.log(companyLegalName);
   const [currentStep, updateCurrentStep] = useState(1);
   function updateStep(step) {
     //Updaing steps on Click
@@ -114,7 +114,7 @@ function SignUp() {
     //console.log("countriess",countriess.STATE)
     setStateArr(countriess.STATE);
   }
-  console.log("response.datas", stateArr);
+  // console.log("response.datas", stateArr);
   //  password check
   const handlePassword = (event) => {
 
@@ -198,13 +198,13 @@ function SignUp() {
    });
 
   const handleInputChange = (event) => {
-    console.log("event.target.value",event.target.value.length);
+    // console.log("event.target.value",event.target.value.length);
     setuserInfo({
       ...userInfo,
       file:event.target.files[0],
       filepreview:URL.createObjectURL(event.target.files[0]),
     });
-    console.log(event.target.files[0]);
+    // console.log(event.target.files[0]);
   }
   const [errorUploadPan, setErrorUploadPan] = useState(false)
   const uploadPan = async()=>{
@@ -234,9 +234,10 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
            }).then((res)=>{
             
             
-            console.log("res",res.status)
+            // console.log("res",res.status)
             if(res.status===200){
-              setPanDiv(false)
+              setPanDiv(false);
+              setCheckPanupload(true);
               document.getElementById("phoneNumber").disabled = true;
               document.getElementById("PAN_Number").disabled = true;
               document.getElementById("upload_file").disabled = true;
@@ -273,12 +274,13 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
   
   const submitForm = (e) => {
     e.preventDefault();
-
     // toggleCheckFlages();
-    if (firstName.length == 0 || lastName.length == 0 || email.length == 0 || companyLegalName.length == 0 || pinCode.length == 0 || city.length == 0 || state.length == 0 || country.length == 0 || addressLine1.length == 0 || businessRole.length == 0 || password.length == 0 || repeatPassword.length == 0 || userName.length == 0 || chooseFile.length==0 ) {
+
+    var phoneNumbr=Number(phone)
+    if (firstName.length == 0 || lastName.length == 0 || email.length == 0 || companyLegalName.length == 0 || pinCode.length == 0 || city.length == 0 ||  country.length == 0 || addressLine1.length == 0 || businessRole.length == 0 || password.length == 0 || repeatPassword.length == 0 || userName.length == 0 || chooseFile.length==0 ) {
       setErrorsss(true);
       setworningMailVerify(false)
-      console.log("here ouside")
+      // console.log("here ouside")
       // if (optConst  == otp ) {
       //   setWorningOtp(false)
       // } else {
@@ -287,13 +289,10 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
       // }
 
       // }else if(firstName.length!=0 && lastName.length !=0 && email.length !=0 && companyLegalName.length !=0 &&  pinCode.length !=0 &&  city.length !=0 &&  state.length !=0 &&  country.length !=0 &&  addressLine1.length !=0 &&  businessRole.length !=0 &&  password.length !=0 &&  repeatPassword.length !=0 &&  userName.length !=0  && termCheck==true ) 
-    } else if (termCheck == true) {
-      // if (optConst  == otp && checkPaUpload == true) {
-      alert("sdhbhj")
-       
-        // console.log("here inside")
-        axios.post(AxioxExpPort + "createcompany/", {
-          "VENDOR_ID": pinCode,
+    } else if (termCheck == true && checkPaUpload == true) {
+        try {
+        axios.post(AxioxExpPort+"createcompany?phone_number="+phone, {
+          "VENDOR_ID": Number(pinCode),
           "FIRST_NAME": firstName,
           "LAST_NAME": lastName,
           "E_MAIL": email,
@@ -315,14 +314,15 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
        
         })
           .then((res) => { toggleCheckFlages();  setToasterColor("#00D100"); 
-        
+          console.log("resresres",res)
           setToaster("Your Application is Successfully Submitted");
           var xy = document.getElementById("snackbar");
           xy.className = "show";  setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) })
-          .catch((err) => { console.log(err);setToasterColor("#f44336");   
+      }
+      catch(error) { console.log("errerr",error);setToasterColor("#f44336");   
           var xy = document.getElementById("snackbar");
           xy.className = "show";    
-          setToaster("Something went wrong please try again"); setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) } );
+          setToaster("Something went wrong please try again"); setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) };
       // } else {
       //   // setWorningOtp(true)
       //   setToaster("Try again after some time")
@@ -334,9 +334,9 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
       // }
 
     } else {
-      console.log("check terms and condition")
+      // console.log("check terms and condition")
       setWorningInput(true);
-      setToaster("Check terms and condition")
+      setToaster("Please Upload PAN Card or Check terms and condition")
       var xz = document.getElementById("snackbar");
       setToasterColor("red")
       xz.className = "show";
