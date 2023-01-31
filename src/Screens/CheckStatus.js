@@ -43,50 +43,23 @@ function CheckStatus() {
   // }
 
   const items = [
-    {
-      title: "Wed Oct 26 2022",
-      cardTitle: "Application Submiited",
-      cardSubtitle: "Your application is submitted successfully.",
-      media: {
-        type: "IMAGE",
-        source: {
-          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
-        },
-      },
-    },
-    {
-      title: "May 1940",
-      cardTitle: "Application Review",
-
-      cardSubtitle: "Your application review is completed",
-
-      media: {
-        type: "IMAGE",
-        source: {
-          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
-        },
-      },
-    },
-    {
-      title: "May 1940",
-      cardTitle: "Document Verification",
-      status: "notdone",
-      cardSubtitle: "Document verification is in process, Take 3-5 Working Days",
-
-      media: {
-        type: "IMAGE",
-        source: {
-          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
-        },
-      },
-    },
+   
+   
+   
   ];
+ const[itensData,setItemsData]=useState('')
 
   const CheckApplicationStatus = (e) => {
     e.preventDefault();
 
     if (MobileNumber.toString().length == 10) {
       setShowApplicationStatus(true)
+      axios.get(AxioxExpPort + "status/details?phone_number="+MobileNumber)
+      .then((response) => {
+        setItemsData(response.data[0].STATUS);
+
+      })
+      
       items.map((val, index) => {
         if (val.cardTitle == "Document Verification" && val.status == "notdone") {
           // setShowPODetailsFlag(true)
@@ -201,13 +174,18 @@ const submitForm = async()=>{
 
   return (
     <>
+    <div  className="statusBG" style={{
+    }}>
+
+
       <div
-        className="form-floating mb-3"
+        className="form-floating mb-3 statusBG"
         style={{
           marginLeft: "2%",
           marginRight: "2%",
           margin: "2%",
           display: "flex",
+          
         }}
       >
         <input
@@ -251,10 +229,31 @@ const submitForm = async()=>{
 
       </div>
 
-      {showApplicationStatus && (
+      
         <div style={{ width: "100%" }}>
+          {itensData==1 && 
           <Chrono
-            items={items}
+           theme={{
+    // primary: 'red',
+    // secondary: 'blue',
+    cardBgColor: '#D4D4FF',
+    // cardForeColor: 'violet',
+     titleColor: 'black',
+    // titleColorActive: 'red',
+  }}
+            items={[
+              {
+      title: "Wed Oct 26 2022",
+      cardTitle: "Application Submiited",
+      cardSubtitle: "Your application is submitted successfully.",
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }
+            ]}
             slideShow
             mode="VERTICAL_ALTERNATING"
             // allowDynamicUpdate={true}
@@ -262,30 +261,214 @@ const submitForm = async()=>{
             buttonTexts="SUBMIT"
 
             // disableClickOnCircle={true}
-            activeItemIndex={lengthData}
+            activeItemIndex={Number(itensData)-1}
             focusActiveItemOnLoad={true}
             hideControls={true}
           />
+          }
+          {itensData==2 && 
+          <Chrono
+         theme={{
+    // primary: 'red',
+    // secondary: 'blue',
+    cardBgColor: '#D4D4FF',
+    // cardForeColor: 'violet',
+     titleColor: 'black',
+    // titleColorActive: 'red',
+  }}
+            items={[
+              {
+      title: "Wed Oct 26 2022",
+      cardTitle: "Application Submiited",
+      cardSubtitle: "Your application is submitted successfully.",
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }, {
+      title: "May 1940",
+      cardTitle: "Application Review",
+
+      cardSubtitle: "Your application review is completed",
+
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    },{
+      title: "May 1940",
+      cardTitle: "Document Upload",
+      status: "notdone",
+      cardSubtitle: "Please Upload your Document, Verification will take 3-5 Working Days",
+
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }
+    
+            ]}
+            slideShow
+            mode="VERTICAL_ALTERNATING"
+            // allowDynamicUpdate={true}
+            // // cardWidth="300"
+            buttonTexts="SUBMIT"
+
+            // disableClickOnCircle={true}
+            activeItemIndex={Number(itensData)}
+            focusActiveItemOnLoad={true}
+            hideControls={true}
+          />
+          }
+          {itensData==3 && 
+          <Chrono
+            items={[
+              {
+      title: "Wed Oct 26 2022",
+      cardTitle: "Application Submiited",
+      cardSubtitle: "Your application is submitted successfully.",
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }, {
+      title: "May 1940",
+      cardTitle: "Application Review",
+
+      cardSubtitle: "Your application review is completed",
+
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }, {
+      title: "May 1940",
+      cardTitle: "Document Verification",
+      status: "notdone",
+      cardSubtitle: "Document verification is in process, Take 3-5 Working Days",
+
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }
+    
+            ]}
+            slideShow
+            mode="VERTICAL_ALTERNATING"
+            // allowDynamicUpdate={true}
+            // // cardWidth="300"
+            buttonTexts="SUBMIT"
+
+            // disableClickOnCircle={true}
+            activeItemIndex={Number(itensData)-1}
+            focusActiveItemOnLoad={true}
+            hideControls={true}
+          />
+          }
+          {itensData==4 && 
+          <Chrono
+            theme={{
+    // primary: 'red',
+    // secondary: 'blue',
+    cardBgColor: '#D4D4FF',
+    // cardForeColor: 'violet',
+     titleColor: 'black',
+    // titleColorActive: 'red',
+  }}
+            items={[
+              {
+      title: "Wed Oct 26 2022",
+      cardTitle: "Application Submiited",
+      cardSubtitle: "Your application is submitted successfully.",
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }, {
+      title: "May 1940",
+      cardTitle: "Application Review",
+
+      cardSubtitle: "Your application review is completed",
+
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }, {
+      title: "May 1940",
+      cardTitle: "Document Verification",
+      cardSubtitle: "Document verification is in process, Take 3-5 Working Days",
+
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    },
+    {
+      title: "May 1940",
+      cardTitle: "User Created Successfully",
+      cardSubtitle: "User Created Successfully now you can able to login",
+      media: {
+        type: "IMAGE",
+        source: {
+          url: "https://th.bing.com/th/id/R.893e41a5fab83225981e70381a1d3ac8?rik=kOZ2ncRWJwXSrg&riu=http%3a%2f%2fsamishti.com%2fimg%2flogo-dark.png&ehk=7CrQa9rEl3drPuJTbHpHvBv75MRkuz57by3xrUnBkCw%3d&risl=&pid=ImgRaw&r=0",
+        },
+      },
+    }
+    
+            ]}
+            slideShow
+            mode="VERTICAL_ALTERNATING"
+            // allowDynamicUpdate={true}
+            // // cardWidth="300"
+            buttonTexts="SUBMIT"
+
+            // disableClickOnCircle={true}
+            activeItemIndex={Number(itensData)-1}
+            focusActiveItemOnLoad={true}
+            hideControls={true}
+          />
+          }
           
         </div>
-
-
-
-      )}
-      {uploadBtn &&
+      {itensData==2 &&
       
-      <div className="movable-button" >
+      <div className="movable-button" style={{
+         marginTop:"-28px"
+      }}>
+               <div className="row" >           
             <Button
               onClick={handleUpload}
               id="handleUploadBtn"
               style={{
                 width: "100%",
-                justifyContent: "center",
-                alignSelf: "center",
+                justifyContent: "rigt",
+                alignSelf: "right",
                 color: "#fff",
                 backgroundColor: "#228B22",
-              }} >                 <AiOutlineCloudUpload  size={23} style={{ color: "white", fontStyle: 'italic'}} type="button"/>
+              }} >   
+               <AiOutlineCloudUpload  size={16} style={{ color: "white", fontStyle: 'italic'}} type="button"/>
 Document</Button>
+</div>
           </div>
       }
 
@@ -536,6 +719,7 @@ Document</Button>
         </ModalBody>
       </Modal>
       <div id="snackbar" style={{backgroundColor:toasterColor}}>{toaster}</div>
+      </div>
 
     </>
 

@@ -288,8 +288,8 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
 
       // }else if(firstName.length!=0 && lastName.length !=0 && email.length !=0 && companyLegalName.length !=0 &&  pinCode.length !=0 &&  city.length !=0 &&  state.length !=0 &&  country.length !=0 &&  addressLine1.length !=0 &&  businessRole.length !=0 &&  password.length !=0 &&  repeatPassword.length !=0 &&  userName.length !=0  && termCheck==true ) 
     } else if (termCheck == true) {
-      if (optConst  == otp && checkPaUpload == true) {
-      
+      // if (optConst  == otp && checkPaUpload == true) {
+      alert("sdhbhj")
        
         // console.log("here inside")
         axios.post(AxioxExpPort + "createcompany/", {
@@ -323,22 +323,22 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
           var xy = document.getElementById("snackbar");
           xy.className = "show";    
           setToaster("Something went wrong please try again"); setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) } );
-      } else {
-        // setWorningOtp(true)
-        setToaster("Try again after some time")
-        var xz = document.getElementById("snackbar");
-        setToasterColor("#00D100")
-        xz.className = "show";
-        setTimeout(function(){
-           xz.className = xz.className.replace("show", ""); }, 3000)
-      }
+      // } else {
+      //   // setWorningOtp(true)
+      //   setToaster("Try again after some time")
+      //   var xz = document.getElementById("snackbar");
+      //   setToasterColor("red")
+      //   xz.className = "show";
+      //   setTimeout(function(){
+      //      xz.className = xz.className.replace("show", ""); }, 3000)
+      // }
 
     } else {
       console.log("check terms and condition")
       setWorningInput(true);
       setToaster("Check terms and condition")
       var xz = document.getElementById("snackbar");
-      setToasterColor("#00D100")
+      setToasterColor("red")
       xz.className = "show";
       setTimeout(function(){
          xz.className = xz.className.replace("show", ""); }, 3000)

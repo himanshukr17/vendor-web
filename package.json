@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
     "chart.js": "^3.9.1",
+    "dateformat": "^5.0.3",
     "firebase": "^9.10.0",
     "git": "^0.1.5",
     "pdfjs-dist": "2.6.347",

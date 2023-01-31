@@ -11,16 +11,12 @@ import { Modal, ModalBody } from "reactstrap";
 import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
+import dateFormat from 'dateformat';
 function GoodsReturn() {
   const navigate = useNavigate();
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
-  const [thead, setTHead] = useState([
-    "Document Date",
-    "PO Number",
-    "Reference Number",
-    "Action",
-  ]);
+  const [sort,setSort]=useState("ASC")
   const [clickGRData, setClickGRData] = useState([]);
   const headers = [
     { label: "Material", key: "MATERIAL" },
@@ -35,6 +31,7 @@ function GoodsReturn() {
   const [postsPerPage, setPostsPerPage] = useState(5);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const [filterData,setFilterData]=useState([])
   const currentPosts = clickGRData.slice(indexOfFirstPost, indexOfLastPost)
 
 
@@ -45,11 +42,42 @@ function GoodsReturn() {
     axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
       .then((response) => {
         setTBody(response.data);
-
+        setFilterData(response.data)
         console.log("response.data", response.data);
       })
   }, []);
+  const sorting=(col)=>{
+    if(sort ==="ASC"){
+      const sorted =[...tbody].sort((a,b)=>
+      a[col].toLowerCase()> b[col].toLowerCase()? 1 : -1
+      );
+      setTBody(sorted);
+      setSort("DSC")
+      console.log("response.data",tbody);
+    }
+      if(sort ==="DSC"){
+        const sorted =[...tbody].sort((a,b)=>
+        a[col].toLowerCase()<b[col].toLowerCase()? 1 : -1
+        );
+        setTBody(sorted);
+        setSort("ASC")
+      }
 
+    }
+    const handleSearch =(event)=>
+    {
+      var searchElements=event.target.value;
+      console.log(searchElements);
+      if(searchElements.length > 0){
+  // setTBody('')
+  const searchDatas= tbody.filter((item)=>item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE),"ddd, mmm dS,yyyy").toLowerCase().includes(searchElements)|| (item.PO_NO).toString().toLowerCase().includes(searchElements));
+  setTBody(searchDatas)
+  console.log(searchDatas)
+}else{
+  setTBody(filterData)
+}
+
+    }
   const data = clickGRData;
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
@@ -65,16 +93,15 @@ function GoodsReturn() {
       >
         <div
           className="card-body"
-          style={{
-            display: "flex",
-          }}
+        
         >
-          <div className="form-check form-check-inline">
-            <button
+          <div className="row">
+            <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-1">
+              <button
               className="btn btn"
-              style={{
-                borderRadius: 50,
-              }}
+            
               onClick={() => {
                 navigate("/dashboard");
               }}
@@ -83,18 +110,40 @@ function GoodsReturn() {
                 <AiOutlineArrowLeft />
               </IconContext.Provider>
             </button>
-          </div>
-          <div className="form-check form-check-inline">
-            <h4 className="form-check-label" htmlFor="inlineRadio2">
+              </div>
+              <div className="col-md-5">
+
+              <h4 className="form-check-label" htmlFor="inlineRadio2">
+              {/* {location.PROJECT} */}
+              {/* {location.state.name} */}
               Goods Return
             </h4>
+              </div>
+            </div>
+            </div>
+<div className="col-md-4">
+
+</div>
+<div className="col-md-2">
+<input
+          type="text"
+          className="form-control"
+         
+          placeholder="Search"
+          style={{
+            width: "100%",
+            height: 30,
+          }}
+          onChange={(e) => {
+           handleSearch(e)
+          }}
+        />
+</div>
+            
+            
           </div>
-          <div
-            className="form-check form-check-inline"
-            style={{
-              float: "right",
-            }}
-          ></div>
+         
+        
         </div>
         <div className="card-body">
           <table className="table table-light table-bordered table-hover">
@@ -106,18 +155,10 @@ function GoodsReturn() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                {thead.map((thead, index) => {
-                  return (
-                    <th
-                      key={index}
-                      className="text-center"
-                      style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      scope="col"
-                    >
-                      {thead}
-                    </th>
-                  );
-                })}
+                <th onClick={()=>sorting("DOCUMENT_DATE")}  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                    <th onClick={()=>sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                    <th onClick={()=>sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                    <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
 
@@ -138,7 +179,7 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.DOCUMENT_DATE}
+                       {dateFormat( val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
                       </td>
                       <td
                         key={`col-2` + index}
@@ -153,7 +194,7 @@ function GoodsReturn() {
                             setClickGRData(val.return_order)
                           }}
                         >
-                          {val.PO_NO}
+                          {(val.PO_NO)}
                         </Link>
                         <br />
                       </td>
@@ -162,7 +203,7 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.QUOTATION_NO}
+                        {val.STATUS}
                       </td>
                       <td
                         key={`col-5` + index}
@@ -234,9 +275,11 @@ function GoodsReturn() {
           </div>
           <table className="table table-bordered table-striped">
             <thead>
+              <th>Plant</th>
+              <th>Ref Doc No.</th>
               <th>Material</th>
+              <th>Description</th>
               <th>Quantity</th>
-              <th>PLANT</th>
               <th>REMARKS</th>
             </thead>
             <tbody>
@@ -245,16 +288,23 @@ function GoodsReturn() {
                   return (
                     <tr>
                       <td>
+                        {grsData.PLANT}
+                      </td>
+                      
+                      <td>
+                        {grsData.ref}
+                      </td>
+                      <td>
                         {grsData.MATERIAL}
+                      </td>
+                      <td>
+                        {grsData.DESCRIPTION}
                       </td>
                       <td>
                         {grsData.QUANTITY}
                       </td>
                       <td>
                         {grsData.PLANT}
-                      </td>
-                      <td>
-                        {grsData.REMARKS}
                       </td>
                     </tr>
                   );

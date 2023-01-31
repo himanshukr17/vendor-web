@@ -7,59 +7,93 @@ import { useNavigate } from "react-router-dom";
 import { FaFileCsv } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import {Link} from "react-router-dom";
-
 import { Modal,ModalBody } from "reactstrap";
 import {AiOutlineArrowLeft, AiOutlineDownload} from "react-icons/ai";
 import { IconContext } from "react-icons";
 
 import { COLORS } from "../../Constants/theme";
-
+import dateFormat from 'dateformat';
 function PurchaseOrders() {
   const navigate = useNavigate();
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
   const [ClickedPOsData, setClickedPOsData] = useState([]);
   const [ClickedPOsDataArr, setClickedPOsDataArr] = useState([]);
-
-  // console.log("POS,", ClickedPOsDataArr);
-  const [thead, setTHead] = useState([
-    "Document Date",
-    "PO Number",
-    "Reference Number",
-    "Action",
-  ]);
-
-  
+  const [sort,setSort]=useState("ASC");
+  // const [query, setQuery]=useState("")
+  const [filterData, setFilterdata]=useState([])
 const headers = [
   { label: "Plant ID", key: "PLANT_ID" },
-  { label: "Document Date", key: "DOCUMENT_DATE" },
+  { label: "Delevered ", key: "DELIVERED_QUANTITY" },
+  { label: "Material No", key: "MATERIAL" },
+  { label: "Description", key: "MATERIAL_DESCRIPTION" },
   { label: "Item Category", key: "ITEM_CATEGORY" },
+  { label: "Net Price", key: "NET_PRICE" },
   { label: "Order Quantity", key: "ORDER_QUANTITY" },
-  { label: "Net Price", key: "NET_PRICE" }
+  { label: "Pending Quantity", key: "PENDING_QUANTITY" },
 ];
 
 
 const data = ClickedPOsDataArr;
-  const vendorId =localStorage.getItem('vendorId');
-
+  const vendorId =localStorage.getItem('userId');
+console.log("vendorIdvendorId",vendorId)
   const [tbody, setTBody] = useState([]);
   const [currentPage,setCurrentPage]=useState(1);
   const [postsPerPage, setPostsPerPage]=useState(5);
   const indexOfLastPost= currentPage*postsPerPage;
   const indexOfFirstPost= indexOfLastPost -postsPerPage;
   const currentPosts=ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost)
-
+  
   useEffect(() => {
     const fetchPosts= async()=>{
 
       axios.get(AxioxExpPort+"purchase_order/get?id="+vendorId)
       .then((response) => {
         setTBody(response.data);
-       console.log("response.data",response.data);
+        setFilterdata(response.data);
       })
     }
     fetchPosts();
-         }, []);
+  }, []);
+  const sorting=(col)=>{
+    if(sort ==="ASC"){
+      const sorted =[...tbody].sort((a,b)=>
+      a[col].toLowerCase()> b[col].toLowerCase()? 1 : -1
+      );
+      setTBody(sorted);
+      setSort("DSC")
+      console.log("response.data",tbody);
+    }
+      if(sort ==="DSC"){
+        const sorted =[...tbody].sort((a,b)=>
+        a[col].toLowerCase()<b[col].toLowerCase()? 1 : -1
+        );
+        setTBody(sorted);
+        setSort("ASC")
+      }
 
+    }
+
+    const handleSearch =(event)=>
+    {
+      var searchElements=event.target.value;
+      // setQuery(searchElements);
+      var length=Number(searchElements.length)
+      console.log(searchElements.length);
+      if(length > 0){
+  // setTBody('')
+  const searchDatas= tbody.filter((item)=>item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE),"ddd, mmm dS,yyyy").toLowerCase().includes(searchElements)|| (item.PO_NO).toString().toLowerCase().includes(searchElements));
+  setTBody(searchDatas)
+  console.log(searchDatas)
+}else{
+  setTBody(filterData)
+}
+
+    }
+// const [query,setQuery]=useState("")
+//     const search=(datass)=>{
+//       return datass.filter(item=> item.DOCUMENT_DATE.toLowerCase.includes(query) )
+//       console.log(datass)
+//     }
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber =>setCurrentPage(pageNumber)
@@ -74,16 +108,15 @@ const data = ClickedPOsDataArr;
       >
         <div
           className="card-body"
-          style={{
-            display: "flex",
-          }}
+         
         >
-          <div className="form-check form-check-inline">
-            <button
+          <div className="row">
+            <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-1">
+              <button
               className="btn btn"
-              style={{
-                borderRadius: 50,
-              }}
+            
               onClick={() => {
                 navigate("/dashboard");
               }}
@@ -92,20 +125,40 @@ const data = ClickedPOsDataArr;
                 <AiOutlineArrowLeft />
               </IconContext.Provider>
             </button>
-          </div>
-          <div className="form-check form-check-inline">
-            <h4 className="form-check-label" htmlFor="inlineRadio2">
+              </div>
+              <div className="col-md-5">
+
+              <h4 className="form-check-label" htmlFor="inlineRadio2">
               {/* {location.PROJECT} */}
               {/* {location.state.name} */}
               Purchase Orders
             </h4>
+              </div>
+            </div>
+            </div>
+<div className="col-md-4">
+
+</div>
+<div className="col-md-2">
+<input
+          type="text"
+          className="form-control"
+         
+          placeholder="Search"
+          style={{
+            width: "100%",
+            height: 30,
+          }}
+          onChange={(e) => {
+           handleSearch(e)
+          }}
+        />
+</div>
+            
+            
           </div>
-          <div
-            className="form-check form-check-inline"
-            style={{
-              float: "right",
-            }}
-          ></div>
+         
+        
         </div>
         <div className="card-body">
           <table className="table table-light table-bordered table-hover">
@@ -117,18 +170,11 @@ const data = ClickedPOsDataArr;
                   borderColor: COLORS.gray10,
                 }}
               >
-                {thead.map((thead, index) => {
-                  return (
-                    <th
-                      key={index}
-                      className="text-center"
-                      style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      scope="col"
-                    >
-                      {thead}
-                    </th>
-                  );
-                })}
+                    <th onClick={()=>sorting("DOCUMENT_DATE")}  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                    <th onClick={()=>sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                    <th onClick={()=>sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                    <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                  
               </tr>
             </thead>
 
@@ -149,7 +195,7 @@ const data = ClickedPOsDataArr;
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.DOCUMENT_DATE}
+                       {dateFormat( val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
                       </td>
                       <td
                         key={`col-2` + index}
@@ -160,19 +206,6 @@ const data = ClickedPOsDataArr;
                           to=""
                           onClick={(e) => {
                             togglePODetailsFlag();
-                            setClickedPOsData({
-                              DOCUMENT_DATE: val.DOCUMENT_DATE,
-                              PO_NUMBER: val.PO_NUMBER,
-                              REFERENCE_NUMBER: val.REFERENCE_NUMBER,
-                              MANUFACTURING: val.MANUFACTURING,
-                              ITEM_CATEGORY: val.ITEM_CATEGORY,
-                              MATERIAL: val.MATERIAL,
-                              DESCRIPTION: val.DESCRIPTION,
-                              QUATITY: val.QUATITY,
-                              PRICE: val.PRICE,
-                              INVOICE_URL: "http://localhost:3007/pdf/testing.pdf",
-                              // POS:val.POS
-                            });
                             setClickedPOsDataArr(val.purchase_order)
                           }}
                         >
@@ -185,7 +218,12 @@ const data = ClickedPOsDataArr;
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.QUOTATION_NO}
+                        {val.STATUS =='Open'&&
+                        <span className="badge badge-success" >Open</span>
+                        }
+                        {val.STATUS =='Close'&&
+                        <span className="badge badge-danger" >Close</span>
+                        }
                       </td>
                       <td
                         key={`col-5` + index}
@@ -275,11 +313,14 @@ const data = ClickedPOsDataArr;
          
           <table  className="table table-bordered table-striped">
           <thead>
-             <th>PLANT ID</th>
-             <th>DOCUMENT_DATE</th>
-             <th>ITEM_CATEGORY</th>
-             <th>ORDER_QUANTITY</th>
-             <th>NET_PRICE</th>
+             <th>Plant ID</th>
+             <th>Material No</th>
+             <th>Description</th>
+             <th>Delevered </th>
+             <th>Item Category</th>
+             <th>Net Price</th>
+             <th>Order Quantity</th>
+             <th>Pending Quantity</th>
              
           </thead>
             <tbody>
@@ -291,16 +332,25 @@ const data = ClickedPOsDataArr;
                       {posData.PLANT_ID}
                     </td>
                     <td>
-                      {posData.DOCUMENT_DATE}
+                      {(posData.MATERIAL).toString()}
+                    </td>
+                    <td>
+                      {posData.MATERIAL_DESCRIPTION}
+                    </td>
+                    <td>
+                      {posData.DELIVERED_QUANTITY}
                     </td>
                     <td>
                       {posData.ITEM_CATEGORY}
                     </td>
                     <td>
+                      {posData.NET_PRICE}
+                    </td>
+                    <td>
                       {posData.ORDER_QUANTITY}
                     </td>
                     <td>
-                      {posData.NET_PRICE}
+                      {posData.PENDING_QUANTITY}
                     </td>
                     
                   </tr>

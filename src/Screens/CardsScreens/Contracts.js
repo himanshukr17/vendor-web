@@ -9,6 +9,7 @@ import { AiOutlineArrowLeft} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import Pagination from "../../Components/Pagination";
 import { COLORS } from "../../Constants/theme";
+import dateFormat from 'dateformat';
 
 function Contract() {
   const navigate = useNavigate();
@@ -17,8 +18,11 @@ function Contract() {
   const [ClickedPOsData, setClickedPOsData] = useState([]);
 
   const [thead, setTHead] = useState([
-    "Agreement Date",
+    "Material No",
+    "Description",
     "Contract Number",
+    "Validity Start",
+    "Validity End",
     "Plant",
   ]);
   const [clickContractData,setClickContractData]=useState([]);
@@ -130,22 +134,44 @@ function Contract() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.AGREEMENT_DATE}
+                        {val.MATERIAL_NO}
                       </td>
                       <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        <Link
+                        {/* <Link
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickContractData(val.Contract_details)
                           }}
-                        >
-                          {val.CONTRACT_NO}
-                        </Link>
+                        > */}
+                          {val.MATERIAL_DESCRIPTION}
+                        {/* </Link> */}
                         <br />
+                      </td>
+                      <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.CONTRACT_NO}
+                      </td>
+                      <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                                                                   {dateFormat( val.VALIDITY_START, "ddd, mmm dS, yyyy")}
+
+                      </td>
+                      <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                                             {dateFormat( val.VALIDITY_END, "ddd, mmm dS, yyyy")}
                       </td>
                       <td
                         key={`col-3` + index}

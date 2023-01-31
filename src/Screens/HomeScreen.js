@@ -84,7 +84,7 @@ function HomeScreen() {
   };
 const [dashboardData,setDashboardData]=useState("")
   useEffect(() => {
-    axios.get(AxioxExpPort+"count/getting?id="+vendorId)
+    axios.get(AxioxExpPort+"count/all?id="+vendorId)
     .then((response) => {
       setDashboardData(response.data);
 
@@ -317,7 +317,7 @@ const [dashboardData,setDashboardData]=useState("")
                         color: "#FF7F50",
                         fontWeight: 700,
                         fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_DATA}</span>{" "}
+                      }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_PO}</span>{" "}
                     <span   style={{
                       
                        
@@ -384,7 +384,7 @@ const [dashboardData,setDashboardData]=useState("")
                         color: "#FF7F50",
                         fontWeight: 700,
                         fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">{dashboardData.CONTRACTS}</span>{" "}
+                      }} className=" small pt-1 fw-bold text-right">{dashboardData.CONTRACT_COUNT}</span>{" "}
                     <span   style={{
                       
                        
@@ -552,7 +552,7 @@ const [dashboardData,setDashboardData]=useState("")
             </div>
           </Link>
         </div>
-        <div className="col-lg-3 col-6">
+        {/* <div className="col-lg-3 col-6">
           <Link >
             <div
               className="card info-card sales-card"
@@ -575,9 +575,7 @@ const [dashboardData,setDashboardData]=useState("")
                 <a className="icon" href="#" data-bs-toggle=""></a>
               </div>
               <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
+            
                 <div className="d-flex align-items-center">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
@@ -606,26 +604,12 @@ const [dashboardData,setDashboardData]=useState("")
                        
                       }}  className="text-muted small pt-2 ps-1">Total Receipts</span><br></br>
                      
-                  </div> 
-
-                  {/* <div className="ps-3">
-                    <h1
-                      style={{
-                        fontWeight: 700,
-                        fontSize: 60,
-                        color: "#6AB187",
-                      }}
-                    >
-                      145
-                    </h1>
-                    <span className="text-success small pt-1 fw-bold">12%</span>{" "}
-                    <span className="text-muted small pt-2 ps-1">increase</span>
-                  </div> */}
+                  </div>
                 </div>
-              </div>
+              </div> 
             </div>
           </Link>
-        </div>
+        </div>*/}
         
 {/* 
         <div

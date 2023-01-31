@@ -11,7 +11,7 @@ import {
 } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
-
+import dateFormat from 'dateformat';
 function Receiveables() {
   const navigate = useNavigate();
   const [clickRecData,setClickRecvData]=useState([]);
@@ -19,20 +19,14 @@ function Receiveables() {
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
   const [ClickedPOsData, setClickedPOsData] = useState([]);
 
-  const [thead, setTHead] = useState([
-    "Document Date",
-    "PO Number",
-    "Reference Number",
-    "Status"
-    
-  ]);
-
   const [tbody, setTBody] = useState([]);
   const vendorId =localStorage.getItem('userId');
   const [currentPage,setCurrentPage]=useState(1);
   const [postsPerPage, setPostsPerPage]=useState(5);
   const indexOfLastPost= currentPage*postsPerPage;
   const indexOfFirstPost= indexOfLastPost -postsPerPage;
+  const [sort,setSort]=useState("ASC")
+
   const currentPosts=clickRecData.slice(indexOfFirstPost, indexOfLastPost)
    const headers = [
     { label: "First Name", key: "firstname" },
@@ -49,7 +43,24 @@ function Receiveables() {
           console.log("response.data",response.data);
          })
          }, []);
-
+         const sorting=(col)=>{
+          if(sort ==="ASC"){
+            const sorted =[...tbody].sort((a,b)=>
+            a[col].toLowerCase()> b[col].toLowerCase()? 1 : -1
+            );
+            setTBody(sorted);
+            setSort("DSC")
+            console.log("response.data",tbody);
+          }
+            if(sort ==="DSC"){
+              const sorted =[...tbody].sort((a,b)=>
+              a[col].toLowerCase()<b[col].toLowerCase()? 1 : -1
+              );
+              setTBody(sorted);
+              setSort("ASC")
+            }
+      
+          }
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber =>setCurrentPage(pageNumber)
@@ -109,18 +120,11 @@ function Receiveables() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                {thead.map((thead, index) => {
-                  return (
-                    <th
-                      key={index}
-                      className="text-center"
-                      style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      scope="col"
-                    >
-                      {thead}
-                    </th>
-                  );
-                })}
+                  <th onClick={()=>sorting("DOCUMENT_DATE")}  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                    <th onClick={()=>sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                    <th onClick={()=>sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                    <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                  
               </tr>
             </thead>
 
@@ -141,7 +145,7 @@ function Receiveables() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.DOCUMENT_DATE}
+                    {dateFormat( val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
                       </td>
                       <td
                         key={`col-2` + index}
@@ -194,73 +198,100 @@ function Receiveables() {
         </div>
       </div>
 
-      <Modal
-        size="lg"
+ 
+
+      
+<Modal size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
-          display: "flex",
+        
           justifyContent: "center",
           alignItems: "center",
-          height: "90vh",
+         
         }}
       >
         <ModalBody
+          style={{
+            marginTop: 0,
+          }}
         >
-          <div className="modal-header model-lg">
-            <h5 className="modal-title" id="exampleModalLabel">
-            Receiveables Details
+      
+          <div className="row">
+              <div className="col-md-8">
+       
+              <h5 className="modal-title " id="exampleModalLabel">
+              Receiveables Details
             </h5>
-        
-            <button
+             
+              </div>
+              <div className="col-md-4">
+              <a
+              className="navbar-brand"
               type="button"
-              className="btn-close"
+              style={{
+                color: "#007bff",
+                float: "right",
+                padding: 1,
+                height:'5px'
+              }}
+              onClick={() => {
+                togglePODetailsFlag();
+              }}
+            >
+              Close
+            </a>
+            {/* <button
+              type="button"
+              className="btn-close float-right"
               data-bs-dismiss="modal"
               aria-label="Close"
               onClick={() => {
                 togglePODetailsFlag();
               }}
-            />
-          </div>
-          <div className="modal-body">
-          
-
-
+            /> */}
+            </div>
+            </div>
+         
           <table  className="table table-bordered table-striped">
           <thead>
-             <th>Plant/ Receiving area</th>
-             <th>Material</th>
+          <th>GRN No</th>
+             <th>GRN Quantity</th>
+             <th>Material No</th>
+             <th>Material Doc</th>
+             <th>PO Date</th>
+             <th>PO Quantity</th>
              <th>Receiving Date</th>
              
           </thead>
             <tbody>
-              {
+            {
                 
                 currentPosts.map((grsData, index) => {
                 return (
                   <tr>
-                    <td>
-                      {grsData.PLANT_AREA}
-                    </td>
-                    <td>
-                      {grsData.MATERIAL_NO}
-                    </td>
-                    <td>
-                      {grsData.RECEIVING_DATE}
-                    </td>
+                    <td>{grsData.GRN_NO}</td>
+                    <td>{grsData.GR_QTY}</td>
+                    <td>{grsData.MATERIAL_NO}</td>
+
+                    <td>{grsData.MATERIAL_DOCUMENT}</td>
+                    <td>{dateFormat(grsData.PO_DATE, "ddd, mmm dS, yyyy")}</td>
+                    <td>{grsData.PO_QTY}</td>
+                    <td>{dateFormat(grsData.RECEIVING_DATE, "ddd, mmm dS, yyyy")}</td>
+                   
                    
                   </tr>
                 );
                 })
             }
-              
             </tbody>
+          
           </table>
           <Pagination  postPerPage={postsPerPage} totalPosts={clickRecData.length} paginate={paginate}/>
-
-     </div>
+         
         </ModalBody>
       </Modal>
+       
     </>
   );
 }
