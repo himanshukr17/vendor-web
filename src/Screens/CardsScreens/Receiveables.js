@@ -1,69 +1,135 @@
 import React, { useState, useEffect } from "react";
 import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
-import {AxioxExpPort} from "../AxioxExpPort"
+import { AxioxExpPort } from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Pagination from "../../Components/Pagination";
-import {Modal, ModalBody } from "reactstrap";
+import { Modal, ModalBody } from "reactstrap";
 import {
   AiOutlineArrowLeft,
 } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
+import DateRangePicker from "rsuite/esm/DateRangePicker";
 function Receiveables() {
   const navigate = useNavigate();
-  const [clickRecData,setClickRecvData]=useState([]);
+  const [clickRecData, setClickRecvData] = useState([]);
   const data = clickRecData;
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
-  const [ClickedPOsData, setClickedPOsData] = useState([]);
-
+  const [modalDataStatus, setModalDataStatus] = useState(true);
+  const [filterData, setFilterdata] = useState([])
   const [tbody, setTBody] = useState([]);
-  const vendorId =localStorage.getItem('userId');
-  const [currentPage,setCurrentPage]=useState(1);
-  const [postsPerPage, setPostsPerPage]=useState(5);
-  const indexOfLastPost= currentPage*postsPerPage;
-  const indexOfFirstPost= indexOfLastPost -postsPerPage;
-  const [sort,setSort]=useState("ASC")
+  const vendorId = localStorage.getItem('userId');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const [sort, setSort] = useState("ASC");
+  const [emptyModalTable, setEmptyModalTable] = useState([]);
 
-  const currentPosts=clickRecData.slice(indexOfFirstPost, indexOfLastPost)
-   const headers = [
+  const currentPosts = clickRecData.slice(indexOfFirstPost, indexOfLastPost)
+  const headers = [
     { label: "First Name", key: "firstname" },
     { label: "Last Name", key: "lastname" },
     { label: "Email", key: "email" }
   ];
 
   useEffect(() => {
-         axios.get(AxioxExpPort+"received/get?id="+vendorId)
-         .then((response) => {
-           setTBody(response.data);
-      
+    const fetchData = async () => {
+      axios.get(AxioxExpPort + "received/get?id=" + vendorId)
+        .then((response) => {
+          setTBody(response.data);
+          setFilterdata(response.data)
 
-          console.log("response.data",response.data);
-         })
-         }, []);
-         const sorting=(col)=>{
-          if(sort ==="ASC"){
-            const sorted =[...tbody].sort((a,b)=>
-            a[col].toLowerCase()> b[col].toLowerCase()? 1 : -1
-            );
-            setTBody(sorted);
-            setSort("DSC")
-            console.log("response.data",tbody);
-          }
-            if(sort ==="DSC"){
-              const sorted =[...tbody].sort((a,b)=>
-              a[col].toLowerCase()<b[col].toLowerCase()? 1 : -1
-              );
-              setTBody(sorted);
-              setSort("ASC")
-            }
-      
-          }
+          console.log("response.data", response.data);
+        })
+    }
+    fetchData()
+  }, []);
+  const sorting = (col) => {
+    if (sort === "ASC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setTBody(sorted);
+      setSort("DSC")
+      console.log("response.data", tbody);
+    }
+    if (sort === "DSC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setTBody(sorted);
+      setSort("ASC")
+    }
+
+  }
+  const getTwodatesGRN = (e) => {
+    if (e != null) {
+      var s = e[0];
+      var e = e[1];
+      var arr = [];
+
+      for (var a = [], d = new Date(s); d <= new Date(e); d.setDate(d.getDate() + 1)) {
+        var dateElement = dateFormat((new Date(d)), "ddd, mmm dS,yyyy").toLowerCase()
+        const searchDatasss = tbody.filter((item) => dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(dateElement));
+        searchDatasss.map((itemss) => {
+          arr.push(itemss)
+        })
+      } setTBody(arr);
+      if (arr.length == 0) {
+        setIsPurchaseOrderEmpty(false)
+      }
+    } else {
+      setIsPurchaseOrderEmpty(true)
+      setTBody(filterData)
+    }
+  }
+  const handleSearchGRNModal = (event) => {
+    var searchElements = event.target.value;
+    // setQuery(searchElements);
+    var length = Number(searchElements.length)
+    console.log("lengthlength", emptyModalTable)
+    if (length > 0) {
+      // setTBody('')
+      const searchDatassp = clickRecData.filter((item) => item.MATERIAL_DOCUMENT.toLowerCase().includes(searchElements) || item.MATERIAL_NO.toLowerCase().includes(searchElements));
+      console.log("searchElements.length", searchDatassp);
+      setClickRecvData(searchDatassp);
+      if (searchDatassp.length == 0) {
+        setModalDataStatus(false)
+
+      }
+    } else {
+      setModalDataStatus(true)
+      setClickRecvData(emptyModalTable)
+    }
+  }
+  const handleSearchGRN = (event) => {
+    var searchElements = event.target.value;
+    // setQuery(searchElements);
+    var length = Number(searchElements.length)
+    if (length > 0) {
+      // setTBody('')
+      const searchDatas = tbody.filter((item) => item.GRN_NO.toString().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.GRN_REF).toString().toLowerCase().includes(searchElements));
+      setTBody(searchDatas)
+      if (searchDatas.length == 0) {
+        setIsPurchaseOrderEmpty(false)
+      }
+    } else {
+      setIsPurchaseOrderEmpty(true)
+      setTBody(filterData)
+    }
+
+  }
+  const handelAll = () => {
+    setIsPurchaseOrderEmpty(true);
+    setTBody(filterData)
+  }
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
-  const paginate = pageNumber =>setCurrentPage(pageNumber)
+  const paginate = pageNumber => setCurrentPage(pageNumber)
 
   return (
     <>
@@ -76,41 +142,62 @@ function Receiveables() {
       >
         <div
           className="card-body"
-          style={{
-            display: "flex",
-          }}
         >
-          <div className="form-check form-check-inline">
-            <button
-              className="btn btn"
-              style={{
-                borderRadius: 50,
-              }}
-              onClick={() => {
-                navigate("/dashboard");
-              }}
-            >
-              <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-              <AiOutlineArrowLeft />
-              </IconContext.Provider>
-            </button>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="row">
+                <div className="col-md-1">
+                  <button
+                    className="btn btn"
+
+                    onClick={() => {
+                      navigate("/dashboard");
+                    }}
+                  >
+                    <IconContext.Provider value={{ color: "#000", size: "22px" }}>
+                      <AiOutlineArrowLeft />
+                    </IconContext.Provider>
+                  </button>
+                </div>
+                <div className="col-md-7">
+
+                  <h4 className="form-check-label" htmlFor="inlineRadio2">
+                    {/* {location.PROJECT} */}
+                    {/* {location.state.name} */}
+                    Goods Receipt Notes/Number            </h4>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodatesGRN(e) }} placeholder="Search Date Range" />
+            </div>
+            <div className="col-md-2">
+              <input
+                type="text"
+                className="form-control"
+
+                placeholder="Search"
+                style={{
+                  width: "100%",
+                  height: 35,
+                }}
+                onChange={(e) => {
+                  handleSearchGRN(e)
+                }}
+              />
+            </div>
+            <div className="col-md-1">
+              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAll}>All</button>
+
+            </div>
+
+
           </div>
-          <div className="form-check form-check-inline">
-            <h4 className="form-check-label" htmlFor="inlineRadio2">
-              {/* {location.PROJECT} */}
-              {/* {location.state.name} */}
-              Receiveables
-            </h4>
-          </div>
-          <div
-            className="form-check form-check-inline"
-            style={{
-              float: "right",
-            }}
-          ></div>
+
         </div>
-        
+
         <div className="card-body">
+          {/* <p class="text-right" style={{ marginTop: "-30px" }}>{" "}</p> */}
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr
@@ -120,11 +207,13 @@ function Receiveables() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                  <th onClick={()=>sorting("DOCUMENT_DATE")}  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                    <th onClick={()=>sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                    <th onClick={()=>sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
-                    <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
-                  
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                {/* <th onClick={()=>sorting("received_datas[0].GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th> */}
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
+                <th onClick={() => sorting("GRN_REF")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Reference No</th>
+                {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th> */}
+
               </tr>
             </thead>
 
@@ -141,13 +230,6 @@ function Receiveables() {
                       className="table-light"
                     >
                       <td
-                        key={`col-1` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                    {dateFormat( val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
-                      </td>
-                      <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
@@ -156,33 +238,38 @@ function Receiveables() {
                           to=""
                           onClick={(e) => {
                             togglePODetailsFlag();
-                            
-                      setClickRecvData(val.received_datas)
+                            setClickRecvData(val.received_datas);
+                            setEmptyModalTable(val.received_datas);
+
                           }}
                         >
-                          {val.PO_NO}
+                          {val.GRN_NO.toString()}
                         </Link>
                         <br />
+                      </td>
+                      <td
+                        key={`col-1` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
+                      </td>
+
+                      <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.received_datas.length}
+
                       </td>
                       <td
                         key={`col-3` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.STATUS}
+                        {val.GRN_REF}
                       </td>
-                      
-                      <td
-                        key={`col-3` + index}
-                        className="text-center"
-                        style={{textAlign:"center", width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                      {val.STATUS==="106" ||val.STATUS==="101"?
-                        <span id="green" className="dot"></span>:<span id="red" className="dot"></span> 
-                  }
-               
-                      </td>
-                
                     </tr>
                   );
                 })
@@ -198,17 +285,17 @@ function Receiveables() {
         </div>
       </div>
 
- 
 
-      
-<Modal size="lg"
+
+
+      <Modal size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
-        
+
           justifyContent: "center",
           alignItems: "center",
-         
+
         }}
       >
         <ModalBody
@@ -216,82 +303,101 @@ function Receiveables() {
             marginTop: 0,
           }}
         >
-      
-          <div className="row">
-              <div className="col-md-8">
-       
-              <h5 className="modal-title " id="exampleModalLabel">
-              Receiveables Details
-            </h5>
-             
-              </div>
-              <div className="col-md-4">
-              <a
-              className="navbar-brand"
-              type="button"
-              style={{
-                color: "#007bff",
-                float: "right",
-                padding: 1,
-                height:'5px'
-              }}
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            >
-              Close
-            </a>
-            {/* <button
-              type="button"
-              className="btn-close float-right"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            /> */}
-            </div>
-            </div>
-         
-          <table  className="table table-bordered table-striped">
-          <thead>
-          <th>GRN No</th>
-             <th>GRN Quantity</th>
-             <th>Material No</th>
-             <th>Material Doc</th>
-             <th>PO Date</th>
-             <th>PO Quantity</th>
-             <th>Receiving Date</th>
-             
-          </thead>
-            <tbody>
-            {
-                
-                currentPosts.map((grsData, index) => {
-                return (
-                  <tr>
-                    <td>{grsData.GRN_NO}</td>
-                    <td>{grsData.GR_QTY}</td>
-                    <td>{grsData.MATERIAL_NO}</td>
 
-                    <td>{grsData.MATERIAL_DOCUMENT}</td>
-                    <td>{dateFormat(grsData.PO_DATE, "ddd, mmm dS, yyyy")}</td>
-                    <td>{grsData.PO_QTY}</td>
-                    <td>{dateFormat(grsData.RECEIVING_DATE, "ddd, mmm dS, yyyy")}</td>
-                   
-                   
-                  </tr>
-                );
+          <div className="row">
+            <div className="col-md-8">
+
+              <h5 className="modal-title " id="exampleModalLabel">
+                Goods Receipt Details
+              </h5>
+
+            </div>
+
+            <div className="col-md-1">
+
+            </div>
+            <div className="col-md-3">
+              <input
+                type="text"
+                className="form-control"
+
+                placeholder="Material No / Description"
+                style={{
+                  width: "100%",
+                  height: 35,
+                  marginBottom: 3
+                }}
+                onChange={(e) => {
+                  handleSearchGRNModal(e)
+                }}
+              />
+            </div>
+
+          </div>
+
+          <table className="table table-bordered table-striped">
+            <thead>
+              <th>PO Number</th>
+              <th>PO Date</th>
+              <th>Material No</th>
+              <th>Material Description</th>
+              <th>Received Date</th>
+              <th>PO Quantity</th>
+              <th>GR Quantity</th>
+            </thead>
+            <tbody>
+              {modalDataStatus ? (
+                currentPosts.map((grsData, index) => {
+                  return (
+                    <tr>
+                      <td>{grsData.PO_NO.toString()}</td>
+                      <td>{dateFormat(grsData.PO_DATE, "ddd, mmm dS, yyyy")}</td>
+                      <td>{grsData.MATERIAL_NO}</td>
+                      <td>{grsData.MATERIAL_DOCUMENT}</td>
+                      <td>{dateFormat(grsData.RECEIVING_DATE, "ddd, mmm dS, yyyy")}</td>
+                      <td>{grsData.PO_QTY}</td>
+                      <td>{grsData.GR_QTY}</td>
+                    </tr>
+                  );
                 })
-            }
+              ) :
+                (
+                  <tr>
+                    <td colSpan={7} className="text-center">
+                      No Data Found
+                    </td>
+                  </tr>
+                )
+              }
             </tbody>
-          
+
           </table>
-          <Pagination  postPerPage={postsPerPage} totalPosts={clickRecData.length} paginate={paginate}/>
-         
+          <div className="row">
+            <div className="col-md-11">
+              <Pagination postPerPage={postsPerPage} totalPosts={clickRecData.length} paginate={paginate} />
+
+            </div>
+            <div className="col-md-1">
+              <a
+                className="h6"
+                type="button"
+                style={{
+                  color: "#007bff",
+                  float: "right",
+                  padding: 5,
+                  textDecoration: 'none',
+
+                }}
+                onClick={() => {
+                  togglePODetailsFlag();
+                }}
+              >
+                Close
+              </a>
+            </div>
+          </div>
         </ModalBody>
       </Modal>
-       
     </>
   );
 }

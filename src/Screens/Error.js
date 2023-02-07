@@ -1,10 +1,18 @@
 import React from "react";
-import { Link} from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 
 
 function Error() {
+  const navigate = useNavigate();
 
+  const userID =localStorage.getItem('userId');
 
+if(userID!=''){
+  navigate("/dashboard");
+}else{
+  
+  navigate("/");
+}
 
   return (
     <div>

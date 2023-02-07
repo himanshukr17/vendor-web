@@ -1,10 +1,10 @@
 import React, { useState,  useEffect  } from "react";
 import axios from "axios";
 // import { Bar } from "react-chartjs-2";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract,FaUsers } from "react-icons/fa";
+import {  FaFileContract,FaUsers } from "react-icons/fa";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { AiFillReconciliation } from "react-icons/ai";
 import {AxioxExpPort} from "./AxioxExpPort"
@@ -94,13 +94,7 @@ const [dashboardData,setDashboardData]=useState("")
     }, []);
 
   return (
-    <div
-    style={{
-      marginBottom:288,
-    }}  
-    >
-  
-
+    <div>
       <div
         className="row"
         style={{
@@ -108,9 +102,102 @@ const [dashboardData,setDashboardData]=useState("")
         }}
       >
         <div id="google_translate_element"></div>
-        
         <div className="col-lg-3 col-6">
-        <Link to="/pordersuppli">
+          <Link to="/manage"
+          style={{
+            textDecoration:'none',
+   
+          }}
+          >
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Manage Vendor
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+                {/* <h5 className="card-title">
+                    Sales <span>| Today</span>
+                  </h5> */}
+              
+                  <div className="row">
+                  <div className="col-md-4">
+                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <IconContext.Provider
+                      value={{ color: "#0275d8", size: "60px" }}
+                    >
+                      {" "}
+                      <FaUsers />
+                    </IconContext.Provider>
+                  </div>
+                  </div>
+                  <div className="col-md-8 text-right" >
+                   <span    style={{
+                        color: "#FF7F50",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_DATA}</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1">Total Vendor</span><br></br>
+                     
+                  </div> 
+
+                  {/* <div className="col-md-8 text-right">
+
+                
+<span   style={{
+  
+   
+  }}  className="text-muted small pt-2 ps-1">Approval Pending 
+</span><br></br>
+   
+<span   style={{
+  
+   
+  }}  className="text-muted small pt-2 ps-1">Approved Vendors</span><br></br>
+   
+<span   style={{
+  
+   
+  }}  className="text-muted small pt-2 ps-1">Create Vendors</span>
+</div> */}
+
+</div>
+
+</div>
+</div>
+          </Link>
+        </div>
+        <div className="col-lg-3 col-6">
+        <Link to="/pordersuppli" style={{
+            textDecoration:'none',
+   
+          }}>
           
             <div
               className="card info-card sales-card"
@@ -176,7 +263,10 @@ const [dashboardData,setDashboardData]=useState("")
          
         </div>
         <div className="col-lg-3 col-6">
-          <Link to="/grs">
+          <Link to="/grs" style={{
+            textDecoration:'none',
+   
+          }}>
             <div
               className="card info-card sales-card"
               style={
@@ -240,7 +330,11 @@ const [dashboardData,setDashboardData]=useState("")
         </div>
        
         <div className="col-lg-3 col-6">
-          <Link to="/mcs">
+          <Link to="/mcs" style={{
+            textDecoration:'none',
+   
+          }}
+          >
             <div
               className="card info-card sales-card"
               style={
@@ -288,70 +382,7 @@ const [dashboardData,setDashboardData]=useState("")
             </div>
           </Link>
         </div>
-        <div className="col-lg-3 col-6">
-          <Link to="/cntc">
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Manage Vendor
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-              
-                  <div className="row">
-                  <div className="col-md-4">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
-                    >
-                      {" "}
-                      <FaUsers />
-                    </IconContext.Provider>
-                  </div>
-                  </div>
-                  <div className="col-md-8 text-right">
-
-                
-<span   style={{
-  
-   
-  }}  className="text-muted small pt-2 ps-1">Approval Pending 
-</span><br></br>
-   
-<span   style={{
-  
-   
-  }}  className="text-muted small pt-2 ps-1">Approved Vendors</span><br></br>
-   
-<span   style={{
-  
-   
-  }}  className="text-muted small pt-2 ps-1">Create Vendors</span>
-</div>
-
-</div>
-
-</div>
-</div>
-          </Link>
-        </div>
+    
         
 {/* 
         <div

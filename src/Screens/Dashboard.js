@@ -18,7 +18,10 @@ function Dashboard() {
         <HomeScreen />
       </div>
       <div
-        style={{ marginBottom: -70,
+         style={{ position:'absolute',
+      bottom:0,
+      display:'block',
+      width:"100%"
         }}
       >
         <Footer />

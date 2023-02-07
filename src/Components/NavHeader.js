@@ -223,9 +223,8 @@ const NavHeader = () => {
                       //   textAlign: "center",
                       // }}
                       onClick={() => {
-                        localStorage.removeItem('token') 
-                        localStorage.removeItem('userType') 
-                        localStorage.removeItem('userId') 
+                        localStorage.clear() 
+                       
                         window.location.href="/"                 
                       }}
                     >

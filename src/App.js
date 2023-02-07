@@ -21,14 +21,15 @@ import Profile from "./Screens/CardsScreens/Profile"
 // Supplier
 import PurchaseOrderSupplier from './Screens/CardsScreens/PurchaseOrderSupplier';
 import DashboardSupplier from './Screens/DashboardSupplier';
-
+import ManageVendor from './Screens/CardsScreens/Buyer/ManageVendor';
 
 function App() {
   const userType =localStorage.getItem('userType');
+  const userID =localStorage.getItem('userId');
   const [userTypeDef,setUserTypeDef]=useState(userType)
   
   const [isLoggedIn, setisLoggedIn] = useState(null);
-  console.log('userTypeDef',userTypeDef)
+  console.log('userTypeDef',userID)
   return (
     <div className="App">
       {/* Routes To screens start  */}
@@ -39,9 +40,9 @@ function App() {
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/checkStatus" element={<CheckStatus/>} exact />
           <Route path="/signup" element={<SignUp />} exact />
+          <Route path="/manage" element={<Protected><ManageVendor/></Protected>} exact />
           <Route path="/home" element={<Protected><DashboardSupplier/></Protected>} exact />
           <Route path="/pordersuppli" element={<PurchaseOrderSupplier />} exact />
-          <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
           <Route path="/pos" element={<Protected><PurchaseOrders/></Protected>} exact />

@@ -96,6 +96,7 @@ const [dashboardData,setDashboardData]=useState("")
     <div
     style={{
       marginBottom:26
+      
     }}  
     >
   
@@ -212,12 +213,16 @@ const [dashboardData,setDashboardData]=useState("")
         </div> */}
             
         <div className="col-lg-3 col-6">
-          <Link to="/pos">
+          <Link to="/pos"  style={{
+            textDecoration:'none',
+   
+          }}>
             <div
               className="card info-card sales-card"
               style={
                 {
                   // float: "left",
+                  backgroundColor:"#EBEBFF"
                 }
               }
             >
@@ -255,6 +260,8 @@ const [dashboardData,setDashboardData]=useState("")
                         color: "#FF6347",
                         fontWeight: 700,
                         fontSize: 30,
+                        
+                        
                       }} className=" small pt-1 fw-bold">{dashboardData.OPEN_PO}</span>{" "}
                     <span   style={{
                       
@@ -278,11 +285,15 @@ const [dashboardData,setDashboardData]=useState("")
           </Link>
         </div>
         <div className="col-lg-3 col-6">
-          <Link to="/grs">
+          <Link to="/grs"  style={{
+            textDecoration:'none',
+   
+          }}>
             <div
               className="card info-card sales-card"
               style={
                 {
+                  backgroundColor:"#EBEBFF"
                   // float: "left",
                 }
               }
@@ -341,126 +352,15 @@ const [dashboardData,setDashboardData]=useState("")
           </Link>
         </div>
         <div className="col-lg-3 col-6">
-          <Link to="/cntc">
+          <Link to="/res"  style={{
+            textDecoration:'none',
+   
+          }}>
             <div
               className="card info-card sales-card"
               style={
                 {
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Contract
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-              
-                  <div className="row">
-                  <div className="col-md-4">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
-                    >
-                      {" "}
-                      <FaUsers />
-                    </IconContext.Provider>
-                  </div>
-                  </div>
-                  <div className="col-md-8 text-right">
-
-                  <span    style={{
-                        color: "#FF7F50",
-                        fontWeight: 700,
-                        fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">{dashboardData.CONTRACT_COUNT}</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 ">Total Contracts</span>
-                  </div>
-
-                  </div>
-
-              </div>
-            </div>
-          </Link>
-        </div>
-        <div className="col-lg-3 col-6">
-          <Link to="/mcs">
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                My Contacts
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-                  <div className="row">
-                  <div className="col-md-12">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "90px" }}
-                    >
-                      {" "}
-                      <FaFileContract />
-                    </IconContext.Provider>
-                  </div>
-                  </div>
-                  
-
-                  </div>
-
-
-
-
-                
-              </div>
-            </div>
-          </Link>
-        </div>
-        <div className="col-lg-3 col-6">
-          <Link to="/res">
-            <div
-              className="card info-card sales-card"
-              style={
-                {
+                  backgroundColor:"#EBEBFF"
                   // float: "left",
                 }
               }
@@ -485,42 +385,13 @@ const [dashboardData,setDashboardData]=useState("")
                   <div className="col-md-4">
                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
-                      value={{ color: "#0275d8", size: "90px" }}
+                      value={{ color: "#0275d8", size: "60px" }}
                     >
                       <AiFillReconciliation />
                     </IconContext.Provider>
                   </div>
                   </div>
-                  {/* <div className="col-md-8 text-right">
-
-                  <span    style={{
-                        color: "#AC3E31",
-                        fontWeight: 700,
-                        fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">189</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 text-right">Pending</span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold text-right">2</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 ">Received</span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "	#FFA500",
-                      }} className="small pt-1 fw-bold text-right">8</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 ">Processing</span>
-                  </div> */}
+                  
                   <div className="col-md-8 text-right" >
                    <span    style={{
                         color: "#FF7F50",
@@ -536,22 +407,67 @@ const [dashboardData,setDashboardData]=useState("")
                         fontSize: 30,
                         color: "#6495ED",
                       }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
-                     
+                    <span className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
                   </div> 
+                  </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className="col-lg-3 col-6">
+          <Link to="/mcs"  style={{
+            textDecoration:'none',
+   
+          }}>
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                My Contacts
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+                {/* <h5 className="card-title">
+                    Sales <span>| Today</span>
+                  </h5> */}
+                  <div className="row">
+                  <div className="col-md-12">
+                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <IconContext.Provider
+                      value={{ color: "#0275d8", size: "86px" }}
+                    >
+                      {" "}
+                      <FaFileContract />
+                    </IconContext.Provider>
+                  </div>
+                  </div>
+                  
 
                   </div>
 
 
 
 
+                
               </div>
             </div>
           </Link>
         </div>
+       
         {/* <div className="col-lg-3 col-6">
           <Link >
             <div

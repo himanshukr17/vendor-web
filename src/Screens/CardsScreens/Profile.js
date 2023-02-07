@@ -1,360 +1,299 @@
-import React, { useState,  useEffect  } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Bar } from "react-chartjs-2";
-import {AxioxExpPort} from "../AxioxExpPort"
-
-import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
+import { AxioxExpPort } from "../AxioxExpPort"
+import { FaUserEdit } from "react-icons/fa";
 import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract,FaUsers,FaUserEdit } from "react-icons/fa";
-import { BsFillCartCheckFill, BsFillBagXFill,BsReceiptCutoff } from "react-icons/bs";
-import { AiFillReconciliation,AiOutlineBars } from "react-icons/ai";
 import {
-    AiOutlineArrowLeft,
-    AiOutlineCloudDownload,
-    AiOutlineDownload,
-  } from "react-icons/ai";
+  AiOutlineArrowLeft,
+} from "react-icons/ai";
 import Footer from "../../Components/Footer";
 import NavHeader from "../../Components/NavHeader";
 function Profile() {
-    const navigate = useNavigate();
-    const [profileDetail, setProfileDetail] = useState([
-        {
-          AGREEMENT_DATE: "2022/10/26",
-          CONTRACT_NUMBER: "445209283876",
-          PLANT_NAME: "abc",
-          ITEM_NAME: "XYZ Pvt Ltd",
-          MATERIAL_NUMBER: "27346234982347",
-          DESCRIPTION: "Your material is delivered successfully",
-          TARGET_QUANTITY: "5000",
-          TARGET_VALUE: "5000",
-          OPEN_QUANTITY:"98723",
-          NET_VALUE: "7600",
-          RECEIVING_PLANT: "10000000",
-          VALIDITY_START: "2022/08/01",
-          VALIDITY_END: "2023/01/01",
-        }
-      ]);
-      profileDetail.map((val)=>{
+  const navigate = useNavigate();
+  const [profileDetail, setProfileDetail] = useState([]);
+  profileDetail.map((val) => {
 
-          console.log(val.TARGET_VALUE)
+    console.log(val.TARGET_VALUE)
+  })
+
+  const [vendorDtl, setVendorDtl] = useState([]);
+  const vendorId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    axios.post(AxioxExpPort +"createcompany/details", {
+      user: vendorId
+    })
+      .then((response) => {
+        setVendorDtl(response.data);
+
       })
+  }, []);
+  const [image, setImage] = useState("");
+  const inputFile = useRef(null);
+  const handleFileUpload = e => {
+    const { files } = e.target;
+    if (files && files.length) {
+      const filename = files[0].name;
 
-      const [vendorDtl,setVendorDtl]= useState([]);
-      const vendorId =localStorage.getItem('userId');
+      var parts = filename.split(".");
+      const fileType = parts[parts.length - 1];
+      console.log("fileType", fileType); //ex: zip, rar, jpg, svg etc.
 
-      useEffect(() => {
-        axios.post(AxioxExpPort+"createcompany/details",{
-          user: vendorId
-        })
-        .then((response) => {
-          setVendorDtl(response.data);
-   
-        })
-      }, []);
-      const [company, setCompany]= useState("")
-      console.log("response.data",vendorDtl);
+      setImage(files[0]);
+    }
+  };
+
+  const onButtonClick = () => {
+    inputFile.current.click();
+  };
+
+  console.log("imageimage", image);
 
 
   return (
 
     <div>
-    <NavHeader />
-    
+      <NavHeader />
+
       {/* <Navbar/> */}
       <div
-        style={{
-          marginTop: 45,
-        }}
+
       >
       
         <div
           className="card-body"
           style={{
             display: "flex",
+            marginTop:"5%",
+            marginBottom:"-2%"
           }}
         >
           <div className="form-check form-check-inline">
             <button
               className="btn btn"
-              style={{
-                borderRadius: 50,
-              }}
+             
               onClick={() => {
                 navigate("/dashboard");
               }}
             >
-              <IconContext.Provider value={{ color: "white", size: "22px" }}>
+              <IconContext.Provider value={{ color: "#000", size: "22px" }}>
                 <AiOutlineArrowLeft />
               </IconContext.Provider>
             </button>
           </div>
           <div className="form-check form-check-inline">
-            <h4 className="form-check-label" htmlFor="inlineRadio2" style={{color:"white"}}>
+            <h4 className="form-check-label" htmlFor="inlineRadio2" style={{ color: "#00001" }}>
               {/* {location.PROJECT} */}
               {/* {location.state.name} */}
-             Edit Profile
+              Edit Profile
             </h4>
           </div>
-          </div>
-       
-            <div
-        className="row"
-        style={{
-          margin: 10,
-        }}
-      >
-         <div className="col-lg-5 col-12">
-          <div className="small-box bg-light card card-success card-outline">
-            <div className="icon"></div>
+        </div>
 
-            <div className="inner">
-            <div className="row">
+        <div
+          className="row"
+          style={{
+            margin: 10,
+          }}
+        >
+          <div className="col-lg-5 col-12">
+            <div className="small-box bg-light card card-success card-outline">
 
-              <h4 className="text-sm-left"
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
+        
+                <div className="row">
+                <div className="col-md-2">
                   
-                }}
-              >
-               Vendor ID:
-              </h4>
-              <p className="text-sm-left"    style={{
-                  color: "#14CA96",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}>{vendorDtl.VENDOR_ID}</p>
+                </div>
+                <div className="col-md-8">
 
-
-            </div>
-              <h1 className="text-sm-left"
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               Name:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "#14CA96",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}>{vendorDtl.VENDOR_NAME}</p>
-              <h1 className="text-sm-left"
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               Email:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "#14CA96",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}>{vendorDtl.EMAIL}</p>
-               <h1 className="text-sm-left " 
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               Phone:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "#14CA96",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}>{vendorDtl.TELEPHONE}</p> 
-                <h1 className="text-sm-left " 
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               Company(Legal) Name:
-
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "#14CA96",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}>{vendorDtl.COMPANY_NAME}</p>
-              {/* <p className="text-sm-left" >Name</p>
-              <span className="text-success small pt-1 fw-bold text-sm-left">Vendor ID</span>{" "}
-              <span className="text-muted small pt-2 ps-1">Name</span> */}
-            </div>
-            <div className="icon">
-             
-            <AiOutlineBars />
-            </div>
-            
-          </div>
-        </div> 
-       
-        <div className="col-lg-7 col-12">
-          <div className="small-box bg-light">
-            <div className="icon"></div>
-
-            <div className="inner">
-            <div className="row">
-
-{/* 
-            <h4 className="text-sm-left"
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                  
-                }}
-              >
-              Company(Legal) Name:
-              </h4>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" onChange={(e)=>{setCompany(e.target.value)}}  value={vendorDtl.COMPANY_NAME}/></p>
-             */}
-            
-           
-<div className="row">
-<div className="col-md-6">
-<h1 className="text-sm-left"
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               Address:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.ADD1}/></p>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.ADD2}/></p>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.ADD3}/></p>
-</div>
-<div className="col-md-6">
-<h1 className="text-sm-left " 
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               City:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.CITY}/></p>
-
-</div>
-</div>
-                         <div className="row">
-<div className="col-md-6">
-<h1 className="text-sm-left"
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               Country/Region:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" value={vendorDtl.COUNTRY}/></p>
-</div>
-<div className="col-md-6">
-<h1 className="text-sm-left " 
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               State:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.DESCRIPTION}/></p>
-</div>
-</div>
-
-<h1 className="text-sm-left " 
-                style={{
-                  color: "#0275d8",
-                  fontSize: 20,
-                  fontWeight: 700,
-                }}
-              >
-               PIN:
-              </h1>
-              <p className="text-sm-left"    style={{
-                  color: "gray",
-                  fontSize: 20,
-                  fontWeight: 500,
-                }}> <input type="text" className="form-control"
-                    id="floatingInput" name="lname" value={vendorDtl.POSTAL_CODE}/></p>
-
-
-              {/* <p className="text-sm-left" >Name</p>
-              <span className="text-success small pt-1 fw-bold text-sm-left">Vendor ID</span>{" "}
-              <span className="text-muted small pt-2 ps-1">Name</span> */}
-            </div>
-            <div className="icon">
-              <FaUserEdit />
-            </div>
-            <div className="text-right">
+                <img className="col-md-12" style={{ alignSelf: "center",alignItems:"center", display: 'flex', height: '230px', borderRadius:"50px", marginTop:5 }} src={"https://st4.depositphotos.com/1012074/20946/v/450/depositphotos_209469984-stock-illustration-flat-isolated-vector-illustration-icon.jpg"} />
+                <input
+        style={{ display: "none" }}
+        // accept=".zip,.rar"
+        ref={inputFile}
+        onChange={handleFileUpload}
+        type="file"
+      />
+      <div className="button" onClick={(e)=>onButtonClick(e)}>
+        <FaUserEdit size={20} style={{marginTop:"-40"}} />
+      </div>          
+                </div>
+                <div className="col-md-2">
                 
-            <button type="button" className="btn btn-secondary">Update</button>
+                </div>
+                </div>
+                <div className="col-md-12">
+
+              
+                <h1 className="text-sm-left"
+                  style={{
+                    color: "#0275d8",
+                    fontSize: 20,
+                    fontWeight: 700,
+                  }}
+                >
+                  Name:<span  style={{
+                  color: "#14CA96",}}> {vendorDtl.FIRST_NAME}{" "+vendorDtl.LAST_NAME}</span>
+                </h1>
+              
+                <h1 className="text-sm-left"
+                  style={{
+                    color: "#0275d8",
+                    fontSize: 20,
+                    fontWeight: 700,
+                  }}
+                >
+                  Email:<span  style={{
+                  color: "#14CA96",}}> {vendorDtl.EMAIL}</span>
+                </h1>
+                <h1 className="text-sm-left "
+                  style={{
+                    color: "#0275d8",
+                    fontSize: 20,
+                    fontWeight: 700,
+                  }}
+                >
+                  Phone: <span  style={{
+                  color: "#14CA96",}}> {" "+vendorDtl.TELEPHONE}</span>
+                </h1>
+
+              </div>
+       
+           
             </div>
           </div>
-        </div> 
-        </div> 
-      </div>
+          <div className="col-lg-7 col-12">
+            <div className="small-box bg-light">
+              <div className="icon"></div>
+              <div className="inner">
+                <div className="row">
+                  <div className="row">
+                  <div className="col-md-12">
+                  <h1 className="text-sm-left"
+                        style={{
+                          color: "#0275d8",
+                          fontSize: 20,
+                          fontWeight: 700,
+                        }}
+                      >
+                         Company(Legal) Name:
+                      </h1>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}> {vendorDtl.COMPANY_NAME}</p>
+                  </div>
+                    <div className="col-md-6">
+                      <h1 className="text-sm-left"
+                        style={{
+                          color: "#0275d8",
+                          fontSize: 20,
+                          fontWeight: 700,
+                        }}
+                      >
+                        Address:
+                      </h1>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}> {vendorDtl.ADD1}</p>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}> {vendorDtl.ADD2} </p>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}>{vendorDtl.ADD3}{" "}  </p>
+                    </div>
+                    <div className="col-md-6">
+                      <h1 className="text-sm-left "
+                        style={{
+                          color: "#0275d8",
+                          fontSize: 20,
+                          fontWeight: 700,
+                        }}
+                      >
+                        City:
+                      </h1>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}>{vendorDtl.CITY} </p>
+
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <h1 className="text-sm-left"
+                        style={{
+                          color: "#0275d8",
+                          fontSize: 20,
+                          fontWeight: 700,
+                        }}
+                      >
+                        Country/Region:
+                      </h1>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}>{vendorDtl.COUNTRY} </p>
+                    </div>
+                    <div className="col-md-6">
+                      <h1 className="text-sm-left "
+                        style={{
+                          color: "#0275d8",
+                          fontSize: 20,
+                          fontWeight: 700,
+                        }}
+                      >
+                        State:
+                      </h1>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}>{vendorDtl.DESCRIPTION} </p>
+                    </div>
+                  </div>
+
+                  <h1 className="text-sm-left "
+                    style={{
+                      color: "#0275d8",
+                      fontSize: 20,
+                      fontWeight: 700,
+                    }}
+                  >
+                    PIN:
+                  </h1>
+                  <p className="text-sm-left" style={{
+                    color: "gray",
+                    fontSize: 20,
+                    fontWeight: 500,
+                  }}>{vendorDtl.POSTAL_CODE} </p>
+
+
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* <Navbar/> */}
-    
-       
-      
-   
-     
+
       </div>
       <div >
 
-        <Footer    />
+        <Footer />
       </div>
-   </div>
+    </div>
   );
 }
 

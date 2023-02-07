@@ -1,7 +1,7 @@
 import React from "react";
 
 import Footer from "../Components/Footer";
-import NavHeaderSupplier from "../Components/NavHeaderSupplier";
+import NavHeaderSupplier from "../Components/NavHeader";
 
 import HomeScreenSupplier from "./HomeScreenSupplier";
 
@@ -18,7 +18,10 @@ function DashboardSupplier() {
         <HomeScreenSupplier />
       </div>
       <div
-        style={{ marginBottom: -70,
+        style={{ position:'absolute',
+      bottom:0,
+      display:'block',  
+      width:'100%'
         }}
       >
         <Footer />

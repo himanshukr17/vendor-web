@@ -11,8 +11,5 @@ const Protected=({ children })=>{
         return <Navigate to="/notfound" replace />
     }
     return children;
-
-
 }
-
 export default Protected;

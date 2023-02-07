@@ -4,80 +4,128 @@ import NavHeader from "../../Components/NavHeader";
 import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
 import { useNavigate } from "react-router-dom";
-import { FaFileCsv } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
 import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
+import DateRangePicker from "rsuite/esm/DateRangePicker";
+
 function GoodsReturn() {
   const navigate = useNavigate();
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
-  const [sort,setSort]=useState("ASC")
+  const [sort, setSort] = useState("ASC");
+  const [modalDataStatus, setModalDataStatus] = useState(true);
   const [clickGRData, setClickGRData] = useState([]);
   const headers = [
-    { label: "Material", key: "MATERIAL" },
-    { label: "Quantity", key: "QUANTITY" },
-    { label: "Plant", key: "PLANT" },
-    { label: "Remark", key: "REMARKS" }
+    { label: "Material Number", key: "MATERIAL_NO" },
+    { label: "Material Description", key: "MATERIAL_TEXT" },
+    { label: "GRN Number", key: "GRN_NO" },
+    { label: "Return Quantity", key: "RETURN_QTY" },
+    { label: "Unit", key: "UNIT" },
+    { label: "PO Quantity", key: "PO_QTY" },
   ];
-
-
   const [tbody, setTBody] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const [filterData,setFilterData]=useState([])
+  const [filterData, setFilterData] = useState([])
   const currentPosts = clickGRData.slice(indexOfFirstPost, indexOfLastPost)
-
-
+  const [emptyModalTable, setEmptyModalTable] = useState([]);
   const vendorId = localStorage.getItem('userId');
-  // "https://localhost:3007/images/" + image name gotten from REST api response
 
   useEffect(() => {
-    axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
-      .then((response) => {
-        setTBody(response.data);
-        setFilterData(response.data)
-        console.log("response.data", response.data);
-      })
+    const fetchData = async () => {
+      axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
+        .then((response) => {
+          setTBody(response.data);
+          setFilterData(response.data)
+          console.log("response.data", response.data);
+        })
+    }
+    fetchData();
   }, []);
-  const sorting=(col)=>{
-    if(sort ==="ASC"){
-      const sorted =[...tbody].sort((a,b)=>
-      a[col].toLowerCase()> b[col].toLowerCase()? 1 : -1
+  const sorting = (col) => {
+    if (sort === "ASC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
       setTBody(sorted);
       setSort("DSC")
-      console.log("response.data",tbody);
+      console.log("response.data", tbody);
     }
-      if(sort ==="DSC"){
-        const sorted =[...tbody].sort((a,b)=>
-        a[col].toLowerCase()<b[col].toLowerCase()? 1 : -1
-        );
-        setTBody(sorted);
-        setSort("ASC")
+    if (sort === "DSC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setTBody(sorted);
+      setSort("ASC")
+    }
+
+  }
+  const getTwodates = (e) => {
+    if (e != null) {
+      var s = e[0];
+      var e = e[1];
+      var arr = [];
+
+      for (var a = [], d = new Date(s); d <= new Date(e); d.setDate(d.getDate() + 1)) {
+        var dateElement = dateFormat((new Date(d)), "ddd, mmm dS,yyyy").toLowerCase()
+        const searchDatasss = tbody.filter((item) => dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(dateElement));
+        searchDatasss.map((itemss) => {
+          arr.push(itemss)
+        })
+      } setTBody(arr);
+      if (arr.length == 0) {
+        setIsPurchaseOrderEmpty(false)
       }
-
+    } else {
+      setIsPurchaseOrderEmpty(true)
+      setTBody(filterData)
     }
-    const handleSearch =(event)=>
-    {
-      var searchElements=event.target.value;
-      console.log(searchElements);
-      if(searchElements.length > 0){
-  // setTBody('')
-  const searchDatas= tbody.filter((item)=>item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE),"ddd, mmm dS,yyyy").toLowerCase().includes(searchElements)|| (item.PO_NO).toString().toLowerCase().includes(searchElements));
-  setTBody(searchDatas)
-  console.log(searchDatas)
-}else{
-  setTBody(filterData)
-}
-
+  }
+  const handleSearchModal = (event) => {
+    var searchElements = event.target.value;
+    // setQuery(searchElements);
+    var length = Number(searchElements.length)
+    console.log("lengthlength", emptyModalTable)
+    if (length > 0) {
+      // setTBody('')
+      const searchDatas = clickGRData.filter((item) => item.MATERIAL_TEXT.toLowerCase().includes(searchElements) || item.MATERIAL_NO.toLowerCase().includes(searchElements));
+      console.log("searchElements.length", searchDatas);
+      setClickGRData(searchDatas);
+      if(searchDatas.length ==0){
+        setModalDataStatus(false)
+      }
+    } else {
+      setModalDataStatus(true)
+      setClickGRData(emptyModalTable)
     }
+  }
+  const handleSearch = (event) => {
+    var searchElements = event.target.value;
+    console.log(searchElements);
+    if (searchElements.length > 0) {
+      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements));
+      setTBody(searchDatas)
+      console.log(searchDatas)
+      if (searchDatas.length == 0) {
+        setIsPurchaseOrderEmpty(false)
+      }
+    } else {
+      setIsPurchaseOrderEmpty(true)
+      setTBody(filterData)
+    }
+
+  }
+  const handelAllGR =()=>{
+    setIsPurchaseOrderEmpty(true)
+    setTBody(filterData);
+   }
   const data = clickGRData;
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
@@ -93,59 +141,66 @@ function GoodsReturn() {
       >
         <div
           className="card-body"
-        
+
         >
           <div className="row">
             <div className="col-md-6">
-            <div className="row">
-              <div className="col-md-1">
-              <button
-              className="btn btn"
-            
-              onClick={() => {
-                navigate("/dashboard");
-              }}
-            >
-              <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                <AiOutlineArrowLeft />
-              </IconContext.Provider>
-            </button>
-              </div>
-              <div className="col-md-5">
+              <div className="row">
+                <div className="col-md-1">
+                  <button
+                    className="btn btn"
 
-              <h4 className="form-check-label" htmlFor="inlineRadio2">
-              {/* {location.PROJECT} */}
-              {/* {location.state.name} */}
-              Goods Return
-            </h4>
+                    onClick={() => {
+                      navigate("/dashboard");
+                    }}
+                  >
+                    <IconContext.Provider value={{ color: "#000", size: "22px" }}>
+                      <AiOutlineArrowLeft />
+                    </IconContext.Provider>
+                  </button>
+                </div>
+                <div className="col-md-5">
+
+                  <h4 className="form-check-label" htmlFor="inlineRadio2">
+                    {/* {location.PROJECT} */}
+                    {/* {location.state.name} */}
+                    Goods Return
+                  </h4>
+                </div>
               </div>
             </div>
-            </div>
-<div className="col-md-4">
+            <div className="col-md-3">
+              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
 
-</div>
-<div className="col-md-2">
-<input
-          type="text"
-          className="form-control"
-         
-          placeholder="Search"
-          style={{
-            width: "100%",
-            height: 30,
-          }}
-          onChange={(e) => {
-           handleSearch(e)
-          }}
-        />
-</div>
-            
-            
+
+            </div>
+            <div className="col-md-2">
+
+              <input
+                type="text"
+                className="form-control"
+
+                placeholder="Search"
+                style={{
+                  width: "100%",
+                  height: 35,
+                }}
+                onChange={(e) => {
+                  handleSearch(e)
+                }}
+              />
+            </div>
+
+            <div className="col-md-1">
+            <button type="button" style={{ width: "50px", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>All</button>
+
+            </div>
           </div>
-         
-        
+
+
         </div>
         <div className="card-body">
+        <p class="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr
@@ -155,16 +210,24 @@ function GoodsReturn() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th onClick={()=>sorting("DOCUMENT_DATE")}  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                    <th onClick={()=>sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                    <th onClick={()=>sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
-                    <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
+                <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
 
             <tbody>
               {isPurchaseOrderEmpty ? (
                 tbody.map((val, index) => {
+                  let total = 0;
+                  val.return_order.map((itemsPrice) =>
+                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.PO_QTY
+                  )
+
+                  console.log("sdfjhjk", val)
                   return (
                     <tr
                       key={`row` + index}
@@ -175,35 +238,55 @@ function GoodsReturn() {
                       className="table-light"
                     >
                       <td
-                        key={`col-1` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                       {dateFormat( val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
-                      </td>
-                      <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        <Link
-                          to=""
+                        <a
+                          href="#"
                           onClick={(e) => {
                             togglePODetailsFlag();
 
                             setClickGRData(val.return_order)
+                            setEmptyModalTable(val.return_order)
                           }}
                         >
                           {(val.PO_NO)}
-                        </Link>
+                        </a>
                         <br />
+                      </td>
+                      <td
+                        key={`col-1` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
+                      </td>
+
+                      <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
                       </td>
                       <td
                         key={`col-3` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.STATUS}
+                        {val.return_order.length}                      </td>
+                      <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.STATUS == 'Open' &&
+                          <span className="badge badge-success" >Open</span>
+                        }
+                        {val.STATUS == 'Close' &&
+                          <span className="badge badge-danger" >Close</span>
+                        }
                       </td>
                       <td
                         key={`col-5` + index}
@@ -212,7 +295,7 @@ function GoodsReturn() {
                       >
                         <CSVLink className="btn" data={val.return_order} headers={headers}>
                           <IconContext.Provider
-                            value={{ color: "#000", size: "22px" }}
+                            value={{ color: "#FF7B25", size: "22px" }}
                           >
                             <AiOutlineDownload />
                           </IconContext.Provider>
@@ -257,64 +340,92 @@ function GoodsReturn() {
               </h5>
 
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
+              <input
+                type="text"
+                className="form-control"
+
+                placeholder="Material No / Description"
+                style={{
+                  width: "100%",
+                  height: 35,
+                }}
+                onChange={(e) => {
+                  handleSearchModal(e)
+                }}
+              />
+            </div>
+            <div className="col-md-1">
 
               <CSVLink className="btn float-right"
                 onClick={() => {
                   togglePODetailsFlag();
                 }}
                 style={{
-                  backgroundColor: COLORS.gray10,
-                  color: COLORS.black,
+                  backgroundColor: COLORS.green,
+                  color: COLORS.white,
+                  padding:"6px",
+                  height:35,
+                  marginBottom:3,
+                  marginLeft:"-15px"
+
 
                 }} data={data} headers={headers} >
-                Download <FaFileCsv />
+                <FaDownload /> <FaFileCsv size={22} />
 
               </CSVLink>
             </div>
           </div>
           <table className="table table-bordered table-striped">
             <thead>
-              <th>Plant</th>
-              <th>Ref Doc No.</th>
-              <th>Material</th>
-              <th>Description</th>
-              <th>Quantity</th>
-              <th>REMARKS</th>
+              <th>Material Number</th>
+              <th>Material Description</th>
+              <th>GR Number</th>
+              <th>Return Quantity</th>
+              <th>Unit</th>
+              <th>PO Quantity</th>
             </thead>
             <tbody>
-              {
+              {modalDataStatus ? (
                 clickGRData.map((grsData, index) => {
                   return (
                     <tr>
                       <td>
-                        {grsData.PLANT}
+                        {grsData.MATERIAL_NO.toString()}
                       </td>
-                      
+
                       <td>
-                        {grsData.ref}
-                      </td>
-                      <td>
-                        {grsData.MATERIAL}
+                        {grsData.MATERIAL_TEXT}
                       </td>
                       <td>
-                        {grsData.DESCRIPTION}
+                        {grsData.GRN_NO.toString()}
                       </td>
                       <td>
-                        {grsData.QUANTITY}
+                        {grsData.RETURN_QTY.toString()}
                       </td>
                       <td>
-                        {grsData.PLANT}
+                        {grsData.UNIT}
+                      </td>
+                      <td>
+                        {grsData.PO_QTY}
                       </td>
                     </tr>
                   );
                 })
+              )
+              :(
+                <tr>
+                  <td colSpan={7} className="text-center">
+                    No Data Found
+                  </td>
+                </tr>
+              )
               }
 
             </tbody>
 
           </table>
-            <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
+          <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
           <div className="modal-footer">
             <a
               className="navbar-brand"
@@ -323,7 +434,7 @@ function GoodsReturn() {
                 color: "#007bff",
                 float: "right",
                 padding: 1,
-                height:'10px'
+                height: '10px'
               }}
               onClick={() => {
                 togglePODetailsFlag();

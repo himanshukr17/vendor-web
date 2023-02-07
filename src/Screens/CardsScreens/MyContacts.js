@@ -15,6 +15,13 @@ function MyContact() {
     filepreview: null,
   });
   const [error, setErrorsss] = useState(false)
+
+  const [isSucces, setSuccess] = useState(null);
+  const [imgPrv, setImgPrevew] = useState(false);
+  const vendorId = localStorage.getItem('userId');
+  const [hideFiles, setHideFiles] = useState(false);
+
+
   const [uploadOption, setUploadOption] = useState([
     { NAME: "--Select Uploder Card--", KEY_VALUE: "true" },
     { NAME: "PAN Card:", KEY_VALUE: "PANCARD" },
@@ -25,8 +32,8 @@ function MyContact() {
     { NAME: "POR Declearation Certificate:", KEY_VALUE: "POR" },
     { NAME: "Due Diligence Form:", KEY_VALUE: "DILIGENCE" }
   ]);
-  const [toaster,setToaster]=useState("")
-  const [toasterColor,setToasterColor]=useState("")
+  const [toaster, setToaster] = useState("")
+  const [toasterColor, setToasterColor] = useState("")
   const [optionVal, setOptionVals] = useState("true");
   const [optionInput, setOptionInput] = useState("");
   const [inputValueput, setInputValue] = useState("");
@@ -39,13 +46,16 @@ function MyContact() {
 
   const toggleCheckFlages = () => setShowCheckFlages(!showCheckFlages);
   useEffect(() => {
-    axios.get(AxioxExpPort + "api/contact?id=" + vendorId)
-      .then((response) => {
-        //  setTBody(response.data);
-        setUploadedData(response.data[0]);
-        console.log("response.data", response.data[0]);
+    const fetchData = async () => {
+      axios.get(AxioxExpPort + "createcompany/contact?id=" + vendorId)
+        .then((response) => {
+          //  setTBody(response.data);
+          setUploadedData(response.data);
+          console.log("response.data", response);
 
-      })
+        })
+    }
+    fetchData()
   }, [])
   const setOptionVal = (e) => {
     const optionsDa = uploadOption.find((user) => user.KEY_VALUE === e);
@@ -58,7 +68,7 @@ function MyContact() {
       document.getElementById('optionInputVal').readOnly = true
     }
     const splVal = optionsDa.NAME.split(' ')
-    
+
     setImgPrevew(false)
     setOptionVals(optionsDa.KEY_VALUE);
     setOptionInput(splVal[0] + " Number")
@@ -78,12 +88,6 @@ function MyContact() {
     console.log(event.target.files[0]);
 
   }
-
-  const [isSucces, setSuccess] = useState(null);
-  const [imgPrv, setImgPrevew] = useState(false);
-  const vendorId = localStorage.getItem('userId');
-  const [hideFiles, setHideFiles] = useState(false);
-
 
 
   const submit = async () => {
@@ -105,15 +109,16 @@ function MyContact() {
         }).then((res) => {
 
           //navigate('/mcs');
-          setToaster(optionVal+" is uploaded successful")
+          setToaster(optionVal + " is uploaded successful")
           var xz = document.getElementById("snackbar");
           setToasterColor("#00D100")
           xz.className = "show";
-          setTimeout(function(){
-             xz.className = xz.className.replace("show", ""); }, 3000)
+          setTimeout(function () {
+            xz.className = xz.className.replace("show", "");
+          }, 3000);
           window.location.reload();
-
-          console.log("response.data", res); setImgPrevew(true); setOptionInput(""); 
+          // fetchData();
+          console.log("response.data", res); setImgPrevew(true); setOptionInput("");
         });
 
       } catch (error) {
@@ -129,7 +134,7 @@ function MyContact() {
   return (
     <>
       <NavHeader />
-      <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
+      <div id="snackbar" style={{ backgroundColor: toasterColor, borderRadius: "50px" }}>{toaster}</div>
 
       <div
         className="card"
@@ -148,9 +153,7 @@ function MyContact() {
           <div className="form-check form-check-inline">
             <button
               className="btn btn"
-              style={{
-                borderRadius: 50,
-              }}
+
               onClick={() => {
                 navigate("/dashboard");
               }}
@@ -185,35 +188,35 @@ function MyContact() {
               <div className="col-md-3">
                 <select className="form-control" type="text" onChange={(e) => { setOptionVal(e.target.value) }}
                 >
-              <option selected disabled >--Select Uploder Card--</option>
-              {
-              (!uploadedData.PANCARD) &&
-              <option key={1} value='PANCARD'>PAN Card</option>
-              }
-              {
-              (!uploadedData.ADHAR) &&
-              <option key={2} value='ADHAR'>Aadhar Card</option>
-              }
-              {
-              (!uploadedData.GST) &&
-              <option key={3} value='GST'>GST</option>
-              }
-              {
-              (!uploadedData.ADDRESS) &&
-              <option key={4} value='ADDRESS'>Address Proof</option>
-              }
-              {
-              (!uploadedData.MSME) &&
-              <option key={5} value='MSME'>MSME Certificate</option>
-              }
-              {
-                (!uploadedData.POR) &&
-              <option key={6} value='POR'>POR Declearation Certificate</option>
-              }
-              {
-              (!uploadedData.DILIGENCE_IMAGE) &&
-              <option key={7} value='DILIGENCE'>Due Diligence Form</option>
-              }
+                  <option selected disabled >--Select Uploder Card--</option>
+                  {
+                    (!uploadedData.PANCARD) &&
+                    <option key={1} value='PANCARD'>PAN Card</option>
+                  }
+                  {
+                    (!uploadedData.ADHAR) &&
+                    <option key={2} value='ADHAR'>Aadhar Card</option>
+                  }
+                  {
+                    (!uploadedData.GST) &&
+                    <option key={3} value='GST'>GST</option>
+                  }
+                  {
+                    (!uploadedData.ADDRESS) &&
+                    <option key={4} value='ADDRESS'>Address Proof</option>
+                  }
+                  {
+                    (!uploadedData.MSME) &&
+                    <option key={5} value='MSME'>MSME Certificate</option>
+                  }
+                  {
+                    (!uploadedData.POR) &&
+                    <option key={6} value='POR'>POR Declearation Certificate</option>
+                  }
+                  {
+                    (!uploadedData.DILIGENCE_IMAGE) &&
+                    <option key={7} value='DILIGENCE'>Due Diligence Form</option>
+                  }
                   {/* <option value={"true"}>--Select Uploder Card--</option> */}
                   {/* {uploadOption.map((uploadOptions) => {
                     return (
@@ -249,14 +252,14 @@ function MyContact() {
       <div className="card-body"   >
         <div className="row" >
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
-            <label className="text-white" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>PAN Details</label>
+            <label className="text-black" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>PAN Details</label>
             {
               (uploadedData.PANCARD) ?
                 <>
-                  <tr className="text-white" style={{ textAlign: "left" }}>PAN Number: {uploadedData.PANCARD}</tr>
-                  <a href='#' onClick={(e) => { setImageSrc(e.target.src);setDetailVal(uploadedData.PANCARD); toggleCheckFlages() }}>
-                  <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.PANCARD_IMAGE} />
-                   </a>
+                  <tr className="text-black" style={{ textAlign: "left" }}>PAN Number: {uploadedData.PANCARD}</tr>
+                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.PANCARD); toggleCheckFlages() }}>
+                    <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.PANCARD_IMAGE} />
+                  </a>
                 </>
                 :
                 <div>
@@ -265,14 +268,14 @@ function MyContact() {
             }
           </div>
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
-            <label className="text-white" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>Aadhar Details</label>
+            <label className="text-black" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>Aadhar Details</label>
             {
               (uploadedData.ADHAR) ?
                 <>
-                  <tr className="text-white" style={{ textAlign: "left" }}>Aadhar Number: {uploadedData.ADHAR}</tr>
-                  <a href='#' onClick={(e) => { setImageSrc(e.target.src);setDetailVal(uploadedData.ADHAR); toggleCheckFlages() }}>              
-                  <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.ADHAR_IMAGE} />
-                   </a>
+                  <tr className="text-black" style={{ textAlign: "left" }}>Aadhar Number: {uploadedData.ADHAR}</tr>
+                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.ADHAR); toggleCheckFlages() }}>
+                    <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.ADHAR_IMAGE} />
+                  </a>
                 </>
                 :
                 <div>
@@ -281,14 +284,14 @@ function MyContact() {
             }
           </div>
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
-            <label className="text-white" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>GST Details</label>
+            <label className="text-black" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>GST Details</label>
             {
               (uploadedData.GST) ?
                 <>
-                  <tr className="text-white" style={{ textAlign: "left" }}>GST Number: {uploadedData.GST}</tr>
-                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.GST);toggleCheckFlages() }}>    
-                  <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.GST_IMAGE} />
-                   </a>
+                  <tr className="text-black" style={{ textAlign: "left" }}>GST Number: {uploadedData.GST}</tr>
+                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.GST); toggleCheckFlages() }}>
+                    <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.GST_IMAGE} />
+                  </a>
                 </>
                 :
                 <div>
@@ -297,14 +300,14 @@ function MyContact() {
             }
           </div>
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
-            <label className="text-white" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>Address Details</label>
+            <label className="text-black" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>Address Details</label>
             {
               (uploadedData.ADDRESS) ?
                 <>
-                  <tr className="text-white" style={{ textAlign: "left" }}>Address: {uploadedData.ADDRESS}</tr>
-                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.ADDRESS);toggleCheckFlages() }}>  
-                  <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.ADDRESS_IMAGE} />
-                   </a>
+                  <tr className="text-black" style={{ textAlign: "left" }}>Address: {uploadedData.ADDRESS}</tr>
+                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.ADDRESS); toggleCheckFlages() }}>
+                    <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.ADDRESS_IMAGE} />
+                  </a>
                 </>
                 :
                 <div>
@@ -313,14 +316,14 @@ function MyContact() {
             }
           </div>
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
-            <label className="text-white" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>MSME Details</label>
+            <label className="text-black" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>MSME Details</label>
             {
               (uploadedData.MSME) ?
                 <>
-                  <tr className="text-white" style={{ textAlign: "left" }}>Number: {uploadedData.MSME}</tr>
-                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.MSME);toggleCheckFlages() }}>    
-                  <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.MSME_IMAGE} />
-                   </a>
+                  <tr className="text-black" style={{ textAlign: "left" }}>Number: {uploadedData.MSME}</tr>
+                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.MSME); toggleCheckFlages() }}>
+                    <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.MSME_IMAGE} />
+                  </a>
                 </>
                 :
                 <div>
@@ -329,14 +332,14 @@ function MyContact() {
             }
           </div>
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
-            <label className="text-white" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>POR Details</label>
+            <label className="text-black" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>POR Details</label>
             {
               (uploadedData.POR) ?
                 <>
-                  <tr className="text-white" style={{ textAlign: "left" }}>PRO Number: {uploadedData.POR}</tr>
-                  <a href='#' onClick={(e) => { setImageSrc(e.target.src);setDetailVal(uploadedData.POR); toggleCheckFlages() }}>
-                  <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.POR_IMAGE} />
-                   </a>
+                  <tr className="text-black" style={{ textAlign: "left" }}>PRO Number: {uploadedData.POR}</tr>
+                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.POR); toggleCheckFlages() }}>
+                    <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.POR_IMAGE} />
+                  </a>
                 </>
                 :
                 <div>
@@ -345,13 +348,13 @@ function MyContact() {
             }
           </div>
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
-            <label className="text-white" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>DILIGENCE Details</label>
+            <label className="text-black" style={{ marginBottom: "-15px", textDecorationLine: 'underline' }}>DILIGENCE Details</label>
             {
               (uploadedData.DILIGENCE_IMAGE) ?
                 <>
-                  <tr className="text-white" style={{ textAlign: "left" }}  >DUE Number: {uploadedData.DILIGENCE}</tr>   
-                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.DILIGENCE);toggleCheckFlages() }}>
-                  <img  className="col-md-11"  src={AxioxExpPort + 'images/' + uploadedData.DILIGENCE_IMAGE} />
+                  <tr className="text-black" style={{ textAlign: "left" }}  >DUE Number: {uploadedData.DILIGENCE}</tr>
+                  <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.DILIGENCE); toggleCheckFlages() }}>
+                    <img className="col-md-11" src={AxioxExpPort + 'images/' + uploadedData.DILIGENCE_IMAGE} />
                   </a>
                 </>
                 :
@@ -368,32 +371,32 @@ function MyContact() {
         </div>
       </div>
       <Modal
-      size="lg"
-isOpen={showCheckFlages}
-toggle={toggleCheckFlages}
-style={{
-  alignItems: "center",
-  justifyContent: "center",
- 
-}}
->
-<ModalBody
+        size="lg"
+        isOpen={showCheckFlages}
+        toggle={toggleCheckFlages}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
 
->
-<div className="modal-header model-lg"
-style={{ marginTop:'-10px'}}
->
+        }}
+      >
+        <ModalBody
+
+        >
+          <div className="modal-header model-lg"
+            style={{ marginTop: '-10px' }}
+          >
             <h5 className="modal-title text-center" id="exampleModalLabel">
-              <p className="h4">Details: <span style={{color:'green'}}>{detailVal}</span></p>
+              <p className="h4">Details: <span style={{ color: 'green' }}>{detailVal}</span></p>
             </h5>
-<a href='#' className="text-right" onClick={toggleCheckFlages}>Close</a>
-            </div>
-  <img  className="col-md-12"  src={imageSrc} />
+            <a href='#' className="text-right" onClick={toggleCheckFlages}>Close</a>
+          </div>
+          <img className="col-md-12" src={imageSrc} />
 
 
 
-</ModalBody>
-</Modal>
+        </ModalBody>
+      </Modal>
     </>
   );
 }
