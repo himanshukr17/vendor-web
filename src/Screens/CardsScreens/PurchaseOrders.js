@@ -68,7 +68,7 @@ function PurchaseOrders() {
       for (var a = [], d = new Date(s); d <= new Date(e); d.setDate(d.getDate() + 1)) {
         var dateElement = dateFormat((new Date(d)), "ddd, mmm dS,yyyy").toLowerCase()
         const searchDatasss = tbody.filter((item) => dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(dateElement));
-        searchDatasss.map((itemss) => {
+        searchDatasss.map((itemss,index) => {
           arr.push(itemss)
         })
       } setTBody(arr);
@@ -216,7 +216,7 @@ function PurchaseOrders() {
 
         </div>
         <div className="card-body">
-          <p class="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
+          <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr
@@ -239,7 +239,7 @@ function PurchaseOrders() {
               {isPurchaseOrderEmpty ? (
                 tbody.map((po, index) => {
                   let total = 0
-                  po.purchase_order.map((price) => {
+                  po.purchase_order.map((price,idx) => {
                     total = total + price.NET_PRICE * price.ORDER_QUANTITY
                   });
 

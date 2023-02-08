@@ -12,25 +12,8 @@ import {AxioxExpPort} from "./AxioxExpPort"
 
 function HomeScreen() {
   
-  const labels = ["January", "February", "March", "April", "May", "June"];
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: "January",
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgb(255, 99, 132)",
-        data: [50, 10, 5, 2, 20, 30, 45],
-      },
-      {
-        label: "Feb",
-        backgroundColor: "rgb (255,160,122)",
-        borderColor: "rgb(255, 99, 132)",
-        data: [50, 10, 5, 2, 20, 30, 45],
-      },
-    ],
-  };
   
+ 
   const vendorId =localStorage.getItem('userId');
   const [thead, setTHead] = useState([
     "Client Name",
@@ -82,16 +65,44 @@ function HomeScreen() {
         alert("error");
       });
   };
+  const [lablesAll,setLablesAll]=useState([])
 const [dashboardData,setDashboardData]=useState("")
   useEffect(() => {
-    axios.get(AxioxExpPort+"count/all?id="+vendorId)
-    .then((response) => {
-      setDashboardData(response.data);
+    const fetchPosts = async () => {
+      axios.get(AxioxExpPort + "purchase_order/get?id=" + vendorId)
+        .then((response) => {
+          setLablesAll(response.data[0]);
+          (response.data[0].purchase_order).map((oneitem,index)=>{
+            
+            console.log("response.data",oneitem.MATERIAL_DESCRIPTION);
+          })
+        })
 
-     console.log("response.data",response.data.length);
+    }
+    const fetchHomeCount = async () => {
+      axios.get(AxioxExpPort+"count/all?id="+vendorId)
+      .then((response) => {
+        setDashboardData(response.data);
+      // setLablesAll(response.data[0])
+      
     })
-    }, []);
+  }
+  fetchHomeCount();
+  fetchPosts();
 
+    }, []);
+    const labels = ["January", "February", "March", "April", "May", "June"];
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: "January",
+          backgroundColor: "rgb(255, 99, 132)",
+          borderColor: "rgb(255, 99, 132)",
+          data: [50, 10, 5, 2, 20, 30, 45],
+        }
+      ],
+    };
   return (
     <div
     style={{
@@ -99,72 +110,6 @@ const [dashboardData,setDashboardData]=useState("")
       
     }}  
     >
-  
-
-      {/* <table className="table table-bordered table-hover">
-            <thead
-              className="table-primary
-        table-boardered "
-              style={
-                {
-                  // position: "sticky",
-                }
-              }
-            >
-              <tr
-                className="text-center"
-                style={{
-                  backgroundColor: "grey",
-                }}
-              >
-                {thead.map((thead, index) => {
-                  return (
-                    <th
-                      key={index}
-                      className="text-center"
-                      style={{ width: "10%" }}
-                      scope="col"
-                    >
-                      {thead}
-                    </th>
-                  );
-                })}
-                <th className="text-center" style={{ width: "1%" }} scope="col">
-                  Action
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {tbody.map((val, index) => {
-                return (
-                  <tr
-                    key={index}
-                    style={{
-                      backgroundColor: "white",
-                    }}
-                  >
-                    <td
-                      key={index}
-                      className="text-center"
-                      style={{ width: "10%" }}
-                    >
-                      {val} <br></br>
-                      <small>({val})</small>
-                    </td>
-                    <td
-                      key={index}
-                      className="text-center"
-                      style={{ width: "10%" }}
-                    >
-                      {val}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table> */}
-
       <div
         className="row"
         style={{
@@ -172,46 +117,7 @@ const [dashboardData,setDashboardData]=useState("")
         }}
       >
         <div id="google_translate_element"></div>
-        {/* <div className="col-lg-3 col-6">
-          <div className="small-box bg-light">
-            <div className="icon"></div>
-
-            <div className="inner">
-              <h1
-                style={{
-                  color: "#0275d8",
-                  fontSize: 50,
-                  fontWeight: 700,
-                }}
-              >
-                150
-              </h1>
-              <p>Purchase Orders</p>
-              <span className="text-success small pt-1 fw-bold">12%</span>{" "}
-              <span className="text-muted small pt-2 ps-1">increase</span>
-            </div>
-            <div className="icon">
-              <AiFillAccountBook />
-            </div>
-            <Link to="">
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <h6 style={{ color: "#0275d8", marginRight: 5 }}>view</h6>
-
-                <IconContext.Provider
-                  value={{ color: "#0275d8", size: "18px" }}
-                >
-                  <AiOutlineArrowRight />
-                </IconContext.Provider>
-              </div>
-            </Link>
-          </div>
-        </div> */}
-            
+        
         <div className="col-lg-3 col-6">
           <Link to="/pos"  style={{
             textDecoration:'none',
@@ -466,6 +372,53 @@ const [dashboardData,setDashboardData]=useState("")
               </div>
             </div>
           </Link>
+        </div>
+        <div className="col-lg-6 col-6" >
+       
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"white"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Latest Purchase Order
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+                {/* <h5 className="card-title">
+                    Sales <span>| Today</span>
+                  </h5> */}
+                 
+                  <div className="col-md-12">
+                <p>Net Value*:</p> 
+                {/* <div
+            className="card"
+            style={{
+              
+              width: "60%",
+              margin: "1%",
+            }}
+          >
+            <Bar data={data} />
+                
+            
+            </div> */}
+            </div>
+            </div>
+            </div>
+        
         </div>
        
         {/* <div className="col-lg-3 col-6">

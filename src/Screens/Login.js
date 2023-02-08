@@ -43,8 +43,8 @@ function Login() {
 
     }
     const loginHandle = (e) => {
-      // localStorage.setItem('userType', (userTypeGet));
-      //         localStorage.setItem('token', (userName)); localStorage.setItem('userId', (userName));
+      //  localStorage.setItem('userType', (userTypeGet));
+      //  localStorage.setItem('token', (userName)); localStorage.setItem('userId', (userName));
       if (userTypeGet == false) {
         e.preventDefault();
         axios.post(AxioxExpPort + 'createcompany/login_mob', {
@@ -71,7 +71,7 @@ function Login() {
             // navigate();
             response.data.map((item) => {
               console.log("soumen", item); localStorage.setItem('userType', (userTypeGet));
-              localStorage.setItem('token', (item._id)); localStorage.setItem('userId', (item.VENDOR_ID))
+              localStorage.setItem('token', (item._id)); localStorage.setItem('userId', (item.BUYER_ID))
             })
           }).catch((err) => { console.log(err); setWrongDetail("Please check Username or Password") })
       }
@@ -228,7 +228,7 @@ function Login() {
         </p> */}
                 <div id="sign-in-button"></div>
                 <form onSubmit={loginHandle} style={{
-                  marginTop: "68px"
+                  marginTop: "50px"
                 }}>
                   <div className="inputs">
                     {/* <input

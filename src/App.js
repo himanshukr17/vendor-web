@@ -21,67 +21,59 @@ import Profile from "./Screens/CardsScreens/Profile"
 // Supplier
 import PurchaseOrderSupplier from './Screens/CardsScreens/PurchaseOrderSupplier';
 import DashboardSupplier from './Screens/DashboardSupplier';
-import ManageVendor from './Screens/CardsScreens/Buyer/ManageVendor';
+import NotFound404 from './Screens/CardsScreens/NotFoundPage';
+import ManageVendors from './Screens/CardsScreens/ManageVendors';
 
 function App() {
-  const userType =localStorage.getItem('userType');
-  const userID =localStorage.getItem('userId');
-  const [userTypeDef,setUserTypeDef]=useState(userType)
-  
+  const userType = localStorage.getItem('userType');
+  const userID = localStorage.getItem('userId');
+  const [userTypeDef, setUserTypeDef] = useState(userType)
+
   const [isLoggedIn, setisLoggedIn] = useState(null);
-  console.log('userTypeDef',userID)
+  console.log('userTypeDef', userType)
   return (
     <div className="App">
-      {/* Routes To screens start  */}
-  <BrowserRouter>
+{
+          userType === null &&
+        ( <Routes>
+         <Route path="/" element={<Login />} exact />
+          <Route path="/notfound" element={<ErrorPage />} exact />
+          <Route path="/checkStatus" element={<CheckStatus />} exact />
+          <Route path="/signup" element={<SignUp />} exact />
+          <Route path='*' exact={true} element={<ErrorPage/>} />
+         </Routes>)
+}
+        {
+          userType === "false" &&
 
-        <Routes>
+        (<Routes>
           <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
-          <Route path="/checkStatus" element={<CheckStatus/>} exact />
-          <Route path="/signup" element={<SignUp />} exact />
-          <Route path="/manage" element={<Protected><ManageVendor/></Protected>} exact />
-          <Route path="/home" element={<Protected><DashboardSupplier/></Protected>} exact />
-          <Route path="/pordersuppli" element={<PurchaseOrderSupplier />} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
-          <Route path="/pos" element={<Protected><PurchaseOrders/></Protected>} exact />
-          <Route path="/grs" element={<Protected><GoodsReturn/></Protected>} exact />
-          <Route path="/mcs" element={<Protected><MyContact/></Protected>} exact />
-          <Route path="/res" element={<Protected><Receiveables/></Protected>} exact />
-          <Route path="/profile" element={<Protected><Profile/></Protected>} exact />
-          <Route path="/cntc" element={<Protected><Contract/></Protected>} exact />
-    
+          <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact />
+          <Route path="/grs" element={<Protected><GoodsReturn /></Protected>} exact />
+          <Route path="/mcs" element={<Protected><MyContact /></Protected>} exact />
+          <Route path="/res" element={<Protected><Receiveables /></Protected>} exact />
+          <Route path="/profile" element={<Protected><Profile /></Protected>} exact />
+          <Route path="/cntc" element={<Protected><Contract /></Protected>} exact />
+          <Route path='*' exact={true} element={<NotFound404/>} />
+        </Routes>
+      )}
+      {userType ==="true" && 
 
-        </Routes>
-  
-          {/* for Supplier */}
-{/* 
-{
-  userTypeDef === 'true' && 
-        <Routes>
-          <Route path="/notfound" element={<ErrorPage />} exact />
-          <Route path="/home" element={<Protected><DashboardSupplier/></Protected>} exact />
-          <Route path="/pordersuppli" element={<PurchaseOrderSupplier />} exact />
-        </Routes>
-}
-     
-{
-  userTypeDef === 'false' &&
-  
-        <Routes>
-          <Route path="/notfound" element={<ErrorPage />} exact />
-          <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
-          <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
-          <Route path="/pos" element={<Protected><PurchaseOrders/></Protected>} exact />
-          <Route path="/grs" element={<Protected><GoodsReturn/></Protected>} exact />
-          <Route path="/mcs" element={<Protected><MyContact/></Protected>} exact />
-          <Route path="/res" element={<Protected><Receiveables/></Protected>} exact />
-          <Route path="/profile" element={<Protected><Profile/></Protected>} exact />
-          <Route path="/cntc" element={<Protected><Contract/></Protected>} exact />
-        </Routes>
-} */}
-      </BrowserRouter>
+        (<Routes>
+          <Route path="/" element={<Login />} exact />
+          <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
+
+          <Route path="/mv" element={<Protected><ManageVendors /></Protected>} exact />
+          <Route path='*' exact={true} element={<NotFound404/>} />
+
+        </Routes>)
+
+
+        }
+          
 
     </div>
   );

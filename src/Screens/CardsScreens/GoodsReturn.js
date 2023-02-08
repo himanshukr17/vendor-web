@@ -200,7 +200,7 @@ function GoodsReturn() {
 
         </div>
         <div className="card-body">
-        <p class="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
+        <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr

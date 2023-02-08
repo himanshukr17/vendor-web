@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
@@ -197,7 +197,7 @@ function Receiveables() {
         </div>
 
         <div className="card-body">
-          {/* <p class="text-right" style={{ marginTop: "-30px" }}>{" "}</p> */}
+          {/* <p className="text-right" style={{ marginTop: "-30px" }}>{" "}</p> */}
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr

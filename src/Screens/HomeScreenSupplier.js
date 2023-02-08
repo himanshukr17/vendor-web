@@ -103,7 +103,7 @@ const [dashboardData,setDashboardData]=useState("")
       >
         <div id="google_translate_element"></div>
         <div className="col-lg-3 col-6">
-          <Link to="/manage"
+          <Link to="/mv"
           style={{
             textDecoration:'none',
    

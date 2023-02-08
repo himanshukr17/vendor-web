@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
   AiOutlineArrowLeft
 } from "react-icons/ai";
@@ -19,7 +19,6 @@ function MyContact() {
   const [isSucces, setSuccess] = useState(null);
   const [imgPrv, setImgPrevew] = useState(false);
   const vendorId = localStorage.getItem('userId');
-  const [hideFiles, setHideFiles] = useState(false);
 
 
   const [uploadOption, setUploadOption] = useState([
