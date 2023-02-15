@@ -1,6 +1,7 @@
 .App_Content {
   text-align: center;
-   background-color:#385094;
+   /* background-color:#385094; */
+   background-color:#ffffff;
      /* background-image: linear-gradient(135deg, #FAB2FF 10%, #1904E5 100%);
   background-image: linear-gradient(135deg,#385094 10%, #0d0525 100%); */
 }

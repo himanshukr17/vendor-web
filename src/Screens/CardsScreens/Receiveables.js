@@ -43,8 +43,8 @@ function Receiveables() {
           setTBody(response.data);
           setFilterdata(response.data)
 
-          console.log("response.data", response.data);
-        })
+          console.log("response.data.length", response);
+        }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
     }
     fetchData()
   }, []);
@@ -112,7 +112,7 @@ function Receiveables() {
     var length = Number(searchElements.length)
     if (length > 0) {
       // setTBody('')
-      const searchDatas = tbody.filter((item) => item.GRN_NO.toString().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.GRN_REF).toString().toLowerCase().includes(searchElements));
+      const searchDatas = tbody.filter((item) => dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.GRN_NO).toString().toLowerCase().includes(searchElements));
       setTBody(searchDatas)
       if (searchDatas.length == 0) {
         setIsPurchaseOrderEmpty(false)
@@ -211,7 +211,7 @@ function Receiveables() {
                 {/* <th onClick={()=>sorting("received_datas[0].GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th> */}
                 <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
-                <th onClick={() => sorting("GRN_REF")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Reference No</th>
+                {/* <th onClick={() => sorting("GRN_REF")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Reference No</th> */}
                 {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th> */}
 
               </tr>
@@ -263,13 +263,13 @@ function Receiveables() {
                         {val.received_datas.length}
 
                       </td>
-                      <td
+                      {/* <td
                         key={`col-3` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         {val.GRN_REF}
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })

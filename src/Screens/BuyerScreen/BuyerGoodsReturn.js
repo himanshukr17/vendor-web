@@ -1,86 +1,57 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import "rsuite/dist/rsuite.css";
-import DateRangePicker from 'rsuite/DateRangePicker'
 import NavHeader from "../../Components/NavHeader";
 import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
 import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
+import DateRangePicker from "rsuite/esm/DateRangePicker";
 
-function PurchaseOrders() {
+const BuyerGoodsReturn=(props)=> {
   const navigate = useNavigate();
+  const locationID=useLocation();
+  const vendorId = locationID.state.myVendorID;
+  const vendorName= locationID.state.myVendorName;
+
+  const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
-  const [modalDataStatus, setModalDataStatus] = useState(true);
-  const [ClickedPOsDataArr, setClickedPOsDataArr] = useState([]);
   const [sort, setSort] = useState("ASC");
-  // const [query, setQuery]=useState("")
-  const [filterData, setFilterdata] = useState([])
+  const [modalDataStatus, setModalDataStatus] = useState(true);
+  const [clickGRData, setClickGRData] = useState([]);
   const headers = [
-    { label: "Material No", key: "MATERIAL" },
-    { label: "Material Description", key: "MATERIAL_DESCRIPTION" },
-    { label: "Item Category", key: "ITEM_CATEGORY" },
-    { label: "Price/Unit", key: "NET_PRICE" },
-    { label: "Delevered Quantity", key: "DELIVERED_QUANTITY" },
-    { label: "Pending Quantity", key: "PENDING_QUANTITY" },
-    { label: "Order Quantity", key: "ORDER_QUANTITY" },
+    { label: "Material Number", key: "MATERIAL_NO" },
+    { label: "Material Description", key: "MATERIAL_TEXT" },
+    { label: "GRN Number", key: "GRN_NO" },
+    { label: "Return Quantity", key: "RETURN_QTY" },
+    { label: "Unit", key: "UNIT" },
+    { label: "PO Quantity", key: "PO_QTY" },
   ];
-
-
-  const data = ClickedPOsDataArr;
-  const vendorId = localStorage.getItem('userId');
-  console.log("vendorIdvendorId", vendorId);
   const [tbody, setTBody] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
+  const [filterData, setFilterData] = useState([])
+  const currentPosts = clickGRData.slice(indexOfFirstPost, indexOfLastPost)
   const [emptyModalTable, setEmptyModalTable] = useState([]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      axios.get(AxioxExpPort + "purchase_order/get?id=" + vendorId)
+    const fetchData = async () => {
+      axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
         .then((response) => {
           setTBody(response.data);
-          // console.log("response.data",response.data);
-
-          setFilterdata(response.data);
-        })
-
+          setFilterData(response.data)
+          console.log("response.data", response.data);
+        }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
     }
-    fetchPosts()
+    fetchData();
   }, []);
-
-  const getTwodates = (e) => {
-    if (e != null) {
-      var s = e[0];
-      var e = e[1];
-      var arr = [];
-
-      for (var a = [], d = new Date(s); d <= new Date(e); d.setDate(d.getDate() + 1)) {
-        var dateElement = dateFormat((new Date(d)), "ddd, mmm dS,yyyy").toLowerCase()
-        const searchDatasss = tbody.filter((item) => dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(dateElement));
-        searchDatasss.map((itemss,index) => {
-          arr.push(itemss)
-        })
-      } setTBody(arr);
-      if (arr.length == 0) {
-        setIsPurchaseOrderEmpty(false)
-      }
-    } else {
-      setIsPurchaseOrderEmpty(true)
-      setTBody(filterData)
-    }
-  }
-
   const sorting = (col) => {
     if (sort === "ASC") {
       const sorted = [...tbody].sort((a, b) =>
@@ -97,17 +68,54 @@ function PurchaseOrders() {
       setTBody(sorted);
       setSort("ASC")
     }
+
   }
-  const handleSearch = (event) => {
+  const getTwodates = (e) => {
+    if (e != null) {
+      var s = e[0];
+      var e = e[1];
+      var arr = [];
+
+      for (var a = [], d = new Date(s); d <= new Date(e); d.setDate(d.getDate() + 1)) {
+        var dateElement = dateFormat((new Date(d)), "ddd, mmm dS,yyyy").toLowerCase()
+        const searchDatasss = tbody.filter((item) => dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(dateElement));
+        searchDatasss.map((itemss) => {
+          arr.push(itemss)
+        })
+      } setTBody(arr);
+      if (arr.length == 0) {
+        setIsPurchaseOrderEmpty(false)
+      }
+    } else {
+      setIsPurchaseOrderEmpty(true)
+      setTBody(filterData)
+    }
+  }
+  const handleSearchModal = (event) => {
     var searchElements = event.target.value;
     // setQuery(searchElements);
     var length = Number(searchElements.length)
-    console.log(searchElements.length);
+    console.log("lengthlength", emptyModalTable)
     if (length > 0) {
       // setTBody('')
-      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements) || (item.purchase_order[0].PLANT_ID).toString().toLowerCase().includes(searchElements));
-      setTBody(searchDatas);
-      // if()
+      const searchDatas = clickGRData.filter((item) => item.MATERIAL_TEXT.toLowerCase().includes(searchElements) || item.MATERIAL_NO.toLowerCase().includes(searchElements));
+      console.log("searchElements.length", searchDatas);
+      setClickGRData(searchDatas);
+      if(searchDatas.length ==0){
+        setModalDataStatus(false)
+      }
+    } else {
+      setModalDataStatus(true)
+      setClickGRData(emptyModalTable)
+    }
+  }
+  const handleSearch = (event) => {
+    var searchElements = event.target.value;
+    console.log(searchElements);
+    if (searchElements.length > 0) {
+      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements));
+      setTBody(searchDatas)
+      console.log(searchDatas)
       if (searchDatas.length == 0) {
         setIsPurchaseOrderEmpty(false)
       }
@@ -117,36 +125,14 @@ function PurchaseOrders() {
     }
 
   }
-  const handleSearchModal = (event) => {
-    var searchElements = event.target.value;
-    // setQuery(searchElements);
-    var length = Number(searchElements.length)
-    console.log("lengthlength", emptyModalTable)
-    if (length > 0) {
-      // setTBody('')
-      const searchDatas = ClickedPOsDataArr.filter((item) => item.MATERIAL_DESCRIPTION.toLowerCase().includes(searchElements) || item.MATERIAL.toLowerCase().includes(searchElements));
-      console.log("searchElements.length", searchDatas);
-      setClickedPOsDataArr(searchDatas);
-      if(searchDatas.length ==0){
-        setModalDataStatus(false)
-      }
-    } else {
-      setModalDataStatus(true);
-      setClickedPOsDataArr(emptyModalTable)
-    }
-  }
-  const handelAllPO = () => {
-    setIsPurchaseOrderEmpty(true);
+  const handelAllGR =()=>{
+    setIsPurchaseOrderEmpty(true)
     setTBody(filterData);
-  }
-  // const [query,setQuery]=useState("")
-  //     const search=(datass)=>{
-  //       return datass.filter(item=> item.DOCUMENT_DATE.toLowerCase.includes(query) )
-  //       console.log(datass)
-  //     }
-  const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
+   }
+  const data = clickGRData;
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
+
   return (
     <>
       <NavHeader />
@@ -168,7 +154,7 @@ function PurchaseOrders() {
                     className="btn btn"
 
                     onClick={() => {
-                      navigate("/dashboard");
+                      navigate("/mv");
                     }}
                   >
                     <IconContext.Provider value={{ color: "#000", size: "22px" }}>
@@ -176,27 +162,28 @@ function PurchaseOrders() {
                     </IconContext.Provider>
                   </button>
                 </div>
-                <div className="col-md-5">
+                <div className="col-md-9">
 
                   <h4 className="form-check-label" htmlFor="inlineRadio2">
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Purchase Orders
+                    Goods Return of {" "+ vendorName}
                   </h4>
                 </div>
               </div>
             </div>
             <div className="col-md-3">
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
+
+
             </div>
-
-
             <div className="col-md-2">
+
               <input
                 type="text"
                 className="form-control"
 
-                placeholder="Search"
+                placeholder="PO Number / Status"
                 style={{
                   width: "100%",
                   height: 35,
@@ -208,7 +195,7 @@ function PurchaseOrders() {
             </div>
 
             <div className="col-md-1">
-              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllPO}>All</button>
+            <button type="button" style={{ width: "50px", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>All</button>
 
             </div>
           </div>
@@ -216,7 +203,7 @@ function PurchaseOrders() {
 
         </div>
         <div className="card-body">
-          <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
+        <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr
@@ -228,8 +215,8 @@ function PurchaseOrders() {
               >
                 <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
                 <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
-                <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
                 <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
@@ -237,12 +224,13 @@ function PurchaseOrders() {
 
             <tbody>
               {isPurchaseOrderEmpty ? (
-                tbody.map((po, index) => {
-                  let total = 0
-                  po.purchase_order.map((price,idx) => {
-                    total = total + price.NET_PRICE * price.ORDER_QUANTITY
-                  });
+                tbody.map((val, index) => {
+                  let total = 0;
+                  val.return_order.map((itemsPrice) =>
+                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.PO_QTY
+                  )
 
+                  console.log("sdfjhjk", val)
                   return (
                     <tr
                       key={`row` + index}
@@ -252,42 +240,36 @@ function PurchaseOrders() {
                       }}
                       className="table-light"
                     >
-
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        <a style={{
-                          textDecoration: 'none',
-
-                        }}
-                          href="#"
-                          onClick={(e) => {
-                            togglePODetailsFlag();
-                            setClickedPOsDataArr(po.purchase_order);
-                            setEmptyModalTable(po.purchase_order);
-
-                          }}
-                        >
-                          {po.PO_NO}
-                        </a>
-                        <br />
-                      </td>
                       <td
                         key={`col-1` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {dateFormat(po.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
+                        <a
+                         style={{
+                          textDecoration: 'none',
+                          color:"blue"
+                        }}
+                        type="button"
+                          onClick={(e) => {
+                            togglePODetailsFlag();
+
+                            setClickGRData(val.return_order)
+                            setEmptyModalTable(val.return_order)
+                          }}
+                        >
+                          {(val.PO_NO)}
+                        </a>
+                        <br />
                       </td>
                       <td
-                        key={`col-3` + index}
+                        key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {po.purchase_order.length}
+                        {dateFormat(val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
                       </td>
+
                       <td
                         key={`col-3` + index}
                         className="text-center"
@@ -296,27 +278,29 @@ function PurchaseOrders() {
                         {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
                       </td>
                       <td
-                        key={`col-3` + index}
+                        key={`col-4` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {po.STATUS == 'Open' &&
+                        {val.return_order.length}                      </td>
+                      <td
+                        key={`col-5` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.STATUS == 'Open' &&
                           <span className="badge badge-success" >Open</span>
                         }
-                        {po.STATUS == 'Close' &&
+                        {val.STATUS == 'Close' &&
                           <span className="badge badge-danger" >Close</span>
                         }
                       </td>
                       <td
-                        key={`col-5` + index}
+                        key={`col-6` + index}
                         className="text-center"
-                        style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
+                        style={{ width: "5%", borderColor: COLORS.gray10 }}
                       >
-                        <CSVLink className="btn" data={po.purchase_order} headers={headers}
-                        // setClickedPOsDataArr(val.purchase_order)
-                        //  laery
-                        >
-
+                        <CSVLink className="btn" data={val.return_order} headers={headers}>
                           <IconContext.Provider
                             value={{ color: "#FF7B25", size: "22px" }}
                           >
@@ -339,12 +323,15 @@ function PurchaseOrders() {
         </div>
       </div>
 
-      <Modal size="lg"
+      <Modal
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
+        size="lg"
         style={{
+          display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          height: "90vh",
         }}
       >
         <ModalBody
@@ -354,9 +341,11 @@ function PurchaseOrders() {
         >
           <div className="row">
             <div className="col-md-8">
+
               <h5 className="modal-title " id="exampleModalLabel">
-                PO's Details
+                GR's Details
               </h5>
+
             </div>
             <div className="col-md-3">
               <input
@@ -374,79 +363,64 @@ function PurchaseOrders() {
               />
             </div>
             <div className="col-md-1">
-              <CSVLink className="btn "
+
+              <CSVLink className="btn float-right"
                 onClick={() => {
                   togglePODetailsFlag();
                 }}
                 style={{
                   backgroundColor: COLORS.green,
                   color: COLORS.white,
-                  padding: "6px",
-                  height: 35,
-                  marginBottom: 3
-                }}
-                data={data}
-                headers={headers} >
+                  padding:"6px",
+                  height:35,
+                  marginBottom:3,
+                  marginLeft:"-15px"
+
+
+                }} data={data} headers={headers} >
                 ⬇ <FaFileCsv size={22} />
 
               </CSVLink>
-
-              {/* <button
-              type="button"
-              className="btn-close float-right"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            /> */}
             </div>
           </div>
-
           <table className="table table-bordered table-striped">
             <thead>
-              <th>Material No</th>
+              <th>Material Number</th>
               <th>Material Description</th>
-              <th>Item Category</th>
-              <th>Price/Unit</th>
-              <th>Delevered Quantity</th>
-              <th>Pending Quantity</th>
-              <th>Order Quantity</th>
-
+              <th>GR Number</th>
+              <th>Return Quantity</th>
+              <th>Unit</th>
+              <th>PO Quantity</th>
             </thead>
             <tbody>
-                    { modalDataStatus ?(
-                currentPosts.map((posData, index) => {
+              {modalDataStatus ? (
+                currentPosts.map((grsData, index) => {
                   return (
                     <tr>
-                      <td>
-                        {(posData.MATERIAL).toString()}
-                      </td>
-                      <td>
-                        {posData.MATERIAL_DESCRIPTION}
-                      </td>
-                      <td>
-                        {posData.ITEM_CATEGORY}
-                      </td>
-                      <td>
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(posData.NET_PRICE)}
-                      </td>
-                      <td>
-                        {posData.DELIVERED_QUANTITY}
-                      </td>
-                      <td>
-                        {posData.PENDING_QUANTITY}
-                      </td>
-                      <td>
-                        {posData.ORDER_QUANTITY}
+                      <td key={`row` + index}>
+                        {grsData.MATERIAL_NO.toString()}
                       </td>
 
+                      <td key={`col+1` + index}>
+                        {grsData.MATERIAL_TEXT}
+                      </td>
+                      <td  key={`col+2` + index}>
+                        {grsData.GRN_NO.toString()}
+                      </td>
+                      <td  key={`col+3` + index}>
+                        {grsData.RETURN_QTY.toString()}
+                      </td>
+                      <td  key={`col+4` + index}>
+                        {grsData.UNIT}
+                      </td>
+                      <td  key={`col+5` + index}>
+                        {grsData.PO_QTY}
+                      </td>
                     </tr>
-                  )})
-                
-              
-              ):
-              (
+                  );
+                })
+              )
+              :(
                 <tr>
                   <td colSpan={7} className="text-center">
                     No Data Found
@@ -454,9 +428,10 @@ function PurchaseOrders() {
                 </tr>
               )
               }
+
             </tbody>
           </table>
-          <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
+          <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
           <div className="modal-footer">
             <a
               className="navbar-brand"
@@ -465,7 +440,7 @@ function PurchaseOrders() {
                 color: "#007bff",
                 float: "right",
                 padding: 1,
-                height: '5px'
+                height: '10px'
               }}
               onClick={() => {
                 togglePODetailsFlag();
@@ -480,5 +455,4 @@ function PurchaseOrders() {
   );
 }
 
-export default PurchaseOrders;
-
+export default BuyerGoodsReturn;

@@ -4,7 +4,7 @@ import { Bar } from "react-chartjs-2";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract,FaUsers,FaReceipt } from "react-icons/fa";
+import { FaMegaport, FaFileContract,FaUsers,FaReceipt, FaFileInvoiceDollar } from "react-icons/fa";
 import { BsFillCartCheckFill, BsFillBagXFill,BsFillCartXFill,BsReceiptCutoff } from "react-icons/bs";
 import { AiFillReconciliation } from "react-icons/ai";
 import {AxioxExpPort} from "./AxioxExpPort"
@@ -72,8 +72,9 @@ const [dashboardData,setDashboardData]=useState("")
       axios.get(AxioxExpPort + "purchase_order/get?id=" + vendorId)
         .then((response) => {
           setLablesAll(response.data[0]);
+          var count=0;
           (response.data[0].purchase_order).map((oneitem,index)=>{
-            
+            count=1;
             console.log("response.data",oneitem.MATERIAL_DESCRIPTION);
           })
         })
@@ -257,6 +258,7 @@ const [dashboardData,setDashboardData]=useState("")
             </div>
           </Link>
         </div>
+        
         <div className="col-lg-3 col-6">
           <Link to="/res"  style={{
             textDecoration:'none',
@@ -316,6 +318,73 @@ const [dashboardData,setDashboardData]=useState("")
                     <span className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
                   </div> 
                   </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className="col-lg-3 col-6">
+          <Link to="/inv"  style={{
+            textDecoration:'none',
+   
+          }}>
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Invoice Details
+              </h5>
+
+              <div className="card-body">
+                {/* <h5 className="card-title">
+                    Sales <span>| Today</span>
+                  </h5> */}
+                  <div className="row">
+                  <div className="col-md-4">
+                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <IconContext.Provider
+                      value={{ color: "#0275d8", size: "60px" }}
+                    >
+                      {" "}
+                      <FaFileInvoiceDollar />
+                    </IconContext.Provider>
+                  </div>
+                  </div>
+                   <div className="col-md-8 text-right" >
+                   <span    style={{
+                        color: "#FF7F50",
+                        fontWeight: 700,
+                        fontSize: 30,
+                      }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_PO}</span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
+                       <span    style={{
+                        fontWeight: 700,
+                        fontSize: 30,
+                        color: "#6495ED",
+                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
+                    <span   style={{
+                      
+                       
+                      }}  className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
+                     
+                  </div> 
+
+                  </div>
+
               </div>
             </div>
           </Link>

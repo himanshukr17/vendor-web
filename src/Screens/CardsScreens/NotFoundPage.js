@@ -44,6 +44,7 @@ const ErrorImg = styled.img`
 `;
 
 const NotFoundPage = () => {
+  localStorage.clear()
   return (
     <ErrorContainer>
       <ErrorImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaArLOc0Pk34mIe9aXGm3QlsiC2psYrdh7GA&usqp=CAU" alt="404 error" />

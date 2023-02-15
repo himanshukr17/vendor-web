@@ -1,53 +1,54 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
-import { CSVLink } from "react-csv";
+import axios from "axios";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { useNavigate } from "react-router-dom";
-import { FaFileCsv, FaDownload } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import {
+  AiOutlineArrowLeft,
+} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
 import DateRangePicker from "rsuite/esm/DateRangePicker";
-
-function GoodsReturn() {
+const  BuyerReceiveables=(props)=> {
   const navigate = useNavigate();
-  const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
+  const locationID=useLocation();
+  const vendorId = locationID.state.myVendorID;
+  const vendorName = locationID.state.myVendorName;
+  const [clickRecData, setClickRecvData] = useState([]);
+  const data = clickRecData;
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
-  const [sort, setSort] = useState("ASC");
   const [modalDataStatus, setModalDataStatus] = useState(true);
-  const [clickGRData, setClickGRData] = useState([]);
-  const headers = [
-    { label: "Material Number", key: "MATERIAL_NO" },
-    { label: "Material Description", key: "MATERIAL_TEXT" },
-    { label: "GRN Number", key: "GRN_NO" },
-    { label: "Return Quantity", key: "RETURN_QTY" },
-    { label: "Unit", key: "UNIT" },
-    { label: "PO Quantity", key: "PO_QTY" },
-  ];
+  const [filterData, setFilterdata] = useState([])
   const [tbody, setTBody] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const [filterData, setFilterData] = useState([])
-  const currentPosts = clickGRData.slice(indexOfFirstPost, indexOfLastPost)
+  const [sort, setSort] = useState("ASC");
   const [emptyModalTable, setEmptyModalTable] = useState([]);
-  const vendorId = localStorage.getItem('userId');
+
+  const currentPosts = clickRecData.slice(indexOfFirstPost, indexOfLastPost)
+  const headers = [
+    { label: "First Name", key: "firstname" },
+    { label: "Last Name", key: "lastname" },
+    { label: "Email", key: "email" }
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
-      axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
+      axios.get(AxioxExpPort + "received/get?id=" + vendorId)
         .then((response) => {
           setTBody(response.data);
-          setFilterData(response.data)
+          setFilterdata(response.data)
+
           console.log("response.data", response.data);
         })
     }
-    fetchData();
+    fetchData()
   }, []);
   const sorting = (col) => {
     if (sort === "ASC") {
@@ -67,7 +68,7 @@ function GoodsReturn() {
     }
 
   }
-  const getTwodates = (e) => {
+  const getTwodatesGRN = (e) => {
     if (e != null) {
       var s = e[0];
       var e = e[1];
@@ -88,31 +89,33 @@ function GoodsReturn() {
       setTBody(filterData)
     }
   }
-  const handleSearchModal = (event) => {
+  const handleSearchGRNModal = (event) => {
     var searchElements = event.target.value;
     // setQuery(searchElements);
     var length = Number(searchElements.length)
     console.log("lengthlength", emptyModalTable)
     if (length > 0) {
       // setTBody('')
-      const searchDatas = clickGRData.filter((item) => item.MATERIAL_TEXT.toLowerCase().includes(searchElements) || item.MATERIAL_NO.toLowerCase().includes(searchElements));
-      console.log("searchElements.length", searchDatas);
-      setClickGRData(searchDatas);
-      if(searchDatas.length ==0){
+      const searchDatassp = clickRecData.filter((item) => item.MATERIAL_DOCUMENT.toLowerCase().includes(searchElements) || item.MATERIAL_NO.toLowerCase().includes(searchElements));
+      console.log("searchElements.length", searchDatassp);
+      setClickRecvData(searchDatassp);
+      if (searchDatassp.length == 0) {
         setModalDataStatus(false)
+
       }
     } else {
       setModalDataStatus(true)
-      setClickGRData(emptyModalTable)
+      setClickRecvData(emptyModalTable)
     }
   }
-  const handleSearch = (event) => {
+  const handleSearchGRN = (event) => {
     var searchElements = event.target.value;
-    console.log(searchElements);
-    if (searchElements.length > 0) {
-      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements));
+    // setQuery(searchElements);
+    var length = Number(searchElements.length)
+    if (length > 0) {
+      // setTBody('')
+      const searchDatas = tbody.filter((item) =>  dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.GRN_NO).toString().toLowerCase().includes(searchElements));
       setTBody(searchDatas)
-      console.log(searchDatas)
       if (searchDatas.length == 0) {
         setIsPurchaseOrderEmpty(false)
       }
@@ -122,11 +125,11 @@ function GoodsReturn() {
     }
 
   }
-  const handelAllGR =()=>{
-    setIsPurchaseOrderEmpty(true)
-    setTBody(filterData);
-   }
-  const data = clickGRData;
+  const handelAll = () => {
+    setIsPurchaseOrderEmpty(true);
+    setTBody(filterData)
+  }
+  const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
 
@@ -141,7 +144,6 @@ function GoodsReturn() {
       >
         <div
           className="card-body"
-
         >
           <div className="row">
             <div className="col-md-6">
@@ -151,7 +153,7 @@ function GoodsReturn() {
                     className="btn btn"
 
                     onClick={() => {
-                      navigate("/dashboard");
+                      navigate("/mv");
                     }}
                   >
                     <IconContext.Provider value={{ color: "#000", size: "22px" }}>
@@ -159,23 +161,19 @@ function GoodsReturn() {
                     </IconContext.Provider>
                   </button>
                 </div>
-                <div className="col-md-5">
+                <div className="col-md-10">
 
                   <h4 className="form-check-label" htmlFor="inlineRadio2">
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Goods Return
-                  </h4>
+                    Goods Receipt Notes/Number of {" "+vendorName}          </h4>
                 </div>
               </div>
             </div>
             <div className="col-md-3">
-              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
-
-
+              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodatesGRN(e) }} placeholder="Search Date Range" />
             </div>
             <div className="col-md-2">
-
               <input
                 type="text"
                 className="form-control"
@@ -186,21 +184,22 @@ function GoodsReturn() {
                   height: 35,
                 }}
                 onChange={(e) => {
-                  handleSearch(e)
+                  handleSearchGRN(e)
                 }}
               />
             </div>
-
             <div className="col-md-1">
-            <button type="button" style={{ width: "50px", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>All</button>
+              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAll}>All</button>
 
             </div>
+
+
           </div>
 
-
         </div>
+
         <div className="card-body">
-        <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
+          {/* <p className="text-right" style={{ marginTop: "-30px" }}>{" "}</p> */}
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr
@@ -210,22 +209,19 @@ function GoodsReturn() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                {/* <th onClick={()=>sorting("received_datas[0].GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th> */}
                 <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
-                <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
+                {/* <th onClick={() => sorting("GRN_REF")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Reference No</th> */}
+                {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th> */}
+
               </tr>
             </thead>
 
             <tbody>
               {isPurchaseOrderEmpty ? (
                 tbody.map((val, index) => {
-                  let total = 0;
-                  val.return_order.map((itemsPrice) =>
-                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.PO_QTY
-                  )
                   return (
                     <tr
                       key={`row` + index}
@@ -241,15 +237,19 @@ function GoodsReturn() {
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         <a
-                          href="#"
+                       style={{
+                          textDecoration: 'none',
+                          color:"blue"
+                        }}
+                        type="button"
                           onClick={(e) => {
                             togglePODetailsFlag();
+                            setClickRecvData(val.received_datas);
+                            setEmptyModalTable(val.received_datas);
 
-                            setClickGRData(val.return_order)
-                            setEmptyModalTable(val.return_order)
                           }}
                         >
-                          {(val.PO_NO)}
+                          {val.GRN_NO.toString()}
                         </a>
                         <br />
                       </td>
@@ -266,39 +266,16 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
+                        {val.received_datas.length}
+
                       </td>
-                      <td
-                        key={`col-4` + index}
+                      {/* <td
+                        key={`col-3` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.return_order.length}                      </td>
-                      <td
-                        key={`col-5` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.STATUS == 'Open' &&
-                          <span className="badge badge-success" >Open</span>
-                        }
-                        {val.STATUS == 'Close' &&
-                          <span className="badge badge-danger" >Close</span>
-                        }
-                      </td>
-                      <td
-                        key={`col-6` + index}
-                        className="text-center"
-                        style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      >
-                        <CSVLink className="btn" data={val.return_order} headers={headers}>
-                          <IconContext.Provider
-                            value={{ color: "#FF7B25", size: "22px" }}
-                          >
-                            <AiOutlineDownload />
-                          </IconContext.Provider>
-                        </CSVLink>
-                      </td>
+                        {val.GRN_REF}
+                      </td> */}
                     </tr>
                   );
                 })
@@ -314,15 +291,17 @@ function GoodsReturn() {
         </div>
       </div>
 
-      <Modal
+
+
+
+      <Modal size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
-        size="lg"
         style={{
-          display: "flex",
+
           justifyContent: "center",
           alignItems: "center",
-          height: "90vh",
+
         }}
       >
         <ModalBody
@@ -330,12 +309,17 @@ function GoodsReturn() {
             marginTop: 0,
           }}
         >
+
           <div className="row">
             <div className="col-md-8">
 
               <h5 className="modal-title " id="exampleModalLabel">
-                GR's Details
+                Goods Receipt Details
               </h5>
+
+            </div>
+
+            <div className="col-md-1">
 
             </div>
             <div className="col-md-3">
@@ -347,99 +331,76 @@ function GoodsReturn() {
                 style={{
                   width: "100%",
                   height: 35,
+                  marginBottom: 3
                 }}
                 onChange={(e) => {
-                  handleSearchModal(e)
+                  handleSearchGRNModal(e)
                 }}
               />
             </div>
-            <div className="col-md-1">
 
-              <CSVLink className="btn float-right"
-                onClick={() => {
-                  togglePODetailsFlag();
-                }}
-                style={{
-                  backgroundColor: COLORS.green,
-                  color: COLORS.white,
-                  padding:"6px",
-                  height:35,
-                  marginBottom:3,
-                  marginLeft:"-15px"
-
-
-                }} data={data} headers={headers} >
-                ⬇ <FaFileCsv size={22} />
-
-              </CSVLink>
-            </div>
           </div>
+
           <table className="table table-bordered table-striped">
             <thead>
-              <th>Material Number</th>
+              <th>PO Number</th>
+              <th>PO Date</th>
+              <th>Material No</th>
               <th>Material Description</th>
-              <th>GR Number</th>
-              <th>Return Quantity</th>
-              <th>Unit</th>
+              <th>Received Date</th>
               <th>PO Quantity</th>
+              <th>GR Quantity</th>
             </thead>
             <tbody>
               {modalDataStatus ? (
                 currentPosts.map((grsData, index) => {
                   return (
-                    <tr  key={`row` + index}>
-                      <td  key={`col-1` + index}>
-                        {grsData.MATERIAL_NO.toString()}
-                      </td>
-
-                      <td  key={`col-2` + index}>
-                        {grsData.MATERIAL_TEXT}
-                      </td>
-                      <td  key={`col-3` + index}>
-                        {grsData.GRN_NO.toString()}
-                      </td>
-                      <td  key={`col-4` + index}>
-                        {grsData.RETURN_QTY.toString()}
-                      </td>
-                      <td  key={`col-5` + index}>
-                        {grsData.UNIT}
-                      </td>
-                      <td  key={`col-6` + index}>
-                        {grsData.PO_QTY}
-                      </td>
+                    <tr    key={`row` + index}>
+                      <td  key={`col-1` + index}>{grsData.PO_NO.toString()}</td>
+                      <td  key={`col-2` + index}>{dateFormat(grsData.PO_DATE, "ddd, mmm dS, yyyy")}</td>
+                      <td  key={`col-3` + index}>{grsData.MATERIAL_NO}</td>
+                      <td  key={`col-4` + index}>{grsData.MATERIAL_DOCUMENT}</td>
+                      <td  key={`col-5` + index}>{dateFormat(grsData.RECEIVING_DATE, "ddd, mmm dS, yyyy")}</td>
+                      <td  key={`col-6` + index}>{grsData.PO_QTY}</td>
+                      <td  key={`col-7` + index}>{grsData.GR_QTY}</td>
                     </tr>
                   );
                 })
-              )
-              :(
-                <tr>
-                  <td colSpan={7} className="text-center">
-                    No Data Found
-                  </td>
-                </tr>
-              )
+              ) :
+                (
+                  <tr>
+                    <td colSpan={7} className="text-center">
+                      No Data Found
+                    </td>
+                  </tr>
+                )
               }
-
             </tbody>
 
           </table>
-          <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
-          <div className="modal-footer">
-            <a
-              className="navbar-brand"
-              type="button"
-              style={{
-                color: "#007bff",
-                float: "right",
-                padding: 1,
-                height: '10px'
-              }}
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            >
-              Close
-            </a>
+          <div className="row">
+            <div className="col-md-11">
+              <Pagination postPerPage={postsPerPage} totalPosts={clickRecData.length} paginate={paginate} />
+
+            </div>
+            <div className="col-md-1">
+              <a
+                className="h6"
+                type="button"
+                style={{
+                  color: "#007bff",
+                  float: "right",
+                  padding: 5,
+                  textDecoration: 'none',
+
+                }}
+                onClick={() => {
+                  togglePODetailsFlag();
+                }}
+              >
+                Close
+              </a>
+            </div>
           </div>
         </ModalBody>
       </Modal>
@@ -447,4 +408,4 @@ function GoodsReturn() {
   );
 }
 
-export default GoodsReturn;
+export default BuyerReceiveables;

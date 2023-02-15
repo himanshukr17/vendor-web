@@ -7,6 +7,7 @@ import { AxioxExpPort } from "./AxioxExpPort"
 function Login() {
   const navigate = useNavigate();
   const userID = localStorage.getItem('userId');
+  const userType = localStorage.getItem('userType');
 
   const [vendorLg, setVendorLg] = useState(true)
   const [supplierLg, setSupplierLg] = useState(false)
@@ -22,10 +23,13 @@ function Login() {
 
   const [wrongDetail, setWrongDetail] = useState("")
   const axios = require('axios')
-
-  if (userID != null) {
+  if (userType =="false") {
     window.location.href = '/dashboard'
-  } else {
+  } else if (userType =="true") {
+    window.location.href = '/home'
+    
+  }else
+  {
 
     const vendorLogin = () => {
       setVendorLg(true)
@@ -42,41 +46,41 @@ function Login() {
       setBtnSActive('tablinks active')
 
     }
+
+
     const loginHandle = (e) => {
-      //  localStorage.setItem('userType', (userTypeGet));
-      //  localStorage.setItem('token', (userName)); localStorage.setItem('userId', (userName));
-      if (userTypeGet == false) {
-        e.preventDefault();
-        axios.post(AxioxExpPort + 'createcompany/login_mob', {
-          user: userName,
-          pass: password
-        })
+         e.preventDefault();
+         if(userTypeGet==false){
+         axios.post(AxioxExpPort + 'createcompany/login_mob', {
+           user: userName,
+           pass: password
+         })
           .then((response) => {
-            // navigate('/dashboard');
-            window.location.href = "/dashboard"
-            response.data.map((item) => { console.log("soumen", item); localStorage.setItem('userType', (userTypeGet)); localStorage.setItem('token', (item._id)); localStorage.setItem('userId', (item.VENDOR_ID)) })
-          }).catch((err) => { console.log(err); setWrongDetail("Please check Username or Password") })
-      } else if (userTypeGet == true) {
+            // console.log()
+            // if(response.data[0].IS_ADMIN==0){
+            //   console.log("dlskgfags")
+            // }
+             localStorage.setItem('userType', (userTypeGet)); 
+             localStorage.setItem('token', (response.data[0]._id)); 
+             localStorage.setItem('userId', (response.data[0].VENDOR_ID));
+             window.location.href = "/dashboard"
+           }).catch((err) => {  setWrongDetail("Please check Username or Password") })
+    }else{
+      var bUser=(userName).toString()
+      axios.get(AxioxExpPort+'buyer/buyer_login?buyer='+bUser+'&&password='+password)
+        .then((res) => {
+          localStorage.setItem('userType', (userTypeGet)); 
+          localStorage.setItem('token', (res.data[0]._id)); 
+          localStorage.setItem('userId', (res.data[0].BUYER_ID));
+          if(res.data[0].BUYER_ID == 1){
+            window.location.href = "/adminManageVendor"
+          }else{
 
-        e.preventDefault();
-        axios.post(AxioxExpPort + 'createcompany/login_mob', {
-          user: userName,
-          pass: password
-        })
-          .then((response) => {
-
-            //window.location.href="/dashboard"
-            console.log("response", response);
-            window.location.href = '/home'
-            // navigate();
-            response.data.map((item) => {
-              console.log("soumen", item); localStorage.setItem('userType', (userTypeGet));
-              localStorage.setItem('token', (item._id)); localStorage.setItem('userId', (item.BUYER_ID))
-            })
-          }).catch((err) => { console.log(err); setWrongDetail("Please check Username or Password") })
-      }
+            window.location.href = "/home"
+          }
+        }).catch((err) => {  setWrongDetail("Please check Username or Password") })
     }
-
+  }
 
     return (
       <>

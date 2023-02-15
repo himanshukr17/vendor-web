@@ -5,8 +5,9 @@ import DateRangePicker from 'rsuite/DateRangePicker'
 import NavHeader from "../../Components/NavHeader";
 import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
+// // import Pagination from "../../Components/Pagination";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
 import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
@@ -15,7 +16,11 @@ import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
 
-function PurchaseOrders() {
+const BuyerPurchaseOrders =(props)=> {
+  const locationID=useLocation();
+  const vendorId = locationID.state.myVendorID;
+  const vendorName = locationID.state.myVendorName;
+  // console.log("locationID.state.",locationID.state)
   const navigate = useNavigate();
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
   const [modalDataStatus, setModalDataStatus] = useState(true);
@@ -33,10 +38,8 @@ function PurchaseOrders() {
     { label: "Order Quantity", key: "ORDER_QUANTITY" },
   ];
 
-
   const data = ClickedPOsDataArr;
-  const vendorId = localStorage.getItem('userId');
-  console.log("vendorIdvendorId", vendorId);
+ 
   const [tbody, setTBody] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -51,9 +54,11 @@ function PurchaseOrders() {
         .then((response) => {
           setTBody(response.data);
           // console.log("response.data",response.data);
+          // console.log("response.data.length",response.data)
 
           setFilterdata(response.data);
-        })
+          
+        }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
 
     }
     fetchPosts()
@@ -168,7 +173,7 @@ function PurchaseOrders() {
                     className="btn btn"
 
                     onClick={() => {
-                      navigate("/dashboard");
+                      navigate("/mv");
                     }}
                   >
                     <IconContext.Provider value={{ color: "#000", size: "22px" }}>
@@ -176,12 +181,12 @@ function PurchaseOrders() {
                     </IconContext.Provider>
                   </button>
                 </div>
-                <div className="col-md-5">
+                <div className="col-md-9">
 
                   <h4 className="form-check-label" htmlFor="inlineRadio2">
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Purchase Orders
+                    Purchase Orders of {" "+vendorName}
                   </h4>
                 </div>
               </div>
@@ -254,15 +259,15 @@ function PurchaseOrders() {
                     >
 
                       <td
-                        key={`col-2` + index}
+                        key={`row`+ index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         <a style={{
                           textDecoration: 'none',
-
+                          color:"blue"
                         }}
-                          href="#"
+                        type="button"
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickedPOsDataArr(po.purchase_order);
@@ -282,7 +287,7 @@ function PurchaseOrders() {
                         {dateFormat(po.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
                       </td>
                       <td
-                        key={`col-3` + index}
+                        key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
@@ -296,7 +301,7 @@ function PurchaseOrders() {
                         {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
                       </td>
                       <td
-                        key={`col-3` + index}
+                        key={`col-4` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
@@ -418,26 +423,26 @@ function PurchaseOrders() {
                     { modalDataStatus ?(
                 currentPosts.map((posData, index) => {
                   return (
-                    <tr>
-                      <td>
+                    <tr  key={`row` + index}>
+                      <td key={`col-1` + index}>
                         {(posData.MATERIAL).toString()}
                       </td>
-                      <td>
+                      <td key={`col-2` + index}>
                         {posData.MATERIAL_DESCRIPTION}
                       </td>
-                      <td>
+                      <td key={`col-3` + index}>
                         {posData.ITEM_CATEGORY}
                       </td>
-                      <td>
+                      <td key={`col-4` + index}>
                         {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(posData.NET_PRICE)}
                       </td>
-                      <td>
+                      <td key={`col-5` + index}>
                         {posData.DELIVERED_QUANTITY}
                       </td>
-                      <td>
+                      <td key={`col-6` + index}>
                         {posData.PENDING_QUANTITY}
                       </td>
-                      <td>
+                      <td key={`col-7` + index}>
                         {posData.ORDER_QUANTITY}
                       </td>
 
@@ -480,5 +485,5 @@ function PurchaseOrders() {
   );
 }
 
-export default PurchaseOrders;
+export default BuyerPurchaseOrders;
 
