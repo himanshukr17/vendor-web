@@ -109,7 +109,7 @@ function HomeScreenSupplier() {
       >
         <div id="google_translate_element"></div>
         <div className="col-lg-3 col-6">
-          <Link to="/mv"
+          <Link to="/new"
             style={{
               textDecoration: 'none',
 
@@ -131,7 +131,7 @@ function HomeScreenSupplier() {
                   color: "black",
                 }}
               >
-                Manage Vendor
+                New Supplier
               </h5>
               <div className="filter">
                 <a className="icon" href="#" data-bs-toggle=""></a>
@@ -317,7 +317,7 @@ function HomeScreenSupplier() {
           </Link>
         </div> */}
 
-        <div className="col-lg-3 col-6">
+        {/* <div className="col-lg-3 col-6">
           <Link to="/pordersuppli" style={{
             textDecoration: 'none',
 
@@ -345,9 +345,9 @@ function HomeScreenSupplier() {
                 <a className="icon" href="#" data-bs-toggle=""></a>
               </div>
               <div className="card-body">
-                {/* <h5 className="card-title">
+                <h5 className="card-title">
                     Sales <span>| Today</span>
-                  </h5> */}
+                  </h5> 
 
                 <div className="row">
                   <div className="col-md-4">
@@ -388,7 +388,7 @@ function HomeScreenSupplier() {
 
         </div>
 
-
+ */}
 
 
         {/* 

@@ -60,11 +60,17 @@ function Login() {
             // if(response.data[0].IS_ADMIN==0){
             //   console.log("dlskgfags")
             // }
+            console.log()
              localStorage.setItem('userType', (userTypeGet)); 
              localStorage.setItem('token', (response.data[0]._id)); 
              localStorage.setItem('userId', (response.data[0].VENDOR_ID));
              window.location.href = "/dashboard"
-           }).catch((err) => {  setWrongDetail("Please check Username or Password") })
+             
+            }).catch((err) => {
+              if(err.response.status==400){
+                setWrongDetail("You are able to login after approve your application")
+              }else{ setWrongDetail("Please check Username or Password")}
+               })
     }else{
       var bUser=(userName).toString()
       axios.get(AxioxExpPort+'buyer/buyer_login?buyer='+bUser+'&&password='+password)
@@ -75,7 +81,6 @@ function Login() {
           if(res.data[0].BUYER_ID == 1){
             window.location.href = "/adminManageVendor"
           }else{
-
             window.location.href = "/home"
           }
         }).catch((err) => {  setWrongDetail("Please check Username or Password") })

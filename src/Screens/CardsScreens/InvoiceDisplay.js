@@ -53,7 +53,7 @@ function InvoiceDisplay () {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = ClickedInvoiceDataArr.slice(indexOfFirstPost, indexOfLastPost);
     const [emptyModalTable, setEmptyModalTable] = useState([]);
-  
+    const [showThree,setShowThree]=useState(false)
     useEffect(() => {
       const fetchPosts = async () => {
         axios.get(AxioxExpPort + "invoice/all?id=" + vendorId)
@@ -93,22 +93,23 @@ function InvoiceDisplay () {
     }
   
     const sorting = (col) => {
+      
       if (sort === "ASC") {
         const sorted = [...tbody].sort((a, b) =>
-          a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
         setTBody(sorted);
         setSort("DSC")
-        console.log("response.data", tbody);
       }
       if (sort === "DSC") {
         const sorted = [...tbody].sort((a, b) =>
-          a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
         setTBody(sorted);
         setSort("ASC")
       }
     }
+    console.log("response.dataresponse.data", tbody);
     const handleSearch = (event) => {
       var searchElements = event.target.value;
       // setQuery(searchElements);
@@ -116,7 +117,7 @@ function InvoiceDisplay () {
       console.log(searchElements.length);
       if (length > 0) {
         // setTBody('')
-        const searchDatas = tbody.filter((item) => item.COMPANY_CODE.toLowerCase().includes(searchElements) || dateFormat((item.SUPPLIER_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.INVOICE_NUMBER).toString().toLowerCase().includes(searchElements) );
+        const searchDatas = tbody.filter((item) => item.COMPANY_CODE.toLowerCase().includes(searchElements) ||item.MIRO_NO.toString().toLowerCase().includes(searchElements) || dateFormat((item.SUPPLIER_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.INVOICE_NUMBER).toString().toLowerCase().includes(searchElements) );
         setTBody(searchDatas);
         // if()
         if (searchDatas.length == 0) {
@@ -207,7 +208,7 @@ function InvoiceDisplay () {
                   type="text"
                   className="form-control"
   
-                  placeholder="Search"
+                  placeholder="Search Invoice/MIRO No "
                   style={{
                     width: "100%",
                     height: 35,
@@ -239,11 +240,13 @@ function InvoiceDisplay () {
                 >
                   <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                  <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer Date</th>
-                  <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Date</th>
-                  <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
-                  <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net PO Value*</th>
-                  <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
+                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
+                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
+                  <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
+                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
+                  <th className="text-center" style={{  width: "5%",borderColor: COLORS.gray10 }} scope="col">Total Count</th>
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
                 </tr>
               </thead>
@@ -295,20 +298,41 @@ function InvoiceDisplay () {
                        
                          
                         </td>
+                        <td
+                          key={`col-1`+ index}
+                          className="text-center"
+                          style={{ width: "13%", borderColor: COLORS.gray10 }}
+                        >
+                        
+                            {po.invoice_details[0].PLANT_ID+"("+po.invoice_details[0].PLANT_DESCRIPTION+")"}
+                       
+                         
+                        </td>
+                        
+                        <td
+                          key={`col-1`+ index}
+                          className="text-center"
+                          style={{ width: "10%", borderColor: COLORS.gray10 }}
+                        >
+                        
+                            {po.YEAR}
+                       
+                         
+                        </td>
                         
                         <td
                           key={`col-2` + index}
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {dateFormat(po.BUYER_DATE, "ddd, mmm dS, yyyy")}
+                          {dateFormat(po.BUYER_DATE, "dd/mm/yyyy")}
                         </td>
                         <td
                           key={`col-3` + index}
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {dateFormat(po.SUPPLIER_DATE, "ddd, mmm dS, yyyy")}
+                          {dateFormat(po.SUPPLIER_DATE, "dd/mm/yyyy")}
                         </td>
                        
                       
@@ -317,7 +341,7 @@ function InvoiceDisplay () {
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {po.MIRO_NO}
+                          {po.MIRO_NO.toString()}
                         </td>
                         <td
                           key={`col-5` + index}
@@ -329,7 +353,7 @@ function InvoiceDisplay () {
                         <td
                           key={`col-6` + index}
                           className="text-center"
-                          style={{ width: "10%", borderColor: COLORS.gray10 }}
+                          style={{ width: "5%", borderColor: COLORS.gray10 }}
                         >
                           {po.invoice_details.length}
                         </td>
@@ -355,7 +379,7 @@ function InvoiceDisplay () {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={8} className="text-center">
+                    <td colSpan={16} className="text-center">
                       No Data Found
                     </td>
                   </tr>
@@ -431,44 +455,81 @@ function InvoiceDisplay () {
               </div>
             </div>
   
-            <table className="table table-bordered table-striped">
+            <table className="table table-bordered ">
               <thead>
                 {/* <th>Line</th> */}
-                <th>Plant ID</th>
-                <th>PO Number</th>
-                <th>Amount</th>
-                <th>GRN Number</th>
-                <th>GRN Year</th>
-                <th>GRN Ref Number</th>
+                <th>Material Number</th>
+                <th>Description</th>
+                <th>Tax Amount</th>
+                <th>Currency</th>
+                <th>Line Item</th>
+                <th>Invoice Reduction Category</th>
+                <th>Supplier Invoice Amount</th>
+                <th>Supplier Invoice Quantity</th>
+                
+                <th>Remark</th>
+            
   
               </thead>
               <tbody>
                       { modalDataStatus ?(
                   currentPosts.map((posData, index) => {
+                   
                     return (
                       <tr>
-                        {/* <td>
-                          {(posData.LINE).toString()}
-                        </td> */}
-                        <td  key={`col-1` + index}>
-                          {posData.PLANT_ID}
-                        </td>
+                        
                         <td  key={`col-2` + index}>
-                          {posData.PO_NO.toString()}
+                          {posData.MATERIAL.toString()}
                         </td>
-                        <td  key={`col-3` + index}>
-                          {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(posData.AMOUNT)}
-                        </td>
+                       
                         <td  key={`col-4` + index}>
-                          {posData.GRN_NO.toString()}
+                          {posData.MATERIAL_DESCRIPTION.toString()}
                         </td>
                         <td  key={`col-5` + index}>
-                          {posData.GRN_YEAR}
+                          {posData.TAX_AMOUNT}
                         </td>
                         <td  key={`col-6` + index}>
-                          {posData.GRN_REF.toString()}
+                          {posData.CURRENCY}
                         </td>
-  
+                        <td  key={`col-7` + index}>
+                          {posData.LINE}
+                        </td>
+                        
+                       
+
+                          {posData.REDUCE_AMT ==2 ?
+                            
+                            <>
+                          <td  key={`col-8` + index}>
+                          {posData.REDUCE_AMT.toString()}
+                        </td>
+                        <td  key={`col-9` + index}>
+                          {posData.TOTAL_AMT.toString()}
+                        </td>
+                        <td  key={`col-10` + index}>
+                          {posData.TOTAL_QTY.toString()}
+                        </td>
+                        </>:
+                            <>
+                          <td  key={`col-8` + index}>
+                          {""}
+                        </td>
+                        <td  key={`col-9` + index}>
+                          {""}
+                        </td>
+                        <td  key={`col-10` + index}>
+                          {""}
+                        </td>
+                        </>
+                          
+                          }
+                          <td  key={`col-6` + index}>
+                          {posData.REMARKS}
+                       
+                        </td>
+                       
+
+                        
                       </tr>
                     )})
                   
@@ -476,7 +537,7 @@ function InvoiceDisplay () {
                 ):
                 (
                   <tr>
-                    <td colSpan={7} className="text-center">
+                    <td colSpan={15} className="text-center">
                       No Data Found
                     </td>
                   </tr>

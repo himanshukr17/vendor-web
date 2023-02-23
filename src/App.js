@@ -24,6 +24,7 @@ import DashboardSupplier from './Screens/DashboardSupplier';
 import NotFound404 from './Screens/CardsScreens/NotFoundPage';
 import ManageVendors from './Screens/BuyerScreen/ManageVendors';
 //Admin
+ 
 import AdminManageVendor from './Screens/BuyerScreen/AdminManageVendor';
 import VendorDetails from './Screens/BuyerScreen/VendorDetails';
 import BuyerPurchaseOrders from './Screens/BuyerScreen/BuyerPurchaseOrders';
@@ -33,6 +34,8 @@ import VendorProfile from './Screens/BuyerScreen/VendorProfile';
 import InvoiceDisplay from './Screens/CardsScreens/InvoiceDisplay';
 import BuyerContracts from './Screens/BuyerScreen/BuyerContracts';
 import BuyerMyContact from './Screens/BuyerScreen/BuyerMyContacts';
+import NewSupplier from './Screens/BuyerScreen/NewSupplier';
+import Acknowledgement from './Screens/CardsScreens/Acknowledgement';
 function App() {
   const userType = localStorage.getItem('userType');
   const userID = localStorage.getItem('userId');
@@ -59,6 +62,8 @@ function App() {
           <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
           {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
+          {/* <Route path="/PurchaseOrderSupplier" element={<Protected><PurchaseOrderSupplier /></Protected>} exact /> */}
+          <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
           <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact />
@@ -78,15 +83,14 @@ function App() {
           <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
           <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact />
           <Route path="/vp" element={<Protected><VendorProfile /></Protected>} exact />
-          <Route path="/mv" element={<Protected><ManageVendors /></Protected>} exact />
+          <Route path="/mv" element={<Protected><VendorDetails /></Protected>} exact />
+          <Route path="/new" element={<Protected><NewSupplier /></Protected>} exact />
           <Route path="/bmc" element={<Protected><BuyerMyContact /></Protected>} exact />
           <Route path="/vdtls" element={<Protected><VendorDetails /></Protected>} exact />
           <Route path="/bpo" element={<Protected><BuyerPurchaseOrders /></Protected>} exact />
           <Route path="/bgr" element={<Protected><BuyerGoodsReturn /></Protected>} exact />
           <Route path="/bgrn" element={<Protected><BuyerReceiveables/></Protected>} exact />
           <Route path="/profile" element={<Protected><Profile /></Protected>} exact />
-
-
           <Route path='*' exact={true} element={<NotFound404/>} />
 
         </Routes>)

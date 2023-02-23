@@ -4,6 +4,7 @@ import axios from "axios";
 import { AxioxExpPort } from "../AxioxExpPort"
 import { useNavigate } from "react-router-dom";
 import {
+  AiFillReconciliation,
   AiOutlineArrowLeft
 } from "react-icons/ai";
 import Select from 'react-select';
@@ -11,6 +12,7 @@ import Select from 'react-select';
 import { IconContext } from "react-icons";
 import { Modal, ModalBody } from "reactstrap";
 import { COLORS } from "../../Constants/theme";
+import { FaUserCog } from "react-icons/fa";
 function AdminManageVendor() {
   const navigate = useNavigate();
   const vendorId = localStorage.getItem('userId');
@@ -158,7 +160,7 @@ function AdminManageVendor() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <td className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Select</td>
+                
                 <td className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer</td>
                 <td className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier</td>
                 <td className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</td>
@@ -170,24 +172,31 @@ function AdminManageVendor() {
                 borderColor: "#000",
               }}
                 className="table-light">
-                <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>1</td>
+              
                 <td className="text-center"
                   style={{ width: "10%", borderColor: COLORS.gray10 }}>2</td>
                 <td className="text-center"
                   style={{ width: "10%", borderColor: COLORS.gray10 }}>3</td>
                 <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>4</td>
+                  style={{ width: "10%", borderColor: COLORS.gray10 }}><IconContext.Provider
+                      value={{ color: "green", size: "30px" }}
+                    >
+                      {" "}
+                      <FaUserCog />
+                    </IconContext.Provider></td>
               </tr>
               <tr>
                 <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>1</td>
-                <td className="text-center"
                   style={{ width: "10%", borderColor: COLORS.gray10 }}>2</td>
                 <td className="text-center"
                   style={{ width: "10%", borderColor: COLORS.gray10 }}>3</td>
                 <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>4</td>
+                  style={{ width: "10%", borderColor: COLORS.gray10 }}><IconContext.Provider
+                      value={{ color: "green", size: "30px" }}
+                    >
+                      {" "}
+                      <FaUserCog />
+                    </IconContext.Provider></td>
               </tr>
             </tbody>
           </table>

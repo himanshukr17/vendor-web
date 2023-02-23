@@ -25,6 +25,7 @@ function Profile() {
       user: vendorId
     })
       .then((response) => {
+        console.log("response.data",response.data)
         setVendorDtl(response.data);
 
       })

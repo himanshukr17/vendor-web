@@ -131,7 +131,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                     <h4 className="form-check-label" htmlFor="inlineRadio2">
                       {/* {location.PROJECT} */}
                       {/* {location.state.name} */}
-                     Vendor Details
+                     Supplier Details
                     </h4>
                   </div>
                 </div>
@@ -146,7 +146,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                   type="text"
                   className="form-control"
   
-                  placeholder="Vendor ID / Name"
+                  placeholder="Supplier Mobile / Name"
                   style={{
                     width: "100%",
                     height: 35,
@@ -166,28 +166,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
   
           </div>
           <div className="card-body">
-            <p className="text-right" style={{ fontFamily:"Serif",marginTop: "-35px",marginBottom: "1px", size:60 }}><IconContext.Provider
-                      value={{ color: "#BD7FFE", size: "20px" }}
-                    >
-                      {" "}
-                      <BsFillCartCheckFill />
-                    </IconContext.Provider>Purchse Order, <IconContext.Provider
-                      value={{ color: "#6495ED", size: "20px" }}
-                    >
-                      {" "}
-                      <BsFillCartXFill />
-                    </IconContext.Provider>Goods Return, <IconContext.Provider
-                      value={{ color: "#9999FF", size: "20px" }}
-                    >
-                      {" "}
-                      <AiFillReconciliation />
-                    </IconContext.Provider> Goods Receipt, <IconContext.Provider
-                      value={{ color: "#04D4F0", size: "20px" }}
-                    >
-                      {" "}
-                      <FaUserCheck />
-                    </IconContext.Provider> Uploaded Document</p>
-            <table className="table table-light table-bordered table-hover">
+            <p className="text-right" style={{ fontFamily:"Serif",marginTop: "-35px",marginBottom: "1px", size:60 }}></p>
+            <table className="table table-light table-bordered ">
               <thead className="table-light">
                 <tr
                   className="text-center"
@@ -196,8 +176,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                     borderColor: COLORS.gray10,
                   }}
                 >
-                  <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Vendor ID</th>
-                   <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Vendor Name</th>
+                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Mobile</th>
+                   <th onClick={() => sorting("VENDOR_NAME")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Name</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th>
                    {/* <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
                   <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
@@ -256,10 +236,10 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                         <td
                           key={`col-3` + index}
                           className="text-center"
-                          style={{ width: "10%", borderColor: COLORS.gray10 }}
+                          style={{ width: "10%", borderColor: COLORS.gray10, width:"20%" }}
                         >
-                         
-                            <div className="col-md-12">
+
+                          <div className="col-md-12">
                           <div className="row">
 
                             
@@ -274,9 +254,9 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                             myVendorName: vd.VENDOR_NAME,
                           }}                         
                           >
-                <button type="button" title="Purchase Orde" style={{height: 35, backgroundColor:"#BD7FFE",fontFamily:"serif", borderRadius: 5, color:"white" }}><div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <button type="button" title="Purchase Orde" style={{height: 35, backgroundColor:"white",fontFamily:"serif", borderRadius: 5, color:"white" }}><div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                     <IconContext.Provider
-                      value={{ color: "WHITE", size: "30px" }}
+                      value={{ color: "#6495ED", size: "35px" }}
                     >
                       {" "}
                       <BsFillCartCheckFill />
@@ -293,8 +273,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 
                           }}                         
                           >
-                <button type="button" title="Goods Return" style={{  height: 35, backgroundColor:"#6495ED",fontFamily:"serif", borderRadius: 5,color:"white" }} ><IconContext.Provider
-                      value={{ color: "WHITE", size: "30px" }}
+                <button type="button" title="Goods Return" style={{  height: 35, backgroundColor:"white",fontFamily:"serif", borderRadius: 5,color:"white" }} ><IconContext.Provider
+                      value={{ color: "#FFBF00", size: "35px" }}
                     >
                       {" "}
                       <BsFillCartXFill />
@@ -310,8 +290,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 
                           }}                         
                           >
-                <button type="button" title="Goods Receipt"style={{  height: 35,backgroundColor:"#9999FF", fontFamily:"serif",borderRadius: 5 , color:"white"}}><IconContext.Provider
-                      value={{ color: "WHITE", size: "30px" }}
+                <button type="button" title="Goods Receipt"style={{  height: 35,backgroundColor:"white", fontFamily:"serif",borderRadius: 5 , color:"white"}}><IconContext.Provider
+                      value={{ color: "#FF7F50", size: "35px" }}
                     >
                       {" "}
                       <AiFillReconciliation />
@@ -344,8 +324,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 
                           }}                         
                           >
-                <button type="button" title="Uploaded Document"style={{  height: 35,backgroundColor:"#04D4F0", fontFamily:"serif",borderRadius: 5 , color:"white"}}><IconContext.Provider
-                      value={{ color: "WHITE", size: "30px" }}
+                <button type="button" title="Uploaded Document"style={{  height: 35,backgroundColor:"white", fontFamily:"serif",borderRadius: 5 , color:"white"}}><IconContext.Provider
+                      value={{ color: "#DE3163", size: "35px" }}
                     >
                       {" "}
                       <FaUserCheck />
@@ -354,11 +334,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                           </div>
                             
                        </div>
-                   
-                     
                        </div>
-                         
-                          <br />
+                          <br />       
                         </td>
                         
                       </tr>
@@ -376,7 +353,6 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
             </table>
           </div>
         </div>
-
       </>
     );
   }

@@ -193,14 +193,10 @@ const BuyerGoodsReturn=(props)=> {
                 }}
               />
             </div>
-
             <div className="col-md-1">
             <button type="button" style={{ width: "50px", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>All</button>
-
             </div>
           </div>
-
-
         </div>
         <div className="card-body">
         <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
@@ -269,7 +265,6 @@ const BuyerGoodsReturn=(props)=> {
                       >
                         {dateFormat(val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
                       </td>
-
                       <td
                         key={`col-3` + index}
                         className="text-center"

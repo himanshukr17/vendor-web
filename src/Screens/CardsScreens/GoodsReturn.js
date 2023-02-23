@@ -7,11 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown,AiOutlineArrowUp } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
 import DateRangePicker from "rsuite/esm/DateRangePicker";
+import { BsHash } from "react-icons/bs";
 
 function GoodsReturn() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ function GoodsReturn() {
   const currentPosts = clickGRData.slice(indexOfFirstPost, indexOfLastPost)
   const [emptyModalTable, setEmptyModalTable] = useState([]);
   const vendorId = localStorage.getItem('userId');
-
+  const [poNumber,setPoNumber]=useState("")
   useEffect(() => {
     const fetchData = async () => {
       axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
@@ -49,19 +50,23 @@ function GoodsReturn() {
     }
     fetchData();
   }, []);
+  const[showArrow,setShowArrow]=useState(false)
+
   const sorting = (col) => {
     if (sort === "ASC") {
       const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
       setTBody(sorted);
-      setSort("DSC")
+      setSort("DSC");
+      setShowArrow(!showArrow);
       console.log("response.data", tbody);
     }
     if (sort === "DSC") {
       const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
+      setShowArrow(!showArrow);
       setTBody(sorted);
       setSort("ASC")
     }
@@ -110,7 +115,7 @@ function GoodsReturn() {
     var searchElements = event.target.value;
     console.log(searchElements);
     if (searchElements.length > 0) {
-      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements));
+      const searchDatas = tbody.filter((item) => (item.GRN_NO).toString().includes(searchElements));
       setTBody(searchDatas)
       console.log(searchDatas)
       if (searchDatas.length == 0) {
@@ -170,7 +175,7 @@ function GoodsReturn() {
               </div>
             </div>
             <div className="col-md-3">
-              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
+              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Document Date Range" />
 
 
             </div>
@@ -180,7 +185,7 @@ function GoodsReturn() {
                 type="text"
                 className="form-control"
 
-                placeholder="Search"
+                placeholder="Search GR No"
                 style={{
                   width: "100%",
                   height: 35,
@@ -210,11 +215,15 @@ function GoodsReturn() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "6%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
-                <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Price*</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
@@ -224,7 +233,11 @@ function GoodsReturn() {
                 tbody.map((val, index) => {
                   let total = 0;
                   val.return_order.map((itemsPrice) =>
-                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.PO_QTY
+                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY
+                  )
+                  let totalQtuy = 0;
+                  val.return_order.map((itemsPrices) =>
+                  totalQtuy = totalQtuy + itemsPrices.RETURN_QTY
                   )
                   return (
                     <tr
@@ -244,12 +257,12 @@ function GoodsReturn() {
                           href="#"
                           onClick={(e) => {
                             togglePODetailsFlag();
-
+                            setPoNumber(val.GRN_NO)
                             setClickGRData(val.return_order)
                             setEmptyModalTable(val.return_order)
                           }}
                         >
-                          {(val.PO_NO)}
+                          {(val.GRN_NO)}
                         </a>
                         <br />
                       </td>
@@ -258,8 +271,49 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {dateFormat(val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
+                        {val.return_order[0].PO_NO}
                       </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.COMPANY_CODE}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.POSTING_DATE, "dd/mm/yyyy")}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.DOCUMENT_DATE, "dd/mm/yyyy")}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.PLANT_ID+"("+val.PLANT_DESCRIPTION+")"}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {totalQtuy}
+                      </td>
+                      <td
+                        key={`col-4` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.return_order.length}                      </td>
 
                       <td
                         key={`col-3` + index}
@@ -268,13 +322,8 @@ function GoodsReturn() {
                       >
                         {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
                       </td>
-                      <td
-                        key={`col-4` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.return_order.length}                      </td>
-                      <td
+                     
+                      {/* <td
                         key={`col-5` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
@@ -285,7 +334,7 @@ function GoodsReturn() {
                         {val.STATUS == 'Close' &&
                           <span className="badge badge-danger" >Close</span>
                         }
-                      </td>
+                      </td> */}
                       <td
                         key={`col-6` + index}
                         className="text-center"
@@ -304,7 +353,7 @@ function GoodsReturn() {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={15} className="text-center">
                     No Data Found
                   </td>
                 </tr>
@@ -334,7 +383,12 @@ function GoodsReturn() {
             <div className="col-md-8">
 
               <h5 className="modal-title " id="exampleModalLabel">
-                GR's Details
+                GR's Details  <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+        <BsHash />
+        <a style={{color:"green"}}>GR No: {poNumber}</a>
+    </IconContext.Provider>
               </h5>
 
             </div>
@@ -376,36 +430,43 @@ function GoodsReturn() {
           </div>
           <table className="table table-bordered table-striped">
             <thead>
-              <th>Material Number</th>
+            
               <th>Material Description</th>
+              <th>Material Number</th>
               <th>GR Number</th>
+              <th>Manufacture Part No</th>
               <th>Return Quantity</th>
               <th>Unit</th>
-              <th>PO Quantity</th>
+              {/* <th>Line Item</th> */}
+              <th>Net Price</th>
             </thead>
             <tbody>
               {modalDataStatus ? (
                 currentPosts.map((grsData, index) => {
                   return (
                     <tr  key={`row` + index}>
-                      <td  key={`col-1` + index}>
-                        {grsData.MATERIAL_NO.toString()}
-                      </td>
-
-                      <td  key={`col-2` + index}>
+                   
+                      <td  key={`col-5` + index}>
                         {grsData.MATERIAL_TEXT}
                       </td>
-                      <td  key={`col-3` + index}>
-                        {grsData.GRN_NO.toString()}
+                      <td  key={`col-6` + index}>
+                        {grsData.MATERIAL_NO}
                       </td>
-                      <td  key={`col-4` + index}>
-                        {grsData.RETURN_QTY.toString()}
+                      <td  key={`col-7` + index}>
+                        {grsData.GRN_NO}
                       </td>
-                      <td  key={`col-5` + index}>
+                      <td  key={`col-7` + index}>
+                        {grsData.MANUFACTURE_PART_NO}
+                      </td>
+                      <td  key={`col-8` + index}>
+                        {grsData.RETURN_QTY}
+                      </td>
+                      <td  key={`col-9` + index}>
                         {grsData.UNIT}
                       </td>
-                      <td  key={`col-6` + index}>
-                        {grsData.PO_QTY}
+                      <td  key={`col-10` + index}>
+                      {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(grsData.AMOUNT)}
+
                       </td>
                     </tr>
                   );

@@ -1,20 +1,22 @@
-import React, { useState,  useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import { Link, useNavigate } from "react-router-dom";
-import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
+import { AiFillAccountBook, AiOutlineArrowRight, AiOutlineRadiusSetting, AiOutlineWallet } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract,FaUsers,FaReceipt, FaFileInvoiceDollar } from "react-icons/fa";
-import { BsFillCartCheckFill, BsFillBagXFill,BsFillCartXFill,BsReceiptCutoff } from "react-icons/bs";
+import { FaMegaport, FaFileContract, FaUsers, FaReceipt, FaFileInvoiceDollar, FaHackerNews } from "react-icons/fa";
+import { BsFillCartCheckFill, BsFillBagXFill, BsFillCartXFill, BsReceiptCutoff } from "react-icons/bs";
 import { AiFillReconciliation } from "react-icons/ai";
-import {AxioxExpPort} from "./AxioxExpPort"
+import { AxioxExpPort } from "./AxioxExpPort"
+import { COLORS } from "../Constants/theme";
+import CountUp from 'react-countup';
 
 
 function HomeScreen() {
-  
-  
- 
-  const vendorId =localStorage.getItem('userId');
+
+
+
+  const vendorId = localStorage.getItem('userId');
   const [thead, setTHead] = useState([
     "Client Name",
     "Location",
@@ -65,51 +67,47 @@ function HomeScreen() {
         alert("error");
       });
   };
-  const [lablesAll,setLablesAll]=useState([])
-const [dashboardData,setDashboardData]=useState("")
+  const [lablesAll, setLablesAll] = useState("")
+  const [dashboardData, setDashboardData] = useState("")
   useEffect(() => {
     const fetchPosts = async () => {
-      axios.get(AxioxExpPort + "purchase_order/get?id=" + vendorId)
+      axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
         .then((response) => {
-          setLablesAll(response.data[0]);
-          var count=0;
-          (response.data[0].purchase_order).map((oneitem,index)=>{
-            count=1;
-            console.log("response.data",oneitem.MATERIAL_DESCRIPTION);
-          })
+          setLablesAll(response.data.length);
+         
         })
 
     }
     const fetchHomeCount = async () => {
-      axios.get(AxioxExpPort+"count/all?id="+vendorId)
-      .then((response) => {
-        setDashboardData(response.data);
-      // setLablesAll(response.data[0])
-      
-    })
-  }
-  fetchHomeCount();
-  fetchPosts();
+      axios.get(AxioxExpPort + "count/all?id=" + vendorId)
+        .then((response) => {
+          setDashboardData(response.data);
+          console.log("response.data", response.data)
 
-    }, []);
-    const labels = ["January", "February", "March", "April", "May", "June"];
-    const data = {
-      labels: labels,
-      datasets: [
-        {
-          label: "January",
-          backgroundColor: "rgb(255, 99, 132)",
-          borderColor: "rgb(255, 99, 132)",
-          data: [50, 10, 5, 2, 20, 30, 45],
-        }
-      ],
-    };
+        })
+    }
+    fetchHomeCount();
+    fetchPosts();
+
+  }, []);
+  const labels = ["January", "February", "March", "April", "May", "June"];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "January",
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(255, 99, 132)",
+        data: [50, 10, 5, 2, 20, 30, 45],
+      }
+    ],
+  };
   return (
     <div
-    style={{
-      marginBottom:26
-      
-    }}  
+      style={{
+        marginBottom: 26
+
+      }}
     >
       <div
         className="row"
@@ -118,378 +116,400 @@ const [dashboardData,setDashboardData]=useState("")
         }}
       >
         <div id="google_translate_element"></div>
-        
-        <div className="col-lg-3 col-6">
-          <Link to="/pos"  style={{
-            textDecoration:'none',
-   
-          }}>
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  // float: "left",
-                  backgroundColor:"#EBEBFF"
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Purchase Order
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
+        <div className="row">
+          <div className="col-md-3">
+            <div className="row">
+              <Link to="/pos" style={{
+                textDecoration: 'none',
 
+              }}>
+
+
+                <div className="card info-card sales-card col-md-12"
+                  style={
+                    {
+                      // float: "left",
+                      backgroundColor: "#EBEBFF"
+                    }
+                  }>
                   <div className="row">
-                  <div className="col-md-4">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
-                    >
-                      {" "}
-                      <BsFillCartCheckFill />
-                    </IconContext.Provider>
-                  </div>
-                  </div>
-                  <div className="col-md-8 text-right">
 
-                  <span    style={{
-                        color: "#FF6347",
-                        fontWeight: 700,
-                        fontSize: 30,
-                        
-                        
-                      }} className=" small pt-1 fw-bold">{dashboardData.OPEN_PO}</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1">Open PO's</span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold">{dashboardData.CLOSE_PO}</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1">Close PO's</span>
-                  </div>
 
-                  </div>
+                    <div className="col-md-1">
+                      <div className="card-icon rounded-circle   justify-content-left">
+                        <IconContext.Provider
+                          value={{ color: "#0275d8", size: "22px" }}
+                        >
+                          <BsFillCartCheckFill style={{
+                            marginTop: "10px"
+                          }} />
+                        </IconContext.Provider>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <h5
+                        className="card-title"
+                        style={{
+                          margin: 10,
+                          color: "black",
+                        }}
+                      >
 
-              </div>
-            </div>
-          </Link>
-        </div>
-        <div className="col-lg-3 col-6">
-          <Link to="/grs"  style={{
-            textDecoration:'none',
+                        Purchase Order
+                      </h5>
+                    </div>
+                    <div className="col-md-3">
    
-          }}>
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  backgroundColor:"#EBEBFF"
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Goods Return
-              </h5>
-
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-                  <div className="row">
-                  <div className="col-md-4">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
-                    >
-                      {" "}
-                      <BsFillCartXFill />
-                    </IconContext.Provider>
+                          <a className="card-title" style={{
+                          marginTop: 10,
+                          color: "#FF6347",
+                          textDecoration: 'none',
+                          float: "right",
+                          fontFamily:"bold"
+                        }}> <CountUp delay={5} end={ Number(dashboardData.OPEN_PO)+Number(dashboardData.CLOSE_PO)}/></a>
+                  </div>
+                    <div className="col-md-1">
+                  <a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
                   </div>
                   </div>
-                   <div className="col-md-8 text-right" >
-                   <span    style={{
-                        color: "#FF7F50",
-                        fontWeight: 700,
-                        fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_PO}</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
-                     
-                  </div> 
-
-                  </div>
-
-              </div>
+                </div>
+              </Link>
             </div>
-          </Link>
-        </div>
-        
-        <div className="col-lg-3 col-6">
-          <Link to="/res"  style={{
-            textDecoration:'none',
+            <div className="row">
+              <Link to="/res" style={{
+                textDecoration: 'none',
+
+              }}>
+
+
+                <div className="card info-card sales-card col-md-12"
+                  style={
+                    {
+                      // float: "left",
+                      backgroundColor: "#EBEBFF"
+                    }
+                  }>
+                  <div className="row">
+
+
+                    <div className="col-md-1">
+                      <div className="card-icon rounded-circle   justify-content-left">
+                        <IconContext.Provider
+                          value={{ color: "#0275d8", size: "22px" }}
+                        >
+
+                          <AiFillReconciliation style={{
+                            marginTop: "10px"
+                          }} />
+                        </IconContext.Provider>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <h5
+                        className="card-title"
+                        style={{
+                          margin: 10,
+                          color: "black",
+                        }}
+                      >
+                        Goods Receipt
+                      </h5>
+                    </div>
+                    <div className="col-md-3">
    
-          }}>
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  backgroundColor:"#EBEBFF"
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Goods Receipts
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-                  <div className="row">
-                  <div className="col-md-4">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
-                    >
-                      <AiFillReconciliation />
-                    </IconContext.Provider>
+   <a className="card-title" style={{
+   marginTop: 10,
+   color: "#FF6347",
+   textDecoration: 'none',
+   float: "right",
+   fontFamily:"bold"
+ }}> <CountUp delay={5} end={Number(dashboardData.RECEIVED_PO) }/></a>
+</div>
+<div className="col-md-1">
+<a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
+</div>
                   </div>
-                  </div>
-                  
-                  <div className="col-md-8 text-right" >
-                   <span    style={{
-                        color: "#FF7F50",
-                        fontWeight: 700,
-                        fontSize: 30,
-                      }} className="text-success small pt-1 fw-bold text-right">{dashboardData.RECEIVED_PO}</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
-                    <span className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
-                  </div> 
-                  </div>
-              </div>
+                </div>
+              </Link>
             </div>
-          </Link>
-        </div>
-        <div className="col-lg-3 col-6">
-          <Link to="/inv"  style={{
-            textDecoration:'none',
+            <div className="row">
+              <Link to="/grs" style={{
+                textDecoration: 'none',
+
+              }}>
+
+
+                <div className="card info-card sales-card col-md-12"
+                  style={
+                    {
+                      // float: "left",
+                      backgroundColor: "#EBEBFF"
+                    }
+                  }>
+                  <div className="row">
+
+
+                    <div className="col-md-1">
+                      <div className="card-icon rounded-circle   justify-content-left">
+                        <IconContext.Provider
+                          value={{ color: "#0275d8", size: "22px" }}
+                        >
+
+                          <BsFillCartXFill style={{
+                            marginTop: "10px"
+                          }} />
+                        </IconContext.Provider>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <h5
+                        className="card-title"
+                        style={{
+                          margin: 10,
+                          color: "black",
+                        }}
+                      >
+
+                        Goods Return
+                      </h5>
+                    </div>
+                    <div className="col-md-3">
    
-          }}>
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  backgroundColor:"#EBEBFF"
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Invoice Details
-              </h5>
-
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-                  <div className="row">
-                  <div className="col-md-4">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "60px" }}
-                    >
-                      {" "}
-                      <FaFileInvoiceDollar />
-                    </IconContext.Provider>
+   <a className="card-title" style={{
+   marginTop: 10,
+   color: "#FF6347",
+   textDecoration: 'none',
+   float: "right",
+   fontFamily:"bold"
+ }}><CountUp delay={5} end={ Number(dashboardData.RETURN_PO)}/></a>
+</div>
+<div className="col-md-1">
+<a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
+</div>
                   </div>
-                  </div>
-                   <div className="col-md-8 text-right" >
-                   <span    style={{
-                        color: "#FF7F50",
-                        fontWeight: 700,
-                        fontSize: 30,
-                      }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_PO}</span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                       <span    style={{
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: "#6495ED",
-                      }} className="text-success small pt-1 fw-bold text-right"></span>{" "}
-                    <span   style={{
-                      
-                       
-                      }}  className="text-muted small pt-2 ps-1">Total Returns</span><br></br>
-                     
-                  </div> 
-
-                  </div>
-
-              </div>
+                </div>
+              </Link>
             </div>
-          </Link>
-        </div>
-        <div className="col-lg-3 col-6">
-          <Link to="/mcs"  style={{
-            textDecoration:'none',
+
+            <div className="row">
+              <Link to="/ackn" style={{
+                textDecoration: 'none',
+
+              }}>
+
+
+                <div className="card info-card sales-card col-md-12"
+                  style={
+                    {
+                      // float: "left",
+                      backgroundColor: "#EBEBFF"
+                    }
+                  }>
+                  <div className="row">
+
+
+                    <div className="col-md-1">
+                      <div className="card-icon rounded-circle   justify-content-left">
+                        <IconContext.Provider
+                          value={{ color: "#0275d8", size: "22px" }}
+                        >
+
+                          <AiOutlineWallet style={{
+                            marginTop: "10px"
+                          }} />
+                        </IconContext.Provider>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <h5
+                        className="card-title"
+                        style={{
+                          margin: 10,
+                          color: "black",
+                        }}
+                      >
+                       New Po's    </h5>
+                    </div>
+                    <div className="col-md-3">
    
-          }}>
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  backgroundColor:"#EBEBFF"
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                My Contacts
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
+                          <a className="card-title" style={{
+                          marginTop: 10,
+                          color: "#FF6347",
+                          textDecoration: 'none',
+                          float: "right",
+                          fontFamily:"bold"
+                        }}> <CountUp delay={5} end={ Number(lablesAll) }/></a>
+                  </div>
+                    <div className="col-md-1">
+                  <a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
+                  </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          
+            <div className="row">
+              <Link to="/inv" style={{
+                textDecoration: 'none',
+
+              }}>
+
+
+                <div className="card info-card sales-card col-md-12"
+                  style={
+                    {
+                      // float: "left",
+                      backgroundColor: "#EBEBFF"
+                    }
+                  }>
                   <div className="row">
-                  <div className="col-md-12">
-                  <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "86px" }}
-                    >
-                      {" "}
-                      <FaFileContract />
-                    </IconContext.Provider>
+
+
+                    <div className="col-md-1">
+                      <div className="card-icon rounded-circle   justify-content-left">
+                        <IconContext.Provider
+                          value={{ color: "#0275d8", size: "22px" }}
+                        >
+
+                          <FaFileInvoiceDollar style={{
+                            marginTop: "10px"
+                          }} />
+                        </IconContext.Provider>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <h5
+                        className="card-title"
+                        style={{
+                          margin: 10,
+                          color: "black",
+                        }}
+                      >
+                        Invoice Details
+                      </h5>
+                    </div>
+                    <div className="col-md-3">
+   
+                          <a className="card-title" style={{
+                          marginTop: 10,
+                          color: "#FF6347",
+                          textDecoration: 'none',
+                          float: "right",
+                          fontFamily:"bold"
+                        }}><CountUp delay={5} end={Number(dashboardData.INVOICE_COUNT)} /> </a>
+                  </div>
+                    <div className="col-md-1">
+                  <a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
                   </div>
                   </div>
-                  
-
-                  </div>
-
-
-
-
-                
-              </div>
+                </div>
+              </Link>
             </div>
-          </Link>
-        </div>
-        <div className="col-lg-6 col-6" >
-       
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  backgroundColor:"white"
-                  // float: "left",
+            <div className="row">
+              <Link to="/mcs" style={{
+                textDecoration: 'none',
+
+              }}>
+
+
+                <div className="card info-card sales-card col-md-12"
+                  style={
+                    {
+                      // float: "left",
+                      backgroundColor: "#EBEBFF"
+                    }
+                  }>
+                  <div className="row">
+
+
+                    <div className="col-md-1">
+                      <div className="card-icon rounded-circle   justify-content-left">
+                        <IconContext.Provider
+                          value={{ color: "#0275d8", size: "22px" }}
+                        >
+
+                          <FaFileContract style={{
+                            marginTop: "10px"
+                          }} />
+                        </IconContext.Provider>
+                      </div>
+                    </div>
+                    <div className="col-md-7">
+                      <h5
+                        className="card-title"
+                        style={{
+                          margin: 10,
+                          color: "black",
+                        }}
+                      >
+                        My Contacts      </h5>
+                    </div>
+                    <div className="col-md-4">
+
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          
+          </div>
+
+          <div className="col-md-5">
+            <div className="col-lg-12" >
+
+              <div
+                className="card info-card sales-card"
+                style={
+                  {
+                    backgroundColor: "white"
+                    // float: "left",
+                  }
                 }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
               >
-                Latest Purchase Order
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
+                <h5
+                  className="card-title"
+                  style={{
+                    margin: 10,
+                    color: "black",
+                  }}
+                >
+                  Last 6 months Purchase Order Details
+                </h5>
+
+                <Bar data={data} />
+
+
+
               </div>
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-                 
-                  <div className="col-md-12">
-                <p>Net Value*:</p> 
-                {/* <div
-            className="card"
-            style={{
-              
-              width: "60%",
-              margin: "1%",
-            }}
-          >
-            <Bar data={data} />
-                
-            
-            </div> */}
             </div>
+          </div>
+          <div className="col-md-4">
+
+            <div className="card">
+              <p style={{ fontSize: "15px", marginTop: "2%", marginLeft: "2%" }} >Activity Feed</p>
+              <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
+              <div className="card-body" style={{
+
+                overflowY: "scroll",
+
+                height: "450px",
+                marginRight: "-20px"
+
+              }}>
+
+
+
+
+              </div>
+
+
             </div>
-            </div>
-        
+
+          </div>
         </div>
-       
+
+
+
         {/* <div className="col-lg-3 col-6">
           <Link >
             <div
@@ -548,14 +568,13 @@ const [dashboardData,setDashboardData]=useState("")
             </div>
           </Link>
         </div>*/}
-        
-{/* 
+
+        {/* 
         <div
           style={{
             display: "flex",
           }}
-        > */}
-          {/* <div
+       <div
           className="card"
           style={{
             height: 60,
@@ -563,7 +582,7 @@ const [dashboardData,setDashboardData]=useState("")
             margin: 20,
           }}
         ></div> */}
-          {/* <div
+        {/* <div
             className="card"
             style={{
               height: 350,

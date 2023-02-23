@@ -7,10 +7,9 @@ import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
-// // import Pagination from "../../Components/Pagination";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -28,18 +27,21 @@ const BuyerPurchaseOrders =(props)=> {
   const [sort, setSort] = useState("ASC");
   // const [query, setQuery]=useState("")
   const [filterData, setFilterdata] = useState([])
+ 
   const headers = [
-    { label: "Material No", key: "MATERIAL" },
     { label: "Material Description", key: "MATERIAL_DESCRIPTION" },
-    { label: "Item Category", key: "ITEM_CATEGORY" },
-    { label: "Price/Unit", key: "NET_PRICE" },
-    { label: "Delevered Quantity", key: "DELIVERED_QUANTITY" },
+    { label: "Material No", key: "MATERIAL" },
+    { label: "Manufacture Part No.", key: "MANUFACTURE_PART_NO" },
+    { label: "Price/Unit", key: "UNIT" },
+    { label: "Line Item", key: "ITEM_CATEGORY" },
     { label: "Pending Quantity", key: "PENDING_QUANTITY" },
+    { label: "Delevered Quantity", key: "DELIVERED_QUANTITY" },
+    { label: "Price/Unit", key: "NET_PRICE" },
     { label: "Order Quantity", key: "ORDER_QUANTITY" },
   ];
 
   const data = ClickedPOsDataArr;
- 
+
   const [tbody, setTBody] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -50,15 +52,15 @@ const BuyerPurchaseOrders =(props)=> {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      axios.get(AxioxExpPort + "purchase_order/get?id=" + vendorId)
+      axios.post(AxioxExpPort + "createcompany/po",{
+      "user":vendorId
+      })
         .then((response) => {
           setTBody(response.data);
-          // console.log("response.data",response.data);
-          // console.log("response.data.length",response.data)
+           console.log("response.data",response.data);
 
           setFilterdata(response.data);
-          
-        }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
+        })
 
     }
     fetchPosts()
@@ -85,7 +87,7 @@ const BuyerPurchaseOrders =(props)=> {
       setTBody(filterData)
     }
   }
-
+ const[showArrow,setShowArrow]=useState(false)
   const sorting = (col) => {
     if (sort === "ASC") {
       const sorted = [...tbody].sort((a, b) =>
@@ -93,12 +95,14 @@ const BuyerPurchaseOrders =(props)=> {
       );
       setTBody(sorted);
       setSort("DSC")
+      setShowArrow(!showArrow)
       console.log("response.data", tbody);
     }
     if (sort === "DSC") {
       const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
+      setShowArrow(!showArrow)
       setTBody(sorted);
       setSort("ASC")
     }
@@ -110,7 +114,7 @@ const BuyerPurchaseOrders =(props)=> {
     console.log(searchElements.length);
     if (length > 0) {
       // setTBody('')
-      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements) || (item.purchase_order[0].PLANT_ID).toString().toLowerCase().includes(searchElements));
+      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements) || (item.Details[0].PLANT_ID).toString().toLowerCase().includes(searchElements));
       setTBody(searchDatas);
       // if()
       if (searchDatas.length == 0) {
@@ -173,7 +177,7 @@ const BuyerPurchaseOrders =(props)=> {
                     className="btn btn"
 
                     onClick={() => {
-                      navigate("/mv");
+                      navigate("/vdtls");
                     }}
                   >
                     <IconContext.Provider value={{ color: "#000", size: "22px" }}>
@@ -181,12 +185,12 @@ const BuyerPurchaseOrders =(props)=> {
                     </IconContext.Provider>
                   </button>
                 </div>
-                <div className="col-md-9">
+                <div className="col-md-5">
 
                   <h4 className="form-check-label" htmlFor="inlineRadio2">
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Purchase Orders of {" "+vendorName}
+                    Purchase Orders
                   </h4>
                 </div>
               </div>
@@ -201,7 +205,7 @@ const BuyerPurchaseOrders =(props)=> {
                 type="text"
                 className="form-control"
 
-                placeholder="Search"
+                placeholder="Search PO No"
                 style={{
                   width: "100%",
                   height: 35,
@@ -232,10 +236,18 @@ const BuyerPurchaseOrders =(props)=> {
                 }}
               >
                 <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
-                <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
-                <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Purchasing Group</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Purchasing Org</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Payment Term</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Exchange Rate</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">INCO Term 1</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">INCO Term 2</th>
+                <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
+                 <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th> 
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
@@ -244,8 +256,13 @@ const BuyerPurchaseOrders =(props)=> {
               {isPurchaseOrderEmpty ? (
                 tbody.map((po, index) => {
                   let total = 0
-                  po.purchase_order.map((price,idx) => {
+                  po.Details.map((price,idx) => {
                     total = total + price.NET_PRICE * price.ORDER_QUANTITY
+                  });
+                  let totalsQty = 0
+                  po.Details.map((price,idx) => {
+
+                    totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
                   });
 
                   return (
@@ -259,19 +276,19 @@ const BuyerPurchaseOrders =(props)=> {
                     >
 
                       <td
-                        key={`row`+ index}
+                        key={`col-1` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         <a style={{
                           textDecoration: 'none',
-                          color:"blue"
+
                         }}
-                        type="button"
+                          href="#"
                           onClick={(e) => {
                             togglePODetailsFlag();
-                            setClickedPOsDataArr(po.purchase_order);
-                            setEmptyModalTable(po.purchase_order);
+                            setClickedPOsDataArr(po.Details);
+                            setEmptyModalTable(po.Details);
 
                           }}
                         >
@@ -280,28 +297,84 @@ const BuyerPurchaseOrders =(props)=> {
                         <br />
                       </td>
                       <td
-                        key={`col-1` + index}
+                        key={`col-2` + index}
                         className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                        style={{ width: "4%", borderColor: COLORS.gray10 }}
                       >
-                        {dateFormat(po.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
+                        {dateFormat(po.DOCUMENT_DATE, "dd/mm/yyyy")}
                       </td>
                       <td
                         key={`col-2` + index}
                         className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                        style={{ width: "4%", borderColor: COLORS.gray10 }}
                       >
-                        {po.purchase_order.length}
+                        {totalsQty}
                       </td>
                       <td
                         key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "4%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.Details.length}
+                      </td>
+                      <td
+                        key={`col-4` + index}
+                        className="text-center"
+                        style={{ width: "5%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.Details[0].COMPANY_CODE}
+                      </td>
+                      <td
+                        key={`col-5` + index}
+                        className="text-center"
+                        style={{ width: "5%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.Details[0].PURCHASING_GROUP}
+                      </td>
+                      <td
+                        key={`col-6` + index}
+                        className="text-center"
+                        style={{ width: "5%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.PURCHASE_ORG}
+                      </td>
+                      <td
+                        key={`col-7` + index}
+                        className="text-center"
+                        style={{ width: "15%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.PAYMENT_KEY +"("+po.PAY_DESC+")"}
+                      </td>
+                      <td
+                        key={`col-8` + index}
+                        className="text-center"
+                        style={{ width: "5%", borderColor: COLORS.gray10 }}
+                      >
+                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(po.Details[0].EXCHANGE_RATE)}
+                      </td>
+                      <td
+                        key={`col-9` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.INCO_1}
+                      </td>
+                      <td
+                        key={`col-10` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.INCO_2}
+                      </td>
+                      <td
+                        key={`col-11` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
                       </td>
                       <td
-                        key={`col-4` + index}
+                        key={`col-12` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
@@ -313,12 +386,12 @@ const BuyerPurchaseOrders =(props)=> {
                         }
                       </td>
                       <td
-                        key={`col-5` + index}
+                        key={`col-13` + index}
                         className="text-center"
                         style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                       >
-                        <CSVLink className="btn" data={po.purchase_order} headers={headers}
-                        // setClickedPOsDataArr(val.purchase_order)
+                        <CSVLink className="btn" data={po.Details} headers={headers}
+                        // setClickedPOsDataArr(val.Details)
                         //  laery
                         >
 
@@ -334,7 +407,7 @@ const BuyerPurchaseOrders =(props)=> {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={16} className="text-center">
                     No Data Found
                   </td>
                 </tr>
@@ -410,12 +483,14 @@ const BuyerPurchaseOrders =(props)=> {
 
           <table className="table table-bordered table-striped">
             <thead>
-              <th>Material No</th>
               <th>Material Description</th>
-              <th>Item Category</th>
-              <th>Price/Unit</th>
-              <th>Delevered Quantity</th>
+              <th>Material No</th>
+              <th>Manufacture Part No.</th>
+              <th>Unit</th>
+              <th>Line Item</th>
               <th>Pending Quantity</th>
+              <th>Delevered Quantity</th>
+              <th>Price/Unit</th>
               <th>Order Quantity</th>
 
             </thead>
@@ -423,26 +498,34 @@ const BuyerPurchaseOrders =(props)=> {
                     { modalDataStatus ?(
                 currentPosts.map((posData, index) => {
                   return (
-                    <tr  key={`row` + index}>
-                      <td key={`col-1` + index}>
-                        {(posData.MATERIAL).toString()}
-                      </td>
-                      <td key={`col-2` + index}>
+                    <tr>
+                      <td>
+    
                         {posData.MATERIAL_DESCRIPTION}
                       </td>
-                      <td key={`col-3` + index}>
+                      <td>
+                        {(posData.MATERIAL).toString()}
+                      </td>
+                      <td>
+                        {posData.MANUFACTURE_PART_NO}
+                      </td>
+                      <td>
+                        {posData.UNIT}
+                      </td>
+                      <td>
                         {posData.ITEM_CATEGORY}
                       </td>
-                      <td key={`col-4` + index}>
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(posData.NET_PRICE)}
-                      </td>
-                      <td key={`col-5` + index}>
+                      <td>
+                        {posData.PENDING_QUANTITY}
+                        </td>
+                      <td>
                         {posData.DELIVERED_QUANTITY}
                       </td>
-                      <td key={`col-6` + index}>
-                        {posData.PENDING_QUANTITY}
+                    
+                      <td>
+                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(posData.NET_PRICE)}
                       </td>
-                      <td key={`col-7` + index}>
+                      <td>
                         {posData.ORDER_QUANTITY}
                       </td>
 
