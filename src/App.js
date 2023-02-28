@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import "./App.css";
 import { BrowserRouter, Route, Routes, Link, Router } from "react-router-dom";
 import SignUp from "./Screens/SignUp";
-
-
 import Login from "./Screens/Login";
 import Graph from "./Components/Graph";
 import Dashboard from "./Screens/Dashboard";
@@ -24,7 +22,7 @@ import DashboardSupplier from './Screens/DashboardSupplier';
 import NotFound404 from './Screens/CardsScreens/NotFoundPage';
 import ManageVendors from './Screens/BuyerScreen/ManageVendors';
 //Admin
- 
+
 import AdminManageVendor from './Screens/BuyerScreen/AdminManageVendor';
 import VendorDetails from './Screens/BuyerScreen/VendorDetails';
 import BuyerPurchaseOrders from './Screens/BuyerScreen/BuyerPurchaseOrders';
@@ -40,23 +38,22 @@ function App() {
   const userType = localStorage.getItem('userType');
   const userID = localStorage.getItem('userId');
   const [userTypeDef, setUserTypeDef] = useState(userType)
-
   const [isLoggedIn, setisLoggedIn] = useState(null);
   console.log('userTypeDef', userType)
   return (
     <div className="App">
-{
-          userType === null &&
-        ( <Routes>
-         <Route path="/" element={<Login />} exact />
+      {
+        userType === null &&
+        (<Routes>
+          <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/checkStatus" element={<CheckStatus />} exact />
           <Route path="/signup" element={<SignUp />} exact />
-          <Route path='*' exact={true} element={<ErrorPage/>} />
-         </Routes>)
-}
-        {
-          userType === "false" &&
+          <Route path='*' exact={true} element={<ErrorPage />} />
+        </Routes>)
+      }
+      {
+        userType === "false" &&
 
         (<Routes>
           <Route path="/" element={<Login />} exact />
@@ -73,32 +70,27 @@ function App() {
           <Route path="/res" element={<Protected><Receiveables /></Protected>} exact />
           <Route path="/profile" element={<Protected><Profile /></Protected>} exact />
           <Route path="/cntc" element={<Protected><Contract /></Protected>} exact />
-          <Route path='*' exact={true} element={<NotFound404/>} />
+          <Route path='*' exact={true} element={<NotFound404 />} />
         </Routes>
-      )}
-      {userType ==="true" && 
-
+        )}
+      {userType === "true" &&
+      
         (<Routes>
           <Route path="/" element={<Login />} exact />
           <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
           <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact />
           <Route path="/vp" element={<Protected><VendorProfile /></Protected>} exact />
-          <Route path="/mv" element={<Protected><VendorDetails /></Protected>} exact />
+          <Route path="/mv" element={<Protected><ManageVendors /></Protected>} exact />
           <Route path="/new" element={<Protected><NewSupplier /></Protected>} exact />
           <Route path="/bmc" element={<Protected><BuyerMyContact /></Protected>} exact />
           <Route path="/vdtls" element={<Protected><VendorDetails /></Protected>} exact />
           <Route path="/bpo" element={<Protected><BuyerPurchaseOrders /></Protected>} exact />
           <Route path="/bgr" element={<Protected><BuyerGoodsReturn /></Protected>} exact />
-          <Route path="/bgrn" element={<Protected><BuyerReceiveables/></Protected>} exact />
+          <Route path="/bgrn" element={<Protected><BuyerReceiveables /></Protected>} exact />
           <Route path="/profile" element={<Protected><Profile /></Protected>} exact />
-          <Route path='*' exact={true} element={<NotFound404/>} />
-
+          <Route path='*' exact={true} element={<NotFound404 />} />
         </Routes>)
-
-
-        }
-          
-
+      }
     </div>
   );
 }

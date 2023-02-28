@@ -10,7 +10,7 @@ import { FaFileCsv, FaDownload } from "react-icons/fa";
 // // import Pagination from "../../Components/Pagination";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import { AiFillFilePdf, AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -56,7 +56,7 @@ function InvoiceDisplay () {
     const [showThree,setShowThree]=useState(false)
     useEffect(() => {
       const fetchPosts = async () => {
-        axios.get(AxioxExpPort + "invoice/all?id=" + vendorId)
+        axios.get(AxioxExpPort +"invoice/all?id="+vendorId)
           .then((response) => {
             setTBody(response.data);
             // console.log("response.data",response.data);
@@ -64,7 +64,7 @@ function InvoiceDisplay () {
             console.log("response.data.length",response.data)
             setFilterdata(response.data);
             
-          }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
+          }).catch((err) => {setIsPurchaseOrderEmpty(false)})
   
       }
       fetchPosts()
@@ -109,7 +109,7 @@ function InvoiceDisplay () {
         setSort("ASC")
       }
     }
-    console.log("response.dataresponse.data", tbody);
+    // console.log("response.dataresponse.data", tbody);
     const handleSearch = (event) => {
       var searchElements = event.target.value;
       // setQuery(searchElements);
@@ -147,6 +147,45 @@ function InvoiceDisplay () {
         setClickedInvoiceDataArr(emptyModalTable)
       }
     }
+
+    var tempArray=[];
+    tbody.map(csvItems=>{
+      var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+      console.log("csvItems",csvItems)
+      var POSTDAte=dateFormat(csvItems.POSTING_DATE, "dd/mm/yyyy");
+      let total = 0;
+      csvItems.invoice_details.map((itemsPrice) =>
+      total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY )
+      
+      tempArray.push({
+        "id":csvItems._id,
+        "INVOICE_NUMBER":csvItems.INVOICE_NUMBER,
+        "MIRO_NO":csvItems.MIRO_NO,
+        "COMPANY_CODE":csvItems.COMPANY_CODE,
+        "PLANT":csvItems.invoice_details[0].PLANT_ID+"("+csvItems.invoice_details[0].PLANT_DESCRIPTION+")",
+        "YEAR":csvItems.YEAR,
+        "POST_DATE":POSTDAte,
+        "DOC_DATE":tempDAte,
+        "TOTAL_ITEM":csvItems.invoice_details.length,
+        "TOTAL_VAL":csvItems.TOTAL_PO_VALUE
+  
+      })
+    })
+    
+    const headersTempArray=[
+      { label: "Invoice Number", key: "INVOICE_NUMBER" },
+      { label: "Miro Number", key: "MIRO_NO" },
+      { label: "Company Code", key: "COMPANY_CODE" },
+      { label: "Plant", key: "PLANT" },
+      { label: "Fiscal Year", key: "YEAR" },
+      { label: "Posting Date", key: "POST_DATE" },
+      { label: "Document Date", key: "DOC_DATE" },
+      { label: "Total Item", key: "TOTAL_ITEM" },
+      { label: "Total Net Value*", key: "TOTAL_VAL" }
+    ]
+  const printPage=()=>{
+    window.print()
+  }
     const handelAllPO = () => {
       setIsPurchaseOrderEmpty(true);
       setTBody(filterData);
@@ -156,6 +195,8 @@ function InvoiceDisplay () {
     //       return datass.filter(item=> item.DOCUMENT_DATE.toLowerCase.includes(query) )
     //       console.log(datass)
     //     }
+    let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
+
     const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
     const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
     const paginate = pageNumber => setCurrentPage(pageNumber)
@@ -175,7 +216,7 @@ function InvoiceDisplay () {
             <div className="row">
               <div className="col-md-6">
                 <div className="row">
-                  <div className="col-md-1">
+                  <div className="col-md-1 noPrint">
                     <button
                       className="btn btn"
   
@@ -198,12 +239,12 @@ function InvoiceDisplay () {
                   </div>
                 </div>
               </div>
-              <div className="col-md-3">
+              <div className="col-md-2 noPrint" >
                 <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
               </div>
   
   
-              <div className="col-md-2">
+              <div className="col-md-2 noPrint">
                 <input
                   type="text"
                   className="form-control"
@@ -219,15 +260,16 @@ function InvoiceDisplay () {
                 />
               </div>
   
-              <div className="col-md-1">
-                <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllPO}>All</button>
-  
+              <div className="col-md-2 noPrint">
+                <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button>{" "}
+                <button onClick={printPage} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
+              <CSVLink  filename={"INV:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
               </div>
             </div>
   
   
           </div>
-          <div className="card-body">
+          <div className="card-body" >
             <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
             <table className="table table-light table-bordered table-hover">
               <thead className="table-light">
@@ -239,12 +281,12 @@ function InvoiceDisplay () {
                   }}
                 >
                   <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
+                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
                   <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
                   <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
                   <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
                   <th className="text-center" style={{  width: "5%",borderColor: COLORS.gray10 }} scope="col">Total Count</th>
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
@@ -265,7 +307,6 @@ function InvoiceDisplay () {
                         }}
                         className="table-light"
                       >
-  
                         <td
                           key={`row`+ index}
                           className="text-center"
@@ -287,7 +328,13 @@ function InvoiceDisplay () {
                           </a>
                           <br />
                         </td>
-  
+                        <td
+                          key={`col-4` + index}
+                          className="text-center"
+                          style={{ width: "10%", borderColor: COLORS.gray10 }}
+                        >
+                          {po.MIRO_NO.toString()}
+                        </td>
                         <td
                           key={`col-1`+ index}
                           className="text-center"
@@ -295,18 +342,13 @@ function InvoiceDisplay () {
                         >
                         
                             {po.COMPANY_CODE}
-                       
-                         
                         </td>
                         <td
                           key={`col-1`+ index}
                           className="text-center"
                           style={{ width: "13%", borderColor: COLORS.gray10 }}
                         >
-                        
-                            {po.invoice_details[0].PLANT_ID+"("+po.invoice_details[0].PLANT_DESCRIPTION+")"}
-                       
-                         
+                            {po.invoice_details[0].PLANT_ID+"("+po.invoice_details[0].PLANT_DESCRIPTION+")"}                         
                         </td>
                         
                         <td
@@ -336,19 +378,13 @@ function InvoiceDisplay () {
                         </td>
                        
                       
-                        <td
-                          key={`col-4` + index}
-                          className="text-center"
-                          style={{ width: "10%", borderColor: COLORS.gray10 }}
-                        >
-                          {po.MIRO_NO.toString()}
-                        </td>
+                       
                         <td
                           key={`col-5` + index}
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(po.TOTAL_PO_VALUE)}
+                          {num.format(Number(po.TOTAL_PO_VALUE))}
                         </td>
                         <td
                           key={`col-6` + index}
@@ -486,7 +522,7 @@ function InvoiceDisplay () {
                           {posData.MATERIAL_DESCRIPTION.toString()}
                         </td>
                         <td  key={`col-5` + index}>
-                          {posData.TAX_AMOUNT}
+                          {num.format(Number(posData.TAX_AMOUNT))}
                         </td>
                         <td  key={`col-6` + index}>
                           {posData.CURRENCY}

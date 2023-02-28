@@ -10,7 +10,7 @@ import { AiFillReconciliation } from "react-icons/ai";
 const Footer = () => {
   return (
     <>
-   <footer className="text-center text-white" style={{backgroundColor: '#f1f1f1',marginTop:'101px'}}>
+   <footer className="text-center text-white" style={{backgroundColor: '#f1f1f1'}}>
   {/* Grid container */}
   {/* <div className="container pt-4" >
     <section className="mb-0" style={{marginTop:'-30px'}}>

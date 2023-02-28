@@ -64,8 +64,10 @@ function Login() {
              localStorage.setItem('userType', (userTypeGet)); 
              localStorage.setItem('token', (response.data[0]._id)); 
              localStorage.setItem('userId', (response.data[0].VENDOR_ID));
+             localStorage.setItem('userCompany', (response.data[0].COMPANY_NAME));
              window.location.href = "/dashboard"
-             
+            console.log("ress",response)
+
             }).catch((err) => {
               if(err.response.status==400){
                 setWrongDetail("You are able to login after approve your application")
@@ -78,6 +80,7 @@ function Login() {
           localStorage.setItem('userType', (userTypeGet)); 
           localStorage.setItem('token', (res.data[0]._id)); 
           localStorage.setItem('userId', (res.data[0].BUYER_ID));
+          localStorage.setItem('userCompany', (res.data[0].COMPANY_NAME));
           if(res.data[0].BUYER_ID == 1){
             window.location.href = "/adminManageVendor"
           }else{

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
 import {
-  AiOutlineArrowLeft,
+  AiOutlineArrowLeft,AiOutlineArrowDown,AiOutlineArrowUp
 } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
@@ -45,18 +45,21 @@ const  BuyerReceiveables=(props)=> {
           setTBody(response.data);
           setFilterdata(response.data)
 
-          console.log("response.data", response.data);
-        })
+          console.log("response.data.length", response.data);
+        }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
     }
     fetchData()
   }, []);
+  const[showArrow,setShowArrow]=useState(false)
+
   const sorting = (col) => {
     if (sort === "ASC") {
       const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
       setTBody(sorted);
-      setSort("DSC")
+      setSort("DSC");
+      setShowArrow(!showArrow)
       console.log("response.data", tbody);
     }
     if (sort === "DSC") {
@@ -64,7 +67,9 @@ const  BuyerReceiveables=(props)=> {
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
       setTBody(sorted);
-      setSort("ASC")
+      setSort("ASC");
+      setShowArrow(!showArrow)
+
     }
 
   }
@@ -114,7 +119,7 @@ const  BuyerReceiveables=(props)=> {
     var length = Number(searchElements.length)
     if (length > 0) {
       // setTBody('')
-      const searchDatas = tbody.filter((item) =>  dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.GRN_NO).toString().toLowerCase().includes(searchElements));
+      const searchDatas = tbody.filter((item) => dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.GRN_NO).toString().toLowerCase().includes(searchElements));
       setTBody(searchDatas)
       if (searchDatas.length == 0) {
         setIsPurchaseOrderEmpty(false)
@@ -132,6 +137,7 @@ const  BuyerReceiveables=(props)=> {
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
+
 
   return (
     <>
@@ -153,7 +159,7 @@ const  BuyerReceiveables=(props)=> {
                     className="btn btn"
 
                     onClick={() => {
-                      navigate("/mv");
+                      navigate("/vdtls");
                     }}
                   >
                     <IconContext.Provider value={{ color: "#000", size: "22px" }}>
@@ -210,8 +216,13 @@ const  BuyerReceiveables=(props)=> {
                 }}
               >
                 <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Receiving Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
                 {/* <th onClick={()=>sorting("received_datas[0].GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th> */}
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
                 {/* <th onClick={() => sorting("GRN_REF")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Reference No</th> */}
                 {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th> */}
@@ -232,16 +243,16 @@ const  BuyerReceiveables=(props)=> {
                       className="table-light"
                     >
                       <td
-                        key={`col-1` + index}
+                        key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         <a
-                       style={{
+                          type="button" style={{
+                          
                           textDecoration: 'none',
                           color:"blue"
                         }}
-                        type="button"
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickRecvData(val.received_datas);
@@ -254,17 +265,54 @@ const  BuyerReceiveables=(props)=> {
                         <br />
                       </td>
                       <td
-                        key={`col-2` + index}
+                        key={`col-1` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {dateFormat(val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
+                        {val.GRN_REF}
                       </td>
+                      <td
+                        key={`col-1` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.DOCUMENT_DATE, "dd/mm/yyyy")}
+                      </td>
+                      <td
+                        key={`col-1` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.received_datas[0].COMPANY_CODE}
+                      </td>
+                      <td
+                        key={`col-1` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.received_datas[0].PLANT_ID+"("+val.received_datas[0].PLANT_NAME+")"}
+                      </td>
+                     
+                     
+                      <td
+                        key={`col-1` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.received_datas[0].RECEIVING_DATE, "dd/mm/yyyy")}
+                      </td><td
+                        key={`col-1` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.received_datas[0].DOCUMENT_DATE, "dd/mm/yyyy")}
+                      </td>
+                     
 
                       <td
                         key={`col-3` + index}
                         className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                        style={{ width: "6%", borderColor: COLORS.gray10 }}
                       >
                         {val.received_datas.length}
 
@@ -281,7 +329,7 @@ const  BuyerReceiveables=(props)=> {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={15} className="text-center">
                     No Data Found
                   </td>
                 </tr>
@@ -343,26 +391,28 @@ const  BuyerReceiveables=(props)=> {
 
           <table className="table table-bordered table-striped">
             <thead>
-              <th>PO Number</th>
-              <th>PO Date</th>
               <th>Material No</th>
               <th>Material Description</th>
-              <th>Received Date</th>
-              <th>PO Quantity</th>
               <th>GR Quantity</th>
+              <th>Unit</th>
+              {/* <th>PO Date</th>
+              <th>Received Date</th> */}
+              <th>Delivery Note Quantity</th>
+              <th>Manufacturing Part No</th>
             </thead>
             <tbody>
               {modalDataStatus ? (
                 currentPosts.map((grsData, index) => {
                   return (
-                    <tr    key={`row` + index}>
-                      <td  key={`col-1` + index}>{grsData.PO_NO.toString()}</td>
-                      <td  key={`col-2` + index}>{dateFormat(grsData.PO_DATE, "ddd, mmm dS, yyyy")}</td>
-                      <td  key={`col-3` + index}>{grsData.MATERIAL_NO}</td>
-                      <td  key={`col-4` + index}>{grsData.MATERIAL_DOCUMENT}</td>
-                      <td  key={`col-5` + index}>{dateFormat(grsData.RECEIVING_DATE, "ddd, mmm dS, yyyy")}</td>
-                      <td  key={`col-6` + index}>{grsData.PO_QTY}</td>
-                      <td  key={`col-7` + index}>{grsData.GR_QTY}</td>
+                    <tr>
+                      <td>{grsData.MATERIAL_NO}</td>
+                      <td>{grsData.MATERIAL_DOCUMENT}</td>
+                      <td>{grsData.GR_QTY}</td>
+                      <td>{grsData.UNIT}</td>
+                      {/* <td>{dateFormat(grsData.PO_DATE, "ddd, mmm dS, yyyy")}</td>
+                      <td>{dateFormat(grsData.RECEIVING_DATE, "ddd, mmm dS, yyyy")}</td> */}
+                      <td>{grsData.DELIVERY_QTY}</td>
+                      <td>{grsData.MANUFACTURE_PART_NO}</td>
                     </tr>
                   );
                 })

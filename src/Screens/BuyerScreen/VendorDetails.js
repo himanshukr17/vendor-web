@@ -176,7 +176,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                     borderColor: COLORS.gray10,
                   }}
                 >
-                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Mobile</th>
+                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Code</th>
                    <th onClick={() => sorting("VENDOR_NAME")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Name</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th>
                    {/* <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>

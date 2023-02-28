@@ -4,18 +4,15 @@ import { Bar } from "react-chartjs-2";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillAccountBook, AiOutlineArrowRight, AiOutlineRadiusSetting, AiOutlineWallet } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract, FaUsers, FaReceipt, FaFileInvoiceDollar, FaHackerNews } from "react-icons/fa";
+import { FaMegaport, FaFileContract, FaUsers, FaReceipt, FaFileInvoiceDollar, FaHackerNews, FaWpforms } from "react-icons/fa";
 import { BsFillCartCheckFill, BsFillBagXFill, BsFillCartXFill, BsReceiptCutoff } from "react-icons/bs";
 import { AiFillReconciliation } from "react-icons/ai";
 import { AxioxExpPort } from "./AxioxExpPort"
 import { COLORS } from "../Constants/theme";
 import CountUp from 'react-countup';
-
-
+import 'chartjs-plugin-datalabels';
+import dateFormat from 'dateformat';
 function HomeScreen() {
-
-
-
   const vendorId = localStorage.getItem('userId');
   const [thead, setTHead] = useState([
     "Client Name",
@@ -68,51 +65,128 @@ function HomeScreen() {
       });
   };
   const [lablesAll, setLablesAll] = useState("")
+  const [podata, setPodata] = useState([])
   const [dashboardData, setDashboardData] = useState("")
-  useEffect(() => {
-    const fetchPosts = async () => {
-      axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
-        .then((response) => {
-          setLablesAll(response.data.length);
-         
+  var now = new Date();
+var daysOfYear = [];
+let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
+// console.log(new Date(props.po[60].DOCUMENT_DATE).getMonth())
+const [podetail,setPoDetail]=useState([])
+const [podetails,setPoDetails]=useState([])
+const [podetailss,setPoDetailss]=useState([])
+const [feedsData,setFeedsData]=useState([])
+const getmonth = new Set()
+useEffect(() => {
+  const fetchPosts = async () => {
+    axios.post(AxioxExpPort + "createcompany/po",{
+      "user":vendorId
+    })
+    .then((response) => {
+      setLablesAll(response.data.length);
+      setPoDetail(response.data[0])
+      //setPoDetails(response.data[0])
+      let total = 0;
+      let totalQty = 0;
+          response.data[0].Details.map(price => {
+            total = total + price.NET_PRICE * price.ORDER_QUANTITY
+            totalQty= totalQty +price.ORDER_QUANTITY
+          });
+          setPoDetailss(response.data[0].Details[0])
+          console.log("response.data",response.data[0].Details[0])
+          setPoDetails({"total":total,
+                        "totalQty":totalQty
+                        })
+          setPodata(response.data.filter(items => {
+            return new Date(items.DOCUMENT_DATE).getFullYear() == new Date().getFullYear() && (new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 1 || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 2)
+          }))
         })
-
     }
     const fetchHomeCount = async () => {
       axios.get(AxioxExpPort + "count/all?id=" + vendorId)
         .then((response) => {
           setDashboardData(response.data);
-          console.log("response.data", response.data)
+
+        })
+    }
+    const fetchActivityFeed = async () => {
+      axios.get(AxioxExpPort + "purchase_order/last_week_po?id=" + vendorId)
+        .then((response) => {
+          setFeedsData(response.data[0].po_data);
+          
 
         })
     }
     fetchHomeCount();
     fetchPosts();
+    fetchActivityFeed();
 
   }, []);
-  const labels = ["January", "February", "March", "April", "May", "June"];
+
+  podata.map(item => {
+    getmonth.add(new Date(item.DOCUMENT_DATE).getMonth() + 1)
+    console.log("new Date(item.DOCUMENT_DATE).getMonth() + 1",getmonth)
+})
+const arr = Array.from(getmonth);
+// arr.sort(function(a, b) {
+//     return a - b;
+//   });
+
+const labels=[]
+let chartdatass = []
+arr.map(items => {
+    labels.push(items == 1 ?"Jan" : items == 2 ? "Feb" : items == 3 ? "Mar" : items == 4 ? "Apr" : items == 5 ? "May" : items == 6 ? "Jun" : items == 7 ? "Jul" : items == 8 ? "Aug" : items == 9 ? "Sep" : items == 10 ? "Oct" : items == 11 ? "Nov" : items == 12 && "Dec")
+})
+arr.map(items => {
+    let tot = 0
+    podata.map(mon => {
+      
+        if (new Date(mon.DOCUMENT_DATE).getMonth() + 1 == items) {
+            mon.Details.map(sum => {
+                tot = tot + (sum.ORDER_QUANTITY * sum.NET_PRICE)
+            })
+        }
+    })
+    chartdatass.push(Number(tot) / 100000)
+
+  })
+  const arrsPoNet=[];
+
+
   const data = {
-    labels: labels,
+    labels: labels.reverse(),
     datasets: [
       {
-        label: "January",
+        label: "Lakh(INR)",
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgb(255, 99, 132)",
-        data: [50, 10, 5, 2, 20, 30, 45],
-      }
+        data: chartdatass.reverse(),
+      },
+      
+      
+
     ],
+  };
+  const options = {
+    plugins: {
+      datalabels: {
+        display: true,
+        color: "black",
+        formatter: Math.round,
+        anchor: "end",
+        offset: -20,
+        align: "start"
+      }
+    },
+  
   };
   return (
     <div
-      style={{
-        marginBottom: 26
-
-      }}
+      style={{marginTop:76}}
     >
       <div
         className="row"
         style={{
-          margin: 10,
+          margin: 0
         }}
       >
         <div id="google_translate_element"></div>
@@ -132,7 +206,7 @@ function HomeScreen() {
                       backgroundColor: "#EBEBFF"
                     }
                   }>
-                  <div className="row">
+                  <div className="row" >
 
 
                     <div className="col-md-1">
@@ -165,7 +239,7 @@ function HomeScreen() {
                           color: "#FF6347",
                           textDecoration: 'none',
                           float: "right",
-                          fontFamily:"bold"
+                          fontFamily:"bold",fontWeight: "bold"
                         }}> <CountUp delay={5} end={ Number(dashboardData.OPEN_PO)+Number(dashboardData.CLOSE_PO)}/></a>
                   </div>
                     <div className="col-md-1">
@@ -222,7 +296,7 @@ function HomeScreen() {
    color: "#FF6347",
    textDecoration: 'none',
    float: "right",
-   fontFamily:"bold"
+   fontFamily:"bold",fontWeight: "bold"
  }}> <CountUp delay={5} end={Number(dashboardData.RECEIVED_PO) }/></a>
 </div>
 <div className="col-md-1">
@@ -280,7 +354,7 @@ function HomeScreen() {
    color: "#FF6347",
    textDecoration: 'none',
    float: "right",
-   fontFamily:"bold"
+   fontFamily:"bold",fontWeight: "bold"
  }}><CountUp delay={5} end={ Number(dashboardData.RETURN_PO)}/></a>
 </div>
 <div className="col-md-1">
@@ -326,9 +400,10 @@ function HomeScreen() {
                         style={{
                           margin: 10,
                           color: "black",
+                          fontSize:16
                         }}
                       >
-                       New Po's    </h5>
+                       Orders to confirm    </h5>
                     </div>
                     <div className="col-md-3">
    
@@ -337,7 +412,7 @@ function HomeScreen() {
                           color: "#FF6347",
                           textDecoration: 'none',
                           float: "right",
-                          fontFamily:"bold"
+                          fontFamily:"bold",fontWeight: "bold"
                         }}> <CountUp delay={5} end={ Number(lablesAll) }/></a>
                   </div>
                     <div className="col-md-1">
@@ -395,7 +470,7 @@ function HomeScreen() {
                           color: "#FF6347",
                           textDecoration: 'none',
                           float: "right",
-                          fontFamily:"bold"
+                          fontFamily:"bold",fontWeight: "bold"
                         }}><CountUp delay={5} end={Number(dashboardData.INVOICE_COUNT)} /> </a>
                   </div>
                     <div className="col-md-1">
@@ -455,7 +530,7 @@ function HomeScreen() {
           </div>
 
           <div className="col-md-5">
-            <div className="col-lg-12" >
+       <div className="col-lg-12" >
 
               <div
                 className="card info-card sales-card"
@@ -466,22 +541,88 @@ function HomeScreen() {
                   }
                 }
               >
-                <h5
-                  className="card-title"
+               <h5
+                  className="card-title text-center"
                   style={{
-                    margin: 10,
-                    color: "black",
+                      color: "black",
+                      marginTop:5
+                   
                   }}
                 >
-                  Last 6 months Purchase Order Details
+                   Latest Purchase Orders
                 </h5>
-
-                <Bar data={data} />
-
-
-
+                <div className="row" style={{
+                  marginLeft:2,
+                  marginBottom:3
+                }}>
+                  <div className="col-md-8" style={{ marginTop:1}}>
+                    <a>PO Number:</a><br/>
+                    <a style={{
+                      fontWeight:"bold"
+                    }}>{podetail.PO_NO}</a>
+                  </div>
+                  <div className="col-md-4" style={{ marginTop:1}}>
+                    <a>Date:</a><br/>
+                    <a
+                    style={{
+                      fontWeight:"bold"
+                    }}
+                    >{dateFormat((podetail.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a>
+                  </div>
+                  <div className="col-md-12" style={{ marginTop:1}}>
+                    <a>Plant: </a>
+                    <a style={{
+                      color:"#4B4B4B"
+                    }}>{podetailss.PLANT_ID+"("+podetailss.PLANT_DESCRIPTION+")"}</a>
+                  </div>
+                  <div className="col-md-12" style={{ marginTop:1}}>
+                    <a>Unit: </a>
+                    <a style={{
+                      color:"#4B4B4B"
+                    }}>{podetailss.UNIT}</a>
+                  </div>
+                  <div className="col-md-12" style={{ marginTop:1}}>
+                    <a>Total Quantity: </a>
+                    <a style={{
+                      color:"#4B4B4B"
+                    }}>{podetails.totalQty}</a>
+                  </div>
+                  <div className="col-md-12" style={{marginTop:1, marginBottom:10}}>
+                    <a>Total Net Value: </a>
+                    <a style={{
+                      color:"#4B4B4B"
+                    }}>{num.format(Number(podetails.total))}</a>
+                  </div>
+                </div>
               </div>
+              </div>
+              <div className="col-lg-12"  >
+
+<div
+  className="card info-card sales-card"
+  style={
+    {
+      backgroundColor: "white",
+     
+    }
+  }
+>
+  <h5
+    className="card-title"
+    style={{
+      marginLeft: 10,
+      marginTop: 4,
+      color: "black",
+    }}
+  >
+     Purchase order of Last 3 months of 2023
+  </h5>
+
+  <Bar data={data}  options={options} />
+</div>
+
             </div>
+            
           </div>
           <div className="col-md-4">
 
@@ -492,11 +633,31 @@ function HomeScreen() {
 
                 overflowY: "scroll",
 
-                height: "450px",
-                marginRight: "-20px"
+                height: "419px",
+                marginRight: "-20px",
+                
 
               }}>
+              <div className="row">
+                 {feedsData.map((itemsss, indexs)=>{
+                 return(
+                  <>
+                <div className="col-md-1">
+                  <FaWpforms size={20} style={{marginTop:20, color:"#FF7800 "}}/>
+                </div>
 
+                <div className="col-md-10">
+                 <a style={{color:"green"}}>Order received</a> <br/>
+                 <a style={{color:"gray"}}> {dateFormat((itemsss.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a><br/>
+                 <a style={{color:"black "}}>{itemsss.PO_NO}</a><br/>
+                 <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
+              
+                </div>
+                </>
+                 )
+                })
+                } 
+              </div>
 
 
 

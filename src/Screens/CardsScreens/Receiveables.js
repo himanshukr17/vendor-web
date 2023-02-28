@@ -192,7 +192,7 @@ function Receiveables() {
               />
             </div>
             <div className="col-md-1">
-              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAll}>All</button>
+              <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAll}>Show All</button>
 
             </div>
 

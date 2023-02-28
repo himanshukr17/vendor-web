@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiOutlineEdit} from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiOutlineEdit, AiFillFilePdf} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -44,6 +44,7 @@ function Acknowledgement() {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
     const [emptyModalTable, setEmptyModalTable] = useState([]);
+    const [aCKVALValue,setACKVALValue]=useState("")
     useEffect(() => {
         const fetchData = async () => {
           axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
@@ -140,12 +141,8 @@ function Acknowledgement() {
       setIsPurchaseOrderEmpty(true);
       setTBody(filterData);
     }
-    // const [query,setQuery]=useState("")
-    //     const search=(datass)=>{
-    //       return datass.filter(item=> item.DOCUMENT_DATE.toLowerCase.includes(query) )
-    //       console.log(datass)
-    //     }
-    const[totalValue,setTotalValue]=useState([])
+
+    const[poValue,setPOValue]=useState("")
     const handleCheck = (id) => {
       const updatedData = currentPosts.map((row,index) => {
         if (index === id) {
@@ -158,9 +155,38 @@ function Acknowledgement() {
       setEmptyModalTable(updatedData);
       setClickedPOsDataArr(updatedData);
     };
+    let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
+
     var tolto=[]
     console.log("totalValue",tolto)
-    const [totalPrice,setTotalPrice]=useState("")
+    const saveCheck=()=>{
+      console.log("smk",currentPosts);
+      var ITEM_CATEGORY=[];
+      var MATERIAL=[];
+      var MATERIALDES=[];
+      var ORDER_QUANTITY=[];
+      currentPosts.map(tempIt=>{
+        if(tempIt.IS_CHECKED){
+          ITEM_CATEGORY.push(tempIt.ITEM_CATEGORY);
+          MATERIAL.push(tempIt.MATERIAL);
+          MATERIALDES.push(tempIt.MATERIAL_DESCRIPTION);
+          ORDER_QUANTITY.push(tempIt.ORDER_QUANTITY);
+        }
+      })
+      axios.post(AxioxExpPort + "acknowledge/insert", {
+         "ITEM_CATEGORY":ITEM_CATEGORY,
+        "PO_NO":poValue,
+        "MATERIAL":MATERIAL,
+        "MATERIAL_DESCRIPTION":MATERIALDES,
+         "ORDER_QUANTITY":ORDER_QUANTITY
+      })
+        .then((res) => {
+          window.location.reload();
+          console.log('resres',res);
+        })
+        .catch((err) => { console.log(err) });
+    }
+    const [ackData,setACKData]=useState([])
     const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
     const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
     const paginate = pageNumber => setCurrentPage(pageNumber)
@@ -175,7 +201,6 @@ function Acknowledgement() {
       >
         <div
           className="card-body"
-
         >
           <div className="row">
             <div className="col-md-6">
@@ -248,6 +273,7 @@ function Acknowledgement() {
                 <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
                 <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Item</th>
                 <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
+                <th onClick={() => sorting("ACKNOWLEDGE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
 
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
@@ -283,10 +309,9 @@ function Acknowledgement() {
                       >
                         <a style={{
                           textDecoration: 'none',
-
+                          fontWeight:"bold"
                         }}
-                          href="#"
-                         
+                          
                         >
                           {po.PO_NO}
                         </a>
@@ -318,7 +343,18 @@ function Acknowledgement() {
                         className="text-center"
                         style={{ width: "5%", borderColor: COLORS.gray10 }}
                       >
-                        {total}
+                        {num.format(Number(total))}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "5%", borderColor: COLORS.gray10 }}
+                      >
+                        {po.ACKNOWLEDGE == 1?
+                          <span className="badge badge-success" >Acknowledge</span>
+                          :
+                          <span className="badge badge-warning" >Not Acknowledge</span>
+                        }
                       </td>
                      
                       <td
@@ -340,7 +376,9 @@ function Acknowledgement() {
                             togglePODetailsFlag();
                             setClickedPOsDataArr(po.purchase_order);
                             setEmptyModalTable(po.purchase_order);
-
+                            setPOValue(po.PO_NO)
+                            setACKVALValue(po.ACKNOWLEDGE)
+                            setACKData(po.acknowledge_detail)
 
                           }}
                             />
@@ -377,24 +415,31 @@ function Acknowledgement() {
           <div className="row">
             <div className="col-md-7">
               <h5 className="modal-title " id="exampleModalLabel">
-                PO's Details
+                Order Details
               </h5>
             </div>
-            <div className="col-md-2">
-            <button className="btn btn-secondary dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false" style={{
+
+            <div className="col-md-2 text-end noPrint">
+           {aCKVALValue==1?
+null:
+           <>
+           <button className="btn btn-secondary dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false" style={{
               float: "right",
             height: 35,
             }}>
     Action
   </button>
   <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Save Check</a></li>
-    <li><a class="dropdown-item" style={{color:"green"}} href="#">Approve All</a></li>
-    <li><a class="dropdown-item" style={{color:"red"}} href="#">Reject All</a></li>
-  </ul>
+    <li><a type="button" class="dropdown-item" style={{color:"blue"}} onClick={saveCheck}>Save Check</a></li>
+    {/* <li><a type="button" class="dropdown-item" style={{color:"green"}} disabled >Approve All</a></li>
+    <li><a type="button" class="dropdown-item" style={{color:"red"}} disabled>Reject All</a></li> */}
+  </ul></>
+           }
+            
+           
             </div>
 
-            <div className="col-md-3">
+            <div className="col-md-3 noPrint">
               <input
                 type="text"
                 className="form-control"
@@ -433,8 +478,85 @@ function Acknowledgement() {
           </div>
 
           <table className="table table-bordered ">
+            {aCKVALValue==1?
+              <>
+            <thead>
+           
+          
+              <th>Material Description</th>
+              <th>Material No</th>
+              <th>Item Category</th>
+              <th>Order Quantity</th>
+
+            </thead>
+            <tbody>
+                    { modalDataStatus ?(
+
+                      ackData.map((posData, index) => {
+                
+                        
+                  return (
+                    <tr key={index}>
+                      <td key={`col-22` + index}>
+                        {posData.MATERIAL_DESCRIPTION}
+                      </td>
+                      <td key={`col-23` + index}>
+                        {(posData.MATERIAL).toString()}
+                      </td>
+                     
+                      <td key={`col-24` + index}>
+                        {posData.ITEM_CATEGORY}
+                      </td>
+                      <td key={`col-25` + index}
+                      style={{
+                        width:"10%"
+                      }}
+                      >
+                      {aCKVALValue==1?
+                     posData.ORDER_QUANTITY:
+                      <input
+            type="number"
+            value={posData.ORDER_QUANTITY}
+            readOnly={!posData.IS_CHECKED}
+            min={0}  
+            onChange={(e) => {
+              
+              const newValue = Number(e.target.value);
+              const updatedData = currentPosts.map((r,inx) => {
+                if (inx === index) {
+                  return { ...r, ORDER_QUANTITY: newValue };
+                }
+                return r;
+              });
+              
+              setEmptyModalTable(updatedData);
+              setClickedPOsDataArr(updatedData);
+            }}
+          />
+
+                      }
+                      
+                       </td>
+
+                    </tr>
+                  )})
+                
+              
+              ):
+              (
+                <tr>
+                  <td colSpan={7} className="text-center">
+                    No Data Found
+                  </td>
+                </tr>
+              )
+              }
+            </tbody>
+            </>:
+            <>
             <thead>
             <th style={{ width: "5%"}}>Select</th>
+          
               <th>Material Description</th>
               <th>Material No</th>
               <th>Price/Unit</th>
@@ -459,14 +581,20 @@ function Acknowledgement() {
                         
                   return (
                     <tr key={index}>
-                    <td key={`col-21` + index} className="text-center" >
-                       <input type="checkbox"
+                 {aCKVALValue==1?
 
-                           value="0"
-                           checked={posData.IS_CHECKED}
-                            onChange={() => handleCheck(index)}
-                       />
-                    </td>
+       null
+               :
+              
+               <td key={`col-21` + index} className="text-center" >
+               <input type="checkbox"
+value="0"
+checked={posData.IS_CHECKED}
+ onChange={() => handleCheck(index)}
+/>
+</td>
+                 }
+                      
                       <td key={`col-22` + index}>
                         {posData.MATERIAL_DESCRIPTION}
                       </td>
@@ -475,21 +603,20 @@ function Acknowledgement() {
                       </td>
                      
                       <td key={`col-24` + index}>
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(posData.NET_PRICE)}
+                        {num.format(Number(posData.NET_PRICE))}
                       </td>
                       <td key={`col-25` + index}
                       style={{
                         width:"10%"
                       }}
                       >
+                      {aCKVALValue==1?
+                     posData.ORDER_QUANTITY:
                       <input
             type="number"
             value={posData.ORDER_QUANTITY}
             readOnly={!posData.IS_CHECKED}
-         
-           
-            min={0}
-           
+            min={0}  
             onChange={(e) => {
               
               const newValue = Number(e.target.value);
@@ -504,6 +631,8 @@ function Acknowledgement() {
               setClickedPOsDataArr(updatedData);
             }}
           />
+
+                      }
                       
                        </td>
 
@@ -521,6 +650,8 @@ function Acknowledgement() {
               )
               }
             </tbody>
+            </>
+            }
           </table>
           <div className="row">
             <div className="col-md-6">
@@ -528,6 +659,7 @@ function Acknowledgement() {
           <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
             </div>
             <div className="col-md-6">
+            {aCKVALValue==1?null:
             <a
               className="navbar-brand text-end"
               type="button"
@@ -538,14 +670,14 @@ function Acknowledgement() {
              
             >
              <span style={{color:COLORS.gray60}}>Total Price*= </span>{
-              '₹ ' +new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(tolto.reduce((partialSum, a) => partialSum + a, 0))
+              num.format(Number(tolto.reduce((partialSum, a) => partialSum + a, 0)))
             }
             </a>
+            }
             </div>
 
           </div>
-          
-          <div className="modal-footer">
+          <div className="modal-footer noPrint">
           
             <a
               className="navbar-brand"
@@ -565,6 +697,7 @@ function Acknowledgement() {
           </div>
         </ModalBody>
       </Modal>
+      
     
     </>
   )

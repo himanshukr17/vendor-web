@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaMegaport, FaUserTie,FaUsers } from "react-icons/fa";
 import { IconContext } from "react-icons";
+import { COLORS } from "../Constants/theme";
 const NavHeader = () => {
   const [navbar, setNabar] = useState(false);
   const changeBackground = () => {
@@ -12,10 +13,7 @@ const NavHeader = () => {
     }
   };
   const navigate = useNavigate();
-  
-
-
-
+  const companyName=localStorage.getItem('userCompany');
   window.addEventListener("scroll", changeBackground);
 
   return (
@@ -36,7 +34,8 @@ const NavHeader = () => {
             <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
             <span style={{color:"#14CA96", fontSize:"25px"}}> Connect</span>
           </a>
-         
+          <a>
+        <a style={{fontSize:"17px"}}> Welcome, </a> <a style={{fontSize:"18px", color:COLORS.gray90}}>{companyName}</a></a>
           <button
             className="navbar-toggler"
             type="button"

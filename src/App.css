@@ -600,3 +600,8 @@ background: #9d9d9d;
   background-color: white;
 }
 
+@media print {
+  .noPrint{
+    display:none;
+  }
+}

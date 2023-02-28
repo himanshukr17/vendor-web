@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown,AiOutlineArrowUp } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown,AiOutlineArrowUp, AiFillFilePdf } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
@@ -127,6 +127,49 @@ function GoodsReturn() {
     }
 
   }
+
+
+  var tempArray=[];
+  tbody.map(csvItems=>{
+    var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+    var POSTDAte=dateFormat(csvItems.POSTING_DATE, "dd/mm/yyyy");
+    let total = 0;
+    csvItems.return_order.map((itemsPrice) =>
+                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY )
+    let totalsQty = 0
+    csvItems.return_order.map((price) => {
+      totalsQty = totalsQty + Number(price.RETURN_QTY)
+    });
+    tempArray.push({
+      "id":csvItems._id,
+      "GR_NO":csvItems.GRN_NO,
+      "PO_NO":csvItems.return_order[0].PO_NO,
+      "COMPANY_CODE":csvItems.COMPANY_CODE,
+      "POST_DATE":POSTDAte,
+      "DOC_DATE":tempDAte,
+      "PLANT":csvItems.PLANT_ID+"("+csvItems.PLANT_DESCRIPTION+")",
+      "RETURN_QTY":totalsQty,
+      "TOTAL_ITEM":csvItems.return_order.length,
+      "TOTAL_VAL":total
+
+    })
+  })
+
+  const headersTempArray=[
+    { label: "GR Number", key: "GR_NO" },
+    { label: "PO Number", key: "PO_NO" },
+    { label: "Company Code", key: "COMPANY_CODE" },
+    { label: "Posting Date", key: "POST_DATE" },
+    { label: "Document Date", key: "DOC_DATE" },
+    { label: "Plant", key: "PLANT" },
+    { label: "Return Quanty", key: "RETURN_QTY" },
+    { label: "Total Item", key: "TOTAL_ITEM" },
+    { label: "Total Net Value*", key: "TOTAL_VAL" }
+  ]
+  console.log("csvArray",tempArray);
+  const printData=()=>{
+    window.print()
+  }
   const handelAllGR =()=>{
     setIsPurchaseOrderEmpty(true)
     setTBody(filterData);
@@ -134,6 +177,7 @@ function GoodsReturn() {
   const data = clickGRData;
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
+  let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
 
   return (
     <>
@@ -151,7 +195,7 @@ function GoodsReturn() {
           <div className="row">
             <div className="col-md-6">
               <div className="row">
-                <div className="col-md-1">
+                <div className="col-md-1 noPrint">
                   <button
                     className="btn btn"
 
@@ -164,7 +208,7 @@ function GoodsReturn() {
                     </IconContext.Provider>
                   </button>
                 </div>
-                <div className="col-md-5">
+                <div className="col-md-5 ">
 
                   <h4 className="form-check-label" htmlFor="inlineRadio2">
                     {/* {location.PROJECT} */}
@@ -174,12 +218,12 @@ function GoodsReturn() {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-2 noPrint">
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Document Date Range" />
 
 
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 noPrint">
 
               <input
                 type="text"
@@ -196,8 +240,10 @@ function GoodsReturn() {
               />
             </div>
 
-            <div className="col-md-1">
-            <button type="button" style={{ width: "50px", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>All</button>
+            <div className="col-md-2 text-end noPrint">
+            <button type="button" style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>Show All</button>{" "}
+            <button onClick={printData} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
+              <CSVLink  filename={"GR:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
 
             </div>
           </div>
@@ -320,7 +366,7 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
+                        {num.format(Number(total))}
                       </td>
                      
                       {/* <td
@@ -465,7 +511,7 @@ function GoodsReturn() {
                         {grsData.UNIT}
                       </td>
                       <td  key={`col-10` + index}>
-                      {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(grsData.AMOUNT)}
+                      {num.format(Number(grsData.AMOUNT))}
 
                       </td>
                     </tr>

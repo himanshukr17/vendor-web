@@ -4,9 +4,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 // import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
-import {  FaUsers } from "react-icons/fa";
+import {  FaFileContract, FaUsers } from "react-icons/fa";
 import { BsFillCartCheckFill } from "react-icons/bs";
-import { AiFillReconciliation } from "react-icons/ai";
+import { AiFillReconciliation, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { AxioxExpPort } from "./AxioxExpPort"
 
 function HomeScreenSupplier() {
@@ -93,7 +93,7 @@ function HomeScreenSupplier() {
         setActiveSupp(response.data.ACTIVE_SUPPLIER);
         setInActiveSupp(response.data.INACTIVE_SUPPLIER);
 
-        console.log("response.data", response.data.ACTIVE_SUPPLIER);
+        console.log("response.dataresponse.data", response.data);
       })
     }
     fetchPosts();
@@ -202,7 +202,51 @@ function HomeScreenSupplier() {
             </div>
           </Link>
         </div>
+        <div className="col-lg-3 col-6" >
+          <Link to="/mv" style={{
+            textDecoration: 'none',
 
+          }}
+          >
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Manage Vendors
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+               
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <IconContext.Provider
+                        value={{ color: "#0275d8", size: "90px" }}
+                      >
+                        {" "}
+                        <AiOutlineUsergroupAdd />
+                      </IconContext.Provider>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div> 
         <div className="col-lg-3 col-6">
           <Link to="/vdtls" style={{
             textDecoration: 'none',
@@ -272,50 +316,7 @@ function HomeScreenSupplier() {
         </div>
 
 
-        {/* <div className="col-lg-3 col-6">
-          <Link to="#" style={{
-            textDecoration: 'none',
-
-          }}
-          >
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Invoice Display
-              </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-               
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <IconContext.Provider
-                        value={{ color: "#0275d8", size: "90px" }}
-                      >
-                        {" "}
-                        <FaFileContract />
-                      </IconContext.Provider>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div> */}
+     
 
         {/* <div className="col-lg-3 col-6">
           <Link to="/pordersuppli" style={{

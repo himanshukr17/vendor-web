@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp} from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiFillFilePdf} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -46,6 +46,7 @@ function PurchaseOrders() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
   const [emptyModalTable, setEmptyModalTable] = useState([]);
+  let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -145,6 +146,55 @@ function PurchaseOrders() {
     setIsPurchaseOrderEmpty(true);
     setTBody(filterData);
   }
+  var tempArray=[];
+  tbody.map(csvItems=>{
+    var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+    let total = 0
+    csvItems.Details.map((price,idx) => {
+      total = total + price.NET_PRICE * price.ORDER_QUANTITY
+    });
+    let totalsQty = 0
+    csvItems.Details.map((price,idx) => {
+      totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+    });
+    tempArray.push({
+      "id":csvItems._id,
+      "PO_NO":csvItems.PO_NO,
+      "DOC_DATE":tempDAte,
+      "TOTAL_QTY":totalsQty,
+      "TOTAL_ITEM":csvItems.Details.length,
+      "COMPANY_CODE":csvItems.Details[0].COMPANY_CODE,
+      "PURCHASEING_GRP":csvItems.Details[0].PURCHASING_GROUP,
+      "PURCHASING_ORG":csvItems.PURCHASE_ORG,
+      "PAYMENT_TERM":csvItems.PAYMENT_KEY +"("+csvItems.PAY_DESC+")",
+      "EXCHANGE_RATE":csvItems.Details[0].EXCHANGE_RATE,
+      "INCO_ITEM_1":csvItems.INCO_1,
+      "INCO_ITEM_2":csvItems.INCO_2,
+      "TOTAL_VAL":total,
+      "STATUS":csvItems.STATUS
+
+    })
+  })
+
+  const headersTempArray=[
+    { label: "PO Number", key: "PO_NO" },
+    { label: "Date", key: "DOC_DATE" },
+    { label: "Total Quanty", key: "TOTAL_QTY" },
+    { label: "Total Item", key: "TOTAL_ITEM" },
+    { label: "Company Code", key: "COMPANY_CODE" },
+    { label: "Purchasing Grp", key: "PURCHASEING_GRP" },
+    { label: "Purchasing Org", key: "PURCHASING_ORG" },
+    { label: "Payment Term", key: "PAYMENT_TERM" },
+    { label: "Exchange Rate", key: "EXCHANGE_RATE" },
+    { label: "INCO ITEM 1", key: "INCO_ITEM_1" },
+    { label: "INCO ITEM 2", key: "INCO_ITEM_2" },
+    { label: "Total Net Value*", key: "TOTAL_VAL" },
+    { label: "Status", key: "STATUS" },
+  ]
+  console.log("csvArray",tempArray)
+  const printData=()=>{
+    window.print();
+  }
   // const [query,setQuery]=useState("")
   //     const search=(datass)=>{
   //       return datass.filter(item=> item.DOCUMENT_DATE.toLowerCase.includes(query) )
@@ -169,7 +219,7 @@ function PurchaseOrders() {
           <div className="row">
             <div className="col-md-6">
               <div className="row">
-                <div className="col-md-1">
+                <div className="col-md-1 noPrint">
                   <button
                     className="btn btn"
 
@@ -192,12 +242,12 @@ function PurchaseOrders() {
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-2 noPrint">
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
             </div>
 
 
-            <div className="col-md-2">
+            <div className="col-md-2 noPrint">
               <input
                 type="text"
                 className="form-control"
@@ -213,9 +263,10 @@ function PurchaseOrders() {
               />
             </div>
 
-            <div className="col-md-1">
-              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllPO}>All</button>
-
+            <div className="col-md-2 text-end noPrint">
+              <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button> {" "}
+              <button onClick={printData} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
+              <CSVLink  filename={"ID:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
             </div>
           </div>
 
@@ -347,7 +398,7 @@ function PurchaseOrders() {
                         className="text-center"
                         style={{ width: "5%", borderColor: COLORS.gray10 }}
                       >
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(po.Details[0].EXCHANGE_RATE)}
+                        {num.format(Number(po.Details[0].EXCHANGE_RATE))}
                       </td>
                       <td
                         key={`col-9` + index}
@@ -368,7 +419,7 @@ function PurchaseOrders() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
+                        {num.format(Number(total))}
                       </td>
                       <td
                         key={`col-12` + index}
@@ -520,7 +571,7 @@ function PurchaseOrders() {
                       </td>
                     
                       <td>
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(posData.NET_PRICE)}
+                        {num.format(Number(posData.NET_PRICE))}
                       </td>
                       <td>
                         {posData.ORDER_QUANTITY}

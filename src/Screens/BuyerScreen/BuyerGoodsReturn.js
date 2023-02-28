@@ -7,11 +7,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown,AiOutlineArrowUp, AiFillFilePdf } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
 import DateRangePicker from "rsuite/esm/DateRangePicker";
+import { BsHash } from "react-icons/bs";
 
 const BuyerGoodsReturn=(props)=> {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const BuyerGoodsReturn=(props)=> {
   const [filterData, setFilterData] = useState([])
   const currentPosts = clickGRData.slice(indexOfFirstPost, indexOfLastPost)
   const [emptyModalTable, setEmptyModalTable] = useState([]);
-
+  const [poNumber,setPoNumber]=useState("")
   useEffect(() => {
     const fetchData = async () => {
       axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
@@ -48,23 +49,27 @@ const BuyerGoodsReturn=(props)=> {
           setTBody(response.data);
           setFilterData(response.data)
           console.log("response.data", response.data);
-        }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
+        })
     }
     fetchData();
   }, []);
+  const[showArrow,setShowArrow]=useState(false)
+
   const sorting = (col) => {
     if (sort === "ASC") {
       const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
       );
       setTBody(sorted);
-      setSort("DSC")
+      setSort("DSC");
+      setShowArrow(!showArrow);
       console.log("response.data", tbody);
     }
     if (sort === "DSC") {
       const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
+      setShowArrow(!showArrow);
       setTBody(sorted);
       setSort("ASC")
     }
@@ -113,7 +118,7 @@ const BuyerGoodsReturn=(props)=> {
     var searchElements = event.target.value;
     console.log(searchElements);
     if (searchElements.length > 0) {
-      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements));
+      const searchDatas = tbody.filter((item) => (item.GRN_NO).toString().includes(searchElements));
       setTBody(searchDatas)
       console.log(searchDatas)
       if (searchDatas.length == 0) {
@@ -125,6 +130,45 @@ const BuyerGoodsReturn=(props)=> {
     }
 
   }
+
+  var tempArray=[];
+  tbody.map(csvItems=>{
+    var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+    var POSTDAte=dateFormat(csvItems.POSTING_DATE, "dd/mm/yyyy");
+    let total = 0;
+    csvItems.return_order.map((itemsPrice) =>
+                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY )
+    let totalsQty = 0
+    csvItems.return_order.map((price) => {
+      totalsQty = totalsQty + Number(price.RETURN_QTY)
+    });
+    tempArray.push({
+      "id":csvItems._id,
+      "GR_NO":csvItems.GRN_NO,
+      "PO_NO":csvItems.return_order[0].PO_NO,
+      "COMPANY_CODE":csvItems.COMPANY_CODE,
+      "POST_DATE":POSTDAte,
+      "DOC_DATE":tempDAte,
+      "PLANT":csvItems.PLANT_ID+"("+csvItems.PLANT_DESCRIPTION+")",
+      "RETURN_QTY":totalsQty,
+      "TOTAL_ITEM":csvItems.return_order.length,
+      "TOTAL_VAL":total
+
+    })
+  })
+
+  const headersTempArray=[
+    { label: "GR Number", key: "GR_NO" },
+    { label: "PO Number", key: "PO_NO" },
+    { label: "Company Code", key: "COMPANY_CODE" },
+    { label: "Posting Date", key: "POST_DATE" },
+    { label: "Document Date", key: "DOC_DATE" },
+    { label: "Plant", key: "PLANT" },
+    { label: "Return Quanty", key: "RETURN_QTY" },
+    { label: "Total Item", key: "TOTAL_ITEM" },
+    { label: "Total Net Value*", key: "TOTAL_VAL" }
+  ]
+  console.log("csvArray",tempArray)
   const handelAllGR =()=>{
     setIsPurchaseOrderEmpty(true)
     setTBody(filterData);
@@ -132,6 +176,7 @@ const BuyerGoodsReturn=(props)=> {
   const data = clickGRData;
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
+  let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
 
   return (
     <>
@@ -149,12 +194,12 @@ const BuyerGoodsReturn=(props)=> {
           <div className="row">
             <div className="col-md-6">
               <div className="row">
-                <div className="col-md-1">
+                <div className="col-md-1 noPrint">
                   <button
                     className="btn btn"
 
                     onClick={() => {
-                      navigate("/mv");
+                      navigate("/vdtls");
                     }}
                   >
                     <IconContext.Provider value={{ color: "#000", size: "22px" }}>
@@ -162,28 +207,28 @@ const BuyerGoodsReturn=(props)=> {
                     </IconContext.Provider>
                   </button>
                 </div>
-                <div className="col-md-9">
+                <div className="col-md-8">
 
                   <h4 className="form-check-label" htmlFor="inlineRadio2">
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Goods Return of {" "+ vendorName}
+                    Goods Return of {vendorName}
                   </h4>
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
-              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
+            <div className="col-md-2 noPrint">
+              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Document Date Range" />
 
 
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 noPrint">
 
               <input
                 type="text"
                 className="form-control"
 
-                placeholder="PO Number / Status"
+                placeholder="Search GR No"
                 style={{
                   width: "100%",
                   height: 35,
@@ -193,10 +238,16 @@ const BuyerGoodsReturn=(props)=> {
                 }}
               />
             </div>
-            <div className="col-md-1">
-            <button type="button" style={{ width: "50px", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>All</button>
+
+            <div className="col-md-2 text-end noPrint">
+            <button type="button" style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>Show All</button>{" "}
+            <button onClick={()=>{window.print()}} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
+              <CSVLink  filename={"GR:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
+
             </div>
           </div>
+
+
         </div>
         <div className="card-body">
         <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
@@ -209,11 +260,15 @@ const BuyerGoodsReturn=(props)=> {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "6%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
-                <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Price*</th>
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
@@ -223,10 +278,12 @@ const BuyerGoodsReturn=(props)=> {
                 tbody.map((val, index) => {
                   let total = 0;
                   val.return_order.map((itemsPrice) =>
-                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.PO_QTY
+                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY
                   )
-
-                  console.log("sdfjhjk", val)
+                  let totalQtuy = 0;
+                  val.return_order.map((itemsPrices) =>
+                  totalQtuy = totalQtuy + itemsPrices.RETURN_QTY
+                  )
                   return (
                     <tr
                       key={`row` + index}
@@ -242,19 +299,19 @@ const BuyerGoodsReturn=(props)=> {
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         <a
-                         style={{
+                        type="button" style={{
+                          
                           textDecoration: 'none',
                           color:"blue"
                         }}
-                        type="button"
                           onClick={(e) => {
                             togglePODetailsFlag();
-
+                            setPoNumber(val.GRN_NO)
                             setClickGRData(val.return_order)
                             setEmptyModalTable(val.return_order)
                           }}
                         >
-                          {(val.PO_NO)}
+                          {(val.GRN_NO)}
                         </a>
                         <br />
                       </td>
@@ -263,14 +320,42 @@ const BuyerGoodsReturn=(props)=> {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {dateFormat(val.DOCUMENT_DATE, "ddd, mmm dS, yyyy")}
+                        {val.return_order[0].PO_NO}
                       </td>
                       <td
-                        key={`col-3` + index}
+                        key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {'₹ ' + new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(total)}
+                        {val.COMPANY_CODE}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.POSTING_DATE, "dd/mm/yyyy")}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {dateFormat(val.DOCUMENT_DATE, "dd/mm/yyyy")}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {val.PLANT_ID+"("+val.PLANT_DESCRIPTION+")"}
+                      </td>
+                      <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {totalQtuy}
                       </td>
                       <td
                         key={`col-4` + index}
@@ -278,7 +363,16 @@ const BuyerGoodsReturn=(props)=> {
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         {val.return_order.length}                      </td>
+
                       <td
+                        key={`col-3` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                      >
+                        {num.format(Number(total))}
+                      </td>
+                     
+                      {/* <td
                         key={`col-5` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
@@ -289,7 +383,7 @@ const BuyerGoodsReturn=(props)=> {
                         {val.STATUS == 'Close' &&
                           <span className="badge badge-danger" >Close</span>
                         }
-                      </td>
+                      </td> */}
                       <td
                         key={`col-6` + index}
                         className="text-center"
@@ -308,7 +402,7 @@ const BuyerGoodsReturn=(props)=> {
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={15} className="text-center">
                     No Data Found
                   </td>
                 </tr>
@@ -338,7 +432,12 @@ const BuyerGoodsReturn=(props)=> {
             <div className="col-md-8">
 
               <h5 className="modal-title " id="exampleModalLabel">
-                GR's Details
+                GR's Details  <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+        <BsHash />
+        <a style={{color:"green"}}>GR No: {poNumber}</a>
+    </IconContext.Provider>
               </h5>
 
             </div>
@@ -380,36 +479,43 @@ const BuyerGoodsReturn=(props)=> {
           </div>
           <table className="table table-bordered table-striped">
             <thead>
-              <th>Material Number</th>
+            
               <th>Material Description</th>
+              <th>Material Number</th>
               <th>GR Number</th>
+              <th>Manufacture Part No</th>
               <th>Return Quantity</th>
               <th>Unit</th>
-              <th>PO Quantity</th>
+              {/* <th>Line Item</th> */}
+              <th>Net Price</th>
             </thead>
             <tbody>
               {modalDataStatus ? (
                 currentPosts.map((grsData, index) => {
                   return (
-                    <tr>
-                      <td key={`row` + index}>
-                        {grsData.MATERIAL_NO.toString()}
-                      </td>
-
-                      <td key={`col+1` + index}>
+                    <tr  key={`row` + index}>
+                   
+                      <td  key={`col-5` + index}>
                         {grsData.MATERIAL_TEXT}
                       </td>
-                      <td  key={`col+2` + index}>
-                        {grsData.GRN_NO.toString()}
+                      <td  key={`col-6` + index}>
+                        {grsData.MATERIAL_NO}
                       </td>
-                      <td  key={`col+3` + index}>
-                        {grsData.RETURN_QTY.toString()}
+                      <td  key={`col-7` + index}>
+                        {grsData.GRN_NO}
                       </td>
-                      <td  key={`col+4` + index}>
+                      <td  key={`col-7` + index}>
+                        {grsData.MANUFACTURE_PART_NO}
+                      </td>
+                      <td  key={`col-8` + index}>
+                        {grsData.RETURN_QTY}
+                      </td>
+                      <td  key={`col-9` + index}>
                         {grsData.UNIT}
                       </td>
-                      <td  key={`col+5` + index}>
-                        {grsData.PO_QTY}
+                      <td  key={`col-10` + index}>
+                      {num.format(Number(grsData.AMOUNT))}
+
                       </td>
                     </tr>
                   );
@@ -425,6 +531,7 @@ const BuyerGoodsReturn=(props)=> {
               }
 
             </tbody>
+
           </table>
           <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
           <div className="modal-footer">

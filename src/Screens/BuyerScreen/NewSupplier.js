@@ -237,6 +237,7 @@ const NewSupplier = () => {
                                 }}
                             >
                                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier ID</th>
+                                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Mobile</th>
                                 <th onClick={() => sorting("VENDOR_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Name</th>
                                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th>
                             </tr>
@@ -255,6 +256,13 @@ const NewSupplier = () => {
                     }}
                     className="table-light"
                 >
+                    <td
+                        key={`col-2` + index}
+                        className="text-center"
+                        style={{ width: "10%", borderColor: COLORS.gray10, fontSize: 17 }}
+                    >
+                        {(vd.vendor_id)}
+                    </td>
                     <td
                         key={`col-2` + index}
                         className="text-center"
@@ -285,7 +293,7 @@ const NewSupplier = () => {
                                         >
                                             {" "}
                                             <FaUser
-                                            
+                                            type="button"
                                                 onClick={(e) => {
                                                     togglePODetailsFlag();
                                                     setSupplierAlldetail(vd.vendor_details);
@@ -368,7 +376,7 @@ const NewSupplier = () => {
                                         >
                                             {" "}
                                             <BsBank2
-                                            
+                                                type="button"
                                                 onClick={(e) => {
                                                     toggleCheckFlagesBank();
                                                     setSupplierAllBank(vd.vendor_details.bank_data[0]);
@@ -492,6 +500,9 @@ const NewSupplier = () => {
               type="button"
               className="btn-success float-right"
               data-bs-dismiss="modal"
+              style={{
+                height:23
+              }}
               
               onClick={(e) => {
                approveSupplier(supplierAlldetail.TELEPHONE);
@@ -502,7 +513,9 @@ const NewSupplier = () => {
               type="button"
               className="btn-danger float-right"
               data-bs-dismiss="modal"
-              
+              style={{
+                height:23
+              }}
               onClick={() => {
                 togglePODetailsFlag();
               }}
@@ -669,6 +682,7 @@ const NewSupplier = () => {
                                             value={{ color: "green", size: "20px" }}
                                         >
                                  <FaEye 
+                                 type="button"
                                  style={{
                                     marginLeft:"20px"
                                  }}
@@ -914,7 +928,9 @@ textDecoration: 'none'
               type="button"
               className="btn-success float-right"
               data-bs-dismiss="modal"
-              
+              style={{
+                height:23
+              }}
               onClick={(e) => {
                approveSupplierBank(supplierAllBank.PHONE_NUMBER);
                 
@@ -924,7 +940,9 @@ textDecoration: 'none'
               type="button"
               className="btn-danger float-right"
               data-bs-dismiss="modal"
-              
+              style={{
+                height:23
+              }}
               onClick={() => {
                 rejectSupplierBank(supplierAllBank.PHONE_NUMBER);
               }}
@@ -1064,6 +1082,7 @@ textDecoration: 'none'
                                             value={{ color: "green", size: "20px" }}
                                         >
                                  <FaEye 
+                                 type="button"
                                  style={{
                                     marginLeft:"20px"
                                  }}

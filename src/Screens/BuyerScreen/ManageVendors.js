@@ -105,6 +105,7 @@ function ManageVendors() {
 
       }
     })
+    console.log("Something Went Wrong",tempArr);
     try {
       if (tempArr.length > 0) {
         axios.post(AxioxExpPort + 'mapping/update_status', {
@@ -145,6 +146,7 @@ function ManageVendors() {
     })
     console.log("values", tempArr);
   }
+
   const handleActiveAll = () => {
     var tempArr = [];
     tbody.map((values, index) => {
@@ -197,9 +199,10 @@ function ManageVendors() {
             </div>
             <div className="col-md-1">
             </div>
-            <div className="col-md-1">
+            <div className="col-md-1 text-end">
+            <button type="button" onClick={handleActive} style={{backgroundColor:COLORS.success, color:"white", width: "50px", height: 35, borderRadius: 5 }} >Save</button>
 
-            </div>
+  </div>
             <div className="col-md-2">
               <input
                 type="text"
@@ -236,7 +239,7 @@ function ManageVendors() {
                 <th onClick={() => sorting("BUYER_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer Name</th> */}
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier ID</th>
                 <th onClick={() => sorting("VENDOR_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Name</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th>
+                {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th> */}
                 <th onClick={() => sorting("STRING_STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
                 {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th> */}
               </tr>
@@ -316,7 +319,7 @@ function ManageVendors() {
                       >
                         {(vd.VENDOR_NAME).toString()}
                       </td>
-                      {vd.STATUS == 2 ?
+                      {/* {vd.STATUS == 2 ?
                         <td
                           key={`col-3` + index}
                           className="text-center"
@@ -381,7 +384,7 @@ function ManageVendors() {
                                     <AiFillReconciliation />
                                   </IconContext.Provider></button>
                                 </Link>
-                              </div>
+                              </div> */}
                               {/* <div className="col-md-2">
                             <Link 
                           to="/inv" 
@@ -399,7 +402,7 @@ function ManageVendors() {
                     </IconContext.Provider></button>
                          </Link>
                           </div> */}
-                              <div className="col-md-2">
+                              {/* <div className="col-md-2">
                                 <Link
                                   to="/bmc"
                                   state={{
@@ -501,7 +504,7 @@ function ManageVendors() {
                           </div>
                           <br />
                         </td>
-                      }
+                      } */}
                       <td
                         key={`col-5` + index}
                         className="text-center"

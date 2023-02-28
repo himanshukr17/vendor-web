@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp} from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiFillFilePdf} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -49,16 +49,17 @@ const BuyerPurchaseOrders =(props)=> {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
   const [emptyModalTable, setEmptyModalTable] = useState([]);
-
+ const[csvDownload,setCsvDownload]=useState([])
   useEffect(() => {
     const fetchPosts = async () => {
       axios.post(AxioxExpPort + "createcompany/po",{
       "user":vendorId
       })
         .then((response) => {
+
           setTBody(response.data);
            console.log("response.data",response.data);
-
+           
           setFilterdata(response.data);
         })
 
@@ -144,6 +145,53 @@ const BuyerPurchaseOrders =(props)=> {
       setClickedPOsDataArr(emptyModalTable)
     }
   }
+  // CSV download data
+  var tempArray=[];
+  tbody.map(csvItems=>{
+    var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+    let total = 0
+    csvItems.Details.map((price,idx) => {
+      total = total + price.NET_PRICE * price.ORDER_QUANTITY
+    });
+    let totalsQty = 0
+    csvItems.Details.map((price,idx) => {
+      totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+    });
+    tempArray.push({
+      "id":csvItems._id,
+      "PO_NO":csvItems.PO_NO,
+      "DOC_DATE":tempDAte,
+      "TOTAL_QTY":totalsQty,
+      "TOTAL_ITEM":csvItems.Details.length,
+      "COMPANY_CODE":csvItems.Details[0].COMPANY_CODE,
+      "PURCHASEING_GRP":csvItems.Details[0].PURCHASING_GROUP,
+      "PURCHASING_ORG":csvItems.PURCHASE_ORG,
+      "PAYMENT_TERM":csvItems.PAYMENT_KEY +"("+csvItems.PAY_DESC+")",
+      "EXCHANGE_RATE":csvItems.Details[0].EXCHANGE_RATE,
+      "INCO_ITEM_1":csvItems.INCO_1,
+      "INCO_ITEM_2":csvItems.INCO_2,
+      "TOTAL_VAL":total,
+      "STATUS":csvItems.STATUS
+
+    })
+  })
+
+  const headersTempArray=[
+    { label: "PO Number", key: "PO_NO" },
+    { label: "Date", key: "DOC_DATE" },
+    { label: "Total Quanty", key: "TOTAL_QTY" },
+    { label: "Total Item", key: "TOTAL_ITEM" },
+    { label: "Company Code", key: "COMPANY_CODE" },
+    { label: "Purchasing Grp", key: "PURCHASEING_GRP" },
+    { label: "Purchasing Org", key: "PURCHASING_ORG" },
+    { label: "Payment Term", key: "PAYMENT_TERM" },
+    { label: "Exchange Rate", key: "EXCHANGE_RATE" },
+    { label: "INCO ITEM 1", key: "INCO_ITEM_1" },
+    { label: "INCO ITEM 2", key: "INCO_ITEM_2" },
+    { label: "Total Net Value*", key: "TOTAL_VAL" },
+    { label: "Status", key: "STATUS" },
+  ]
+  console.log("csvArray",tempArray)
   const handelAllPO = () => {
     setIsPurchaseOrderEmpty(true);
     setTBody(filterData);
@@ -172,7 +220,7 @@ const BuyerPurchaseOrders =(props)=> {
           <div className="row">
             <div className="col-md-6">
               <div className="row">
-                <div className="col-md-1">
+                <div className="col-md-1 noPrint">
                   <button
                     className="btn btn"
 
@@ -185,22 +233,24 @@ const BuyerPurchaseOrders =(props)=> {
                     </IconContext.Provider>
                   </button>
                 </div>
-                <div className="col-md-5">
+                
+                <div className="col-md-8">
 
                   <h4 className="form-check-label" htmlFor="inlineRadio2">
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Purchase Orders
+                    Purchase Orders of {vendorName}
                   </h4>
                 </div>
               </div>
             </div>
-            <div className="col-md-3">
+           
+            <div className="col-md-2 noPrint ">
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
             </div>
 
 
-            <div className="col-md-2">
+            <div className="col-md-2 noPrint">
               <input
                 type="text"
                 className="form-control"
@@ -208,18 +258,22 @@ const BuyerPurchaseOrders =(props)=> {
                 placeholder="Search PO No"
                 style={{
                   width: "100%",
-                  height: 35,
+                  height: 35
+                  
                 }}
                 onChange={(e) => {
                   handleSearch(e)
                 }}
               />
             </div>
-
-            <div className="col-md-1">
-              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllPO}>All</button>
+            <div className="col-md-2 text-end noPrint">
+              <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button> {" "}
+              <button onClick={()=>{window.print()}} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
+              <CSVLink  filename={"ID:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
 
             </div>
+
+           
           </div>
 
 
@@ -280,11 +334,12 @@ const BuyerPurchaseOrders =(props)=> {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        <a style={{
+                        <a type="button" style={{
+                          
                           textDecoration: 'none',
-
+                          color:"blue"
                         }}
-                          href="#"
+                          
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickedPOsDataArr(po.Details);
