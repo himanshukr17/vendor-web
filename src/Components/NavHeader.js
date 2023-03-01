@@ -17,7 +17,7 @@ const NavHeader = () => {
   window.addEventListener("scroll", changeBackground);
 
   return (
-    <div>
+    <div >
       <nav
         // style={{
         //   backgroundColor: "#fff",

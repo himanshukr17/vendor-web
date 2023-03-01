@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiFillFilePdf} from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiFillFilePdf, AiOutlineHome} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -207,40 +207,50 @@ function PurchaseOrders() {
     <>
       <NavHeader />
       <div
-        className="card"
+        className="card-body"
         style={{
-          marginTop: "5%",
+          marginTop: "3.5%",
         }}
       >
         <div
-          className="card-body"
-
+          
         >
           <div className="row">
-            <div className="col-md-6">
-              <div className="row">
-                <div className="col-md-1 noPrint">
-                  <button
-                    className="btn btn"
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
 
-                    onClick={() => {
-                      navigate("/dashboard");
-                    }}
-                  >
-                    <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                      <AiOutlineArrowLeft />
-                    </IconContext.Provider>
-                  </button>
-                </div>
-                <div className="col-md-5">
-
-                  <h4 className="form-check-label" htmlFor="inlineRadio2">
+                  <h4 className="form-check-label" >
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Purchase Orders
+                    Purchase Order
                   </h4>
                 </div>
+                <div className="col-md-1 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome type="button"   onClick={() => {
+                      navigate("/dashboard");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                </div>
+                <div className="col-md-1 text-start noPrint" style={{marginTop:12, marginLeft:-10}}  >
+                  {"/ Master"}
+                </div>
+               
               </div>
+            </div>
+            <div className="card">
+            <div className="card-body">
+            <div className="row">
+            <div className="col-md-2">
+            <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button> {" "}
+            </div>
+            <div className="col-md-5 noPrint">
+
             </div>
             <div className="col-md-2 noPrint">
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
@@ -262,41 +272,42 @@ function PurchaseOrders() {
                 }}
               />
             </div>
+            <div className="col-md-1 noPrint">
+            <CSVLink  filename={"ID:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+        <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
 
-            <div className="col-md-2 text-end noPrint">
-              <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button> {" "}
-              <button onClick={printData} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
-              <CSVLink  filename={"ID:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
             </div>
+
+           
           </div>
 
 
         </div>
-        <div className="card-body">
-          <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
+       
+          <p className="text-right" style={{ marginTop: "-24px" , marginBottom: "1px" }}>*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr
                 className="text-center"
                 style={{
-                  backgroundColor: COLORS.gray20,
-                  borderColor: COLORS.gray10,
+                  backgroundColor:"#4F51C0", color:"white",
+                  borderColor: "COLORS.gray10",
                 }}
               >
-                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Purchasing Group</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Purchasing Org</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Payment Term</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Exchange Rate</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">INCO Term 1</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">INCO Term 2</th>
-                <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
-                 <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th> 
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ backgroundColor:"#4F51C0", color:"white",width: "5%", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Group</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Org</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Payment Term</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Exchange Rate</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">INCO Term 1</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">INCO Term 2</th>
+                <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{backgroundColor:"#4F51C0", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
+                 <th onClick={() => sorting("STATUS")} className="text-center" style={{backgroundColor:"#4F51C0", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th> 
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
 
@@ -427,10 +438,10 @@ function PurchaseOrders() {
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         {po.STATUS == 'Open' &&
-                          <span className="badge badge-success" >Open</span>
+                          <span className="badge badge-warning" >Open</span>
                         }
                         {po.STATUS == 'Close' &&
-                          <span className="badge badge-danger" >Close</span>
+                          <span className="badge badge-success" >Close</span>
                         }
                       </td>
                       <td
@@ -462,6 +473,9 @@ function PurchaseOrders() {
               )}
             </tbody>
           </table>
+        
+        </div>
+        </div>
         </div>
       </div>
 
@@ -531,15 +545,15 @@ function PurchaseOrders() {
 
           <table className="table table-bordered table-striped">
             <thead>
-              <th>Material Description</th>
-              <th>Material No</th>
-              <th>Manufacture Part No.</th>
-              <th>Unit</th>
-              <th>Line Item</th>
-              <th>Pending Quantity</th>
-              <th>Delevered Quantity</th>
-              <th>Price/Unit</th>
-              <th>Order Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material Description</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material No</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Manufacture Part No.</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Unit</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Line Item</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Pending Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Delevered Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Price/Unit</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Order Quantity</th>
 
             </thead>
             <tbody>

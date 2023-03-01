@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillAccountBook, AiOutlineArrowRight, AiOutlineRadiusSetting, AiOutlineWallet } from "react-icons/ai";
 import { IconContext } from "react-icons";
@@ -44,26 +44,7 @@ function HomeScreen() {
     });
   };
 
-  const submitForm = (event) => {
-    event.preventDefault();
 
-    const dataArray = new FormData();
-    dataArray.append("superHeroName", superHero);
-    dataArray.append("uploadFile", uploadFile);
-
-    axios
-      .post("api_url_here", dataArray, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        alert("Posted");
-      })
-      .catch((error) => {
-        alert("error");
-      });
-  };
   const [lablesAll, setLablesAll] = useState("")
   const [podata, setPodata] = useState([])
   const [dashboardData, setDashboardData] = useState("")
@@ -618,7 +599,7 @@ arr.map(items => {
      Purchase order of Last 3 months of 2023
   </h5>
 
-  <Bar data={data}  options={options} />
+  <Line data={data}  options={options} />
 </div>
 
             </div>
@@ -642,18 +623,19 @@ arr.map(items => {
                  {feedsData.map((itemsss, indexs)=>{
                  return(
                   <>
+                <div className="row" >
                 <div className="col-md-1">
                   <FaWpforms size={20} style={{marginTop:20, color:"#FF7800 "}}/>
                 </div>
-
                 <div className="col-md-10">
                  <a style={{color:"green"}}>Order received</a> <br/>
                  <a style={{color:"gray"}}> {dateFormat((itemsss.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a><br/>
                  <a style={{color:"black "}}>{itemsss.PO_NO}</a><br/>
-                 <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
-              
+                 <p style={{marginBottom:5, borderBottom: " 1px solid #aaa", width: "100%" }}></p>
+              </div>
                 </div>
                 </>
+                
                  )
                 })
                 } 

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
 import {
-  AiOutlineArrowLeft,AiOutlineArrowDown,AiOutlineArrowUp
+  AiOutlineArrowLeft,AiOutlineArrowDown,AiOutlineArrowUp, AiOutlineHome
 } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
@@ -140,40 +140,53 @@ function Receiveables() {
     <>
       <NavHeader />
       <div
-        className="card"
+        className="card-body"
         style={{
-          marginTop: "5%",
+          marginTop: "3.5%",
         }}
       >
         <div
-          className="card-body"
+          
         >
           <div className="row">
-            <div className="col-md-6">
-              <div className="row">
-                <div className="col-md-1">
-                  <button
-                    className="btn btn"
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
 
-                    onClick={() => {
-                      navigate("/dashboard");
-                    }}
-                  >
-                    <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                      <AiOutlineArrowLeft />
-                    </IconContext.Provider>
-                  </button>
-                </div>
-                <div className="col-md-7">
-
-                  <h4 className="form-check-label" htmlFor="inlineRadio2">
+                  <h4 className="form-check-label" >
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Goods Receipt Notes/Number            </h4>
+                    Goods Receipt Notes/Number
+                  </h4>
                 </div>
+                <div className="col-md-1 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome type="button"   onClick={() => {
+                      navigate("/dashboard");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                </div>
+                <div className="col-md-1 text-start noPrint" style={{marginTop:12, marginLeft:-10}}  >
+                  {"/ Master"}
+                </div>
+               
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="card">
+            <div className="card-body">
+            <div className="row" >
+            <div className="col-md-1">
+              <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAll}>Show All</button>
+
+            </div>
+            <div className="col-md-6" >
+
+            </div>
+            <div className="col-md-3" >
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodatesGRN(e) }} placeholder="Search Receiving Date Range" />
             </div>
             <div className="col-md-2">
@@ -191,17 +204,14 @@ function Receiveables() {
                 }}
               />
             </div>
-            <div className="col-md-1">
-              <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAll}>Show All</button>
-
-            </div>
+           
 
 
           </div>
 
         </div>
 
-        <div className="card-body">
+        <div >
           {/* <p className="text-right" style={{ marginTop: "-30px" }}>{" "}</p> */}
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
@@ -212,15 +222,15 @@ function Receiveables() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
-                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Receiving Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Receiving Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
                 {/* <th onClick={()=>sorting("received_datas[0].GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th> */}
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
                 {/* <th onClick={() => sorting("GRN_REF")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Reference No</th> */}
                 {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th> */}
 
@@ -330,6 +340,9 @@ function Receiveables() {
             </tbody>
           </table>
         </div>
+      </div>
+      </div>
+      </div>
       </div>
 
 

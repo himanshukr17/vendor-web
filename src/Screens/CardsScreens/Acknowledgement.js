@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiOutlineEdit, AiFillFilePdf} from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown ,AiOutlineArrowUp, AiOutlineEdit, AiFillFilePdf, AiOutlineHome} from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -45,6 +45,7 @@ function Acknowledgement() {
     const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
     const [emptyModalTable, setEmptyModalTable] = useState([]);
     const [aCKVALValue,setACKVALValue]=useState("")
+    const [handleInputVals,setHandleInputVal]=useState("")
     useEffect(() => {
         const fetchData = async () => {
           axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
@@ -150,7 +151,7 @@ function Acknowledgement() {
         }
         return row;
       });
-      console.log("updatedData",updatedData)
+      console.log("updatedData",id)
       
       setEmptyModalTable(updatedData);
       setClickedPOsDataArr(updatedData);
@@ -186,49 +187,65 @@ function Acknowledgement() {
         })
         .catch((err) => { console.log(err) });
     }
+    
+      
+
     const [ackData,setACKData]=useState([])
     const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
     const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
     const paginate = pageNumber => setCurrentPage(pageNumber)
   return (
     <>
-    <NavHeader />  <NavHeader />
-      <div
-        className="card"
+    <NavHeader /> 
+    <div
+        className="card-body"
         style={{
-          marginTop: "5%",
+          marginTop: "3.5%",
         }}
       >
         <div
-          className="card-body"
+          
         >
           <div className="row">
-            <div className="col-md-6">
-              <div className="row">
-                <div className="col-md-1">
-                  <button
-                    className="btn btn"
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
 
-                    onClick={() => {
-                      navigate("/dashboard");
-                    }}
-                  >
-                    <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                      <AiOutlineArrowLeft />
-                    </IconContext.Provider>
-                  </button>
-                </div>
-                <div className="col-md-5">
-
-                  <h4 className="form-check-label" htmlFor="inlineRadio2">
+                  <h4 className="form-check-label" >
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
                    Acknowledgement
                   </h4>
                 </div>
+                <div className="col-md-1 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome type="button"   onClick={() => {
+                      navigate("/dashboard");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                </div>
+                <div className="col-md-1 text-start noPrint" style={{marginTop:12, marginLeft:-10}}  >
+                  {"/ Master"}
+                </div>
+               
               </div>
             </div>
+            <div className="card">
+            <div className="card-body">
+            <div className="row">
+            <div className="col-md-1">
+              <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button>
+
+            </div>
+            <div className="col-md-6">
+
+            </div>
             <div className="col-md-3">
+            
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
             </div>
 
@@ -249,10 +266,7 @@ function Acknowledgement() {
               />
             </div>
 
-            <div className="col-md-1">
-              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllPO}>All</button>
-
-            </div>
+          
           </div>
 
 
@@ -268,14 +282,14 @@ function Acknowledgement() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Item</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
-                <th onClick={() => sorting("ACKNOWLEDGE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Item</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
+                <th onClick={() => sorting("ACKNOWLEDGE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Status</th>
 
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
 
@@ -398,6 +412,9 @@ function Acknowledgement() {
             </tbody>
           </table>
         </div>
+        </div>
+        </div>
+        </div>
       </div>
       <Modal size="lg"
         isOpen={showPODetailsFlag}
@@ -422,7 +439,10 @@ function Acknowledgement() {
             <div className="col-md-2 text-end noPrint">
            {aCKVALValue==1?
 null:
-           <>
+<button type="button" style={{backgroundColor:"#4F51C0", color:"white", width: "75%", height: 35, borderRadius: 5 }} onClick={saveCheck}>Acknowledge</button>
+
+           }
+           {/* <>
            <button className="btn btn-secondary dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false" style={{
               float: "right",
             height: 35,
@@ -431,10 +451,9 @@ null:
   </button>
   <ul class="dropdown-menu">
     <li><a type="button" class="dropdown-item" style={{color:"blue"}} onClick={saveCheck}>Save Check</a></li>
-    {/* <li><a type="button" class="dropdown-item" style={{color:"green"}} disabled >Approve All</a></li>
-    <li><a type="button" class="dropdown-item" style={{color:"red"}} disabled>Reject All</a></li> */}
-  </ul></>
-           }
+    <li><a type="button" class="dropdown-item" style={{color:"green"}} disabled >Approve All</a></li>
+    <li><a type="button" class="dropdown-item" style={{color:"red"}} disabled>Reject All</a></li> 
+  </ul></> */}
             
            
             </div>
@@ -482,12 +501,12 @@ null:
               <>
             <thead>
            
-          
-              <th>Material Description</th>
-              <th>Material No</th>
-              <th>Item Category</th>
-              <th>Order Quantity</th>
-
+          <tr>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material No</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Item Category</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Order Quantity</th>
+</tr>
             </thead>
             <tbody>
                     { modalDataStatus ?(
@@ -555,13 +574,13 @@ null:
             </>:
             <>
             <thead>
-            <th style={{ width: "5%"}}>Select</th>
-          
-              <th>Material Description</th>
-              <th>Material No</th>
-              <th>Price/Unit</th>
-              <th>Order Quantity</th>
-
+          <tr>
+            <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Select</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material No</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Price/Unit</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Order Quantity</th>
+</tr>
             </thead>
             <tbody>
                     { modalDataStatus ?(
@@ -590,7 +609,7 @@ null:
                <input type="checkbox"
 value="0"
 checked={posData.IS_CHECKED}
- onChange={() => handleCheck(index)}
+ onChange={() => {handleCheck(index); setHandleInputVal(posData.ORDER_QUANTITY)}}
 />
 </td>
                  }

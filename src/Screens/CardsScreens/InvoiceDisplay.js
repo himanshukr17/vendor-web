@@ -10,7 +10,7 @@ import { FaFileCsv, FaDownload } from "react-icons/fa";
 // // import Pagination from "../../Components/Pagination";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiFillFilePdf, AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import { AiFillFilePdf, AiOutlineArrowLeft, AiOutlineDownload, AiOutlineHome } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -204,40 +204,52 @@ function InvoiceDisplay () {
       <>
         <NavHeader />
         <div
-          className="card"
-          style={{
-            marginTop: "5%",
-          }}
+        className="card-body"
+        style={{
+          marginTop: "3.5%",
+        }}
+      >
+        <div
+          
         >
-          <div
-            className="card-body"
-  
-          >
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row">
-                  <div className="col-md-1 noPrint">
-                    <button
-                      className="btn btn"
-  
-                      onClick={() => {
-                        navigate("/dashboard");
-                      }}
-                    >
-                      <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                        <AiOutlineArrowLeft />
-                      </IconContext.Provider>
-                    </button>
-                  </div>
-                  <div className="col-md-9">
-  
-                    <h4 className="form-check-label" htmlFor="inlineRadio2">
-                      {/* {location.PROJECT} */}
-                      {/* {location.state.name} */}
-                      Invoice Details
-                    </h4>
-                  </div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
+
+                  <h4 className="form-check-label" >
+                    {/* {location.PROJECT} */}
+                    {/* {location.state.name} */}
+                   Invoice Details
+                  </h4>
                 </div>
+                <div className="col-md-1 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome type="button"   onClick={() => {
+                      navigate("/dashboard");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                </div>
+                <div className="col-md-1 text-start noPrint" style={{marginTop:12, marginLeft:-10}}  >
+                  {"/ Master"}
+                </div>
+               
+              </div>
+            </div>
+            <div className="card">
+            <div className="card-body">
+            <div className="row">
+              <div className="col-md-2 noPrint" >
+              <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button>{" "}
+
+              </div>
+              
+              <div className="col-md-5 noPrint" >
+
               </div>
               <div className="col-md-2 noPrint" >
                 <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" />
@@ -260,17 +272,16 @@ function InvoiceDisplay () {
                 />
               </div>
   
-              <div className="col-md-2 noPrint">
-                <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button>{" "}
-                <button onClick={printPage} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
-              <CSVLink  filename={"INV:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
+              <div className="col-md-1 noPrint">
+                <button onClick={printPage} type="button" style={{ backgroundColor:"#4F51C0", width: "45%", height: 35, borderRadius: 5 }} > <AiFillFilePdf size={20} style={{color:"white"}}/></button>{" "}
+              <CSVLink  filename={"INV:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{backgroundColor:"#4F51C0", width: "45%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
               </div>
             </div>
   
   
           </div>
-          <div className="card-body" >
-            <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
+    
+            <p className="text-right" style={{ marginTop: "-20px" }}>*Exc GST</p>
             <table className="table table-light table-bordered table-hover">
               <thead className="table-light">
                 <tr
@@ -280,16 +291,16 @@ function InvoiceDisplay () {
                     borderColor: COLORS.gray10,
                   }}
                 >
-                  <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
-                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
-                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
-                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
-                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
-                  <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                  <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
-                  <th className="text-center" style={{  width: "5%",borderColor: COLORS.gray10 }} scope="col">Total Count</th>
-                  <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                  <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
+                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
+                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
+                  <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
                 </tr>
               </thead>
   
@@ -354,7 +365,7 @@ function InvoiceDisplay () {
                         <td
                           key={`col-1`+ index}
                           className="text-center"
-                          style={{ width: "10%", borderColor: COLORS.gray10 }}
+                          style={{ width: "5%", borderColor: COLORS.gray10 }}
                         >
                         
                             {po.YEAR}
@@ -423,6 +434,9 @@ function InvoiceDisplay () {
               </tbody>
             </table>
           </div>
+        </div>
+     
+        </div>
         </div>
   
         <Modal size="lg"
