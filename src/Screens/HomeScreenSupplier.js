@@ -164,7 +164,7 @@ function HomeScreenSupplier() {
                     <span style={{
 
 
-                    }} className="text-muted small pt-2 ps-1">Active Vendor</span><br></br>
+                    }} className="text-muted small pt-2 ps-1">Active Supplier</span><br></br>
                     <span style={{
                       fontWeight: 700,
                       fontSize: 30,
@@ -173,7 +173,7 @@ function HomeScreenSupplier() {
                     <span style={{
 
 
-                    }} className="text-muted small pt-2 ps-1">Inactive Vendor</span>
+                    }} className="text-muted small pt-2 ps-1">Inactive Supplier</span>
                   </div>
 
                   {/* <div className="col-md-8 text-right">
@@ -224,7 +224,7 @@ function HomeScreenSupplier() {
                   color: "black",
                 }}
               >
-                Manage Vendors
+                Manage Suppliers
               </h5>
               <div className="filter">
                 <a className="icon" href="#" data-bs-toggle=""></a>
@@ -268,7 +268,7 @@ function HomeScreenSupplier() {
                   color: "black",
                 }}
               >
-                Vendor Details
+                Supplier Details
               </h5>
 
               <div className="card-body">
@@ -304,7 +304,7 @@ function HomeScreenSupplier() {
                     <span style={{
 
 
-                    }} className="text-muted small pt-2 ps-1">Total Vendors</span><br></br>
+                    }} className="text-muted small pt-2 ps-1">Total Suppliers</span><br></br>
 
                   </div>
 

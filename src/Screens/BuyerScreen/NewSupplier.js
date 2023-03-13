@@ -3,9 +3,9 @@ import axios from "axios";
 // import "rsuite/dist/rsuite.css";
 import NavHeader from "../../Components/NavHeader";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Modal, ModalBody } from "reactstrap";
-import { AiFillBank, AiFillReconciliation, AiOutlineArrowLeft, AiOutlineCheck, AiOutlineClose, AiOutlineDownload } from "react-icons/ai";
+import { AiFillBank, AiFillReconciliation, AiOutlineArrowLeft, AiOutlineCheck, AiOutlineClose, AiOutlineDownload, AiOutlineHome } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -16,6 +16,8 @@ import { CSVLink } from "react-csv";
 
 const NewSupplier = () => {
     //     }
+    const buyerID = localStorage.getItem('userId');
+    console.log("buyerIDbuyerID", buyerID)
     const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
     const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
     const navigate = useNavigate();
@@ -40,8 +42,7 @@ const NewSupplier = () => {
     const toggleCheckFlagesBankCheck = () => setShowCheckFlagesBankCheck(!showCheckFlagesBankCheck);
     const [imageSrc, setImageSrc] = useState(null);
     const [imageSrcBank, setImageSrcBank] = useState(null);
-    const buyerID = localStorage.getItem('userId');
-    console.log("buyerIDbuyerID", buyerID)
+   
     const [tbody, setTBodys] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(5);
@@ -165,66 +166,88 @@ const NewSupplier = () => {
     return (
         <>
             <NavHeader />
-            <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
+      <div
+        className="card-body"
+        style={{
+          marginTop: "4%",
+        }}
+      >
+        <div
+          
+        >
+          <div className="row">
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
 
-            <div
-                className="card"
+                  <h4 className="form-check-label" >
+                    {/* {location.PROJECT} */}
+                    {/* {location.state.name} */}
+                    New Suppliers
+                  </h4>
+                </div>
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome  type="button"  onClick={() => {
+                      navigate("/home");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                
+                  {" /"}
+                  <a style={{
+                          textDecoration: 'none',
+                          color:"#4F51C0"
+
+                        }}>{"New Supplier"}</a>
+                </div>
+               
+              </div>
+            </div>
+            <div className="card" style={{marginTop:10}}>
+            <div className="card-body">
+            <div className="row">
+
+            <div className="col-md-2 noPrint">
+            <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAllMV}>Show All</button>
+
+            </div>
+            <div className="col-md-5 noPrint">
+
+            </div>
+            <div className="col-md-3 noPrint">
+
+
+            </div>
+            <div className="col-md-2 noPrint">
+
+              <input
+                type="text"
+                className="form-control"
+
+                placeholder="Search GR No"
                 style={{
-                    marginTop: "5%",
+                  width: "100%",
+                  height: 35,
                 }}
-            >
-                <div
-                    className="card-body"
-                >
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="row">
-                                <div className="col-md-1">
-                                    <button
-                                        className="btn btn"
-                                        onClick={() => {
-                                            navigate("/home");
-                                        }}
-                                    >
-                                        <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                                            <AiOutlineArrowLeft />
-                                        </IconContext.Provider>
-                                    </button>
-                                </div>
-                                <div className="col-md-5">
-                                    <h4 className="form-check-label" htmlFor="inlineRadio2">
-                                        {/* {location.PROJECT} */}
-                                        {/* {location.state.name} */}
-                                        New Suppliers
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-1">
-                        </div>
-                        <div className="col-md-1">
-                        </div>
-                        <div className="col-md-1">
-                        </div>
-                        <div className="col-md-2">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Search"
-                                style={{
-                                    width: "100%",
-                                    height: 35,
-                                }}
-                                onChange={(e) => {
+                onChange={(e) => {
                                     handleSearchMV(e)
                                 }}
-                            />
-                        </div>
-                        <div className="col-md-1">
-                            <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllMV}>All</button>
-                        </div>
-                    </div>
-                </div>
+              />
+            </div>
+            <div className="col-md-1 noPrint">
+           
+            </div>
+
+          
+          </div>
+          </div>
+
+
+       
                 <div className="card-body">
                     <p className="text-right" style={{ marginTop: "-30px" }}></p>
                     <table className="table table-light table-bordered">
@@ -285,23 +308,15 @@ const NewSupplier = () => {
                         >
                             <div className="col-md-12">
                                 <div className="row">
-                                    <div className="col-md-4">
+                                    <div className="col-md-3">
                                     </div>
-                                    <div className="col-md-4">
-                                        <button type="button" title="View Supplier Details"  style={{ height: 35, backgroundColor: "white", fontFamily: "serif", borderRadius: 5, color: "white" }}><IconContext.Provider
-                                            value={{ color: "#FF5733", size: "35px" }}
-                                        >
-                                            {" "}
-                                            <FaUser
-                                            type="button"
-                                                onClick={(e) => {
+                                    <div className="col-md-4 text-center">
+                                        <button type="button" title="View Supplier Details"  onClick={(e) => {
                                                     togglePODetailsFlag();
                                                     setSupplierAlldetail(vd.vendor_details);
                                                     setSupplierSendID(vd.vendor_details[0].TELEPHONE)
                                                    //console.log("vd.vendor_details",supplierAlldetail)
-                                                }}
-                                            />
-                                        </IconContext.Provider></button>
+                                                }} style={{width:"160%", height: 35, borderWidth:2, fontFamily: "serif", borderRadius: 5, borderColor:"red" }}>View Details</button>
                                     </div>
                                     
                                 </div>
@@ -371,20 +386,14 @@ const NewSupplier = () => {
                                     <div className="col-md-4">
                                     </div>
                                     <div className="col-md-4">
-                                        <button type="button" title="View Bank Details"  style={{ height: 35, backgroundColor: "white", fontFamily: "serif", borderRadius: 5, color: "white" }}><IconContext.Provider
-                                            value={{ color: "#FF5733", size: "35px" }}
-                                        >
-                                            {" "}
-                                            <BsBank2
-                                                type="button"
-                                                onClick={(e) => {
+                                    <button type="button" title="Bank Details"  onClick={(e) => {
                                                     toggleCheckFlagesBank();
                                                     setSupplierAllBank(vd.vendor_details.bank_data[0]);
                                                     // setSupplierSendID(vd.vendor_details[0].TELEPHONE)
                                                    //console.log("vd.vendor_details",supplierAlldetail)
-                                                }}
-                                            />
-                                        </IconContext.Provider></button>
+                                                }} style={{width:"160%", height: 35, borderWidth:2, fontFamily: "serif", borderRadius: 5,borderColor:"red" }}>View Details</button>
+                                    
+                    
                                     </div>
                                     
                                 </div>
@@ -470,6 +479,10 @@ const NewSupplier = () => {
                     </table>
                 </div>
             </div>
+            </div>
+            </div>
+            </div>
+         
             <Modal size="lg"
                 isOpen={showPODetailsFlag}
                 toggle={togglePODetailsFlag}

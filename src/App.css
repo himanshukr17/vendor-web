@@ -605,3 +605,55 @@ background: #9d9d9d;
     display:none;
   }
 }
+
+
+
+.navtabnavtab {
+  background-color: #4F51C0;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.2rem;
+}
+
+.navtabnavtab-list {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navtabnavtab-item {
+  margin: 0 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.navtabnavtab-item:hover {
+  background-color: #4F51C0;
+}
+
+.navtabnavtab-item.active {
+  background-color: #4F51C0;
+  border-bottom: 2px solid #fff;
+}
+
+.navtabnavtab-link {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navtabnavtab-link:hover {
+  color: #666;
+}
+
+
+.company-name {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 1em;
+}
+
+

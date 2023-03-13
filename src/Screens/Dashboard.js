@@ -2,6 +2,7 @@ import React from "react";
 
 import Footer from "../Components/Footer";
 import NavHeader from "../Components/NavHeader";
+import NavTab from "../Components/NavTab";
 
 import HomeScreen from "./HomeScreen";
 
@@ -12,9 +13,10 @@ function Dashboard() {
       {/* <Navbar/> */}
       <div
         style={{
-          marginTop: 70,
+          marginTop: 64,
         }}
       >
+      <NavTab />
         <HomeScreen />
       </div>
 

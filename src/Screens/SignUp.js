@@ -43,9 +43,7 @@ function SignUp() {
   const [faxNo, setFaxNo] = useState("");
   const [termAndCondition, setTermAndCondition] = useState(false);
   const [chooseFile,setChooseFile]=useState("")
-
   const [countrys, setCountrys] = useState([])
-
   const navigate = useNavigate();
   const labelArray = ["Company", "Administrator Account Information"];
   const [age, setAge] = useState();
@@ -55,9 +53,6 @@ function SignUp() {
     //Updaing steps on Click
     updateCurrentStep(step);
   }
-
-
-
   const [panDiv, setPanDiv]=useState(true)
   const [wornignInput, setWorningInput] = useState(false)
   const [wornignOtp, setWorningOtp] = useState(false)
@@ -67,19 +62,6 @@ function SignUp() {
   const [otp, setOtp] = useState("")
   const [checkPassword, setCheckPassword] = useState("")
   const [matchPassword, setMatchPassword] = useState("")
-  var theConfirmPassw;
-  const handleRepeatPassword = (event) => {
-
-    if (password != event) {
-
-      setCheckPassword("Repeat password doesn't match Password. ")
-      setMatchPassword(null)
-    } else {
-      setCheckPassword(null)
-      setMatchPassword("Password is matching.")
-
-    }
-  }
 
   const [stateArr, setStateArr] = useState([])
   const [languageArr,setLanguageArr]=useState([])
@@ -114,11 +96,30 @@ function SignUp() {
     //console.log("countriess",countriess.STATE)
     setStateArr(countriess.STATE);
   }
-  // console.log("response.datas", stateArr);
   //  password check
+  const [isValid, setIsValid] = useState(true);
   const handlePassword = (event) => {
+    const newValue = event;
+    setIsValid(true);
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={};':",.<>?])[a-zA-Z\d!@#$%^&*()_+={};':",.<>?]{8,15}$/;
+    if (!regex.test(newValue)) {
+      setIsValid(false);
+    }
+    if (repeatPassword.length){ 
+      if (repeatPassword != event) {
+      setCheckPassword("Repeat password doesn't match Password. ")
+      setMatchPassword(null)
+    } else {
+      setCheckPassword(null)
+      setMatchPassword("Password is matching.")
+    }
+    }
+    
+  }
+  // handeling repeat password
+  const handleRepeatPassword = (event) => {
 
-    if (repeatPassword != event) {
+    if (password != event) {
 
       setCheckPassword("Repeat password doesn't match Password. ")
       setMatchPassword(null)
@@ -128,10 +129,10 @@ function SignUp() {
 
     }
   }
+
   // OTP Send
+ 
   
-
-
   const [optConst, setOtpConst] = useState(null);
   const [worningMailVerify, setworningMailVerify] = useState(false)
   const [otpSendBtn,setOtpSendBtn]=useState(true)
@@ -592,9 +593,11 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
                     setPassword(e.target.value);
                     handlePassword(e.target.value)
                   }}
-                  placeholder="Company(legal) Name"
+                  placeholder="password"
                 />
                 <label htmlFor="floatingInput">Password*</label>
+                {/* {isValid && <p>Valid input!</p> } */}
+                {!isValid && <p>Please enter a valid input with minimum 8 character using [a-z],[A-Z],[0-9] and [ /[!@#$%^&*(),.?":{}|<>]/</> ].</p> }
                 {error && password.length <= 0 ?
                   <p className="text-left text-danger">Password is required</p>
                   : ""}

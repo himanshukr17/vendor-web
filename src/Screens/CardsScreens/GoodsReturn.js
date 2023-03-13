@@ -185,7 +185,7 @@ function GoodsReturn() {
       <div
         className="card-body"
         style={{
-          marginTop: "3.5%",
+          marginTop: "4%",
         }}
       >
         <div
@@ -203,7 +203,7 @@ function GoodsReturn() {
                     Goods Return
                   </h4>
                 </div>
-                <div className="col-md-1 text-end noPrint" style={{marginTop:10}}>
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                   
                     <IconContext.Provider value={{ color: "red", size: "22px" }}>
                       <AiOutlineHome  type="button"  onClick={() => {
@@ -212,14 +212,13 @@ function GoodsReturn() {
                     </IconContext.Provider>
                   
                   {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
-                </div>
-                <div className="col-md-1 text-start noPrint" style={{marginTop:12, marginLeft:-10}}  >
-                  {"/ Master"}
+                
+                  {" / Transaction Data"}
                 </div>
                
               </div>
             </div>
-            <div className="card">
+            <div className="card" style={{marginTop:10}}>
             <div className="card-body">
             <div className="row">
 
@@ -279,7 +278,7 @@ function GoodsReturn() {
                 <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}scope="col">Document Date</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
-                <th className="text-center" style={{ width: "3%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
+                <th className="text-center" style={{ width: "3%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Net Price*</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
@@ -480,8 +479,6 @@ function GoodsReturn() {
                   height:35,
                   marginBottom:3,
                   marginLeft:"-15px"
-
-
                 }} data={data} headers={headers} >
                 ⬇ <FaFileCsv size={22} />
 
@@ -491,14 +488,13 @@ function GoodsReturn() {
           <table className="table table-bordered table-striped">
             <thead>
             
-              <th>Material Description</th>
-              <th>Material Number</th>
-              <th>GR Number</th>
-              <th>Manufacture Part No</th>
-              <th>Return Quantity</th>
-              <th>Unit</th>
-              {/* <th>Line Item</th> */}
-              <th>Net Price</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Description</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Number</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >GR Number</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Manufacture Part No</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Return Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Unit</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Net Price</th>
             </thead>
             <tbody>
               {modalDataStatus ? (

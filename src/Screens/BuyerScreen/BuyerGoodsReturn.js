@@ -3,11 +3,11 @@ import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
 import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown,AiOutlineArrowUp, AiFillFilePdf } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineDownload,AiOutlineArrowDown,AiOutlineArrowUp, AiFillFilePdf, AiOutlineHome } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
@@ -19,7 +19,6 @@ const BuyerGoodsReturn=(props)=> {
   const locationID=useLocation();
   const vendorId = locationID.state.myVendorID;
   const vendorName= locationID.state.myVendorName;
-
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
   const [sort, setSort] = useState("ASC");
@@ -177,45 +176,63 @@ const BuyerGoodsReturn=(props)=> {
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const paginate = pageNumber => setCurrentPage(pageNumber)
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
-
+  const printData=()=>{
+    window.print();
+  }
   return (
     <>
-      <NavHeader />
+       <NavHeader />
       <div
-        className="card"
+        className="card-body"
         style={{
-          marginTop: "5%",
+          marginTop: "4%",
         }}
       >
         <div
-          className="card-body"
-
+          
         >
           <div className="row">
-            <div className="col-md-6">
-              <div className="row">
-                <div className="col-md-1 noPrint">
-                  <button
-                    className="btn btn"
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
 
-                    onClick={() => {
-                      navigate("/vdtls");
-                    }}
-                  >
-                    <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                      <AiOutlineArrowLeft />
-                    </IconContext.Provider>
-                  </button>
-                </div>
-                <div className="col-md-8">
-
-                  <h4 className="form-check-label" htmlFor="inlineRadio2">
+                  <h4 className="form-check-label" >
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Goods Return of {vendorName}
+                    Goods Return of {" "+vendorName+"("+vendorId +")"}
                   </h4>
                 </div>
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome  type="button"  onClick={() => {
+                      navigate("/home");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                
+                  {" /"}
+                  <Link to="/vdtls" style={{
+                          textDecoration: 'none',
+                          color:"#4F51C0"
+
+                        }}>{" Supplier Details"}</Link>
+                </div>
+               
               </div>
+            </div>
+            <div className="card" style={{marginTop:10}}>
+            <div className="card-body">
+            <div className="row">
+
+            <div className="col-md-2 noPrint">
+            <button type="button" style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>Show All</button>{" "}
+
+            </div>
+            <div className="col-md-5 noPrint">
+
             </div>
             <div className="col-md-2 noPrint">
               <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Document Date Range" />
@@ -238,19 +255,17 @@ const BuyerGoodsReturn=(props)=> {
                 }}
               />
             </div>
-
-            <div className="col-md-2 text-end noPrint">
-            <button type="button" style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>Show All</button>{" "}
-            <button onClick={()=>{window.print()}} type="button" style={{ width: "25%", height: 35, borderRadius: 5 }} > <AiFillFilePdf style={{color:"green"}}/></button>{" "}
-              <CSVLink  filename={"GR:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "25%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv style={{color:"green"}}/></button></CSVLink>{" "}
+            <div className="col-md-1 noPrint">
+            <CSVLink  filename={"GR:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+        <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
 
             </div>
-          </div>
+
+          
 
 
-        </div>
-        <div className="card-body">
-        <p className="text-right" style={{ marginTop: "-30px" }}>*Exc GST</p>
+       
+        <p className="text-right" style={{marginTop:-5}} >*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light">
               <tr
@@ -260,16 +275,16 @@ const BuyerGoodsReturn=(props)=> {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th  className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "6%", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Plant</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Price*</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}scope="col">Document Date</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
+                <th className="text-center" style={{ width: "3%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Net Price*</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
 
@@ -299,11 +314,8 @@ const BuyerGoodsReturn=(props)=> {
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
                         <a
-                        type="button" style={{
-                          
-                          textDecoration: 'none',
-                          color:"blue"
-                        }}
+                         type="button"
+                         style={{color:"#4F51C0"}}
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setPoNumber(val.GRN_NO)
@@ -360,7 +372,7 @@ const BuyerGoodsReturn=(props)=> {
                       <td
                         key={`col-4` + index}
                         className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
+                        style={{ width: "5%", borderColor: COLORS.gray10 }}
                       >
                         {val.return_order.length}                      </td>
 
@@ -387,7 +399,7 @@ const BuyerGoodsReturn=(props)=> {
                       <td
                         key={`col-6` + index}
                         className="text-center"
-                        style={{ width: "5%", borderColor: COLORS.gray10 }}
+                        style={{ width: "5%", color:"white", borderColor: COLORS.gray10 }}
                       >
                         <CSVLink className="btn" data={val.return_order} headers={headers}>
                           <IconContext.Provider
@@ -410,6 +422,10 @@ const BuyerGoodsReturn=(props)=> {
             </tbody>
           </table>
         </div>
+      </div>
+      </div>
+      </div>
+      </div>
       </div>
 
       <Modal
@@ -469,8 +485,6 @@ const BuyerGoodsReturn=(props)=> {
                   height:35,
                   marginBottom:3,
                   marginLeft:"-15px"
-
-
                 }} data={data} headers={headers} >
                 ⬇ <FaFileCsv size={22} />
 
@@ -480,14 +494,13 @@ const BuyerGoodsReturn=(props)=> {
           <table className="table table-bordered table-striped">
             <thead>
             
-              <th>Material Description</th>
-              <th>Material Number</th>
-              <th>GR Number</th>
-              <th>Manufacture Part No</th>
-              <th>Return Quantity</th>
-              <th>Unit</th>
-              {/* <th>Line Item</th> */}
-              <th>Net Price</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Description</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Number</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >GR Number</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Manufacture Part No</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Return Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Unit</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Net Price</th>
             </thead>
             <tbody>
               {modalDataStatus ? (

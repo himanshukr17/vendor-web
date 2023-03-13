@@ -169,7 +169,7 @@ const BuyerMyContact=(props)=> {
             <h4 className="form-check-label" htmlFor="inlineRadio2">
               {/* {location.PROJECT} */}
               {/* {location.state.name} */}
-              Uploded Document Of {" "+vendorName}
+              Uploded Document Of {" "+vendorName+"("+vendorId +")"}
             </h4>
           </div>
           <div

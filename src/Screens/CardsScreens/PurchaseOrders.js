@@ -30,10 +30,10 @@ function PurchaseOrders() {
     { label: "Manufacture Part No.", key: "MANUFACTURE_PART_NO" },
     { label: "Price/Unit", key: "UNIT" },
     { label: "Line Item", key: "ITEM_CATEGORY" },
-    { label: "Pending Quantity", key: "PENDING_QUANTITY" },
-    { label: "Delevered Quantity", key: "DELIVERED_QUANTITY" },
-    { label: "Price/Unit", key: "NET_PRICE" },
     { label: "Order Quantity", key: "ORDER_QUANTITY" },
+    { label: "Delevered Quantity", key: "DELIVERED_QUANTITY" },
+    { label: "Pending Quantity", key: "PENDING_QUANTITY" },
+    { label: "Price/Unit", key: "NET_PRICE" },
   ];
 
   const data = ClickedPOsDataArr;
@@ -175,7 +175,9 @@ function PurchaseOrders() {
 
     })
   })
-
+  const companyData = [
+    { label: 'Company Name:', value: 'Acme Corporation' },
+  ];
   const headersTempArray=[
     { label: "PO Number", key: "PO_NO" },
     { label: "Date", key: "DOC_DATE" },
@@ -195,6 +197,7 @@ function PurchaseOrders() {
   const printData=()=>{
     window.print();
   }
+  const messageTop = `Company Name: Acme Corporation`;
   // const [query,setQuery]=useState("")
   //     const search=(datass)=>{
   //       return datass.filter(item=> item.DOCUMENT_DATE.toLowerCase.includes(query) )
@@ -209,7 +212,7 @@ function PurchaseOrders() {
       <div
         className="card-body"
         style={{
-          marginTop: "3.5%",
+          marginTop: "4%",
         }}
       >
         <div
@@ -219,7 +222,7 @@ function PurchaseOrders() {
             <div className="col-md-12">
               <div className="row" style={{ marginBottom:10}}>
                
-                <div className="col-md-10">
+                <div className="col-lg-10">
 
                   <h4 className="form-check-label" >
                     {/* {location.PROJECT} */}
@@ -227,23 +230,21 @@ function PurchaseOrders() {
                     Purchase Order
                   </h4>
                 </div>
-                <div className="col-md-1 text-end noPrint" style={{marginTop:10}}>
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                   
-                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                    <IconContext.Provider value={{ color: "red",marginTop:-210, size: "20px" }}>
                       <AiOutlineHome type="button"   onClick={() => {
                       navigate("/dashboard");
                     }} />
                     </IconContext.Provider>
                   
-                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
-                </div>
-                <div className="col-md-1 text-start noPrint" style={{marginTop:12, marginLeft:-10}}  >
-                  {"/ Master"}
+                  
+                  {" / Transaction Data"}
                 </div>
                
               </div>
             </div>
-            <div className="card">
+            <div className="card" style={{marginTop:10}}>
             <div className="card-body">
             <div className="row">
             <div className="col-md-2">
@@ -297,7 +298,7 @@ function PurchaseOrders() {
                 <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
                 <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ backgroundColor:"#4F51C0", color:"white",width: "5%", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Items</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Group</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Org</th>
@@ -449,7 +450,7 @@ function PurchaseOrders() {
                         className="text-center"
                         style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                       >
-                        <CSVLink className="btn" data={po.Details} headers={headers}
+                        <CSVLink className="btn" data={po.Details} headers={headers} messageTop={messageTop}
                         // setClickedPOsDataArr(val.Details)
                         //  laery
                         >
@@ -550,10 +551,10 @@ function PurchaseOrders() {
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Manufacture Part No.</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Unit</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Line Item</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Pending Quantity</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Delevered Quantity</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Price/Unit</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Order Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Delevered Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Pending Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Price/Unit</th>
 
             </thead>
             <tbody>
@@ -578,18 +579,19 @@ function PurchaseOrders() {
                         {posData.ITEM_CATEGORY}
                       </td>
                       <td>
-                        {posData.PENDING_QUANTITY}
-                        </td>
+                        {posData.ORDER_QUANTITY}
+                      </td>
+                     
                       <td>
                         {posData.DELIVERED_QUANTITY}
                       </td>
-                    
+                      <td>
+                        {posData.PENDING_QUANTITY}
+                        </td>
                       <td>
                         {num.format(Number(posData.NET_PRICE))}
                       </td>
-                      <td>
-                        {posData.ORDER_QUANTITY}
-                      </td>
+                     
 
                     </tr>
                   )})

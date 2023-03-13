@@ -27,9 +27,10 @@ const NavHeader = () => {
             ? "navbar navbar-expand-lg navbar-light fixed-top bg-light"
             : "navbar navbar-expand-lg navbar-light fixed-top navbar-bg-active bg-light"
         }
+        
       >
 
-        <div className="container-fluid">
+        <div className="container-fluid" >
           <a className="navbar-brand" href="#">
             <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
             <span style={{color:"#14CA96", fontSize:"25px"}}> Connect</span>

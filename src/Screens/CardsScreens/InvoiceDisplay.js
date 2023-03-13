@@ -206,7 +206,7 @@ function InvoiceDisplay () {
         <div
         className="card-body"
         style={{
-          marginTop: "3.5%",
+          marginTop: "4%",
         }}
       >
         <div
@@ -224,7 +224,7 @@ function InvoiceDisplay () {
                    Invoice Details
                   </h4>
                 </div>
-                <div className="col-md-1 text-end noPrint" style={{marginTop:10}}>
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                   
                     <IconContext.Provider value={{ color: "red", size: "22px" }}>
                       <AiOutlineHome type="button"   onClick={() => {
@@ -233,14 +233,13 @@ function InvoiceDisplay () {
                     </IconContext.Provider>
                   
                   {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
-                </div>
-                <div className="col-md-1 text-start noPrint" style={{marginTop:12, marginLeft:-10}}  >
-                  {"/ Master"}
+              
+                  {" / Transaction Data"}
                 </div>
                
               </div>
             </div>
-            <div className="card">
+            <div className="card" style={{marginTop:10}}>
             <div className="card-body">
             <div className="row">
               <div className="col-md-2 noPrint" >
@@ -297,9 +296,9 @@ function InvoiceDisplay () {
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
                   <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
-                  <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Document Date</th>
+                  <th onClick={() => sorting("SUPPLIER_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date</th>
                   <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
-                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Count</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Itam Count</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
                 </tr>
               </thead>
@@ -508,16 +507,15 @@ function InvoiceDisplay () {
             <table className="table table-bordered ">
               <thead>
                 {/* <th>Line</th> */}
-                <th>Material Number</th>
-                <th>Description</th>
-                <th>Tax Amount</th>
-                <th>Currency</th>
-                <th>Line Item</th>
-                <th>Invoice Reduction Category</th>
-                <th>Supplier Invoice Amount</th>
-                <th>Supplier Invoice Quantity</th>
-                
-                <th>Remark</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Number</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Description</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Tax Amount</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Currency</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Line Item</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Invoice Reduction Category</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Supplier Invoice Amount</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Supplier Invoice Quantity</th>
+                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Remark</th>
             
   
               </thead>

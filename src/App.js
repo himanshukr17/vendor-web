@@ -34,6 +34,7 @@ import BuyerContracts from './Screens/BuyerScreen/BuyerContracts';
 import BuyerMyContact from './Screens/BuyerScreen/BuyerMyContacts';
 import NewSupplier from './Screens/BuyerScreen/NewSupplier';
 import Acknowledgement from './Screens/CardsScreens/Acknowledgement';
+import ForgotPassword from './Screens/ForgotPassword';
 function App() {
   const userType = localStorage.getItem('userType');
   const userID = localStorage.getItem('userId');
@@ -49,6 +50,10 @@ function App() {
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/checkStatus" element={<CheckStatus />} exact />
           <Route path="/signup" element={<SignUp />} exact />
+          <Route path="/forgot_password" element={<ForgotPassword />} exact />
+          {/* <Route path="/pos" element={<PurchaseOrders />} exact /> */}
+          <Route path="/PurchaseOrderSupplier" element={<PurchaseOrderSupplier />} exact />
+
           <Route path='*' exact={true} element={<ErrorPage />} />
         </Routes>)
       }
@@ -63,7 +68,7 @@ function App() {
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
-          <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact />
+        <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact /> 
           <Route path="/grs" element={<Protected><GoodsReturn /></Protected>} exact />
           <Route path="/mcs" element={<Protected><MyContact /></Protected>} exact />
           <Route path="/inv" element={<Protected><InvoiceDisplay /></Protected>} exact />

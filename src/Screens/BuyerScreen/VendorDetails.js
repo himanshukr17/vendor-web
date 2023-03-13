@@ -4,10 +4,10 @@ import NavHeader from "../../Components/NavHeader";
 import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
 import { Link, useNavigate } from "react-router-dom";
-import { FaFileCsv, FaDownload, FaFileInvoiceDollar, FaUserCheck } from "react-icons/fa";
+import { FaFileCsv, FaDownload, FaFileInvoiceDollar, FaUserCheck, FaFileContract, FaUserAlt } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiFillReconciliation, AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import { AiFillReconciliation, AiOutlineArrowLeft, AiOutlineDownload, AiOutlineHome, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -32,7 +32,10 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
     const [emptyModalTable, setEmptyModalTable] = useState([]);
-  
+    // const [lablesAll, setLablesAll] = useState("")
+    const [dashboardData, setDashboardData] = useState("")
+    const [vendorName,setVendorName]=useState("")
+    const [vendorIDss,setVendorID]=useState("")
     useEffect(() => {
       const fetchPosts = async () => {
         axios.get(AxioxExpPort + "mapping/get?buyer=" + vendorId)
@@ -89,83 +92,97 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
       setIsPurchaseOrderEmpty(true);
       setTBody(filterData);
     }
-    // const [query,setQuery]=useState("")
-    //     const search=(datass)=>{
-    //       return datass.filter(item=> item.DOCUMENT_DATE.toLowerCase.includes(query) )
-    //       //console.log(datass)
-    //     }
-    const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
-    const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
+    console.log("dashboardData",vendorIDss)
+    // console.log("dashboardData",vendorIDss)
+    const coutAllDAta = async (e) => {
+    
+      axios.get(AxioxExpPort+"count/all?id="+e)
+      .then((response) => {
+        
+        console.log("dashboardData",response.data)
+        setDashboardData(response.data);
+        toggleCheckFlages();
+       // console.log("dashboardData",response.data)
+      })
+      }
+  
+
+    const [showCheckFlages, setShowCheckFlages] = useState(false);
+    const toggleCheckFlages = () => setShowCheckFlages(!showCheckFlages);
+ 
     const paginate = pageNumber => setCurrentPage(pageNumber)
     return (
       <>
         <NavHeader />
         <div
-          className="card"
-          style={{
-            marginTop: "5%",
-          }}
+        className="card-body"
+        style={{
+          marginTop: "4%",
+        }}
+      >
+        <div
+          
         >
-          <div
-            className="card-body"
-  
-          >
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row">
-                  <div className="col-md-1">
-                    <button
-                      className="btn btn"
-  
-                      onClick={() => {
-                        navigate("/home");
-                      }}
-                    >
-                      <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                        <AiOutlineArrowLeft />
-                      </IconContext.Provider>
-                    </button>
-                  </div>
-                  <div className="col-md-5">
-  
-                    <h4 className="form-check-label" htmlFor="inlineRadio2">
-                      {/* {location.PROJECT} */}
-                      {/* {location.state.name} */}
-                     Supplier Details
-                    </h4>
-                  </div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-lg-10">
+
+                  <h4 className="form-check-label" >
+                    {/* {location.PROJECT} */}
+                    {/* {location.state.name} */}
+                    Supplier Details
+                  </h4>
                 </div>
-              </div>
-              <div className="col-md-3">
-                {/* <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Date Range" /> */}
-              </div>
-  
-  
-              <div className="col-md-2">
-                <input
-                  type="text"
-                  className="form-control"
-  
-                  placeholder="Supplier Mobile / Name"
-                  style={{
-                    width: "100%",
-                    height: 35,
-                  }}
-                  onChange={(e) => {
-                    handleSearch(e)
-                  }}
-                />
-              </div>
-  
-              <div className="col-md-1">
-                <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllPO}>All</button>
-  
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red",marginTop:-210, size: "20px" }}>
+                      <AiOutlineHome type="button"   onClick={() => {
+                      navigate("/home");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  
+                  {" / Supplier Details"}
+                </div>
+               
               </div>
             </div>
-  
-  
+            <div className="card" >
+            <div className="card-body">
+            <div className="row">
+            <div className="col-md-5">
+            </div>
+            <div className="col-md-5 noPrint">
+
+            </div>
+           
+
+
+            <div className="col-md-2 noPrint">
+              <input
+                type="text"
+                className="form-control"
+
+                placeholder="Supplier Code / Name "
+                style={{
+                  width: "100%",
+                  height: 35,
+                }}
+                onChange={(e) => {
+                  handleSearch(e)
+                }}
+              />
+            </div>
+           
+
+           
           </div>
-          <div className="card-body">
+
+
+        </div>
+           <div className="card-body">
             <p className="text-right" style={{ fontFamily:"Serif",marginTop: "-35px",marginBottom: "1px", size:60 }}></p>
             <table className="table table-light table-bordered ">
               <thead className="table-light">
@@ -178,7 +195,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                 >
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Code</th>
                    <th onClick={() => sorting("VENDOR_NAME")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Name</th>
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th>
+                {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th> */}
                    {/* <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Net Value*</th>
                   <th onClick={() => sorting("STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
                   <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</th> */}
@@ -205,11 +222,13 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                       >
   
                         <td
+                         
                           key={`col-1` + index}
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
+                          onClick={()=>{ setVendorName(vd.VENDOR_NAME); setVendorID(vd.VENDOR_ID); coutAllDAta(vd.VENDOR_ID)}}
                         >
-                          <Link
+                          {/* <Link
                           to="/vp" 
                           title={vd.VENDOR_NAME}
                           state={{
@@ -217,10 +236,12 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                             myVendorName: vd.VENDOR_NAME,
 
                           }}                         
-                          >
-                            
+                          ></Link> */}
+                            <a type="button" style={{color:"#4F51C0"}} >
+
                             {vd.VENDOR_ID}
-                          </Link>
+                            </a>
+                          
                           <br />
                         </td>
                         <td
@@ -233,7 +254,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                         
                           <br />
                         </td>
-                        <td
+                        {/* <td
                           key={`col-3` + index}
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10, width:"20%" }}
@@ -298,23 +319,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                     </IconContext.Provider></button>
                          </Link>
                           </div>
-                            {/* <div className="col-md-2">
-                            <Link 
-                          to="/inv" 
-                          state={{
-                            myVendorID: vd.VENDOR_ID,
-                            myVendorName: vd.VENDOR_NAME,
-
-                          }}                         
-                          >
-                <button type="button" title="Invoice Details"style={{  height: 35,backgroundColor:"#059DC0", fontFamily:"serif",borderRadius: 5 , color:"white"}}><IconContext.Provider
-                      value={{ color: "WHITE", size: "30px" }}
-                    >
-                      {" "}
-                      <FaFileInvoiceDollar />
-                    </IconContext.Provider></button>
-                         </Link>
-                          </div> */}
+                           
                             <div className="col-md-2">
                             <Link 
                           to="/bmc" 
@@ -336,7 +341,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                        </div>
                        </div>
                           <br />       
-                        </td>
+                        </td> */}
                         
                       </tr>
                       
@@ -353,6 +358,259 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
             </table>
           </div>
         </div>
+        </div>
+        </div>
+        </div>
+
+        <Modal
+
+        isOpen={showCheckFlages}
+        toggle={toggleCheckFlages}
+        size="md"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+         
+          // height: "90vh",
+          // width: "400px"
+        }}
+      >
+
+        <ModalBody>
+          <div className="col-md-12 text-center">
+
+            <p style={{ color: "green", fontSize:20, marginBottom:15 }}>{vendorName+"("+vendorIDss+")"}</p>
+            <div className="row text-center" >
+            <div className=" col-6" >
+          <Link  to="/bpo"   state={{
+                            myVendorID: vendorIDss,
+                            myVendorName:vendorName,
+                          }}   style={{
+            textDecoration: 'none',
+
+          }}
+          >
+          
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Purchase Order
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+               
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <IconContext.Provider
+                        value={{ color: "#0275d8", size: "90px" }}
+                      >
+                        {" "}
+                        <BsFillCartCheckFill color={"#F07857"}  />
+                      </IconContext.Provider>
+                    </div>
+                  </div>
+                  <div className="col-md-6 text-right">
+                  <br/>
+                  <br/>    
+<span style={{
+  color: "#FF6347",
+  fontWeight: 700,
+  fontSize: 30,
+}} className=" small pt-1 fw-bold">{(dashboardData.OPEN_PO+dashboardData.CLOSE_PO)?dashboardData.OPEN_PO+dashboardData.CLOSE_PO : 0}</span>{" "}
+</div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div> 
+        <div className=" col-6" >
+          <Link   to="/bgrn"  state={{
+                            myVendorID: vendorIDss,
+                            myVendorName:vendorName,
+                          }}   style={{
+            textDecoration: 'none',
+
+          }}
+          >
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+               Goods Receipt
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+               
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <IconContext.Provider
+                        value={{ color: "#0275d8", size: "90px" }}
+                      >
+                        {" "}
+                        <AiFillReconciliation color={"#43A5BE"}  />
+                      </IconContext.Provider>
+                    </div>
+                  </div>
+                  <div className="col-md-6 text-right">
+                  <br/>
+                  <br/>    
+<span style={{
+  color: "#FF6347",
+  fontWeight: 700,
+  fontSize: 30,
+}} className=" small pt-1 fw-bold">{dashboardData.RECEIVED_PO? dashboardData.RECEIVED_PO  :0}</span>{" "}
+</div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div> 
+        <div className=" col-6" >
+          <Link  to="/bgr"  state={{
+                            myVendorID: vendorIDss,
+                            myVendorName:vendorName,
+                          }}   style={{
+            textDecoration: 'none',
+
+          }}
+          >
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Goods Return
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+               
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <IconContext.Provider
+                        value={{ color: "#0275d8", size: "90px" }}
+                      >
+                        {" "}
+                        <BsFillCartXFill     color={"#BE398D"}  />
+                      </IconContext.Provider>
+                    </div>
+                  </div>
+                  <div className="col-md-6 text-right">
+                  <br/>
+                  <br/>    
+<span style={{
+  color: "#FF6347",
+  fontWeight: 700,
+  fontSize: 30,
+}} className=" small pt-1 fw-bold">{dashboardData.RETURN_PO ? dashboardData.RETURN_PO : 0}</span>{" "}
+</div>
+
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div> 
+        <div className=" col-6" >
+          <Link        to="/bmc"   state={{
+                            myVendorID: vendorIDss,
+                            myVendorName:vendorName,
+                          }}   style={{
+            textDecoration: 'none',
+
+          }}
+          >
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Supplier Details
+              </h5>
+              <div className="filter">
+                <a className="icon" href="#" data-bs-toggle=""></a>
+              </div>
+              <div className="card-body">
+               
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <IconContext.Provider
+                        value={{ color: "#0275d8", size: "90px" }}
+                      >
+                        {" "}
+                        <FaUserAlt       />
+                      </IconContext.Provider>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div> 
+
+            </div>
+
+          </div>
+
+
+        </ModalBody>
+      </Modal>
       </>
     );
   }

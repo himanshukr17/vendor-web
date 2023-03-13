@@ -12,6 +12,8 @@ function Login() {
   const [vendorLg, setVendorLg] = useState(true)
   const [supplierLg, setSupplierLg] = useState(false)
   const [btnVActive, setBtnVActive] = useState('tablinks active')
+  const [btnVActiveColor, setBtnVActiveColor] = useState('white')
+  const [btnVActiveLoginColor, setBtnVActiveLoginColor] = useState('black')
   const [btnSActive, setBtnSActive] = useState('')
   const [userTypeGet, setUserTypeGet] = useState(false)
   const [userName, setUserName] = useState(0);
@@ -36,12 +38,16 @@ function Login() {
       setSupplierLg(false);
 
       // alert("shd")
+      setBtnVActiveColor('white')
       setBtnVActive('active')
       setBtnSActive('tablinks')
+      setBtnVActiveLoginColor('black')
     }
     const supplierLogin = () => {
       setSupplierLg(true);
       setVendorLg(false)
+      setBtnVActiveLoginColor('white')
+      setBtnVActiveColor('black')
       setBtnVActive('tablinks')
       setBtnSActive('tablinks active')
 
@@ -97,20 +103,21 @@ function Login() {
 
         <div
           className="box-form"
+          style={{marginTop:65}}
         >
 
           <div className="col-md-6 left ">
 
             {/* <h1>Hello World.</h1> */}
-            <img src={cartoons} width={600} height={500} style={{ marginBottom: "10px" }} alt="Cartoons" />
+            <img src={"https://rupeekx.com/assets/images/slider/login.gif"} width={"110%"}  style={{marginTop:50, display:"block", marginLeft:"auto",marginRight:"auto"}} alt="Cartoons" />
 
 
 
           </div>
           <div className="col-md-6 right">
             <div className="tab">
-              <button className={btnVActive} type="button" onClick={() => { vendorLogin(); setUserTypeGet(false) }}>Supplier Login</button>
-              <button className={btnSActive} type="button" onClick={() => { supplierLogin(); setUserTypeGet(true) }}>Buyer Login	</button>
+              <button className={btnVActive} style={{color:btnVActiveColor}} type="button"  onClick={() => { vendorLogin(); setUserTypeGet(false) }}>Supplier Login</button>
+              <button className={btnSActive} style={{color:btnVActiveLoginColor}} type="button" onClick={() => { supplierLogin(); setUserTypeGet(true) }}>Buyer Login	</button>
             </div>
             {vendorLg &&
               <>
@@ -184,7 +191,7 @@ function Login() {
                       <input type="checkbox" name="item" defaultChecked="" />
                       <span className="text-checkbox">Remember me</span>
                     </label>
-                    <p>forget password?</p>
+                    <Link to="/forgot_password"><p>Forget password?</p></Link>
                   </div>
                   <br />
 

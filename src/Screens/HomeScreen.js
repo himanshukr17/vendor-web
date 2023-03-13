@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
-import { Link, useNavigate } from "react-router-dom";
-import { AiFillAccountBook, AiOutlineArrowRight, AiOutlineRadiusSetting, AiOutlineWallet } from "react-icons/ai";
-import { IconContext } from "react-icons";
-import { FaMegaport, FaFileContract, FaUsers, FaReceipt, FaFileInvoiceDollar, FaHackerNews, FaWpforms } from "react-icons/fa";
-import { BsFillCartCheckFill, BsFillBagXFill, BsFillCartXFill, BsReceiptCutoff } from "react-icons/bs";
-import { AiFillReconciliation } from "react-icons/ai";
+
 import { AxioxExpPort } from "./AxioxExpPort"
 import { COLORS } from "../Constants/theme";
 import CountUp from 'react-countup';
 import 'chartjs-plugin-datalabels';
 import dateFormat from 'dateformat';
+import { FaWpforms } from "react-icons/fa";
 function HomeScreen() {
   const vendorId = localStorage.getItem('userId');
   const [thead, setTHead] = useState([
@@ -73,31 +69,24 @@ useEffect(() => {
             totalQty= totalQty +price.ORDER_QUANTITY
           });
           setPoDetailss(response.data[0].Details[0])
-          console.log("response.data",response.data[0].Details[0])
           setPoDetails({"total":total,
-                        "totalQty":totalQty
+          "totalQty":totalQty
                         })
-          setPodata(response.data.filter(items => {
-            return new Date(items.DOCUMENT_DATE).getFullYear() == new Date().getFullYear() && (new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 1 || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 2)
+                        setPodata(response.data.filter(items => {
+                          return new Date(items.DOCUMENT_DATE).getFullYear() == new Date().getFullYear() && (new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 1 || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 2)
           }))
         })
     }
-    const fetchHomeCount = async () => {
-      axios.get(AxioxExpPort + "count/all?id=" + vendorId)
-        .then((response) => {
-          setDashboardData(response.data);
-
-        })
-    }
+   
     const fetchActivityFeed = async () => {
       axios.get(AxioxExpPort + "purchase_order/last_week_po?id=" + vendorId)
-        .then((response) => {
-          setFeedsData(response.data[0].po_data);
-          
-
-        })
+      .then((response) => {
+        setFeedsData(response.data[0].po_data);
+        
+        console.log("response.dataresponse.data",response.data[0].po_data)
+        
+      })
     }
-    fetchHomeCount();
     fetchPosts();
     fetchActivityFeed();
 
@@ -131,15 +120,14 @@ arr.map(items => {
 
   })
   const arrsPoNet=[];
-
-
   const data = {
     labels: labels.reverse(),
     datasets: [
       {
+        fill: true,
         label: "Lakh(INR)",
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "#e6e6e6",
+        borderColor: "#4F51C0",
         data: chartdatass.reverse(),
       },
       
@@ -162,357 +150,17 @@ arr.map(items => {
   };
   return (
     <div
-      style={{marginTop:76}}
+      style={{marginTop:22}}
     >
       <div
         className="row"
         style={{
-          margin: 0
+          margin: 0,
+          marginRight:"1%"
         }}
       >
-        <div id="google_translate_element"></div>
-        <div className="row">
-          <div className="col-md-3">
-            <div className="row">
-              <Link to="/pos" style={{
-                textDecoration: 'none',
-
-              }}>
-
-
-                <div className="card info-card sales-card col-md-12"
-                  style={
-                    {
-                      // float: "left",
-                      backgroundColor: "#EBEBFF"
-                    }
-                  }>
-                  <div className="row" >
-
-
-                    <div className="col-md-1">
-                      <div className="card-icon rounded-circle   justify-content-left">
-                        <IconContext.Provider
-                          value={{ color: "#0275d8", size: "22px" }}
-                        >
-                          <BsFillCartCheckFill style={{
-                            marginTop: "10px"
-                          }} />
-                        </IconContext.Provider>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <h5
-                        className="card-title"
-                        style={{
-                          margin: 10,
-                          color: "black",
-                        }}
-                      >
-
-                        Purchase Order
-                      </h5>
-                    </div>
-                    <div className="col-md-3">
-   
-                          <a className="card-title" style={{
-                          marginTop: 10,
-                          color: "#FF6347",
-                          textDecoration: 'none',
-                          float: "right",
-                          fontFamily:"bold",fontWeight: "bold"
-                        }}> <CountUp delay={5} end={ Number(dashboardData.OPEN_PO)+Number(dashboardData.CLOSE_PO)}/></a>
-                  </div>
-                    <div className="col-md-1">
-                  <a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
-                  </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-            <div className="row">
-              <Link to="/res" style={{
-                textDecoration: 'none',
-
-              }}>
-
-
-                <div className="card info-card sales-card col-md-12"
-                  style={
-                    {
-                      // float: "left",
-                      backgroundColor: "#EBEBFF"
-                    }
-                  }>
-                  <div className="row">
-
-
-                    <div className="col-md-1">
-                      <div className="card-icon rounded-circle   justify-content-left">
-                        <IconContext.Provider
-                          value={{ color: "#0275d8", size: "22px" }}
-                        >
-
-                          <AiFillReconciliation style={{
-                            marginTop: "10px"
-                          }} />
-                        </IconContext.Provider>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <h5
-                        className="card-title"
-                        style={{
-                          margin: 10,
-                          color: "black",
-                        }}
-                      >
-                        Goods Receipt
-                      </h5>
-                    </div>
-                    <div className="col-md-3">
-   
-   <a className="card-title" style={{
-   marginTop: 10,
-   color: "#FF6347",
-   textDecoration: 'none',
-   float: "right",
-   fontFamily:"bold",fontWeight: "bold"
- }}> <CountUp delay={5} end={Number(dashboardData.RECEIVED_PO) }/></a>
-</div>
-<div className="col-md-1">
-<a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
-</div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-            <div className="row">
-              <Link to="/grs" style={{
-                textDecoration: 'none',
-
-              }}>
-
-
-                <div className="card info-card sales-card col-md-12"
-                  style={
-                    {
-                      // float: "left",
-                      backgroundColor: "#EBEBFF"
-                    }
-                  }>
-                  <div className="row">
-
-
-                    <div className="col-md-1">
-                      <div className="card-icon rounded-circle   justify-content-left">
-                        <IconContext.Provider
-                          value={{ color: "#0275d8", size: "22px" }}
-                        >
-
-                          <BsFillCartXFill style={{
-                            marginTop: "10px"
-                          }} />
-                        </IconContext.Provider>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <h5
-                        className="card-title"
-                        style={{
-                          margin: 10,
-                          color: "black",
-                        }}
-                      >
-
-                        Goods Return
-                      </h5>
-                    </div>
-                    <div className="col-md-3">
-   
-   <a className="card-title" style={{
-   marginTop: 10,
-   color: "#FF6347",
-   textDecoration: 'none',
-   float: "right",
-   fontFamily:"bold",fontWeight: "bold"
- }}><CountUp delay={5} end={ Number(dashboardData.RETURN_PO)}/></a>
-</div>
-<div className="col-md-1">
-<a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
-</div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            <div className="row">
-              <Link to="/ackn" style={{
-                textDecoration: 'none',
-
-              }}>
-
-
-                <div className="card info-card sales-card col-md-12"
-                  style={
-                    {
-                      // float: "left",
-                      backgroundColor: "#EBEBFF"
-                    }
-                  }>
-                  <div className="row">
-
-
-                    <div className="col-md-1">
-                      <div className="card-icon rounded-circle   justify-content-left">
-                        <IconContext.Provider
-                          value={{ color: "#0275d8", size: "22px" }}
-                        >
-
-                          <AiOutlineWallet style={{
-                            marginTop: "10px"
-                          }} />
-                        </IconContext.Provider>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <h5
-                        className="card-title"
-                        style={{
-                          margin: 10,
-                          color: "black",
-                          fontSize:16
-                        }}
-                      >
-                       Orders to confirm    </h5>
-                    </div>
-                    <div className="col-md-3">
-   
-                          <a className="card-title" style={{
-                          marginTop: 10,
-                          color: "#FF6347",
-                          textDecoration: 'none',
-                          float: "right",
-                          fontFamily:"bold",fontWeight: "bold"
-                        }}> <CountUp delay={5} end={ Number(lablesAll) }/></a>
-                  </div>
-                    <div className="col-md-1">
-                  <a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
-                  </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          
-            <div className="row">
-              <Link to="/inv" style={{
-                textDecoration: 'none',
-
-              }}>
-
-
-                <div className="card info-card sales-card col-md-12"
-                  style={
-                    {
-                      // float: "left",
-                      backgroundColor: "#EBEBFF"
-                    }
-                  }>
-                  <div className="row">
-
-
-                    <div className="col-md-1">
-                      <div className="card-icon rounded-circle   justify-content-left">
-                        <IconContext.Provider
-                          value={{ color: "#0275d8", size: "22px" }}
-                        >
-
-                          <FaFileInvoiceDollar style={{
-                            marginTop: "10px"
-                          }} />
-                        </IconContext.Provider>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <h5
-                        className="card-title"
-                        style={{
-                          margin: 10,
-                          color: "black",
-                        }}
-                      >
-                        Invoice Details
-                      </h5>
-                    </div>
-                    <div className="col-md-3">
-   
-                          <a className="card-title" style={{
-                          marginTop: 10,
-                          color: "#FF6347",
-                          textDecoration: 'none',
-                          float: "right",
-                          fontFamily:"bold",fontWeight: "bold"
-                        }}><CountUp delay={5} end={Number(dashboardData.INVOICE_COUNT)} /> </a>
-                  </div>
-                    <div className="col-md-1">
-                  <a className="card-title" style={{  textDecoration: 'none', fontSize: "12px", margin: 7, fontSize:20, float: "right" }}>{">"}</a>
-                  </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-            <div className="row">
-              <Link to="/mcs" style={{
-                textDecoration: 'none',
-
-              }}>
-
-
-                <div className="card info-card sales-card col-md-12"
-                  style={
-                    {
-                      // float: "left",
-                      backgroundColor: "#EBEBFF"
-                    }
-                  }>
-                  <div className="row">
-
-
-                    <div className="col-md-1">
-                      <div className="card-icon rounded-circle   justify-content-left">
-                        <IconContext.Provider
-                          value={{ color: "#0275d8", size: "22px" }}
-                        >
-
-                          <FaFileContract style={{
-                            marginTop: "10px"
-                          }} />
-                        </IconContext.Provider>
-                      </div>
-                    </div>
-                    <div className="col-md-7">
-                      <h5
-                        className="card-title"
-                        style={{
-                          margin: 10,
-                          color: "black",
-                        }}
-                      >
-                        My Contacts      </h5>
-                    </div>
-                    <div className="col-md-4">
-
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          
-          </div>
-
-          <div className="col-md-5">
+       <div className="col-md-8">
        <div className="col-lg-12" >
-
               <div
                 className="card info-card sales-card"
                 style={
@@ -614,18 +262,18 @@ arr.map(items => {
 
                 overflowY: "scroll",
 
-                height: "419px",
+                height: "574px",
                 marginRight: "-20px",
                 
 
               }}>
               <div className="row">
-                 {feedsData.map((itemsss, indexs)=>{
+                 {feedsData.map(itemsss=>{
                  return(
                   <>
                 <div className="row" >
                 <div className="col-md-1">
-                  <FaWpforms size={20} style={{marginTop:20, color:"#FF7800 "}}/>
+                  <FaWpforms size={20} style={{marginTop:20, color:"#4F51C0 "}}/>
                 </div>
                 <div className="col-md-10">
                  <a style={{color:"green"}}>Order received</a> <br/>
@@ -763,7 +411,7 @@ arr.map(items => {
           <input type="submit" />
         </form> */}
       </div>
-    </div>
+   
   );
 }
 

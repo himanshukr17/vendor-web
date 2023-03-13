@@ -4,7 +4,7 @@ import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
 import { AxioxExpPort } from "../AxioxExpPort"
 import { Link, useNavigate } from "react-router-dom";
-import { AiFillReconciliation, AiOutlineArrowLeft, AiOutlineDownload } from "react-icons/ai";
+import { AiFillReconciliation, AiOutlineArrowLeft, AiOutlineDownload, AiOutlineHome } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -163,52 +163,66 @@ function ManageVendors() {
     <>
       <NavHeader />
       <div
-        className="card"
+        className="card-body"
         style={{
-          marginTop: "5%",
+          marginTop: "4%",
         }}
       >
         <div
-          className="card-body"
         >
           <div className="row">
-            <div className="col-md-6">
-              <div className="row">
-                <div className="col-md-1">
-                  <button
-                    className="btn btn"
-                    onClick={() => {
-                      navigate("/home");
-                    }}
-                  >
-                    <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                      <AiOutlineArrowLeft />
-                    </IconContext.Provider>
-                  </button>
-                </div>
-                <div className="col-md-5">
-                  <h4 className="form-check-label" htmlFor="inlineRadio2">
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
+
+                  <h4 className="form-check-label" >
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    Manage Vendor
+                    Manage Supplier
                   </h4>
+                </div>
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome type="button"   onClick={() => {
+                      navigate("/home");
+                    }} />
+                    </IconContext.Provider>
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                  {" /"}
+                  <Link to="/vdtls" style={{
+                          textDecoration: 'none',
+                          color:"#4F51C0"
+
+                        }}>{" Supplier Details"}</Link>
                 </div>
               </div>
             </div>
+            <div className="card" style={{marginTop:10}}>
+            <div className="card-body">
+            <div className="row" >
             <div className="col-md-1">
+              <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAllMV}>Show All</button>
             </div>
-            <div className="col-md-1">
-            </div>
-            <div className="col-md-1 text-end">
-            <button type="button" onClick={handleActive} style={{backgroundColor:COLORS.success, color:"white", width: "50px", height: 35, borderRadius: 5 }} >Save</button>
+            <div className="col-md-5" >
 
-  </div>
-            <div className="col-md-2">
+            </div>
+            <div className="col-md-2 noPrint" >
+            </div>
+            <div className="col-md-1 noPrint" >
+            <button type="button" title="Click to deactive Suppliers"  onClick={handleActive} style={{width:"100%", height: 35, borderWidth:3, fontFamily: "serif", borderRadius: 5,color:"red", borderColor:"red" }}>Deactive</button>
+
+            </div>
+            <div className="col-md-1 noPrint" >
+            <button type="button" title="Click to active Suppliers"  onClick={handleActive} style={{width:"100%", height: 35, borderWidth:3, fontFamily: "serif", borderRadius: 5, color:"green", borderColor:"green" }}>Active</button>
+                                               
+
+            </div>
+            <div className="col-md-2 noPrint">
               <input
                 type="text"
                 className="form-control"
-
-                placeholder="Search"
+                placeholder="Supplier Code / Name"
                 style={{
                   width: "100%",
                   height: 35,
@@ -218,11 +232,17 @@ function ManageVendors() {
                 }}
               />
             </div>
-            <div className="col-md-1">
-              <button type="button" style={{ width: "50px", height: 35, borderRadius: 5 }} onClick={handelAllMV}>All</button>
+            <div className="col-md-1 noPrint">
+
             </div>
+
+
+
           </div>
+
         </div>
+
+        <div >
         <div className="card-body">
           <p className="text-right" style={{ marginTop: "-30px" }}></p>
           <table className="table table-light table-bordered">
@@ -237,7 +257,7 @@ function ManageVendors() {
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Check Supplier</th>
                 {/* <th onClick={() => sorting("BUYER_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer ID</th>
                 <th onClick={() => sorting("BUYER_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer Name</th> */}
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier ID</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Code</th>
                 <th onClick={() => sorting("VENDOR_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Name</th>
                 {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th> */}
                 <th onClick={() => sorting("STRING_STATUS")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th>
@@ -264,7 +284,7 @@ function ManageVendors() {
                       <td key={`col-1` + index}
                         className="text-center"
                         style={{ borderColor: COLORS.gray10, }}>
-                        {vd.STATUS == '1' &&
+                      
                           <input
                             type="checkbox"
                             // checked={checkAll}
@@ -275,7 +295,7 @@ function ManageVendors() {
 
                             }}
                           />
-                        }
+                        {/* }
                         {vd.STATUS == '2' &&
                           <input
                             type="checkbox"
@@ -287,7 +307,7 @@ function ManageVendors() {
 
                             }}
                           />
-                        }
+                        } */}
 
                       </td>
                       {/* <td
@@ -319,192 +339,7 @@ function ManageVendors() {
                       >
                         {(vd.VENDOR_NAME).toString()}
                       </td>
-                      {/* {vd.STATUS == 2 ?
-                        <td
-                          key={`col-3` + index}
-                          className="text-center"
-                          style={{ width: "10%", borderColor: COLORS.gray10, width: "20%" }}
-                        >
-
-                          <div className="col-md-12">
-                            <div className="row">
-
-
-                              <div className="col-md-2">
-
-                              </div>
-                              <div className="col-md-2">
-                                <Link
-                                  to="/bpo"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-                                  }}
-                                >
-                                  <button type="button" title="Purchase Orde" style={{ height: 35, backgroundColor: "white", fontFamily: "serif", borderRadius: 5, color: "white" }}><div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <IconContext.Provider
-                                      value={{ color: "#6495ED", size: "35px" }}
-                                    >
-                                      {" "}
-                                      <BsFillCartCheckFill />
-                                    </IconContext.Provider>
-                                  </div></button>
-                                </Link>
-                              </div>
-                              <div className="col-md-2">
-                                <Link
-                                  to="/bgr"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-
-                                  }}
-                                >
-                                  <button type="button" title="Goods Return" style={{ height: 35, backgroundColor: "white", fontFamily: "serif", borderRadius: 5, color: "white" }} ><IconContext.Provider
-                                    value={{ color: "#FFBF00", size: "35px" }}
-                                  >
-                                    {" "}
-                                    <BsFillCartXFill />
-                                  </IconContext.Provider></button>
-                                </Link>
-                              </div>
-                              <div className="col-md-2">
-                                <Link
-                                  to="/bgrn"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-
-                                  }}
-                                >
-                                  <button type="button" title="Goods Receipt" style={{ height: 35, backgroundColor: "white", fontFamily: "serif", borderRadius: 5, color: "white" }}><IconContext.Provider
-                                    value={{ color: "#FF7F50", size: "35px" }}
-                                  >
-                                    {" "}
-                                    <AiFillReconciliation />
-                                  </IconContext.Provider></button>
-                                </Link>
-                              </div> */}
-                              {/* <div className="col-md-2">
-                            <Link 
-                          to="/inv" 
-                          state={{
-                            myVendorID: vd.VENDOR_ID,
-                            myVendorName: vd.VENDOR_NAME,
-
-                          }}                         
-                          >
-                <button type="button" title="Invoice Details"style={{  height: 35,backgroundColor:"#059DC0", fontFamily:"serif",borderRadius: 5 , color:"white"}}><IconContext.Provider
-                      value={{ color: "WHITE", size: "30px" }}
-                    >
-                      {" "}
-                      <FaFileInvoiceDollar />
-                    </IconContext.Provider></button>
-                         </Link>
-                          </div> */}
-                              {/* <div className="col-md-2">
-                                <Link
-                                  to="/bmc"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-
-                                  }}
-                                >
-                                  <button type="button" title="Uploaded Document" style={{ height: 35, backgroundColor: "white", fontFamily: "serif", borderRadius: 5, color: "white" }}><IconContext.Provider
-                                    value={{ color: "#DE3163", size: "35px" }}
-                                  >
-                                    {" "}
-                                    <FaUserCheck />
-                                  </IconContext.Provider></button>
-                                </Link>
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                        </td>
-                        :
-                        <td
-                          key={`col-4` + index}
-                          className="text-center"
-                          style={{ width: "10%", borderColor: COLORS.gray10, width: "20%" }}
-                        >
-                          <div className="col-md-12">
-                            <div className="row">
-                              <div className="col-md-2">
-                              </div>
-                              <div className="col-md-2">
-                                <Link
-                                  to="/bpo"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-                                  }}
-                                >
-                                  <button type="button" disabled title="Purchase Orde" style={{ height: 35, backgroundColor: "#e7d4fa", fontFamily: "serif", borderRadius: 5, color: "white" }}><div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <IconContext.Provider
-                                      value={{ color: "WHITE", size: "30px" }}
-                                    >
-                                      {" "}
-                                      <BsFillCartCheckFill />
-                                    </IconContext.Provider>
-                                  </div></button>
-                                </Link>
-                              </div>
-                              <div className="col-md-2">
-                                <Link
-                                  to="/bgr"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-
-                                  }}
-                                >
-                                  <button type="button" disabled title="Goods Return" style={{ height: 35, backgroundColor: "#a1b9e3", fontFamily: "serif", borderRadius: 5, color: "white" }} ><IconContext.Provider
-                                    value={{ color: "WHITE", size: "30px" }}
-                                  >
-                                    {" "}
-                                    <BsFillCartXFill />
-                                  </IconContext.Provider></button>
-                                </Link>
-                              </div>
-                              <div className="col-md-2">
-                                <Link
-                                  to="/bgrn"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-                                  }}
-                                >
-                                  <button type="button" disabled title="Goods Receipt" style={{ height: 35, backgroundColor: "#d4d4ff", fontFamily: "serif", borderRadius: 5, color: "white" }}><IconContext.Provider
-                                    value={{ color: "WHITE", size: "30px" }}
-                                  >
-                                    {" "}
-                                    <AiFillReconciliation />
-                                  </IconContext.Provider></button>
-                                </Link>
-                              </div>
-                              <div className="col-md-2">
-                                <Link
-                                  to="/bmc"
-                                  state={{
-                                    myVendorID: vd.VENDOR_ID,
-                                    myVendorName: vd.VENDOR_NAME,
-                                  }}
-                                >
-                                  <button type="button" disabled title="Uploaded Document" style={{ height: 35, backgroundColor: "#93dce6", fontFamily: "serif", borderRadius: 5, color: "white" }}><IconContext.Provider
-                                    value={{ color: "WHITE", size: "30px" }}
-                                  >
-                                    {" "}
-                                    <FaUserCheck />
-                                  </IconContext.Provider></button>
-                                </Link>
-                              </div>
-                            </div>
-                          </div>
-                          <br />
-                        </td>
-                      } */}
+                   
                       <td
                         key={`col-5` + index}
                         className="text-center"
@@ -532,6 +367,11 @@ function ManageVendors() {
           </table>
         </div>
       </div>
+      </div>
+      </div>
+      </div>
+      </div>
+    
     </>
   );
 }
