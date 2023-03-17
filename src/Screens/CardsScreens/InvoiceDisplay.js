@@ -10,7 +10,7 @@ import { FaFileCsv, FaDownload } from "react-icons/fa";
 // // import Pagination from "../../Components/Pagination";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
-import { AiFillFilePdf, AiOutlineArrowLeft, AiOutlineDownload, AiOutlineHome } from "react-icons/ai";
+import { AiFillFilePdf, AiOutlineArrowDown, AiOutlineArrowLeft, AiOutlineArrowUp, AiOutlineDownload, AiOutlineHome } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import "rsuite/dist/rsuite.css";
 import { COLORS } from "../../Constants/theme";
@@ -54,6 +54,9 @@ function InvoiceDisplay () {
     const currentPosts = ClickedInvoiceDataArr.slice(indexOfFirstPost, indexOfLastPost);
     const [emptyModalTable, setEmptyModalTable] = useState([]);
     const [showThree,setShowThree]=useState(false)
+    const[showArrowDOC,setShowArrowDOC]=useState(false)
+    const[showArrowINV,setShowArrowINV]=useState(false)
+
     useEffect(() => {
       const fetchPosts = async () => {
         axios.get(AxioxExpPort +"invoice/all?id="+vendorId)
@@ -98,13 +101,38 @@ function InvoiceDisplay () {
         const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
+        setShowArrowDOC(!showArrowDOC);
+
         setTBody(sorted);
         setSort("DSC")
+
       }
       if (sort === "DSC") {
         const sorted = [...tbody].sort((a, b) =>
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
+        setShowArrowDOC(!showArrowDOC);
+
+        setTBody(sorted);
+        setSort("ASC")
+      }
+    }
+    const sortingINV = (col) => {
+      if (sort === "ASC") {
+        const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+        );
+        setShowArrowINV(!showArrowINV);
+
+        setTBody(sorted);
+        setSort("DSC")
+
+      }
+      if (sort === "DSC") {
+        const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+        );
+        setShowArrowINV(!showArrowINV);
         setTBody(sorted);
         setSort("ASC")
       }
@@ -290,13 +318,13 @@ function InvoiceDisplay () {
                     borderColor: COLORS.gray10,
                   }}
                 >
-                  <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number</th>
-                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
+                  <th className="text-center" onClick={() => sortingINV("INVOICE_NUMBER")} style={{ width: "11%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number{showArrowINV?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                  <th  className="text-center"   style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
                   <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
-                  <th onClick={() => sorting("SUPPLIER_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date</th>
+                  <th onClick={() => sorting("SUPPLIER_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date{showArrowDOC?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
                   <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Itam Count</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
@@ -334,7 +362,7 @@ function InvoiceDisplay () {
   
                             }}
                           >
-                            {po.INVOICE_NUMBER}
+                            {po.INVOICE_NUMBER.toString()}
                           </a>
                           <br />
                         </td>
@@ -343,7 +371,7 @@ function InvoiceDisplay () {
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {po.MIRO_NO.toString()}
+                          {po.MIRO_NO}
                         </td>
                         <td
                           key={`col-1`+ index}

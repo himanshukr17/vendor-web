@@ -31,6 +31,8 @@ function Acknowledgement() {
     { label: "Pending Quantity", key: "PENDING_QUANTITY" },
     { label: "Order Quantity", key: "ORDER_QUANTITY" },
   ];
+  const [toaster,setToaster]=useState("")
+  const [toasterColor,setToasterColor]=useState("")
   const data = ClickedPOsDataArr;
   const vendorId = localStorage.getItem('userId');
   console.log("vendorIdvendorId", vendorId);
@@ -46,15 +48,18 @@ function Acknowledgement() {
   const [handleInputVals, setHandleInputVal] = useState("")
   const [handleInputValsss, setHandleInputValss] = useState("")
   const [checkRemark, setCheckRemark] = useState(false)
+  const [remark, setRemark] = useState(false)
+  const [showRemarks, setShowRemarks]=useState("") 
+  const fetchData = async () => {
+    axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
+      .then((response) => {
+        setTBody(response.data);
+        setFilterdata(response.data);
+        console.log("response.data", response.data);
+      })
+  }
   useEffect(() => {
-    const fetchData = async () => {
-      axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
-        .then((response) => {
-          setTBody(response.data);
-          setFilterdata(response.data);
-          console.log("response.data", response.data);
-        })
-    }
+    
     fetchData();
   }, []);
   const getTwodates = (e) => {
@@ -155,51 +160,75 @@ function Acknowledgement() {
   var tolto = []
   var toltoACK = []
   console.log("totalValue", tolto)
-  const saveCheck = () => {
-    //console.log("smk", handleInputValsss);
-    var ITEM_CATEGORY = [];
-    var MATERIAL = [];
-    var MATERIALDES = [];
-    var ORDER_QUANTITY = [];
-    var ACK_REMARK = [];
+  const saveCheck= () => {
     currentPosts.map(tempIt => {
       if (tempIt.IS_CHECKED) {
-        ITEM_CATEGORY.push(tempIt.ITEM_CATEGORY);
-        MATERIAL.push(tempIt.MATERIAL);
-        MATERIALDES.push(tempIt.MATERIAL_DESCRIPTION);
-        ORDER_QUANTITY.push(tempIt.ORDER_QUANTITYss);
-        ACK_REMARK.push(tempIt.ACK_REMARK);
+        togglePODetailsFlagACKRemark();
+      }else{
+        setToaster("You have not select any item")
+        var xz = document.getElementById("snackbar");
+        setToasterColor("red")
+        xz.className = "show";
+        setTimeout(function(){
+           xz.className = xz.className.replace("show", ""); }, 3000)
       }
     })
-
-    if (ACK_REMARK.filter(Boolean).length == ORDER_QUANTITY.length) {
-      setCheckRemark(false)
-      axios.post(AxioxExpPort + "acknowledge/insert", {
-        "ITEM_CATEGORY": ITEM_CATEGORY,
-        "PO_NO": poValue,
-        "MATERIAL": MATERIAL,
-        "MATERIAL_DESCRIPTION": MATERIALDES,
-        "ORDER_QUANTITY": ORDER_QUANTITY,
-        "remarks": ACK_REMARK
-      })
-        .then((res) => {
-          window.location.reload();
-          console.log('resres', res);
-        })
-        .catch((err) => { console.log(err) });
-    } else {
-      setCheckRemark(true)
-    }
+   }
+  const saveCheckRemark = () => {
+// alert("dmb")
+     var ITEM_CATEGORY = [];
+     var MATERIAL = [];
+     var MATERIALDES = [];
+     var ORDER_QUANTITY = [];
+     
+     currentPosts.map(tempIt => {
+       if (tempIt.IS_CHECKED) {
+         ITEM_CATEGORY.push(tempIt.ITEM_CATEGORY);
+         MATERIAL.push(tempIt.MATERIAL);
+         MATERIALDES.push(tempIt.MATERIAL_DESCRIPTION);
+         ORDER_QUANTITY.push(tempIt.ORDER_QUANTITYss);
+        
+       }
+     })
+     if (handleInputValsss.length > 0) {
+       setCheckRemark(false)
+       axios.post(AxioxExpPort + "acknowledge/insert", {
+         "ITEM_CATEGORY": ITEM_CATEGORY,
+         "PO_NO": poValue,
+         "MATERIAL": MATERIAL,
+         "MATERIAL_DESCRIPTION": MATERIALDES,
+         "ORDER_QUANTITY": ORDER_QUANTITY,
+         "remarks": handleInputValsss
+       })
+         .then((res) => {
+          fetchData();togglePODetailsFlagACKRemark();
+          togglePODetailsFlagACK();
+          setToaster("Order is approved and acknowledge")
+        var xz = document.getElementById("snackbar");
+        setToasterColor("green")
+        xz.className = "show";
+        setTimeout(function(){
+           xz.className = xz.className.replace("show", ""); }, 3000)
+         })
+         .catch((err) => { console.log(err) });
+     } else {
+      setRemark(true);
+       setCheckRemark(true)
+     }
   }
   const [ackData, setACKData] = useState([])
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   const [showPODetailsFlagACK, setShowPODetailsFlagACK] = useState(false);
   const togglePODetailsFlagACK = () => setShowPODetailsFlagACK(!showPODetailsFlagACK);
+  const [showPODetailsFlagACKRemark, setshowPODetailsFlagACKRemark] = useState(false);
+  const togglePODetailsFlagACKRemark = () => setshowPODetailsFlagACKRemark(!showPODetailsFlagACKRemark);
   const paginate = pageNumber => setCurrentPage(pageNumber)
   return (
     <>
       <NavHeader />
+      <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
+
       <div
         className="card-body"
         style={{
@@ -368,6 +397,7 @@ function Acknowledgement() {
                                     onClick={(e) => {
                                       togglePODetailsFlagACK();
                                       setACKData(po.acknowledge_detail)
+                                      setShowRemarks(po.REMARKS);
 
                                     }}
                                   />
@@ -469,7 +499,7 @@ function Acknowledgement() {
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Price/Unit</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark*</th>
+                {/* <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark*</th> */}
               </tr>
             </thead>
             <tbody>
@@ -536,7 +566,7 @@ function Acknowledgement() {
                             posData.ORDER_QUANTITY
                         }
                       </td>
-                      {
+                      {/* {
                         posData.IS_CHECKED &&
                         <td>
 
@@ -555,7 +585,7 @@ function Acknowledgement() {
                             setClickedPOsDataArr(updatedData);
                           }} />
                         </td>
-                      }
+                      } */}
                     </tr>
                   )
                 })
@@ -571,20 +601,7 @@ function Acknowledgement() {
             </tbody>
           </table>
           <div className="row">
-            {
-              checkRemark &&
-              <a
-                className="navbar-brand text-end"
-                style={{
-                  marginTop: -20,
-                  float: "right",
-                  fontSize: 10,
-                  marginBottom: -10,
-                }}
-              >
-                <span style={{ color: "red" }}>*Please fill all remark field</span>
-              </a>
-            }
+            
             <div className="col-md-6">
               <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
             </div>
@@ -684,7 +701,7 @@ function Acknowledgement() {
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Acknowledge Quantity</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark</th>
+                {/* <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark</th> */}
               </tr>
             </thead>
             <tbody>
@@ -711,13 +728,13 @@ function Acknowledgement() {
                     >
                       {posData.ACKNOWLEDGE_QUANTITY}
                     </td>
-                    <td key={`col-25` + index}
+                    {/* <td key={`col-25` + index}
                       style={{
                         width: "5%"
                       }}
                     >
                       {posData.REMARKS}
-                    </td>
+                    </td> */}
                   </tr>
                 )
               })
@@ -725,12 +742,12 @@ function Acknowledgement() {
             </tbody>
           </table>
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-12">
               <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
             </div>
-            <div className="col-md-6">
+            <div className="col-md-12">
               <a
-                className="navbar-brand text-end"
+                className="navbar-brand "
                 type="button"
                 style={{
                   color: "#007bff",
@@ -738,9 +755,8 @@ function Acknowledgement() {
                 }}
 
               >
-                {/* <span style={{color:COLORS.gray60}}>Total Price*= </span>{
-              num.format(Number(tolto.reduce((partialSum, a) => partialSum + a, 0)))
-           } */}
+              Remarks: 
+              <p style={{color:COLORS.gray60, float:"right"}}>{" "+showRemarks}</p>
               </a>
             </div>
           </div>
@@ -760,6 +776,48 @@ function Acknowledgement() {
             >
               Close
             </a>
+          </div>
+        </ModalBody>
+      </Modal>
+
+      <Modal size="sm"
+        isOpen={showPODetailsFlagACKRemark}
+        toggle={togglePODetailsFlagACKRemark}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 5,
+        }}
+      >
+        <ModalBody
+          style={{
+            marginTop: 0,
+          }}
+        >
+        <lavel> Please write your remarks</lavel><br/>
+         <textarea className="form-control" placeholder="Remark* " style={{ width: "100%", marginTop:10 }} onChange={(e) => {
+                            setHandleInputValss(e.target.value);
+                           
+                                                       
+                          }} />
+                          {
+              checkRemark &&
+              <a
+               
+                style={{
+                 
+                  fontSize: 10,
+                 
+                }}
+              >
+                <span style={{ color: "red" }}>*Please fill remark field</span>
+              </a>
+            }
+          <div className="noPrint " style={{height:"50%"}}>
+          
+          <button className="float-right" type="button" title="Submit and acknowledge" onClick={saveCheckRemark} style={{ width: "50%", height: 35, borderWidth: 3,marginTop:10,marginBottom:-5, fontFamily: "serif", borderRadius: 5, color: "green", borderColor: "green" }}>Approve</button>
+
+           
           </div>
         </ModalBody>
       </Modal>

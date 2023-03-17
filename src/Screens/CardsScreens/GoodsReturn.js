@@ -51,6 +51,7 @@ function GoodsReturn() {
     fetchData();
   }, []);
   const[showArrow,setShowArrow]=useState(false)
+  const[showArrowDOC,setShowArrowDOC]=useState(false)
 
   const sorting = (col) => {
     if (sort === "ASC") {
@@ -67,6 +68,26 @@ function GoodsReturn() {
         a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
       );
       setShowArrow(!showArrow);
+      setTBody(sorted);
+      setSort("ASC")
+    }
+
+  }
+  const sortingDOC = (col) => {
+    if (sort === "ASC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setTBody(sorted);
+      setSort("DSC");
+      setShowArrowDOC(!showArrowDOC);
+      console.log("response.data", tbody);
+    }
+    if (sort === "DSC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setShowArrowDOC(!showArrowDOC);
       setTBody(sorted);
       setSort("ASC")
     }
@@ -275,7 +296,7 @@ function GoodsReturn() {
                 <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
                 <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
                 <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}scope="col">Document Date</th>
+                <th onClick={() => sortingDOC("DOCUMENT_DATE")} className="text-center" style={{ width: "12%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}scope="col">Document Date{showArrowDOC?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
                 <th className="text-center" style={{ width: "3%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>

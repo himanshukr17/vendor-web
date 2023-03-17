@@ -15,6 +15,8 @@ function ManageVendors() {
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
   const [modalDataStatus, setModalDataStatus] = useState(true);
   const [ClickedPOsDataArr, setClickedPOsDataArr] = useState([]);
+  const [toaster,setToaster]=useState("")
+  const [toasterColor,setToasterColor]=useState("")
   const [sort, setSort] = useState("ASC");
   const [checkAll, setCheckAll] = useState(false)
   // const [query, setQuery]=useState("")
@@ -37,30 +39,44 @@ function ManageVendors() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
-  const [singleCheck, setSingleCheck] = useState(false);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      let tempArr = []
-      axios.get(AxioxExpPort + "mapping/get?buyer=" + buyerID)
-        .then((response) => {
-          response.data.map((val, index) => {
-            if (val.STATUS == 1) {
-              tempArr.push({ ...val, STRING_STATUS: "Inactive", IS_CHECKED: false })
-            } else {
-              tempArr.push({ ...val, STRING_STATUS: "Active", IS_CHECKED: false })
-            }
-          })
-          console.log("DATA", tempArr);
-          setTBodys(tempArr);
-          console.log("response.datass", response.data);
-
-          setFilterdata(tempArr);
+  const [singleCheck, setSingleCheck] = useState([]);
+  const fetchPosts = async () => {
+    let tempArr = []
+    axios.get(AxioxExpPort + "mapping/get?buyer=" + buyerID)
+      .then((response) => {
+        response.data.map((val, index) => {
+          if (val.STATUS == 1) {
+            tempArr.push({ ...val, STRING_STATUS: "Inactive",IS_CHECKEDS:false })
+          } else {
+            tempArr.push({ ...val, STRING_STATUS: "Active", IS_CHECKEDS:true})
+          }
         })
-    }
+        console.log("DATA", tempArr);
+        setTBodys(tempArr);
+        console.log("response.datass", response.data);
+        
+        setFilterdata(tempArr);
+      })
+  }
+  useEffect(() => {
+    
     fetchPosts()
   }, []);
 
+  const handleCheck = (id) => {
+    
+    const updatedData = tbody.map((row, index) => {
+      if (index === id) {
+        return { ...row,  IS_CHECKEDS: !row.IS_CHECKEDS };
+      }
+      console.log("updatedData", row)
+      return row;
+    });
+    console.log("Something Went Wrong",updatedData);
+    setTBodys(updatedData)
+    setSingleCheck(updatedData)
+  
+  };
   const sorting = (col) => {
     if (sort === "ASC") {
       const sorted = [...tbody].sort((a, b) =>
@@ -105,18 +121,32 @@ function ManageVendors() {
 
       }
     })
-    console.log("Something Went Wrong",tempArr);
     try {
       if (tempArr.length > 0) {
         axios.post(AxioxExpPort + 'mapping/update_status', {
           buyer_id: buyerID,
-          supplier: tempArr
-        }).then((res) => {
-          window.location.href = "/mv";
+          supplier: tempArr,
+          "STATUS": 1
+        }).then((res) => { 
+          setToaster("Supplier active successfully")
+          var xz = document.getElementById("snackbar");
+          setToasterColor("green")
+          xz.className = "show";
+          setTimeout(function(){
+             xz.className = xz.className.replace("show", ""); }, 3000)
+               
+          // window.location.reload();
+          // fetchPosts();
 
         })
       } else {
-        alert("You have not change any item")
+        setToaster("Please select atlist one supllier")
+  var xz = document.getElementById("snackbar");
+  setToasterColor("red")
+  xz.className = "show";
+  setTimeout(function(){
+     xz.className = xz.className.replace("show", ""); }, 3000)
+       
       }
 
     } catch {
@@ -125,16 +155,52 @@ function ManageVendors() {
 
     }
   }
-  const handleDeActive = () => {
+  const handleSave = () => {
     var tempArr = [];
-    tbody.map((values, index) => {
-      // console.log("values",values);
-      if (values.IS_CHECKED == true) {
-        tempArr.push(values.VENDOR_ID)
-      }
+    var tempArrSUBMITONE = [];
+    var tempArrSUBMITtwo = [];
+    console.log("values",singleCheck);
+    singleCheck.map((values, index) => {
+     { values.IS_CHECKEDS &&
+          tempArrSUBMITONE.push({"ID":values.VENDOR_ID,"STATUS":1})   
+       }
+       { !values.IS_CHECKEDS &&
+          
+        tempArrSUBMITONE.push({"ID":values.VENDOR_ID,"STATUS":2})
+        }
+        console.log("Went Wrongs",tempArrSUBMITONE);
+        console.log("Went Wrong2",tempArrSUBMITtwo);
     })
-    console.log("values", tempArr);
+     try {
+      // if (tempArr.length > 0) {
+         axios.post(AxioxExpPort + 'mapping/update_status', {
+           buyer_id: buyerID,
+           supplier: tempArrSUBMITONE,
+           
+         }).then((res) => {
+         //  window.location.reload();
+         setToaster("Supplier inactive successfully")
+         var xz = document.getElementById("snackbar");
+         setToasterColor("green")
+         xz.className = "show";
+         setTimeout(function(){
+         xz.className = xz.className.replace("show", ""); }, 3000);
+         fetchPosts();
+         //window.location.reload();
+         })
+      //  } else {
+      //    setToaster("Please select atlist one supllier")
+      //    var xz = document.getElementById("snackbar");
+      //    setToasterColor("red")
+      //    xz.className = "show";
+      //    setTimeout(function(){
+      //    xz.className = xz.className.replace("show", ""); }, 3000)
+      //  }
+     } catch {
+       console.log("Something Went Wrong");
+     }
   }
+
   const handleDeActiveAll = () => {
     var tempArr = [];
     tbody.map((values, index) => {
@@ -158,10 +224,14 @@ function ManageVendors() {
     })
     console.log("values", tempArr);
   }
+  
+
 
   return (
     <>
       <NavHeader />
+      <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
+
       <div
         className="card-body"
         style={{
@@ -210,11 +280,11 @@ function ManageVendors() {
             <div className="col-md-2 noPrint" >
             </div>
             <div className="col-md-1 noPrint" >
-            <button type="button" title="Click to deactive Suppliers"  onClick={handleActive} style={{width:"100%", height: 35, borderWidth:3, fontFamily: "serif", borderRadius: 5,color:"red", borderColor:"red" }}>Deactive</button>
+            {/* <button type="button" title="Click to deactive Suppliers"  onClick={handleDeActive} style={{width:"100%", height: 35, borderWidth:3, fontFamily: "serif", borderRadius: 5,color:"red", borderColor:"red" }}>Inactive</button> */}
 
             </div>
             <div className="col-md-1 noPrint" >
-            <button type="button" title="Click to active Suppliers"  onClick={handleActive} style={{width:"100%", height: 35, borderWidth:3, fontFamily: "serif", borderRadius: 5, color:"green", borderColor:"green" }}>Active</button>
+            <button type="button" title="Click to active Suppliers"  onClick={handleSave} style={{width:"100%", height: 35, borderWidth:3, fontFamily: "serif", borderRadius: 5, color:"green", borderColor:"green" }}>Save</button>
                                                
 
             </div>
@@ -254,7 +324,7 @@ function ManageVendors() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Check Supplier</th>
+                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Select Supplier</th>
                 {/* <th onClick={() => sorting("BUYER_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer ID</th>
                 <th onClick={() => sorting("BUYER_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer Name</th> */}
                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Code</th>
@@ -268,10 +338,16 @@ function ManageVendors() {
             <tbody>
               {isPurchaseOrderEmpty ? (
                 tbody.map((vd, index) => {
-
+                   if (vd.STATUS == 2) {
+                    vd.IS_CHECKED= true
+                  } 
+                   if (vd.STATUS == 1) {
+                    vd.IS_CHECKED = false
+                  } 
+                  console.log(vd)
                   return (
                     <tr
-                      key={`row` + index}
+                      key={ index}
                       style={{
                         backgroundColor: "white",
                         borderColor: "#000",
@@ -288,12 +364,9 @@ function ManageVendors() {
                           <input
                             type="checkbox"
                             // checked={checkAll}
-                            value={vd.IS_CHECKED}
-                            onClick={(e) => {
-                              vd.IS_CHECKED = !vd.IS_CHECKED;
-                              //setCheckAll(e.target.value)
-
-                            }}
+                            
+                            defaultChecked={vd.IS_CHECKED}
+                          onChange={() => { handleCheck(index)}}
                           />
                         {/* }
                         {vd.STATUS == '2' &&

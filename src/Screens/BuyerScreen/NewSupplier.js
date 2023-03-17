@@ -50,26 +50,27 @@ const NewSupplier = () => {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
     const [singleCheck, setSingleCheck] = useState(false);
-    useEffect(() => {
-        const fetchPosts = async () => {
-            let tempArr = []
-            axios.get(AxioxExpPort + "buyer/supplier_data?id=" + buyerID)
-                .then((response) => {
-                    console.log("response.datass", response.data);
-                    response.data.map((val, index) => {
-                        tempArr.push({
-                            vendor_id: val.TELEPHONE,
-                            approveStatus:val.STATUS,
-                            first_name: val.FIRST_NAME,
-                            last_name: val.LAST_NAME,
-                            vendor_details: val,
-                        })
+    const fetchPosts = async () => {
+        let tempArr = []
+        axios.get(AxioxExpPort + "buyer/supplier_data?id=" + buyerID)
+            .then((response) => {
+                console.log("response.datass", response.data);
+                response.data.map((val, index) => {
+                    tempArr.push({
+                        vendor_id: val.TELEPHONE,
+                        approveStatus:val.STATUS,
+                        first_name: val.FIRST_NAME,
+                        last_name: val.LAST_NAME,
+                        vendor_details: val,
                     })
-                    console.log("DATA", tempArr);
-                    setTBodys(tempArr);
-                    setFilterdata(tempArr);
                 })
-        }
+                console.log("DATA", tempArr);
+                setTBodys(tempArr);
+                setFilterdata(tempArr);
+            })
+    }
+    useEffect(() => {
+   
         fetchPosts()
     }, []);
 
@@ -95,7 +96,7 @@ const NewSupplier = () => {
         var length = Number(searchElements.length)
         if (length > 0) {
 
-            const searchDatasMV = tbody.filter((item) => (item.VENDOR_NAME).toString().toLowerCase().includes(searchElements) || (item.VENDOR_ID).toString().toLowerCase().includes(searchElements) || (item.STRING_STATUS).toLowerCase().includes(searchElements));
+            const searchDatasMV = tbody.filter((item) => (item.vendor_id).toString().toLowerCase().includes(searchElements) || (item.first_name).toString().toLowerCase().includes(searchElements) );
 
             setTBodys(searchDatasMV);
             if (searchDatasMV.length == 0) {
@@ -120,6 +121,8 @@ const NewSupplier = () => {
              "supplier":[supID]
            })
              .then((res) => {
+                fetchPosts();
+                togglePODetailsFlag();
                console.log('resres',res);
              //   document.getElementById("emailInputVerify").disabled = true;
              //   setOtpSendBtn(false)
@@ -136,6 +139,7 @@ const NewSupplier = () => {
             })
               .then((res) => {
                 console.log('resres',res);
+                fetchPosts();
                 setToasterColor("#00D100"); 
                 toggleCheckFlagesBank();
                 console.log("resresres",res)
@@ -153,7 +157,8 @@ const NewSupplier = () => {
               "supplier":[supID]
             })
               .then((res) => {
-                console.log('resres',res);
+                fetchPosts();
+                toggleCheckFlagesBank();
                 setToasterColor("#A80808"); 
                 toggleCheckFlagesBank();
                 console.log("resresres",res)
@@ -228,7 +233,7 @@ const NewSupplier = () => {
                 type="text"
                 className="form-control"
 
-                placeholder="Search GR No"
+                placeholder="Search Mobile / Name"
                 style={{
                   width: "100%",
                   height: 35,
@@ -259,7 +264,7 @@ const NewSupplier = () => {
                                     borderColor: COLORS.gray10,
                                 }}
                             >
-                                <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier ID</th>
+                                {/* <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier ID</th> */}
                                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Mobile</th>
                                 <th onClick={() => sorting("VENDOR_ID")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier Name</th>
                                 <th className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Actions</th>
@@ -268,7 +273,7 @@ const NewSupplier = () => {
                         <tbody>
            {isPurchaseOrderEmpty ? (
                tbody.map((vd, index) => {
-                
+                console.log("vryhigh",vd)
                 return (
                 <tr
                     key={`row` + index}
@@ -279,13 +284,13 @@ const NewSupplier = () => {
                     }}
                     className="table-light"
                 >
-                    <td
+                    {/* <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10, fontSize: 17 }}
                     >
-                        {(vd.vendor_id)}
-                    </td>
+                        {""}
+                    </td> */}
                     <td
                         key={`col-2` + index}
                         className="text-center"
@@ -383,7 +388,7 @@ const NewSupplier = () => {
                         >
                             <div className="col-md-12">
                                 <div className="row">
-                                    <div className="col-md-4">
+                                    <div className="col-md-3">
                                     </div>
                                     <div className="col-md-4">
                                     <button type="button" title="Bank Details"  onClick={(e) => {
@@ -391,7 +396,7 @@ const NewSupplier = () => {
                                                     setSupplierAllBank(vd.vendor_details.bank_data[0]);
                                                     // setSupplierSendID(vd.vendor_details[0].TELEPHONE)
                                                    //console.log("vd.vendor_details",supplierAlldetail)
-                                                }} style={{width:"160%", height: 35, borderWidth:2, fontFamily: "serif", borderRadius: 5,borderColor:"red" }}>View Details</button>
+                                                }} style={{width:"160%", height: 35, borderWidth:2, fontFamily: "serif", borderRadius: 5,borderColor:"red" }}>View Bank Details</button>
                                     
                     
                                     </div>
@@ -905,9 +910,9 @@ textDecoration: 'none'
             <h5 className="modal-title text-center" id="exampleModalLabel">
               <p className="h4">PAN Number: <span style={{ color: '#A80808' }}>{supplierAlldetail.PANCARD}</span></p>
             </h5>
-            <a href='#' className="text-right" onClick={toggleCheckFlages}>Close</a>
+            <p type="button" className="text-right" onClick={toggleCheckFlages}>Close</p>
           </div>
-          <img className="col-md-12" style={{ alignSelf: "center", display: 'flex', height: '450px' }}  src={AxioxExpPort + 'images/' + detailVal} />
+          <img className="col-md-12" style={{ alignSelf: "center", display: 'flex', marginTop:"5px", height: '450px' }}  src={AxioxExpPort + 'images/' + detailVal} />
 
 
 
@@ -1150,9 +1155,9 @@ textDecoration: 'none'
             <h5 className="modal-title text-center" id="exampleModalLabel">
               <p className="h4">A/C Number: <span style={{ color: '#A80808 ' }}>{supplierAllBank.ACCOUNT_NUMBER}</span></p>
             </h5>
-            <a href='#' className="text-right" onClick={toggleCheckFlagesBankCheck}>Close</a>
+            <p type="button" className="text-right" onClick={toggleCheckFlagesBankCheck}>Close</p>
           </div>
-          <img className="col-md-12" style={{ alignSelf: "center", display: 'flex', height: '450px' }}  src={AxioxExpPort + 'images/' + detailValBank} />
+          <img className="col-md-12" style={{ alignSelf: "center", display: 'flex', marginTop:"5", height: '450px' }}  src={AxioxExpPort + 'images/' + detailValBank} />
 
 
 
