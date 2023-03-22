@@ -36,17 +36,17 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
     const [dashboardData, setDashboardData] = useState("")
     const [vendorName,setVendorName]=useState("")
     const [vendorIDss,setVendorID]=useState("")
+    const fetchPosts = async () => {
+      axios.get(AxioxExpPort + "mapping/get?buyer=" + vendorId)
+        .then((response) => {
+          setTBody(response.data);
+          // //console.log("response.data",response.data);
+
+          setFilterdata(response.data);
+        })
+
+    };
     useEffect(() => {
-      const fetchPosts = async () => {
-        axios.get(AxioxExpPort + "mapping/get?buyer=" + vendorId)
-          .then((response) => {
-            setTBody(response.data);
-            // //console.log("response.data",response.data);
-  
-            setFilterdata(response.data);
-          })
-  
-      }
       fetchPosts()
     }, []);
   
@@ -428,12 +428,23 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                   </div>
                   <div className="col-md-6 text-right">
                   <br/>
-                  <br/>    
+<br/>            
 <span style={{
   color: "#FF6347",
   fontWeight: 700,
   fontSize: 30,
-}} className=" small pt-1 fw-bold">{(dashboardData.OPEN_PO+dashboardData.CLOSE_PO)?dashboardData.OPEN_PO+dashboardData.CLOSE_PO : 0}</span>{" "}
+}} className=" small pt-1 fw-bold">{(dashboardData.OPEN_PO+dashboardData.CLOSE_PO)?dashboardData.OPEN_PO+dashboardData.CLOSE_PO : 0}</span>{"  "}
+
+<br/>
+
+{/* <span className=" small pt-1 " style={{color: "black",fontSize: 15}}>Last:</span>  
+<span style={{
+  color: "green",
+  fontWeight: 100,
+  fontSize: 15,
+}}>{"  "+ Math.round(dashboardData.PO_DIFFERENCE_IN_DAYS
+? dashboardData.PO_DIFFERENCE_IN_DAYS
+  :0)}{" Days"}</span> */}
 </div>
                 </div>
               </div>
@@ -485,12 +496,24 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                   </div>
                   <div className="col-md-6 text-right">
                   <br/>
-                  <br/>    
+<br/>
 <span style={{
   color: "#FF6347",
   fontWeight: 700,
   fontSize: 30,
 }} className=" small pt-1 fw-bold">{dashboardData.RECEIVED_PO? dashboardData.RECEIVED_PO  :0}</span>{" "}
+{/* <br/>
+<br/>
+                  <br/> 
+<span className=" small pt-1 " style={{color: "black",marginTop:20,fontSize: 15}}>Last:</span>  
+<span style={{
+  color: "green",
+  fontWeight: 100,
+  fontSize: 15,
+}}>{"  "+ Math.round(dashboardData.RECEIVED_DIFFERENCE_IN_DAYS
+? dashboardData.RECEIVED_DIFFERENCE_IN_DAYS
+  :0)}{" Days"}</span> */}
+
 </div>
                 </div>
               </div>
@@ -542,12 +565,24 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
                   </div>
                   <div className="col-md-6 text-right">
                   <br/>
-                  <br/>    
+<br/>   
 <span style={{
   color: "#FF6347",
   fontWeight: 700,
   fontSize: 30,
 }} className=" small pt-1 fw-bold">{dashboardData.RETURN_PO ? dashboardData.RETURN_PO : 0}</span>{" "}
+ {/* <br/>
+                  <br/>    
+                  <br/>  
+                  <span className=" small pt-1 " style={{color: "black",marginTop:20,fontSize: 15}}>Last:</span>  
+  
+<span style={{
+  color: "green",
+  fontWeight: 100,
+  fontSize: 15,
+}}>{"  "+ Math.round(dashboardData.RETURN_DIFFERENCE_IN_DAYS
+? dashboardData.RETURN_DIFFERENCE_IN_DAYS
+  :0)}{" Days"}</span> */}
 </div>
 
                 </div>

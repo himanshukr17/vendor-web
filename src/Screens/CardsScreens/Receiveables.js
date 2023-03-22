@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
 import {
@@ -15,6 +14,10 @@ import dateFormat from 'dateformat';
 import DateRangePicker from "rsuite/esm/DateRangePicker";
 import { CSVLink } from "react-csv";
 import { FaFileCsv } from "react-icons/fa";
+import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
+import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
+import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
+
 function Receiveables() {
   const navigate = useNavigate();
   const [clickRecData, setClickRecvData] = useState([]);
@@ -225,12 +228,19 @@ function Receiveables() {
               <div className="row" style={{ marginBottom:10}}>
                
                 <div className="col-md-10">
-
-                  <h4 className="form-check-label" >
-                    {/* {location.PROJECT} */}
-                    {/* {location.state.name} */}
-                    Goods Receipt Notes/Number
-                  </h4>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+  <h4 className="form-check-label">
+  Goods Receipt Notes/Number  </h4>
+  <button  style={{
+      marginLeft: '10px',
+      padding: '7px 14px',
+      backgroundColor:"#4F51C0",
+      color: '#fff',
+      borderRadius: '5px',
+      border: 'none',
+      cursor: 'pointer'
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+</div>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                     <IconContext.Provider value={{ color: "red", size: "22px" }}>
@@ -239,8 +249,19 @@ function Receiveables() {
                     }} />
                     </IconContext.Provider>
                   {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
-                  {" / Transaction Data"}
-                </div>
+                  {" / "}
+                    <a className="dropdown-toggle" style={{color:"maroon"}} type="button"  data-bs-toggle="dropdown" aria-expanded="false" >
+            Transaction Data    
+          </a>
+          <ul className="dropdown-menu" style={{width:"95%"}}>
+      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
+               
               </div>
             </div>
             <div className="card" style={{marginTop:10}}>

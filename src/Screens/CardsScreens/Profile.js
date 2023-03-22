@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { FaUserEdit } from "react-icons/fa";
+import { FaEye, FaUserEdit } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import {
-  AiOutlineArrowLeft,
+  AiOutlineArrowLeft, AiOutlineHome,
 } from "react-icons/ai";
 import Footer from "../../Components/Footer";
 import NavHeader from "../../Components/NavHeader";
+import { Modal, ModalBody } from "reactstrap";
 function Profile() {
   const navigate = useNavigate();
   const [profileDetail, setProfileDetail] = useState([]);
@@ -16,19 +17,34 @@ function Profile() {
 
     console.log(val.TARGET_VALUE)
   })
-
+  const [uploadedData, setUploadedData] = useState([]);
+  const [imageSrc, setImageSrc] = useState(null);
   const [vendorDtl, setVendorDtl] = useState([]);
   const vendorId = localStorage.getItem('userId');
+  const fetchData = async () => {
+    axios.get(AxioxExpPort + "createcompany/contact?id=" + vendorId)
+      .then((response) => {
+        //  setTBody(response.data);
+        setUploadedData(response.data);
+        console.log("response.data", response.data);
 
-  useEffect(() => {
+      })
+  }
+  const fetchDataImg = async () => {
     axios.post(AxioxExpPort +"createcompany/details", {
       user: vendorId
     })
       .then((response) => {
-        console.log("response.data",response.data)
+       
         setVendorDtl(response.data);
 
       })
+  }
+  useEffect(() => {
+ 
+     
+      fetchData();
+      fetchDataImg();
   }, []);
   const [image, setImage] = useState("");
   const inputFile = useRef(null);
@@ -49,8 +65,9 @@ function Profile() {
     inputFile.current.click();
   };
 
-  console.log("imageimage", image);
-
+ 
+  const [showCheckFlages, setShowCheckFlages] = useState(false);
+  const toggleCheckFlages = () => setShowCheckFlages(!showCheckFlages);
 
   return (
 
@@ -62,35 +79,57 @@ function Profile() {
 
       >
       
+      <div
+        className="card-body"
+        style={{
+          marginTop: "5%",
+        }}
+      >
         <div
-          className="card-body"
-          style={{
-            display: "flex",
-            marginTop:"5%",
-            marginBottom:"-2%"
-          }}
+          
         >
-          <div className="form-check form-check-inline">
-            <button
-              className="btn btn"
-             
-              onClick={() => {
-                navigate("/dashboard");
-              }}
-            >
-              <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                <AiOutlineArrowLeft />
-              </IconContext.Provider>
-            </button>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom:10}}>
+               
+                <div className="col-md-10">
+
+               
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+  <h4 className="form-check-label">
+  View Profile
+  </h4>
+  <button  style={{
+      marginLeft: '10px',
+      padding: '7px 14px',
+      backgroundColor:"#4F51C0",
+      color: '#fff',
+      borderRadius: '5px',
+      border: 'none',
+      cursor: 'pointer'
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+</div>
+                </div>
+                <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
+                  
+                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                      <AiOutlineHome type="button"   onClick={() => {
+                      navigate("/dashboard");
+                    }} />
+                    </IconContext.Provider>
+                  
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+              
+                  {/* {" / "}
+                    <a className="dropdown-toggle" style={{color:"maroon"}} type="button"  data-bs-toggle="dropdown" aria-expanded="false" >
+            Transaction Data    
+          </a> */}
           </div>
-          <div className="form-check form-check-inline">
-            <h4 className="form-check-label" htmlFor="inlineRadio2" style={{ color: "#00001" }}>
-              {/* {location.PROJECT} */}
-              {/* {location.state.name} */}
-              Edit Profile
-            </h4>
           </div>
-        </div>
+          </div>
+          </div>
+          </div>
+          </div>
 
         <div
           className="row"
@@ -132,6 +171,7 @@ function Profile() {
                     color: "#0275d8",
                     fontSize: 20,
                     fontWeight: 700,
+                    marginBottom:-20
                   }}
                 >
                   Name:<span  style={{
@@ -143,20 +183,33 @@ function Profile() {
                     color: "#0275d8",
                     fontSize: 20,
                     fontWeight: 700,
+                    marginBottom:-20
                   }}
                 >
                   Email:<span  style={{
-                  color: "#14CA96",}}> {vendorDtl.EMAIL}</span>
+                  color: "#14CA96",}}> {vendorDtl.E_MAIL}</span>
                 </h1>
                 <h1 className="text-sm-left "
                   style={{
                     color: "#0275d8",
                     fontSize: 20,
                     fontWeight: 700,
+                    marginBottom:-20
                   }}
                 >
                   Phone: <span  style={{
                   color: "#14CA96",}}> {" "+vendorDtl.TELEPHONE}</span>
+                </h1>
+                <h1 className="text-sm-left "
+                  style={{
+                    color: "#0275d8",
+                    fontSize: 20,
+                    fontWeight: 700,
+                    marginBottom:-20  
+                  }}
+                >
+                  Company(Legal) Name: <span  style={{
+                  color: "#14CA96",}}> {" "+vendorDtl.COMPANY_NAME}</span>
                 </h1>
 
               </div>
@@ -170,28 +223,31 @@ function Profile() {
               <div className="inner">
                 <div className="row">
                   <div className="row">
-                  <div className="col-md-12">
-                  <h1 className="text-sm-left"
+                  
+                    <div className="col-md-6">
+                    <h1 className="text-sm-left"
                         style={{
                           color: "#0275d8",
                           fontSize: 20,
                           fontWeight: 700,
+                          marginBottom:-20
                         }}
                       >
-                         Company(Legal) Name:
+                        Company Code:
                       </h1>
                       <p className="text-sm-left" style={{
                         color: "gray",
                         fontSize: 20,
                         fontWeight: 500,
-                      }}> {vendorDtl.COMPANY_NAME}</p>
-                  </div>
+                      }}> {vendorDtl.COMPANY_CODE}</p>
+                    </div>
                     <div className="col-md-6">
                       <h1 className="text-sm-left"
                         style={{
                           color: "#0275d8",
                           fontSize: 20,
                           fontWeight: 700,
+                          marginBottom:-20
                         }}
                       >
                         Address:
@@ -200,11 +256,13 @@ function Profile() {
                         color: "gray",
                         fontSize: 20,
                         fontWeight: 500,
+                        marginBottom:-10
                       }}> {vendorDtl.ADD1}</p>
                       <p className="text-sm-left" style={{
                         color: "gray",
                         fontSize: 20,
                         fontWeight: 500,
+                        marginBottom:-10
                       }}> {vendorDtl.ADD2} </p>
                       <p className="text-sm-left" style={{
                         color: "gray",
@@ -218,6 +276,7 @@ function Profile() {
                           color: "#0275d8",
                           fontSize: 20,
                           fontWeight: 700,
+                          marginBottom:-20
                         }}
                       >
                         City:
@@ -229,14 +288,32 @@ function Profile() {
                       }}>{vendorDtl.CITY} </p>
 
                     </div>
-                  </div>
-                  <div className="row">
+                    <div className="col-md-6">
+                      <h1 className="text-sm-left "
+                        style={{
+                          color: "#0275d8",
+                          fontSize: 20,
+                          fontWeight: 700,
+                          marginBottom:-20
+                        }}
+                      >
+                        State:
+                      </h1>
+                      <p className="text-sm-left" style={{
+                        color: "gray",
+                        fontSize: 20,
+                        fontWeight: 500,
+                      }}>{vendorDtl.STATE} </p>
+                    </div>
+                  
+                  
                     <div className="col-md-6">
                       <h1 className="text-sm-left"
                         style={{
                           color: "#0275d8",
                           fontSize: 20,
                           fontWeight: 700,
+                          marginBottom:-20
                         }}
                       >
                         Country/Region:
@@ -248,28 +325,12 @@ function Profile() {
                       }}>{vendorDtl.COUNTRY} </p>
                     </div>
                     <div className="col-md-6">
-                      <h1 className="text-sm-left "
-                        style={{
-                          color: "#0275d8",
-                          fontSize: 20,
-                          fontWeight: 700,
-                        }}
-                      >
-                        State:
-                      </h1>
-                      <p className="text-sm-left" style={{
-                        color: "gray",
-                        fontSize: 20,
-                        fontWeight: 500,
-                      }}>{vendorDtl.DESCRIPTION} </p>
-                    </div>
-                  </div>
-
-                  <h1 className="text-sm-left "
+                    <h1 className="text-sm-left "
                     style={{
                       color: "#0275d8",
                       fontSize: 20,
                       fontWeight: 700,
+                      marginBottom:-20
                     }}
                   >
                     PIN:
@@ -278,7 +339,145 @@ function Profile() {
                     color: "gray",
                     fontSize: 20,
                     fontWeight: 500,
-                  }}>{vendorDtl.POSTAL_CODE} </p>
+                  }}>{vendorDtl.PINCODE} </p>
+                    </div>
+                    <div className="col-md-6">
+                    <h1 className="text-sm-left "
+                    style={{
+                      color: "#0275d8",
+                      fontSize: 20,
+                      fontWeight: 700,
+                      marginBottom:-20
+                      
+                    }}
+                  >
+                    Aadhar No:
+                  </h1>
+                  <p className="text-sm-left" style={{
+                    color: "gray",
+                    fontSize: 20,
+                    fontWeight: 500,
+                  }}>{uploadedData.ADHAR} 
+                  <IconContext.Provider
+                                            value={{ color: "green", size: "20px" }}
+                                        >
+                                 <FaEye
+                                 type="button"
+                                 style={{
+                                    marginLeft:"20px",
+                                    marginTop:-5
+                                 }}
+                                 onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.ADHAR_IMAGE)  }}
+                                 />
+                                        </IconContext.Provider></p>
+                    </div>
+                   
+                    <div className="col-md-6">
+                    <h1 className="text-sm-left "
+                    style={{
+                      color: "#0275d8",
+                      fontSize: 20,
+                      fontWeight: 700,
+                      marginBottom:-20
+                      
+                    }}
+                  >
+                    PAN No:
+                  </h1>
+                  <p className="text-sm-left" style={{
+                    color: "gray",
+                    fontSize: 20,
+                    fontWeight: 500,
+                  }}>{uploadedData.PANCARD ? uploadedData.PANCARD   :"Not Filled"} 
+                  <IconContext.Provider
+                                            value={{ color: "green", size: "20px" }}
+                                        >
+                                 <FaEye
+                                 type="button"
+                                 style={{
+                                    marginLeft:"20px",
+                                    marginTop:-5
+                                 }}
+                                 onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.PANCARD_IMAGE)  }}
+                                 />
+                                        </IconContext.Provider></p>
+                    </div>
+
+                    <div className="col-md-6">
+                    <h1 className="text-sm-left "
+                    style={{
+                      color: "#0275d8",
+                      fontSize: 20,
+                      fontWeight: 700,
+                      marginBottom:-20
+                      
+                    }}
+                  >
+                    GST Reg No:
+                  </h1>
+                  <p className="text-sm-left" style={{
+                    color: "gray",
+                    fontSize: 20,
+                    fontWeight: 500,
+                  }}>{ uploadedData.GST ? uploadedData.GST   :0} 
+                  <IconContext.Provider
+                                            value={{ color: "green", size: "20px" }}
+                                        >
+                                 <FaEye
+                                 type="button"
+                                 style={{
+                                    marginLeft:"20px",
+                                    marginTop:-5
+                                 }}
+                                 onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.GST_IMAGE)  }}
+                                 />
+                                        </IconContext.Provider></p>
+                    </div>
+                    <div className="col-md-6">
+                    <h1 className="text-sm-left "
+                    style={{
+                      color: "#0275d8",
+                      fontSize: 20,
+                      fontWeight: 700,
+                      marginBottom:-20
+                      
+                    }}
+                  >
+                    MSME Certificate No:
+                  </h1>
+                  <p className="text-sm-left" style={{
+                    color: "gray",
+                    fontSize: 20,
+                    fontWeight: 500,
+                  }}>{uploadedData.MSME? uploadedData.MSME  :"Not Filled"} 
+                  <IconContext.Provider
+                                            value={{ color: "green", size: "20px" }}
+                                        >
+                                 <FaEye
+                                 type="button"
+                                 style={{
+                                    marginLeft:"20px",
+                                    marginTop:-5
+                                 }}
+                                 onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.MSME_IMAGE)  }}
+                                 />
+                                        </IconContext.Provider></p>
+                    </div>
+                    <div className="col-md-6">
+                    
+                    </div>
+                    <div className="col-md-6">
+                    
+                    </div>
+                    <div className="col-md-6">
+                    
+                    </div>
+                    <div className="col-md-6">
+                    
+                    </div>
+                  </div>
+
+                  
 
 
                  
@@ -294,7 +493,36 @@ function Profile() {
 
         <Footer />
       </div>
+      <Modal
+        size="md"
+        isOpen={showCheckFlages}
+        toggle={toggleCheckFlages}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+
+        }}
+      >
+        <ModalBody
+
+        >
+          <div className="modal-header model-md"
+            style={{ marginTop: '-10px' }}
+          >
+            <h5 className="modal-title text-center"  id="exampleModalLabel">
+              {/* <p className="h4">Details: <span style={{ color: 'green' }}>{detailVal}</span></p> */}
+            </h5>
+            <a href='#' className="text-right" onClick={toggleCheckFlages}>Close</a>
+          </div>
+          <img className="col-md-12" src={AxioxExpPort + 'images/' +imageSrc} />
+
+
+
+        </ModalBody>
+      </Modal>
     </div>
+    
+    
   );
 }
 

@@ -149,6 +149,26 @@ const NewSupplier = () => {
               })
               .catch((err) => { console.log(err) });
     }
+    const rejectSupplier=(e)=>{
+       
+        var supID=e;
+        console.log("supID",supID)
+          axios.post(AxioxExpPort + "createcompany/supplier_approve?status=1", {
+              "approved_by":buyerID, 
+              "supplier":[supID]
+            })
+              .then((res) => {
+                fetchPosts();
+                toggleCheckFlagesBank();
+                setToasterColor("#A80808"); 
+                toggleCheckFlagesBank();
+                console.log("resresres",res)
+                setToaster("Your Profile is Rejectd");
+                var xy = document.getElementById("snackbar");
+                xy.className = "show";  setTimeout(function(){     xy.className = xy.className.replace("show", ""); }, 3000) 
+              })
+              .catch((err) => { console.log(err) });
+    }
     const rejectSupplierBank=(e)=>{
         console.log("supplierSendID",e)
          var supID=e;
@@ -177,6 +197,8 @@ const NewSupplier = () => {
           marginTop: "4%",
         }}
       >
+      <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
+
         <div
           
         >
@@ -189,7 +211,7 @@ const NewSupplier = () => {
                   <h4 className="form-check-label" >
                     {/* {location.PROJECT} */}
                     {/* {location.state.name} */}
-                    New Suppliers
+                    New Request
                   </h4>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
@@ -534,8 +556,8 @@ const NewSupplier = () => {
               style={{
                 height:23
               }}
-              onClick={() => {
-                togglePODetailsFlag();
+              onClick={(e) => {
+                rejectSupplier(supplierAlldetail.TELEPHONE);
               }}
             >Reject</button>
                         </div>

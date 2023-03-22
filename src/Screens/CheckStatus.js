@@ -447,7 +447,7 @@ function CheckStatus() {
                   color: "#fff",
                   backgroundColor: "#228B22",
                 }} >
-                <AiOutlineCloudUpload size={16} style={{ color: "white", fontStyle: 'italic' }} type="button" />Document</Button>
+                <AiOutlineCloudUpload size={16} style={{ color: "white", fontStyle: 'italic' }} type="button" />Documentss</Button>
             </div>
           </div>
         }

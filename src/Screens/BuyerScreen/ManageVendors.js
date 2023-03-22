@@ -140,12 +140,12 @@ function ManageVendors() {
 
         })
       } else {
-        setToaster("Please select atlist one supllier")
+  setToaster("Please select atlist one supllier")
   var xz = document.getElementById("snackbar");
   setToasterColor("red")
   xz.className = "show";
   setTimeout(function(){
-     xz.className = xz.className.replace("show", ""); }, 3000)
+  xz.className = xz.className.replace("show", ""); }, 3000)
        
       }
 
@@ -171,8 +171,10 @@ function ManageVendors() {
         console.log("Went Wrongs",tempArrSUBMITONE);
         console.log("Went Wrong2",tempArrSUBMITtwo);
     })
+
+
      try {
-      // if (tempArr.length > 0) {
+       if (singleCheck.length > 0) {
          axios.post(AxioxExpPort + 'mapping/update_status', {
            buyer_id: buyerID,
            supplier: tempArrSUBMITONE,
@@ -188,14 +190,14 @@ function ManageVendors() {
          fetchPosts();
          //window.location.reload();
          })
-      //  } else {
-      //    setToaster("Please select atlist one supllier")
-      //    var xz = document.getElementById("snackbar");
-      //    setToasterColor("red")
-      //    xz.className = "show";
-      //    setTimeout(function(){
-      //    xz.className = xz.className.replace("show", ""); }, 3000)
-      //  }
+        } else {
+          setToaster("Select any supllier to change his satus")
+          var xz = document.getElementById("snackbar");
+          setToasterColor("red")
+          xz.className = "show";
+          setTimeout(function(){
+          xz.className = xz.className.replace("show", ""); }, 3000)
+        }
      } catch {
        console.log("Something Went Wrong");
      }

@@ -3,7 +3,7 @@ import axios from "axios";
 import NavHeader from "../../Components/NavHeader";
 import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { FaFileCsv, FaDownload } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
@@ -13,7 +13,9 @@ import { COLORS } from "../../Constants/theme";
 import dateFormat from 'dateformat';
 import DateRangePicker from "rsuite/esm/DateRangePicker";
 import { BsHash } from "react-icons/bs";
-
+import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
+import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
+import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
 function GoodsReturn() {
   const navigate = useNavigate();
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
@@ -39,15 +41,15 @@ function GoodsReturn() {
   const [emptyModalTable, setEmptyModalTable] = useState([]);
   const vendorId = localStorage.getItem('userId');
   const [poNumber,setPoNumber]=useState("")
+  const fetchData = async () => {
+    axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
+      .then((response) => {
+        setTBody(response.data);
+        setFilterData(response.data)
+        console.log("response.data", response.data);
+      })
+  }
   useEffect(() => {
-    const fetchData = async () => {
-      axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
-        .then((response) => {
-          setTBody(response.data);
-          setFilterData(response.data)
-          console.log("response.data", response.data);
-        })
-    }
     fetchData();
   }, []);
   const[showArrow,setShowArrow]=useState(false)
@@ -218,11 +220,21 @@ function GoodsReturn() {
                
                 <div className="col-md-10">
 
-                  <h4 className="form-check-label" >
-                    {/* {location.PROJECT} */}
-                    {/* {location.state.name} */}
-                    Goods Return
-                  </h4>
+                  
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+  <h4 className="form-check-label">
+  Goods Return
+  </h4>
+  <button  style={{
+      marginLeft: '10px',
+      padding: '7px 14px',
+      backgroundColor:"#4F51C0",
+      color: '#fff',
+      borderRadius: '5px',
+      border: 'none',
+      cursor: 'pointer'
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+</div>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                   
@@ -234,8 +246,19 @@ function GoodsReturn() {
                   
                   {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
                 
-                  {" / Transaction Data"}
-                </div>
+                  {" / "}
+                    <a className="dropdown-toggle" style={{color:"maroon"}} type="button"  data-bs-toggle="dropdown" aria-expanded="false" >
+            Transaction Data    
+          </a>
+          <ul className="dropdown-menu" style={{width:"95%"}}>
+      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
+               
                
               </div>
             </div>

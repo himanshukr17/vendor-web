@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
+import { AiFillAccountBook, AiFillReconciliation, AiOutlineHome, AiOutlineWallet } from "react-icons/ai";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
@@ -16,22 +16,21 @@ const NavTab = () => {
   };
   const [lablesAll, setLablesAll] = useState("")
 
-  useEffect(()=>{
+ 
     const fetchPosts = async () => {
-      axios.post(AxioxExpPort + "createcompany/po",{
-        "user":vendorId
-      })
-      .then((response) => {
-        setLablesAll(response.data.length);
-           
-          })
-      }
-    const fetchHomeCount = async () => {
-      axios.get(AxioxExpPort + "count/all?id=" + vendorId)
+      axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
         .then((response) => {
-          setDashboardData(response.data);
+          setLablesAll(response.data.length);
+          console.log("response.data", response.data);
         })
     }
+  const fetchHomeCount = async () => {
+    axios.get(AxioxExpPort + "count/all?id=" + vendorId)
+      .then((response) => {
+        setDashboardData(response.data);
+      })
+  }
+  useEffect(()=>{
     fetchHomeCount();
     fetchPosts();
   },[])
@@ -40,12 +39,12 @@ const NavTab = () => {
   return (
     <nav className="navtabnavtab "> 
       <ul className="navtabnavtab-list ">
-        <li
-          className={activeTab === 1 ? "navtabnavtab-item active" : "navtabnavtab-item"}
-          onClick={() => handleTabClick(1)}
+        <li className="navtabnavtab-item activess"
+          // className={activeTab === 1 ? "navtabnavtab-item active" : "navtabnavtab-item"}
+          // onClick={() => handleTabClick(1)}
         >
           <a className="" style={{color:"white"}} type="button"  data-bs-toggle="dropdown" aria-expanded="false" >
-            Home
+          <AiOutlineHome/>
           </a>
           
         </li>
@@ -71,13 +70,14 @@ const NavTab = () => {
           <a className="dropdown-toggle" style={{color:"white"}} type="button"  data-bs-toggle="dropdown" aria-expanded="false" >
             Transaction Data
           </a>
-          <ul className="dropdown-menu">
-      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={20}/>    <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a><a style={{ float:"right", fontWeight:"", color:"#28B463"}}>{Number(dashboardData.OPEN_PO)+Number(dashboardData.CLOSE_PO)}</a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={20} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a><a style={{ float:"right", fontWeight:"", color:"#28B463"}}>{Number(dashboardData.RECEIVED_PO)}</a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={20} />       <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a><a style={{ float:"right", fontWeight:"", color:"#28B463"}}>{Number(dashboardData.RETURN_PO)}</a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={20}     />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a><a style={{ float:"right", fontWeight:"", color:"#28B463"}}>{Number(lablesAll) }</a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={20}  />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Details  </a><a style={{ float:"right", fontWeight:"", color:"#28B463"}}>{Number(dashboardData.INVOICE_COUNT)}</a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={20}     />    <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Contacts      </a><a style={{ float:"right",  color:"#28B463"}}></a></Link></li> 
+          <ul className="dropdown-menu" style={{width:"17%"}}>
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={20} />  Purchase Order   <a style={{ float:"right",  fontWeight:"", color:"#28B463"}}>{Number(dashboardData.OPEN_PO)+Number(dashboardData.CLOSE_PO)}</a></Link></li>
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={20} />  Goods Receipt    <a style={{ float:"right",  fontWeight:"", color:"#28B463"}}>{Number(dashboardData.RECEIVED_PO)}</a></Link></li>
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={20} />  Order to confirm <a style={{ float:"right",  fontWeight:"", color:"#28B463"}}>{Number(lablesAll) }</a></Link></li> 
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={20} />  Invoice Booked   <a style={{ float:"right",  fontWeight:"", color:"#28B463"}}>{Number(dashboardData.INVOICE_COUNT)}</a></Link></li> 
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={20} />  Invoice Pending  <a style={{ float:"right",  fontWeight:"", color:"#28B463"}}>{Number(dashboardData.INVOICE_COUNT)}</a></Link></li> 
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={20} />  Goods Return     <a style={{ float:"right",  fontWeight:"", color:"#28B463"}}>{Number(dashboardData.RETURN_PO)}</a></Link></li> 
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={20} />  My Documents     <a style={{ float:"right",   color:"#28B463"}}></a></Link></li> 
   </ul>
         </li>
         <li

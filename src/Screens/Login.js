@@ -187,10 +187,10 @@ function Login() {
                   <br />
                   <div className="remember-me--forget-password">
                     {/* Angular */}
-                    <label>
+                    {/* <label>
                       <input type="checkbox" name="item" defaultChecked="" />
                       <span className="text-checkbox">Remember me</span>
-                    </label>
+                    </label> */}
                     <Link to="/forgot_password"><p>Forget password?</p></Link>
                   </div>
                   <br />
@@ -305,12 +305,11 @@ function Login() {
                   <br />
                   <div className="remember-me--forget-password">
                     {/* Angular */}
-                    <label>
+                    {/* <label>
                       <input type="checkbox" name="item" defaultChecked="" />
                       <span className="text-checkbox">Remember me</span>
-                    </label>
-                    <p>forget password?</p>
-                  </div>
+                    </label> */}
+                    <Link to="/forgot_password"><p>Forget password?</p></Link>                  </div>
                   <br />
 
                   <button

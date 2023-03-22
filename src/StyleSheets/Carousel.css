@@ -1,0 +1,13 @@
+.slide-content {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.slide-content.rs-carousel-slide-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* .carousel .control-dots {
+  display: none;
+} */

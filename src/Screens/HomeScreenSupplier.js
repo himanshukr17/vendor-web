@@ -131,7 +131,7 @@ function HomeScreenSupplier() {
                   color: "black",
                 }}
               >
-                New Supplier
+                New Request
               </h5>
               <div className="filter">
                 <a className="icon" href="#" data-bs-toggle=""></a>

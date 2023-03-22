@@ -14,6 +14,7 @@ function Dashboard() {
       <div
         style={{
           marginTop: 64,
+          marginBottom:15
         }}
       >
       <NavTab />

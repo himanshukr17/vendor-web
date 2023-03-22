@@ -35,12 +35,15 @@ import BuyerMyContact from './Screens/BuyerScreen/BuyerMyContacts';
 import NewSupplier from './Screens/BuyerScreen/NewSupplier';
 import Acknowledgement from './Screens/CardsScreens/Acknowledgement';
 import ForgotPassword from './Screens/ForgotPassword';
+import ScreenAuth from './Screens/AdminScreen/ScreenAuth';
+import RoleManagement from './Screens/AdminScreen/RoleManagement';
 function App() {
   const userType = localStorage.getItem('userType');
   const userID = localStorage.getItem('userId');
   const [userTypeDef, setUserTypeDef] = useState(userType)
   const [isLoggedIn, setisLoggedIn] = useState(null);
   console.log('userTypeDef', userType)
+  //localStorage.clear() 
   return (
     <div className="App">
       {
@@ -84,6 +87,8 @@ function App() {
           <Route path="/" element={<Login />} exact />
           <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
           <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact />
+          <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />
+          <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact />
           <Route path="/vp" element={<Protected><VendorProfile /></Protected>} exact />
           <Route path="/mv" element={<Protected><ManageVendors /></Protected>} exact />
           <Route path="/new" element={<Protected><NewSupplier /></Protected>} exact />

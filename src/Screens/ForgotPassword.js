@@ -122,7 +122,7 @@ function ForgotPassword() {
   // handeling the modAL 
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
-
+  const [passwordType, setPasswordType] = useState("password");
   return (
     <>
       <div id="snackbar" style={{ backgroundColor: toasterColor, borderRadius: "50px" }}>{toaster}</div>

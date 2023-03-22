@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import NavHeader from "../../Components/NavHeader";
 import axios from "axios";
 import { AxioxExpPort } from "../AxioxExpPort"
-import {  useNavigate } from "react-router-dom";
-import {
-  AiOutlineArrowLeft
-} from "react-icons/ai";
+import {  useNavigate, Link } from "react-router-dom";
+import { AiFillAccountBook, AiFillReconciliation, AiOutlineHome, AiOutlineWallet } from "react-icons/ai";
+import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
+import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { Modal, ModalBody } from "reactstrap";
 function MyContact() {
@@ -38,22 +38,22 @@ function MyContact() {
   const [inputValueput, setInputValue] = useState("");
   const [inputFile, setInputFile] = useState("");
   const [uploadedData, setUploadedData] = useState([]);
-  const [showCheckFlages, setShowCheckFlages] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
   const [detailVal, setDetailVal] = useState(null);
-
-
+  
+  
+  const [showCheckFlages, setShowCheckFlages] = useState(false);
   const toggleCheckFlages = () => setShowCheckFlages(!showCheckFlages);
-  useEffect(() => {
-    const fetchData = async () => {
-      axios.get(AxioxExpPort + "createcompany/contact?id=" + vendorId)
-        .then((response) => {
-          //  setTBody(response.data);
-          setUploadedData(response.data);
-          console.log("response.data", response);
+  const fetchData = async () => {
+    axios.get(AxioxExpPort + "createcompany/contact?id=" + vendorId)
+      .then((response) => {
+        //  setTBody(response.data);
+        setUploadedData(response.data);
+        console.log("response.data", response);
 
-        })
-    }
+      })
+  }
+  useEffect(() => {
     fetchData()
   }, [])
   const setOptionVal = (e) => {
@@ -132,51 +132,73 @@ function MyContact() {
 
   return (
     <>
-      <NavHeader />
-      <div id="snackbar" style={{ backgroundColor: toasterColor, borderRadius: "50px" }}>{toaster}</div>
+    <NavHeader />
+      <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
 
       <div
-        className="card"
+        className="card-body"
         style={{
-          marginTop: "5%",
-
+          marginTop: "4%",
         }}
       >
-        <div
-          className="card-body"
-          style={{
-            display: "flex",
-          }}
-        >
+        <div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="row" style={{ marginBottom: 10 }}>
+                <div className="col-md-10">
+               
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+  <h4 className="form-check-label">
+  Acknowledgement
+  </h4>
+  <button  style={{
+      marginLeft: '10px',
+      padding: '7px 14px',
+      backgroundColor:"#4F51C0",
+      color: '#fff',
+      borderRadius: '5px',
+      border: 'none',
+      cursor: 'pointer'
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+</div>
+                </div>
+                <div className="col-md-2 text-end noPrint" style={{ marginTop: 10 }}>
+                  <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                    <AiOutlineHome type="button" onClick={() => {
+                      navigate("/dashboard");
+                    }} />
+                  </IconContext.Provider>
+                  {/* <a style={{marginTop:"30"}}>{"/Purchase Order"}</a> */}
+                  {" / "}
+                    <a className="dropdown-toggle" style={{color:"maroon"}} type="button"  data-bs-toggle="dropdown" aria-expanded="false" >
+            Transaction Data    
+          </a>
+          <ul className="dropdown-menu" style={{width:"95%"}}>
+      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
 
-          <div className="form-check form-check-inline">
-            <button
-              className="btn btn"
-
-              onClick={() => {
-                navigate("/dashboard");
-              }}
-            >
-              <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                <AiOutlineArrowLeft />
-              </IconContext.Provider>
-            </button>
+              </div>
+          
+</div>
           </div>
-          <div className="form-check form-check-inline">
-            <h4 className="form-check-label" htmlFor="inlineRadio2">
-              {/* {location.PROJECT} */}
-              {/* {location.state.name} */}
-              My Contacts
-            </h4>
-          </div>
-          <div
+        
+          {/* <div
             className="form-check form-check-inline"
             style={{
               float: "right",
             }}
-          ></div>
+          ></div> */}
         </div>
-        <div className="container" >
+        <div className="card">
+        <div className="card-body">
+
+        
+        <div style={{marginTop:"1%"}} >
 
 
           <div className="formdesign"  >
@@ -247,7 +269,10 @@ function MyContact() {
             <br />
           </div>
         </div>
+        </div>
       </div>
+      </div>
+     
       <div className="card-body"   >
         <div className="row" >
           <div className="col-md-3" style={{ marginBottom: '20px' }}>
@@ -353,7 +378,7 @@ function MyContact() {
                 <>
                   <tr className="text-black" style={{ textAlign: "left" }}  >DUE Number: {uploadedData.DILIGENCE}</tr>
                   <a href='#' onClick={(e) => { setImageSrc(e.target.src); setDetailVal(uploadedData.DILIGENCE); toggleCheckFlages() }}>
-                    <img className="col-md-11" src={AxioxExpPort + 'images/' + uploadedData.DILIGENCE_IMAGE} />
+                    <img className="col-md-11" style={{ alignSelf: "center", display: 'flex', height: '130px' }} src={AxioxExpPort + 'images/' + uploadedData.DILIGENCE_IMAGE} />
                   </a>
                 </>
                 :
@@ -362,6 +387,7 @@ function MyContact() {
                 </div>
             }
           </div>
+         
           {/* <div className="col-md-3 " style={{ marginBottom: '20px' ,backgroundColor:"#2793FF", borderRadius:'90px' }}>
           <p className="text-center" style={{fontStyle: 'oblique',marginTop:'10px', fontSize:15, color:'white' }}>Want to change any document?</p>
                   <img className="col-md-11" style={{ alignSelf: "center",  height: '40px',width:'90' }} src={'https://media2.giphy.com/media/3FogJGpt7jfu5zlKdB/200w.gif?cid=6c09b952ttvhco2bpx64mkczfvf7yiy8qbgjwonjxnfzmhwe&rid=200w.gif&ct=s'} />
@@ -369,8 +395,9 @@ function MyContact() {
         </div> */}
         </div>
       </div>
+    
       <Modal
-        size="lg"
+        size="md"
         isOpen={showCheckFlages}
         toggle={toggleCheckFlages}
         style={{
@@ -382,7 +409,7 @@ function MyContact() {
         <ModalBody
 
         >
-          <div className="modal-header model-lg"
+          <div className="modal-header model-md"
             style={{ marginTop: '-10px' }}
           >
             <h5 className="modal-title text-center" id="exampleModalLabel">

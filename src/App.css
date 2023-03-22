@@ -636,8 +636,13 @@ background: #9d9d9d;
 
 .navtabnavtab-item.active {
   background-color: #4F51C0;
-  border-bottom: 2px solid #fff;
+  /* border-bottom: 2px solid #fff;  */
 }
+.navtabnavtab-item.activess{
+  background-color: #4F51C0;
+   border-bottom: 2px solid #fff; 
+}
+
 
 .navtabnavtab-link {
   color: #333;
@@ -654,6 +659,18 @@ background: #9d9d9d;
   font-weight: bold;
   font-size: 1.2em;
   margin-bottom: 1em;
+}
+
+
+
+.table-container {
+    position: relative;
+}
+
+.table-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
 }
 
 

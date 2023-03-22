@@ -984,13 +984,13 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
               </div>                
                  
 
-              <div className="">
+              <div className=""  style={{
+                    marginLeft: "40%",
+                  }}>
                 <input type="checkbox" checked={termCheck} onClick={() => { toggleCheckFlag() }} />
                 <label
                   htmlFor="floatingInput"
-                  style={{
-                    marginLeft: "1%",
-                  }}
+                 
                 >
                   Terms and Conditions*
                 </label>
@@ -1012,6 +1012,9 @@ if( phone.toString().length==0 || chooseFile.length == 0 || pannumber.length== 0
                   justifyContent: "center",
                   alignSelf: "center",
                   margin: "3%",
+                 
+                    marginLeft: "38%",
+                  
                 }}
 
                 className="btn btn-primary"
