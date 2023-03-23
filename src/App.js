@@ -86,7 +86,7 @@ function App() {
         (<Routes>
           <Route path="/" element={<Login />} exact />
           <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
-          <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact />
+          {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
           <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />
           <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact />
           <Route path="/vp" element={<Protected><VendorProfile /></Protected>} exact />

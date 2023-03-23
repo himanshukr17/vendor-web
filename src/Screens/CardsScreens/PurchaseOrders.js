@@ -362,11 +362,11 @@ function PurchaseOrders() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        <a style={{
+                        <a type="button" style={{
                           textDecoration: 'none',
-
+                          color:"blue"
                         }}
-                          href="#"
+                      
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickedPOsDataArr(po.Details);
@@ -502,7 +502,9 @@ function PurchaseOrders() {
         </div>
       </div>
 
-      <Modal size="lg"
+      <Modal
+     className="modal-dialog modal-xl"
+       size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
@@ -510,16 +512,31 @@ function PurchaseOrders() {
           alignItems: "center",
         }}
       >
-        <ModalBody
-          style={{
-            marginTop: 0,
-          }}
-        >
-          <div className="row">
+       
+          
+          <div className="card card-info">
+        <div className="card-header">
+          <h3 className="card-title">   PO's Details</h3>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span onClick={() => {
+            togglePODetailsFlag();
+          }}>×</span>
+          </button>
+        </div>
+        </div>
+        <div className="card" style={{marginTop:"-2%",marginBottom:"-0.3%"}}>
+          <div className="card-body">
+                    <div className="row">
             <div className="col-md-8">
-              <h5 className="modal-title " id="exampleModalLabel">
-                PO's Details
+            <h5 className="modal-title " id="exampleModalLabel">
+                <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+       
+        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+    </IconContext.Provider>
               </h5>
+
             </div>
             <div className="col-md-3">
               <input
@@ -565,10 +582,10 @@ function PurchaseOrders() {
             /> */}
             </div>
           </div>
-
-          <table className="table table-bordered table-striped">
+        
+          <table className="table table-bordered table-striped" >
             <thead>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material Description</th>
+              <th style={{ width: "5%",  backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material Description</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material No</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Manufacture Part No.</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Unit</th>
@@ -622,7 +639,7 @@ function PurchaseOrders() {
               ):
               (
                 <tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={10} className="text-center">
                     No Data Found
                   </td>
                 </tr>
@@ -639,7 +656,7 @@ function PurchaseOrders() {
                 color: "#007bff",
                 float: "right",
                 padding: 1,
-                height: '5px'
+                height: '10px'
               }}
               onClick={() => {
                 togglePODetailsFlag();
@@ -648,7 +665,10 @@ function PurchaseOrders() {
               Close
             </a>
           </div>
-        </ModalBody>
+          </div>
+          </div>
+       
+          
       </Modal>
     </>
   );

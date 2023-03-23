@@ -40,11 +40,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
       axios.get(AxioxExpPort + "mapping/get?buyer=" + vendorId)
         .then((response) => {
           setTBody(response.data);
-          // //console.log("response.data",response.data);
-
           setFilterdata(response.data);
         })
-
     };
     useEffect(() => {
       fetchPosts()
@@ -87,23 +84,28 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
       }
   
     }
-    
+    const [toaster,setToaster]=useState("")
+    const [toasterColor,setToasterColor]=useState("")
     const handelAllPO = () => {
       setIsPurchaseOrderEmpty(true);
       setTBody(filterData);
     }
-    console.log("dashboardData",vendorIDss)
     // console.log("dashboardData",vendorIDss)
     const coutAllDAta = async (e) => {
     
       axios.get(AxioxExpPort+"count/all?id="+e)
       .then((response) => {
-        
         console.log("dashboardData",response.data)
         setDashboardData(response.data);
         toggleCheckFlages();
        // console.log("dashboardData",response.data)
       })
+      .catch((err) => { setToaster("No data available")
+      var xz = document.getElementById("snackbar");
+      setToasterColor("maroon")
+      xz.className = "show";
+      setTimeout(function(){
+         xz.className = xz.className.replace("show", ""); }, 3000) });
       }
   
 
@@ -114,6 +116,8 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
     return (
       <>
         <NavHeader />
+        <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
+
         <div
         className="card-body"
         style={{
@@ -363,7 +367,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
         </div>
 
         <Modal
-
+className="modal-dialog modal-content"
         isOpen={showCheckFlages}
         toggle={toggleCheckFlages}
         size="md"
@@ -377,10 +381,10 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
         }}
       >
 
-        <ModalBody>
-          <div className="col-md-12 text-center">
-
-            <p style={{ color: "green", fontSize:20, marginBottom:15 }}>{vendorName+"("+vendorIDss+")"}</p>
+<div className=" card-info">
+        <div className="card-header ">
+          <h3 className=" text-center" style={{ fontSize:20 }}>{vendorName+"("+vendorIDss+")"}</h3>
+</div><div className="card-body">
             <div className="row text-center" >
             <div className=" col-6" >
           <Link  to="/bpo"   state={{
@@ -638,13 +642,9 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
             </div>
           </Link>
         </div> 
-
             </div>
-
+            </div>
           </div>
-
-
-        </ModalBody>
       </Modal>
       </>
     );

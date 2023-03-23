@@ -344,8 +344,11 @@ function Receiveables() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        <Link
-                          to=""
+                         <a type="button" style={{
+                          textDecoration: 'none',
+                          color:"blue"
+                        }}
+
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickRecvData(val.received_datas);
@@ -354,7 +357,7 @@ function Receiveables() {
                           }}
                         >
                           {val.GRN_NO.toString()}
-                        </Link>
+                        </a>
                         <br />
                       </td>
                       <td
@@ -442,7 +445,9 @@ function Receiveables() {
 
 
 
-      <Modal size="lg"
+      <Modal 
+  className="modal-dialog modal-xl"
+        size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
@@ -452,17 +457,26 @@ function Receiveables() {
 
         }}
       >
-        <ModalBody
-          style={{
-            marginTop: 0,
-          }}
-        >
-
-          <div className="row">
+         <div className="card card-info">
+        <div className="card-header">
+          <h3 className="card-title">Goods Receipt Details</h3>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span onClick={() => {
+            togglePODetailsFlag();
+          }}>×</span>
+          </button>
+        </div>
+        </div>
+        <div className="card" style={{marginTop:"-2%",marginBottom:"-0.3%"}}>
+          <div className="card-body">          <div className="row">
             <div className="col-md-8">
-
-              <h5 className="modal-title " id="exampleModalLabel">
-                Goods Receipt Details
+            <h5 className="modal-title " id="exampleModalLabel">
+                <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+       
+        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+    </IconContext.Provider>
               </h5>
 
             </div>
@@ -533,26 +547,27 @@ function Receiveables() {
               <Pagination postPerPage={postsPerPage} totalPosts={clickRecData.length} paginate={paginate} />
 
             </div>
-            <div className="col-md-1">
-              <a
-                className="h6"
-                type="button"
-                style={{
-                  color: "#007bff",
-                  float: "right",
-                  padding: 5,
-                  textDecoration: 'none',
-
-                }}
-                onClick={() => {
-                  togglePODetailsFlag();
-                }}
-              >
-                Close
-              </a>
-            </div>
+            <div className="modal-footer">
+            <a
+              className="navbar-brand"
+              type="button"
+              style={{
+                color: "#007bff",
+                float: "right",
+                padding: 1,
+                height: '10px'
+              }}
+              onClick={() => {
+                togglePODetailsFlag();
+              }}
+            >
+              Close
+            </a>
           </div>
-        </ModalBody>
+          </div>
+          </div>
+          </div>
+        
       </Modal>
     </>
   );

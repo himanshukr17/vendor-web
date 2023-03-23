@@ -488,7 +488,9 @@ function InvoiceDisplay () {
         </div>
         </div>
   
-        <Modal size="lg"
+        <Modal 
+          className="modal-dialog modal-xl"
+        size="lg"
           isOpen={showPODetailsFlag}
           toggle={togglePODetailsFlag}
           style={{
@@ -496,16 +498,29 @@ function InvoiceDisplay () {
             alignItems: "center",
           }}
         >
-          <ModalBody
-            style={{
-              marginTop: 0,
-            }}
-          >
+  <div className="card card-info" >
+        <div className="card-header">
+          <h3 className="card-title"> Invoice Details</h3>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span onClick={() => {
+            togglePODetailsFlag();
+          }}>×</span>
+          </button>
+        </div>
+        </div>
+        <div className="card" style={{marginTop:"-2%",marginBottom:"-0.3%"}}>
+          <div className="card-body">    
             <div className="row">
               <div className="col-md-8">
-                <h5 className="modal-title " id="exampleModalLabel">
-                  Invoice Details
-                </h5>
+              <h5 className="modal-title " id="exampleModalLabel">
+                <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+       
+        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+    </IconContext.Provider>
+              </h5>
+
               </div>
               <div className="col-md-3">
                 <input
@@ -645,23 +660,24 @@ function InvoiceDisplay () {
             </table>
             <Pagination postPerPage={postsPerPage} totalPosts={ClickedInvoiceDataArr.length} paginate={paginate} />
             <div className="modal-footer">
-              <a
-                className="navbar-brand"
-                type="button"
-                style={{
-                  color: "#007bff",
-                  float: "right",
-                  padding: 1,
-                  height: '5px'
-                }}
-                onClick={() => {
-                  togglePODetailsFlag();
-                }}
-              >
-                Close
-              </a>
-            </div>
-          </ModalBody>
+            <a
+              className="navbar-brand"
+              type="button"
+              style={{
+                color: "#007bff",
+                float: "right",
+                padding: 1,
+                height: '10px'
+              }}
+              onClick={() => {
+                togglePODetailsFlag();
+              }}
+            >
+              Close
+            </a>
+          </div>
+           </div>
+           </div>
         </Modal>
       </>
     );

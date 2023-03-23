@@ -206,7 +206,7 @@ function Acknowledgement() {
        })
          .then((res) => {
           fetchData();togglePODetailsFlagACKRemark();
-          togglePODetailsFlagACK();
+          togglePODetailsFlag();
           setToaster("Order is approved and acknowledge")
         var xz = document.getElementById("snackbar");
         setToasterColor("green")
@@ -465,7 +465,9 @@ function Acknowledgement() {
           </div>
         </div>
       </div>
-      <Modal size="lg"
+      <Modal 
+   className="modal-dialog modal-xl"
+      size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
@@ -473,16 +475,30 @@ function Acknowledgement() {
           alignItems: "center",
         }}
       >
-        <ModalBody
-          style={{
-            marginTop: 0,
-          }}
-        >
+
+<div className="card card-info">
+        <div className="card-header">
+          <h3 className="card-title">   Order Details</h3>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span onClick={() => {
+            togglePODetailsFlag();
+          }}>×</span>
+          </button>
+        </div>
+        </div>
+        <div className="card" style={{marginTop:"-2%",marginBottom:"-0.3%"}}>
+          <div className="card-body">
           <div className="row">
             <div className="col-md-7">
-              <h5 className="modal-title " id="exampleModalLabel">
-                Order Details
+            <h5 className="modal-title " id="exampleModalLabel">
+                <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+       
+        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+    </IconContext.Provider>
               </h5>
+
             </div>
             <div className="col-md-2 text-end noPrint">
               <button type="button" title="Submit and acknowledge" onClick={saveCheck} style={{ width: "80%", height: 35, borderWidth: 3, fontFamily: "serif", borderRadius: 5, color: "#4F51C0", borderColor: "#4F51C0" }}>Acknowledge</button>
@@ -630,15 +646,13 @@ function Acknowledgement() {
             <div className="col-md-6">
               <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
             </div>
-            <div className="col-md-2">
-            </div>
-            <div className="col-md-4">
-              <a
+            <div className="modal-footer"><a
                 className="navbar-brand text-end"
                 type="button"
                 style={{
                   color: "#007bff",
                   float: "right",
+                  padding: 1,
                   fontSize: 15
                 }}
               >
@@ -647,12 +661,14 @@ function Acknowledgement() {
                   num.format(Number(tolto.reduce((partialSum, a) => partialSum + a, 0)))
                 }
               </a>
+              
               <a
                 className="navbar-brand text-end"
                 type="button"
                 style={{
                   color: "#007bff",
                   float: "right",
+                  padding: 1,
                   fontSize: 15
                 }}
               >
@@ -663,26 +679,13 @@ function Acknowledgement() {
               </a>
             </div>
           </div>
-          <div className="modal-footer noPrint">
-            <a
-              className="navbar-brand"
-              type="button"
-              style={{
-                color: "#007bff",
-                float: "right",
-                padding: 1,
-                height: '5px'
-              }}
-              onClick={() => {
-                togglePODetailsFlag();
-              }}
-            >
-              Close
-            </a>
           </div>
-        </ModalBody>
+          </div>
       </Modal>
-      <Modal size="lg"
+      <Modal 
+            className="modal-dialog modal-content"
+
+      size="lg"
         isOpen={showPODetailsFlagACK}
         toggle={togglePODetailsFlagACK}
         style={{
@@ -690,16 +693,29 @@ function Acknowledgement() {
           alignItems: "center",
         }}
       >
-        <ModalBody
-          style={{
-            marginTop: 0,
-          }}
-        >
+        <div className="card card-info">
+        <div className="card-header">
+          <h3 className="card-title">   Order Details</h3>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span onClick={() => {
+            togglePODetailsFlagACK();
+          }}>×</span>
+          </button>
+        </div>
+        </div>
+        <div className="card" style={{marginTop:"-2%",marginBottom:"-0.3%"}}>
+          <div className="card-body">
           <div className="row">
             <div className="col-md-7">
-              <h5 className="modal-title " id="exampleModalLabel">
-                Order Details
+            <h5 className="modal-title " id="exampleModalLabel">
+                <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+       
+        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+    </IconContext.Provider>
               </h5>
+
             </div>
             <div className="col-md-2 text-end noPrint">
             </div>
@@ -770,39 +786,28 @@ function Acknowledgement() {
             <div className="col-md-12">
               <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
             </div>
-            <div className="col-md-12">
-              <a
-                className="navbar-brand "
-                type="button"
-                style={{
-                  color: "#007bff",
-                  float: "right",
-                }}
-
-              >
-              Remarks: 
-              <p style={{color:COLORS.gray60, float:"right"}}>{" "+showRemarks}</p>
-              </a>
-            </div>
-          </div>
-          <div className="modal-footer noPrint">
+            
+            <div className="modal-footer">
             <a
               className="navbar-brand"
-              type="button"
+           
               style={{
                 color: "#007bff",
                 float: "right",
                 padding: 1,
-                height: '5px'
+                height: '10px'
               }}
-              onClick={() => {
-                togglePODetailsFlagACK();
-              }}
+             
             >
-              Close
+              Remarks: 
+              <p style={{color:COLORS.gray60, float:"right"}}>{" "+showRemarks}</p>
             </a>
+         
+             
+            </div>
+          </div> 
           </div>
-        </ModalBody>
+          </div>
       </Modal>
 
       <Modal size="sm"
@@ -842,7 +847,6 @@ function Acknowledgement() {
           
           <button className="float-right" type="button" title="Submit and acknowledge" onClick={saveCheckRemark} style={{ width: "50%", height: 35, borderWidth: 3,marginTop:10,marginBottom:-5, fontFamily: "serif", borderRadius: 5, color: "green", borderColor: "green" }}>Approve</button>
 
-           
           </div>
         </ModalBody>
       </Modal>
