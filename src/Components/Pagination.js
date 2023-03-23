@@ -10,7 +10,7 @@ import React from 'react'
     <nav className='pagination'  >
     {pageNumber.map(number=>(
         <li key={number} className='page-item'>
-        <a onClick={()=>paginate(number)} className='page-link'>
+        <a type="button"   onClick={()=>paginate(number)} className='page-link'>
             {number}
         </a>
 

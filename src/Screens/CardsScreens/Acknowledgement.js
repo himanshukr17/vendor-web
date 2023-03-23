@@ -423,7 +423,7 @@ function Acknowledgement() {
                                       togglePODetailsFlagACK();
                                       setACKData(po.acknowledge_detail)
                                       setShowRemarks(po.REMARKS);
-
+                                      setPOValue(po.PO_NO)
                                     }}
                                   />
                                 </IconContext.Provider>
@@ -495,7 +495,7 @@ function Acknowledgement() {
       value={{ color: 'blue', size: '25px' }}
     >
        
-        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+        <a style={{color:"green"}}>PO No: {poValue}</a>
     </IconContext.Provider>
               </h5>
 
@@ -535,9 +535,9 @@ function Acknowledgement() {
           <table className="table table-bordered ">
             <thead>
               <tr>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", textAlign: "center", color: "white", borderColor: COLORS.gray10 }}>Select</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
+                <th style={{ width: "2%", backgroundColor: "#4F51C0", textAlign: "center", color: "white", borderColor: COLORS.gray10 }}>Select</th>
+                <th style={{ width: "20%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
+                <th style={{ width: "10%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Price/Unit</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
                 {/* <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark*</th> */}
@@ -712,7 +712,7 @@ function Acknowledgement() {
       value={{ color: 'blue', size: '25px' }}
     >
        
-        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+        <a style={{color:"green"}}>PO No: {poValue}</a>
     </IconContext.Provider>
               </h5>
 
@@ -738,8 +738,8 @@ function Acknowledgement() {
           <table className="table table-bordered ">
             <thead>
               <tr>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
+                <th style={{ width: "20%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
+                <th style={{ width: "10%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
                 <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Acknowledge Quantity</th>
                 {/* <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark</th> */}

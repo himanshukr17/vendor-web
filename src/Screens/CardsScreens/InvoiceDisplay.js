@@ -26,6 +26,7 @@ function InvoiceDisplay () {
     const [modalDataStatus, setModalDataStatus] = useState(true);
     const [ClickedInvoiceDataArr, setClickedInvoiceDataArr] = useState([]);
     const [sort, setSort] = useState("ASC");
+    const [invoiceNumber,setInvoiceNumber]=useState("")
     // const [query, setQuery]=useState("")
     const [filterData, setFilterdata] = useState([])
     const headers = [
@@ -381,6 +382,7 @@ function InvoiceDisplay () {
                               togglePODetailsFlag();
                               setClickedInvoiceDataArr(po.invoice_details);
                               setEmptyModalTable(po.invoice_details);
+                              setInvoiceNumber(po.INVOICE_NUMBER);
   
                             }}
                           >
@@ -517,7 +519,7 @@ function InvoiceDisplay () {
       value={{ color: 'blue', size: '25px' }}
     >
        
-        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+        <a style={{color:"green"}}>Invoice No: {invoiceNumber}</a>
     </IconContext.Provider>
               </h5>
 
@@ -572,8 +574,8 @@ function InvoiceDisplay () {
             <table className="table table-bordered ">
               <thead>
                 {/* <th>Line</th> */}
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Number</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Description</th>
+                <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Number</th>
+                <th style={{ width: "20%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
                 <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Tax Amount</th>
                 <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Currency</th>
                 <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Line Item</th>

@@ -49,6 +49,7 @@ function PurchaseOrders() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = ClickedPOsDataArr.slice(indexOfFirstPost, indexOfLastPost);
   const [emptyModalTable, setEmptyModalTable] = useState([]);
+  const [PONmbrShow,setPONmbrShow]=useState("")
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
 
   useEffect(() => {
@@ -371,6 +372,7 @@ function PurchaseOrders() {
                             togglePODetailsFlag();
                             setClickedPOsDataArr(po.Details);
                             setEmptyModalTable(po.Details);
+                            setPONmbrShow(po.PO_NO)
 
                           }}
                         >
@@ -533,7 +535,7 @@ function PurchaseOrders() {
       value={{ color: 'blue', size: '25px' }}
     >
        
-        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+        <a style={{color:"green"}}>PO No: {PONmbrShow}</a>
     </IconContext.Provider>
               </h5>
 
@@ -585,8 +587,8 @@ function PurchaseOrders() {
         
           <table className="table table-bordered table-striped" >
             <thead>
-              <th style={{ width: "5%",  backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material Description</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material No</th>
+              <th style={{ width: "20%",  backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material Description</th>
+              <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material No</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Manufacture Part No.</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Unit</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Line Item</th>

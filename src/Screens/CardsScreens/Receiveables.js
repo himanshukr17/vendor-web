@@ -33,6 +33,7 @@ function Receiveables() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const [sort, setSort] = useState("ASC");
   const [emptyModalTable, setEmptyModalTable] = useState([]);
+  const [recpNo,setRecpNo]=useState("")
 
   const currentPosts = clickRecData.slice(indexOfFirstPost, indexOfLastPost)
   const headers = [
@@ -353,6 +354,7 @@ function Receiveables() {
                             togglePODetailsFlag();
                             setClickRecvData(val.received_datas);
                             setEmptyModalTable(val.received_datas);
+                            setRecpNo(val.GRN_NO)
 
                           }}
                         >
@@ -475,7 +477,7 @@ function Receiveables() {
       value={{ color: 'blue', size: '25px' }}
     >
        
-        <a style={{color:"green"}}>GR No: {"poNumber"}</a>
+        <a style={{color:"green"}}>GR No: {recpNo}</a>
     </IconContext.Provider>
               </h5>
 
@@ -505,8 +507,8 @@ function Receiveables() {
 
           <table className="table table-bordered table-striped">
             <thead>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material No</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
+              <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material No</th>
+              <th style={{ width: "20%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>GR Quantity</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Unit</th>
               {/* style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} <th>PO Date</th>
