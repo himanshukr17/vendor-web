@@ -95,21 +95,47 @@ function Login() {
         }).catch((err) => {  setWrongDetail("Please check Username or Password") })
     }
   }
+  const styles = {
+    background: 'linear-gradient(to right, #a7bfe8 50%, #385094 50%)',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
 
+  const stylesWelcome = {
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    heading: {
+      fontFamily: 'Arial',
+      fontSize: '2.5rem',
+      color: '#a7bfe8',
+      textShadow: '2px 2px 4px #000',
+      marginBottom: '0.8rem',
+    },
+
+  };
+  
     return (
       <>
 
-
+<div style={styles} >
 
         <div
           className="box-form"
-          style={{marginTop:65}}
         >
 
           <div className="col-md-6 left ">
-
+          <div style={stylesWelcome.container}>
+      <h1 style={stylesWelcome.heading}>Welcome Back</h1>
+      </div>
             {/* <h1>Hello World.</h1> */}
-            <img src={"https://rupeekx.com/assets/images/slider/login.gif"} width={"110%"}  style={{marginTop:50, display:"block", marginLeft:"auto",marginRight:"auto"}} alt="Cartoons" />
+            {/* <img src={"https://rupeekx.com/assets/images/slider/login.gif"} width={"110%"}  style={{marginTop:50, display:"block", marginLeft:"auto",marginRight:"auto"}} alt="Cartoons" /> */}
+            {/* <img src={"https://i.pinimg.com/originals/7a/db/71/7adb71ffcc3085a7d85cd4f0d1fbf5cc.gif"} width={"100%"}  alt="Cartoons" /> */}
+            <img src={"https://backdocket.com/wp-content/uploads/2020/01/FEATURESPAGE.gif"} style={{ display:"block", marginLeft:"auto",marginRight:"auto"}} width={"100%"}  alt="Cartoons" />
 
 
 
@@ -124,6 +150,7 @@ function Login() {
                 <p
                   style={{
                     marginTop: 10,
+                    color:"#0f1c2e"
                   }}
                 >
                   Don't have an account? <Link to="/signup">Creat Your Account</Link> it
@@ -150,31 +177,15 @@ function Login() {
             Send OTP
           </a> */}
 
-                    <input
+                    <input  
+                    class="form-control"
                       type="text"
                       onChange={(e) => setUserName(e.target.value)}
                       placeholder="Username"
                     />
-                    <br />
-                    {/* <a
-            type="button"
-            onClick={(e) => onSignInSubmit(e)}
-            style={{
-              float: "right",
-              color: "blue",
-            }}
-          >
-            Send OTP
-          </a> */}
-
-                    {/* <input
-            type="text"
-            onChange={(e) => {
-              setOTP(e.target.value);
-            }}
-            placeholder="Enter OTP"
-          /> */}
+                    
                     <input
+                    class="form-control"
                       type="password"
                       onChange={(e) => {
                         setPassword(e.target.value);
@@ -191,7 +202,7 @@ function Login() {
                       <input type="checkbox" name="item" defaultChecked="" />
                       <span className="text-checkbox">Remember me</span>
                     </label> */}
-                    <Link to="/forgot_password"><p>Forget password?</p></Link>
+                    <Link to="/forgot_password"><p style={{color:"#0f1c2e"}}>Forget password?</p></Link>
                   </div>
                   <br />
 
@@ -223,7 +234,8 @@ function Login() {
                 <p
                   style={{
                     // marginTop: "20%",
-                    marginRight: "50%",
+                    marginRight: "40%",
+                    color:"#0f1c2e"
                   }}
                 >
                   Already Applied? Check Status of application{" "}
@@ -250,49 +262,16 @@ function Login() {
                   marginTop: "50px"
                 }}>
                   <div className="inputs">
-                    {/* <input
-            type="text"
-            onChange={(e) => setMobileNumber(e.target.value)}
-            placeholder="Mobile Number"
-          />
-          <br />
-          <a
-            type="button"
-            onClick={(e) => onSignInSubmit(e)}
-            style={{
-              float: "right",
-              color: "blue",
-            }}
-          >
-            Send OTP
-          </a> */}
+                 
 
                     <input
+                    class="form-control"
                       type="text"
                       onChange={(e) => setUserName(e.target.value)}
                       placeholder="Username"
                     />
-                    <br />
-                    {/* <a
-            type="button"
-            onClick={(e) => onSignInSubmit(e)}
-            style={{
-              float: "right",
-              color: "blue",
-            }}
-          >
-            Send OTP
-          </a> */}
-
-                    {/* <input
-            type="text"
-            onChange={(e) => {
-              setOTP(e.target.value);
-            }}
-            placeholder="Enter OTP"
-          /> */}
-
                     <input
+                    class="form-control"
                       type="password"
                       onChange={(e) => {
                         setPassword(e.target.value);
@@ -309,7 +288,7 @@ function Login() {
                       <input type="checkbox" name="item" defaultChecked="" />
                       <span className="text-checkbox">Remember me</span>
                     </label> */}
-                    <Link to="/forgot_password"><p>Forget password?</p></Link>                  </div>
+                    <Link to="/forgot_password"><p style={{color:"#0f1c2e"}}>Forget password?</p></Link>                  </div>
                   <br />
 
                   <button
@@ -332,6 +311,7 @@ function Login() {
               </>
             }
           </div>
+        </div>
         </div>
       </>
     );
