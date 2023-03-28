@@ -474,7 +474,7 @@ function PurchaseOrders() {
                         className="text-center"
                         style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                       >
-                        <CSVLink className="btn" data={po.Details} headers={headers} messageTop={messageTop}
+                        <CSVLink filename={"PO_No:"+po.PO_NO+".csv"} className="btn" data={po.Details} headers={headers} messageTop={messageTop}
                         // setClickedPOsDataArr(val.Details)
                         //  laery
                         >

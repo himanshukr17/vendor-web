@@ -5,7 +5,7 @@ import { AxioxExpPort } from "../AxioxExpPort"
 import { FaEye, FaUserEdit } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import {
-  AiOutlineArrowLeft, AiOutlineHome,
+  AiOutlineArrowLeft, AiOutlineHome, AiOutlineMessage,
 } from "react-icons/ai";
 import Footer from "../../Components/Footer";
 import NavHeader from "../../Components/NavHeader";
@@ -68,7 +68,8 @@ function Profile() {
  
   const [showCheckFlages, setShowCheckFlages] = useState(false);
   const toggleCheckFlages = () => setShowCheckFlages(!showCheckFlages);
-
+  const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
+  const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
   return (
 
     <div>
@@ -357,10 +358,11 @@ function Profile() {
                     color: "gray",
                     fontSize: 20,
                     fontWeight: 500,
-                  }}>{uploadedData.ADHAR} 
-                  <IconContext.Provider
+
+                  }}> {uploadedData.ADHAR ? 
+                   <IconContext.Provider
                                             value={{ color: "green", size: "20px" }}
-                                        >
+                                        >{uploadedData.ADHAR }
                                  <FaEye
                                  type="button"
                                  style={{
@@ -369,7 +371,9 @@ function Profile() {
                                  }}
                                  onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.ADHAR_IMAGE)  }}
                                  />
-                                        </IconContext.Provider></p>
+                                        </IconContext.Provider>
+                    :"Not Filled"}
+                 </p>
                     </div>
                    
                     <div className="col-md-6">
@@ -388,10 +392,9 @@ function Profile() {
                     color: "gray",
                     fontSize: 20,
                     fontWeight: 500,
-                  }}>{uploadedData.PANCARD ? uploadedData.PANCARD   :"Not Filled"} 
-                  <IconContext.Provider
+                  }}>{uploadedData.PANCARD ?  <IconContext.Provider
                                             value={{ color: "green", size: "20px" }}
-                                        >
+                                        >{uploadedData.PANCARD}
                                  <FaEye
                                  type="button"
                                  style={{
@@ -400,7 +403,8 @@ function Profile() {
                                  }}
                                  onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.PANCARD_IMAGE)  }}
                                  />
-                                        </IconContext.Provider></p>
+                                        </IconContext.Provider>  :"Not Filled"} 
+                  </p>
                     </div>
 
                     <div className="col-md-6">
@@ -419,10 +423,11 @@ function Profile() {
                     color: "gray",
                     fontSize: 20,
                     fontWeight: 500,
-                  }}>{ uploadedData.GST ? uploadedData.GST   :0} 
+                  }}>{ uploadedData.GST ? 
+                  
                   <IconContext.Provider
                                             value={{ color: "green", size: "20px" }}
-                                        >
+                                        > {uploadedData.GST}
                                  <FaEye
                                  type="button"
                                  style={{
@@ -431,7 +436,10 @@ function Profile() {
                                  }}
                                  onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.GST_IMAGE)  }}
                                  />
-                                        </IconContext.Provider></p>
+                                        </IconContext.Provider>
+                                       
+                     :"Not Filled"} 
+                  </p>
                     </div>
                     <div className="col-md-6">
                     <h1 className="text-sm-left "
@@ -449,10 +457,10 @@ function Profile() {
                     color: "gray",
                     fontSize: 20,
                     fontWeight: 500,
-                  }}>{uploadedData.MSME? uploadedData.MSME  :"Not Filled"} 
+                  }}>{uploadedData.MSME? 
                   <IconContext.Provider
                                             value={{ color: "green", size: "20px" }}
-                                        >
+                                        >{uploadedData.MSME}
                                  <FaEye
                                  type="button"
                                  style={{
@@ -461,7 +469,9 @@ function Profile() {
                                  }}
                                  onClick={(e) => {toggleCheckFlages();setImageSrc(uploadedData.MSME_IMAGE)  }}
                                  />
-                                        </IconContext.Provider></p>
+                                        </IconContext.Provider>
+                   :"Not Filled"} 
+                  </p>
                     </div>
                     <div className="col-md-6">
                     
@@ -493,6 +503,11 @@ function Profile() {
 
         <Footer />
       </div>
+      <button className="fab">
+      <i className="material-icons"  onClick={() => {
+            togglePODetailsFlag();
+          }}><AiOutlineMessage size={40}/></i>
+    </button>
       <Modal
         size="md"
         isOpen={showCheckFlages}
@@ -520,6 +535,83 @@ function Profile() {
 
         </ModalBody>
       </Modal>
+      <Modal      className="modal-dialog modal-xl"
+
+isOpen={showPODetailsFlag}
+toggle={togglePODetailsFlag}
+size="lg"
+ style={{
+   display: "flex",  
+ }}
+>
+    <div className="card-header">
+      <h3 className="card-title">Send Your Query</h3>
+      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+        <span onClick={() => {
+        togglePODetailsFlag();
+      }}>×</span>
+      </button>
+    </div>
+    <div
+  className='row'
+  >
+  <div className='col-md-7'>
+
+ <div className="container">
+ <h1 className="form-check-label">
+Customer Support
+</h1>
+<p>
+  Welcome to our customer support page. We're here to help you with any
+  questions or issues you may have. Below you'll find some helpful
+  information to get started.
+</p>
+<h2>Frequently Asked Questions</h2>
+<ul>
+  <li>
+    <strong>How do I contact customer support?</strong>
+    <p>
+      You can contact customer support by emailing us at
+      support@samishti.com or by filling out the contact form on our
+      website.
+    </p>
+  </li>
+</ul>
+<h2>Contact Us</h2>
+<p>
+  If you have any further questions or issues, please feel free to contact
+  us using the form below:
+</p>
+
+</div>
+
+</div>
+<div className='col-md-4'>
+<form>
+{/* <label htmlFor="name">Subject</label>
+<input type="text" id="note" name="note" required /> */}
+
+<label htmlFor="name">About:</label>
+<select id="name" name="name" required className="my-select">
+<option value="">Choose an option</option>
+<option value="option1">Option 1</option>
+<option value="option2">Option 2</option>
+</select>
+  <label htmlFor="message">Message:</label>
+  <textarea id="message" name="message" required className="no-resize"></textarea>
+
+
+  <button type="submit" className="btn btn-info float-right">Save</button>
+</form>
+</div>
+</div>
+
+      <div className="card-footer">
+        <a onClick={() => {
+        togglePODetailsFlag();
+      }} className="btn btn-default" >Cancel</a>
+      </div>
+</Modal>
     </div>
     
     

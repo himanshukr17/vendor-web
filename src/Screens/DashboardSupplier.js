@@ -24,7 +24,7 @@ function DashboardSupplier() {
       width:'100%'
         }}
       >
-        <Footer />
+       
       </div>
     </>
   );

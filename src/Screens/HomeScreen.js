@@ -12,6 +12,8 @@ import { Carousel } from 'react-responsive-carousel';
 
 // import { Carousel as CarouselItem } from 'react-responsive-carousel';
 function HomeScreen() {
+  const [carouselKey, setCarouselKey] = useState(Math.random());
+
   const vendorId = localStorage.getItem('userId');
   const [lablesAll, setLablesAll] = useState("")
   const [podata, setPodata] = useState([])
@@ -37,7 +39,6 @@ function HomeScreen() {
         setFeedDataINV(response.data[0].invoice_data.length)
         setFeedDataShowINV(response.data[0].invoice_data)
         console.log("response.dataresponse.data", response.data[0].po_data)
-
       })
   }
   const fetchPosts = async () => {
@@ -218,7 +219,7 @@ function HomeScreen() {
           <div style={{marginRight:"1.5%",marginLeft:"2%", marginTop:"1.5%"}}>
 
      
-          <Carousel autoPlay={3000} showArrows={false} infiniteLoop={true} showStatus={false}>
+          <Carousel key={carouselKey} autoPlay={1000} showArrows={false} infiniteLoop={true} showStatus={false}>
               {slides.map((slide, index) => (
                 <div
                   className="card "
@@ -339,8 +340,9 @@ function HomeScreen() {
                       )
                     })
                     :
-                    <p className="text-center" style={{ color: "gray" }}> {"No Order available"}</p>
+                    ""
                 }
+                    {/* <p className="text-center" style={{ color: "gray" }}> {"No Order data available"}</p> */}
                 {
                   feedDataINV > 0 ?
                     feedDataShowINV.map(item => {
@@ -361,8 +363,9 @@ function HomeScreen() {
                       )
                     })
                     :
-                    <p className="text-center" style={{ color: "gray" }}> {"No invoice data available"}</p>
+                    ""
                 }
+                    {/* <p className="text-center" style={{ color: "gray" }}> {"No Invoice data available"}</p> */}
               </div>
             </div>
           </div>

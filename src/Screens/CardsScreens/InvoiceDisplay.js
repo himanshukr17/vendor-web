@@ -51,7 +51,7 @@ function InvoiceDisplay () {
    
     const [tbody, setTBody] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(8);
+    const [postsPerPage, setPostsPerPage] = useState(5);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = ClickedInvoiceDataArr.slice(indexOfFirstPost, indexOfLastPost);

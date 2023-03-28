@@ -25,12 +25,13 @@ const BuyerGoodsReturn=(props)=> {
   const [modalDataStatus, setModalDataStatus] = useState(true);
   const [clickGRData, setClickGRData] = useState([]);
   const headers = [
-    { label: "Material Number", key: "MATERIAL_NO" },
     { label: "Material Description", key: "MATERIAL_TEXT" },
+    { label: "Material Number", key: "MATERIAL_NO" },
     { label: "GRN Number", key: "GRN_NO" },
+    { label: "Manufacture Part No", key: "MANUFACTURE_PART_NO" },
     { label: "Return Quantity", key: "RETURN_QTY" },
     { label: "Unit", key: "UNIT" },
-    { label: "PO Quantity", key: "PO_QTY" },
+    { label: "Net Price", key: "AMOUNT" },
   ];
   const [tbody, setTBody] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,6 +42,8 @@ const BuyerGoodsReturn=(props)=> {
   const currentPosts = clickGRData.slice(indexOfFirstPost, indexOfLastPost)
   const [emptyModalTable, setEmptyModalTable] = useState([]);
   const [poNumber,setPoNumber]=useState("")
+  const[showArrowDOC,setShowArrowDOC]=useState(false)
+
   useEffect(() => {
     const fetchData = async () => {
       axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
@@ -179,6 +182,26 @@ const BuyerGoodsReturn=(props)=> {
   const printData=()=>{
     window.print();
   }
+  const sortingDOC = (col) => {
+    if (sort === "ASC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setTBody(sorted);
+      setSort("DSC");
+      setShowArrowDOC(!showArrowDOC);
+      console.log("response.data", tbody);
+    }
+    if (sort === "DSC") {
+      const sorted = [...tbody].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setShowArrowDOC(!showArrowDOC);
+      setTBody(sorted);
+      setSort("ASC")
+    }
+
+  }
   return (
     <>
        <NavHeader />
@@ -227,347 +250,357 @@ const BuyerGoodsReturn=(props)=> {
             <div className="card-body">
             <div className="row">
 
-            <div className="col-md-2 noPrint">
-            <button type="button" style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>Show All</button>{" "}
+<div className="col-md-2 noPrint">
+<button type="button" style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>Show All</button>{" "}
 
-            </div>
-            <div className="col-md-5 noPrint">
+</div>
+<div className="col-md-5 noPrint">
 
-            </div>
-            <div className="col-md-2 noPrint">
-              <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Document Date Range" />
-
-
-            </div>
-            <div className="col-md-2 noPrint">
-
-              <input
-                type="text"
-                className="form-control"
-
-                placeholder="Search GR No"
-                style={{
-                  width: "100%",
-                  height: 35,
-                }}
-                onChange={(e) => {
-                  handleSearch(e)
-                }}
-              />
-            </div>
-            <div className="col-md-1 noPrint">
-            <CSVLink  filename={"GR:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
-        <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
-
-            </div>
-
-          
+</div>
+<div className="col-md-2 noPrint">
+  <DateRangePicker style={{ display: 'flex', width: "100%" }} onChange={(e) => { getTwodates(e) }} placeholder="Search Document Date Range" />
 
 
-       
-        <p className="text-right" style={{marginTop:-5}} >*Exc GST</p>
-          <table className="table table-light table-bordered table-hover">
-            <thead className="table-light">
-              <tr
-                className="text-center"
-                style={{
-                  backgroundColor: COLORS.gray20,
-                  borderColor: COLORS.gray10,
-                }}
-              >
-                <th onClick={() => sorting("GRN_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
-                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}scope="col">Document Date</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
-                <th className="text-center" style={{ width: "3%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Net Price*</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
-              </tr>
-            </thead>
+</div>
+<div className="col-md-2 noPrint">
 
-            <tbody>
-              {isPurchaseOrderEmpty ? (
-                tbody.map((val, index) => {
-                  let total = 0;
-                  val.return_order.map((itemsPrice) =>
-                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY
-                  )
-                  let totalQtuy = 0;
-                  val.return_order.map((itemsPrices) =>
-                  totalQtuy = totalQtuy + itemsPrices.RETURN_QTY
-                  )
-                  return (
-                    <tr
-                      key={`row` + index}
-                      style={{
-                        backgroundColor: "white",
-                        borderColor: "#000",
-                      }}
-                      className="table-light"
-                    >
-                      <td
-                        key={`col-1` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        <a
-                         type="button"
-                         style={{color:"#4F51C0"}}
-                          onClick={(e) => {
-                            togglePODetailsFlag();
-                            setPoNumber(val.GRN_NO)
-                            setClickGRData(val.return_order)
-                            setEmptyModalTable(val.return_order)
-                          }}
-                        >
-                          {(val.GRN_NO)}
-                        </a>
-                        <br />
-                      </td>
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.return_order[0].PO_NO}
-                      </td>
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.COMPANY_CODE}
-                      </td>
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {dateFormat(val.POSTING_DATE, "dd/mm/yyyy")}
-                      </td>
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {dateFormat(val.DOCUMENT_DATE, "dd/mm/yyyy")}
-                      </td>
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.PLANT_ID+"("+val.PLANT_DESCRIPTION+")"}
-                      </td>
-                      <td
-                        key={`col-2` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {totalQtuy}
-                      </td>
-                      <td
-                        key={`col-4` + index}
-                        className="text-center"
-                        style={{ width: "5%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.return_order.length}                      </td>
+  <input
+    type="text"
+    className="form-control"
 
-                      <td
-                        key={`col-3` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {num.format(Number(total))}
-                      </td>
-                     
-                      {/* <td
-                        key={`col-5` + index}
-                        className="text-center"
-                        style={{ width: "10%", borderColor: COLORS.gray10 }}
-                      >
-                        {val.STATUS == 'Open' &&
-                          <span className="badge badge-success" >Open</span>
-                        }
-                        {val.STATUS == 'Close' &&
-                          <span className="badge badge-danger" >Close</span>
-                        }
-                      </td> */}
-                      <td
-                        key={`col-6` + index}
-                        className="text-center"
-                        style={{ width: "5%", color:"white", borderColor: COLORS.gray10 }}
-                      >
-                        <CSVLink className="btn" data={val.return_order} headers={headers}>
-                          <IconContext.Provider
-                            value={{ color: "#FF7B25", size: "22px" }}
-                          >
-                            <AiOutlineDownload />
-                          </IconContext.Provider>
-                        </CSVLink>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan={15} className="text-center">
-                    No Data Found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
+    placeholder="Search GR No"
+    style={{
+      width: "100%",
+      height: 35,
+    }}
+    onChange={(e) => {
+      handleSearch(e)
+    }}
+  />
+</div>
+<div className="col-md-1 noPrint">
+<CSVLink  filename={"GR:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+<button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
 
-      <Modal
-        isOpen={showPODetailsFlag}
-        toggle={togglePODetailsFlag}
-        size="lg"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "90vh",
-        }}
-      >
-        <ModalBody
+</div>
+
+
+</div>
+
+
+
+<p className="text-right" >*Exc GST</p>
+<table className="table table-light table-bordered table-hover">
+<thead className="table-light">
+  <tr
+    className="text-center"
+    style={{
+      backgroundColor: COLORS.gray20,
+      borderColor: COLORS.gray10,
+    }}
+  >
+    <th onClick={() => sorting("GRN_NO")} className="text-center" style={{width: "5%", backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+    <th  className="text-center" style={{ backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+    <th  className="text-center" style={{ backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+    <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+    <th onClick={() => sortingDOC("DOCUMENT_DATE")} className="text-center" style={{ width: "12%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}scope="col">Document Date{showArrowDOC?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+    <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+    <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Return Quantity</th>
+    <th className="text-center" style={{ width: "3%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
+    <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Net Price*</th>
+    <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
+  </tr>
+</thead>
+
+<tbody>
+  {isPurchaseOrderEmpty ? (
+    tbody.map((val, index) => {
+      let total = 0;
+      val.return_order.map((itemsPrice) =>
+        total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY
+      )
+      let totalQtuy = 0;
+      val.return_order.map((itemsPrices) =>
+      totalQtuy = totalQtuy + itemsPrices.RETURN_QTY
+      )
+      return (
+        <tr
+          key={`row` + index}
           style={{
-            marginTop: 0,
+            backgroundColor: "white",
+            borderColor: "#000",
           }}
+          className="table-light"
         >
-          <div className="row">
-            <div className="col-md-8">
-
-              <h5 className="modal-title " id="exampleModalLabel">
-                GR's Details  <IconContext.Provider
-      value={{ color: 'blue', size: '25px' }}
-    >
-        <BsHash />
-        <a style={{color:"green"}}>GR No: {poNumber}</a>
-    </IconContext.Provider>
-              </h5>
-
-            </div>
-            <div className="col-md-3">
-              <input
-                type="text"
-                className="form-control"
-
-                placeholder="Material No / Description"
-                style={{
-                  width: "100%",
-                  height: 35,
-                }}
-                onChange={(e) => {
-                  handleSearchModal(e)
-                }}
-              />
-            </div>
-            <div className="col-md-1">
-
-              <CSVLink className="btn float-right"
-                onClick={() => {
-                  togglePODetailsFlag();
-                }}
-                style={{
-                  backgroundColor: COLORS.green,
-                  color: COLORS.white,
-                  padding:"6px",
-                  height:35,
-                  marginBottom:3,
-                  marginLeft:"-15px"
-                }} data={data} headers={headers} >
-                ⬇ <FaFileCsv size={22} />
-
-              </CSVLink>
-            </div>
-          </div>
-          <table className="table table-bordered table-striped">
-            <thead>
-            
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Description</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Number</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >GR Number</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Manufacture Part No</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Return Quantity</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Unit</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Net Price</th>
-            </thead>
-            <tbody>
-              {modalDataStatus ? (
-                currentPosts.map((grsData, index) => {
-                  return (
-                    <tr  key={`row` + index}>
-                   
-                      <td  key={`col-5` + index}>
-                        {grsData.MATERIAL_TEXT}
-                      </td>
-                      <td  key={`col-6` + index}>
-                        {grsData.MATERIAL_NO}
-                      </td>
-                      <td  key={`col-7` + index}>
-                        {grsData.GRN_NO}
-                      </td>
-                      <td  key={`col-7` + index}>
-                        {grsData.MANUFACTURE_PART_NO}
-                      </td>
-                      <td  key={`col-8` + index}>
-                        {grsData.RETURN_QTY}
-                      </td>
-                      <td  key={`col-9` + index}>
-                        {grsData.UNIT}
-                      </td>
-                      <td  key={`col-10` + index}>
-                      {num.format(Number(grsData.AMOUNT))}
-
-                      </td>
-                    </tr>
-                  );
-                })
-              )
-              :(
-                <tr>
-                  <td colSpan={7} className="text-center">
-                    No Data Found
-                  </td>
-                </tr>
-              )
-              }
-
-            </tbody>
-
-          </table>
-          <Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
-          <div className="modal-footer">
+          <td
+            key={`col-1` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
             <a
-              className="navbar-brand"
-              type="button"
-              style={{
-                color: "#007bff",
-                float: "right",
-                padding: 1,
-                height: '10px'
+            style={{
+                textDecoration: 'none',
+                color:"blue"
               }}
-              onClick={() => {
+              type="button"
+              onClick={(e) => {
                 togglePODetailsFlag();
+                setPoNumber(val.GRN_NO)
+                setClickGRData(val.return_order)
+                setEmptyModalTable(val.return_order)
               }}
             >
-              Close
+              {(val.GRN_NO)}
             </a>
-          </div>
-        </ModalBody>
-      </Modal>
-    </>
-  );
-}
+            <br />
+          </td>
+          <td
+            key={`col-2` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {val.return_order[0].PO_NO}
+          </td>
+          <td
+            key={`col-2` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {val.COMPANY_CODE}
+          </td>
+          <td
+            key={`col-2` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {dateFormat(val.POSTING_DATE, "dd/mm/yyyy")}
+          </td>
+          <td
+            key={`col-2` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {dateFormat(val.DOCUMENT_DATE, "dd/mm/yyyy")}
+          </td>
+          <td
+            key={`col-2` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {val.PLANT_ID+"("+val.PLANT_DESCRIPTION+")"}
+          </td>
+          <td
+            key={`col-2` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {totalQtuy}
+          </td>
+          <td
+            key={`col-4` + index}
+            className="text-center"
+            style={{ width: "5%", borderColor: COLORS.gray10 }}
+          >
+            {val.return_order.length}                      </td>
 
+          <td
+            key={`col-3` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {num.format(Number(total))}
+          </td>
+         
+          {/* <td
+            key={`col-5` + index}
+            className="text-center"
+            style={{ width: "10%", borderColor: COLORS.gray10 }}
+          >
+            {val.STATUS == 'Open' &&
+              <span className="badge badge-success" >Open</span>
+            }
+            {val.STATUS == 'Close' &&
+              <span className="badge badge-danger" >Close</span>
+            }
+          </td> */}
+          <td
+            key={`col-6` + index}
+            className="text-center"
+            style={{ width: "5%", color:"white", borderColor: COLORS.gray10 }}
+          >
+            <CSVLink className="btn"  filename={"GR_No:"+val.GRN_NO+".csv"} data={val.return_order} headers={headers}>
+              <IconContext.Provider
+                value={{ color: "#FF7B25", size: "22px" }}
+              >
+                <AiOutlineDownload />
+              </IconContext.Provider>
+            </CSVLink>
+          </td>
+        </tr>
+      );
+    })
+  ) : (
+    <tr>
+      <td colSpan={15} className="text-center">
+        No Data Found
+      </td>
+    </tr>
+  )}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<Modal
+className="modal-dialog modal-xl"
+isOpen={showPODetailsFlag}
+toggle={togglePODetailsFlag}
+size="lg"
+style={{
+justifyContent: "center",
+alignItems: "center",
+}}
+>
+<div className="card card-info" >
+<div className="card-header">
+<h3 className="card-title">  GR's Details </h3>
+<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+<span onClick={() => {
+togglePODetailsFlag();
+}}>×</span>
+</button>
+</div>
+</div>
+<div className="card" style={{marginTop:"-2%",marginBottom:"-0.3%"}}>
+<div className="card-body"> 
+<div className="row">
+<div className="col-md-8">
+
+  <h5 className="modal-title " id="exampleModalLabel">
+    <IconContext.Provider
+value={{ color: 'blue', size: '25px' }}
+>
+
+<a style={{color:"green"}}>GR No: {poNumber}</a>
+</IconContext.Provider>
+  </h5>
+
+</div>
+<div className="col-md-3">
+  <input
+    type="text"
+    className="form-control"
+
+    placeholder="Material No / Description"
+    style={{
+      width: "100%",
+      height: 35,
+    }}
+    onChange={(e) => {
+      handleSearchModal(e)
+    }}
+  />
+</div>
+<div className="col-md-1">
+
+  <CSVLink className="btn float-right"
+    onClick={() => {
+      togglePODetailsFlag();
+    }}
+    filename={"GR:"+vendorId+".csv"}
+    style={{
+      backgroundColor: COLORS.green,
+      color: COLORS.white,
+      padding:"6px",
+      height:35,
+      marginBottom:3,
+      marginLeft:"-15px"
+    }} data={data} headers={headers} >
+    ⬇ <FaFileCsv size={22} />
+
+  </CSVLink>
+</div>
+</div>
+<table className="table table-bordered table-striped">
+<thead>
+
+  <th style={{ width: "20%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Description</th>
+  <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Material Number</th>
+  <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >GR Number</th>
+  <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Manufacture Part No</th>
+  <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Return Quantity</th>
+  <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Unit</th>
+  <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} >Net Price</th>
+</thead>
+<tbody>
+  {modalDataStatus ? (
+    currentPosts.map((grsData, index) => {
+      return (
+        <tr  key={`row` + index}>
+       
+          <td  key={`col-5` + index}>
+            {grsData.MATERIAL_TEXT}
+          </td>
+          <td  key={`col-6` + index}>
+            {grsData.MATERIAL_NO}
+          </td>
+          <td  key={`col-7` + index}>
+            {grsData.GRN_NO}
+          </td>
+          <td  key={`col-7` + index}>
+            {grsData.MANUFACTURE_PART_NO}
+          </td>
+          <td  key={`col-8` + index}>
+            {grsData.RETURN_QTY}
+          </td>
+          <td  key={`col-9` + index}>
+            {grsData.UNIT}
+          </td>
+          <td  key={`col-10` + index}>
+          {num.format(Number(grsData.AMOUNT))}
+
+          </td>
+        </tr>
+      );
+    })
+  )
+  :(
+    <tr>
+      <td colSpan={7} className="text-center">
+        No Data Found
+      </td>
+    </tr>
+  )
+  }
+
+</tbody>
+
+</table>
+<Pagination postPerPage={postsPerPage} totalPosts={clickGRData.length} paginate={paginate} />
+<div className="modal-footer">
+<a
+  className="navbar-brand"
+  type="button"
+  style={{
+    color: "#007bff",
+    float: "right",
+    padding: 1,
+    height: '10px'
+  }}
+  onClick={() => {
+    togglePODetailsFlag();
+  }}
+>
+  Close
+</a>
+</div>
+</div>
+</div>
+</Modal>
+</>
+);
+}
 export default BuyerGoodsReturn;

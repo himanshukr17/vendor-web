@@ -293,7 +293,6 @@ const  VendorProfile=(props)=>{
       </div>
       <div >
 
-        <Footer />
       </div>
     </div>
   );

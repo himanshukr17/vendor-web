@@ -37,6 +37,8 @@ import Acknowledgement from './Screens/CardsScreens/Acknowledgement';
 import ForgotPassword from './Screens/ForgotPassword';
 import ScreenAuth from './Screens/AdminScreen/ScreenAuth';
 import RoleManagement from './Screens/AdminScreen/RoleManagement';
+import CustomerSupport from './Screens/CardsScreens/CustomerSupport';
+import RecSupport from './Screens/BuyerScreen/RecSupport';
 function App() {
   const userType = localStorage.getItem('userType');
   const userID = localStorage.getItem('userId');
@@ -71,6 +73,9 @@ function App() {
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
+          <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact />
+          <Route path="/support" element={<Protected><CustomerSupport /></Protected>} exact />
+
         <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact /> 
           <Route path="/grs" element={<Protected><GoodsReturn /></Protected>} exact />
           <Route path="/mcs" element={<Protected><MyContact /></Protected>} exact />
@@ -87,6 +92,8 @@ function App() {
           <Route path="/" element={<Login />} exact />
           <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
           {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
+
+          <Route path="/rscsupport" element={<Protected><RecSupport /></Protected>} exact />
           <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />
           <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact />
           <Route path="/vp" element={<Protected><VendorProfile /></Protected>} exact />

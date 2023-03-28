@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import cartoons from "../Images/cartoon.jpg";
 import "../StyleSheets/LoginPage.css"
 import { Link, redirect, useNavigate } from "react-router-dom";
 // import firebase from "../Firebase/Firebase";
@@ -108,7 +107,7 @@ function Login() {
         fontFamily: 'Arial',
         fontSize: '2.5rem',
         color: '#a7bfe8',
-        textShadow: '2px 2px 4px #000',
+        textShadow: '1px 1px 2px #000',
         marginBottom: '0.8rem',
       },
 

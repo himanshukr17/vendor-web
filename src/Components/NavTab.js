@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { AiFillAccountBook, AiFillReconciliation, AiOutlineHome, AiOutlineWallet } from "react-icons/ai";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
-import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
+import { FaComments, FaFileContract, FaFileInvoiceDollar, FaTeamspeak } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import {AxioxExpPort} from "../../src/Screens/AxioxExpPort";
 const NavTab = () => {
@@ -93,8 +93,11 @@ const NavTab = () => {
           onClick={() => handleTabClick(5)}
         >
            <a className="dropdown-toggle" style={{color:"white"}} type="button"  data-bs-toggle="dropdown" aria-expanded="false" >
-Custom Development
+Online Services
           </a>
+          <ul className="dropdown-menu" style={{width:"17%"}}>
+      <li style={{margin:6, textDecoration: 'none',}} className="row" ><Link style={{ textDecoration: 'none', }}  to="/support"><FaComments  color={"#151B54"} size={20} /> Customer Support </Link></li>
+     </ul>
         </li>
       </ul>
     </nav>

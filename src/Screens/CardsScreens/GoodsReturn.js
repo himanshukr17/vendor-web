@@ -24,12 +24,13 @@ function GoodsReturn() {
   const [modalDataStatus, setModalDataStatus] = useState(true);
   const [clickGRData, setClickGRData] = useState([]);
   const headers = [
-    { label: "Material Number", key: "MATERIAL_NO" },
     { label: "Material Description", key: "MATERIAL_TEXT" },
+    { label: "Material Number", key: "MATERIAL_NO" },
     { label: "GRN Number", key: "GRN_NO" },
+    { label: "Manufacture Part No", key: "MANUFACTURE_PART_NO" },
     { label: "Return Quantity", key: "RETURN_QTY" },
     { label: "Unit", key: "UNIT" },
-    { label: "PO Quantity", key: "PO_QTY" },
+    { label: "Net Price", key: "AMOUNT" },
   ];
   const [tbody, setTBody] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -444,7 +445,7 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "5%", color:"white", borderColor: COLORS.gray10 }}
                       >
-                        <CSVLink className="btn" data={val.return_order} headers={headers}>
+                        <CSVLink filename={"GR_No:"+val.GRN_NO+".csv"} className="btn" data={val.return_order} headers={headers}>
                           <IconContext.Provider
                             value={{ color: "#FF7B25", size: "22px" }}
                           >

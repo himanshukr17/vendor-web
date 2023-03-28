@@ -27,7 +27,8 @@ const BuyerPurchaseOrders =(props)=> {
   const [sort, setSort] = useState("ASC");
   // const [query, setQuery]=useState("")
   const [filterData, setFilterdata] = useState([])
- 
+  const [PONmbrShow,setPONmbrShow]=useState("")
+
   const headers = [
     { label: "Material Description", key: "MATERIAL_DESCRIPTION" },
     { label: "Material No", key: "MATERIAL" },
@@ -208,6 +209,7 @@ const BuyerPurchaseOrders =(props)=> {
     window.print();
   }
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
+  const messageTop = `Company Name: Acme Corporation`;
 
   return (
     <>
@@ -349,14 +351,14 @@ const BuyerPurchaseOrders =(props)=> {
                       >
                         <a type="button" style={{
                           textDecoration: 'none',
-                          color:"#4F51C0"
-
+                          color:"blue"
                         }}
-                        
+                      
                           onClick={(e) => {
                             togglePODetailsFlag();
                             setClickedPOsDataArr(po.Details);
                             setEmptyModalTable(po.Details);
+                            setPONmbrShow(po.PO_NO)
 
                           }}
                         >
@@ -458,7 +460,7 @@ const BuyerPurchaseOrders =(props)=> {
                         className="text-center"
                         style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                       >
-                        <CSVLink className="btn" data={po.Details} headers={headers}
+                        <CSVLink className="btn" filename={"PO_No:"+po.PO_NO+".csv"} data={po.Details} headers={headers} messageTop={messageTop}
                         // setClickedPOsDataArr(val.Details)
                         //  laery
                         >
@@ -488,7 +490,9 @@ const BuyerPurchaseOrders =(props)=> {
         </div>
       </div>
 
-      <Modal size="lg"
+      <Modal
+     className="modal-dialog modal-xl"
+       size="lg"
         isOpen={showPODetailsFlag}
         toggle={togglePODetailsFlag}
         style={{
@@ -496,16 +500,31 @@ const BuyerPurchaseOrders =(props)=> {
           alignItems: "center",
         }}
       >
-        <ModalBody
-          style={{
-            marginTop: 0,
-          }}
-        >
-          <div className="row">
+       
+          
+          <div className="card card-info">
+        <div className="card-header">
+          <h3 className="card-title">   PO's Details</h3>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span onClick={() => {
+            togglePODetailsFlag();
+          }}>×</span>
+          </button>
+        </div>
+        </div>
+        <div className="card" style={{marginTop:"-2%",marginBottom:"-0.3%"}}>
+          <div className="card-body">
+                    <div className="row">
             <div className="col-md-8">
-              <h5 className="modal-title " id="exampleModalLabel">
-                PO's Details
+            <h5 className="modal-title " id="exampleModalLabel">
+                <IconContext.Provider
+      value={{ color: 'blue', size: '25px' }}
+    >
+       
+        <a style={{color:"green"}}>PO No: {PONmbrShow}</a>
+    </IconContext.Provider>
               </h5>
+
             </div>
             <div className="col-md-3">
               <input
@@ -551,11 +570,11 @@ const BuyerPurchaseOrders =(props)=> {
             /> */}
             </div>
           </div>
-
-          <table className="table table-bordered table-striped">
+        
+          <table className="table table-bordered table-striped" >
             <thead>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material Description</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material No</th>
+              <th style={{ width: "20%",  backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material Description</th>
+              <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Material No</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Manufacture Part No.</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Unit</th>
               <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Line Item</th>
@@ -608,7 +627,7 @@ const BuyerPurchaseOrders =(props)=> {
               ):
               (
                 <tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={10} className="text-center">
                     No Data Found
                   </td>
                 </tr>
@@ -625,7 +644,7 @@ const BuyerPurchaseOrders =(props)=> {
                 color: "#007bff",
                 float: "right",
                 padding: 1,
-                height: '5px'
+                height: '10px'
               }}
               onClick={() => {
                 togglePODetailsFlag();
@@ -634,11 +653,15 @@ const BuyerPurchaseOrders =(props)=> {
               Close
             </a>
           </div>
-        </ModalBody>
+          </div>
+          </div>
+       
+          
       </Modal>
     </>
   );
 }
+
 
 export default BuyerPurchaseOrders;
 

@@ -40,12 +40,23 @@ const RoleManagement = () => {
   const [emptyModalTable, setEmptyModalTable] = useState([]);
   const vendorId = localStorage.getItem('userId');
   const [poNumber,setPoNumber]=useState("")
+  const [businessRole, setBusinessRole] = useState("");
+  const [roleDesc,setRoleDesc]=useState([])
+
   const fetchData = async () => {
     axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
       .then((response) => {
         setTBody(response.data);
         setFilterData(response.data)
         console.log("response.data", response.data);
+      })
+      axios.get(AxioxExpPort + "industry/all")
+      .then((response) => {
+        // (response.data).map((val,index)=>{
+        //   setLanguageArr({vaval.})
+        // })
+        setRoleDesc(response.data);
+
       })
   }
   useEffect(() => {
@@ -198,6 +209,8 @@ const RoleManagement = () => {
   const data = clickGRData;
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
   const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
+  const [showPODetailsFlagAssign, setShowPODetailsFlagAssign] = useState(false);
+  const togglePODetailsFlagAssign = () => setShowPODetailsFlagAssign(!showPODetailsFlagAssign);
   const paginate = pageNumber => setCurrentPage(pageNumber)
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
 
@@ -268,6 +281,7 @@ Buyer Supplier Management
 
         <div className="col-md-2 noPrint">
         <button type="button" style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={handelAllGR}>Show All</button>{" "}
+        <button className="btn-info"  style={{ width: "45%", height: 35 ,borderRadius:5 }} onClick={(e) => {togglePODetailsFlagAssign()}}>Assign +</button>{" "}
 
         </div>
         <div className="col-md-5 noPrint">
@@ -369,8 +383,6 @@ Buyer Supplier Management
                                     type="button"
                                     onClick={(e) => {
                                       togglePODetailsFlag();
-                                      
-
                                     }}
                                   />
                                 </IconContext.Provider>
@@ -394,7 +406,7 @@ Buyer Supplier Management
   </div>
   </div>
 
-  <Modal className="modal-dialog modal-content"
+  <Modal className="modal-dialog modal-content  card-info"
     isOpen={showPODetailsFlag}
     toggle={togglePODetailsFlag}
     size="md"
@@ -405,7 +417,6 @@ Buyer Supplier Management
      }}
   >
 
-      <div className="card card-info">
         <div className="card-header">
           <h3 className="card-title">Mapping Buyer Supplier</h3>
           <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -414,7 +425,7 @@ Buyer Supplier Management
           }}>×</span>
           </button>
         </div>
-        <form role="form-horizontal" method="POST">
+       
           <div className="card-body">
             <div className="form-group row">
               <label className="col-sm-4 col-form-label">Buyer Name</label>
@@ -435,8 +446,57 @@ Buyer Supplier Management
             togglePODetailsFlag();
           }} className="btn btn-info" >Cancel</a>
           </div>
-        </form>
-      </div>
+  </Modal>
+  <Modal className="modal-dialog modal-content"
+    isOpen={showPODetailsFlagAssign}
+    toggle={togglePODetailsFlagAssign}
+    size="md"
+     style={{
+       display: "flex",  
+     }}
+  >
+        <div className="card-header">
+          <h3 className="card-title">Assign new Supplier to Buyer</h3>
+          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+            <span onClick={() => {
+            togglePODetailsFlagAssign();
+          }}>×</span>
+          </button>
+        </div>
+       
+          <div className="card-body">
+            <div className="form-group row">
+              <label className="col-sm-4 col-form-label">Role</label>
+              <div className="col-sm-8">
+              <select className="form-control form-select" multiple={true} size={3} onChange={(e) => { setBusinessRole(Array.from(e.target.selectedOptions, option => option.value))}}>
+                  <option disabled>--Select Business Roles--</option>
+                  {roleDesc.map((val,index) => {
+                    return (
+                      <option key={index} value={val.INDUSTRY}>{val.DESCRIPTION}</option>
+                    );
+                  })}
+              </select>
+              </div>
+            </div>
+            <div className="form-group row">
+              <label className="col-sm-4 col-form-label">Buyer</label>
+              <div className="col-sm-8">
+                <input className="form-control" placeholder="Select Buyer" required />
+              </div>
+            </div>
+            <div className="form-group row">
+              <label className="col-sm-4 col-form-label">Supplier</label>
+              <div className="col-sm-8">
+                <input className="form-control" name="role_description" placeholder="Select Suppliers" required />
+              </div>
+            </div>
+          </div>
+          <div className="card-footer">
+            <button type="submit" className="btn btn-info float-right">Create</button>
+            <a onClick={() => {
+            togglePODetailsFlagAssign();
+          }} className="btn btn-info" >Cancel</a>
+          </div>
   </Modal>
 </></div>
   )
