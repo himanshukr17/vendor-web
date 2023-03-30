@@ -4,7 +4,7 @@ import NavHeader from "../../Components/NavHeader";
 import { CSVLink } from "react-csv";
 import { AxioxExpPort } from "../AxioxExpPort"
 import { Link, useNavigate } from "react-router-dom";
-import { FaFileCsv, FaDownload, FaFileInvoiceDollar, FaUserCheck, FaFileContract, FaUserAlt } from "react-icons/fa";
+import { FaFileCsv, FaDownload, FaFileInvoiceDollar, FaUserCheck, FaFileContract, FaUserAlt, FaComments } from "react-icons/fa";
 import Pagination from "../../Components/Pagination";
 import { Modal, ModalBody } from "reactstrap";
 import { AiFillReconciliation, AiOutlineArrowLeft, AiOutlineDownload, AiOutlineHome, AiOutlineUsergroupAdd } from "react-icons/ai";
@@ -189,7 +189,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
            <div className="card-body">
             <p className="text-right" style={{ fontFamily:"Serif",marginTop: "-35px",marginBottom: "1px", size:60 }}></p>
             <table className="table table-light table-bordered ">
-              <thead className="table-light">
+              <thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
                 <tr
                   className="text-center"
                   style={{
@@ -370,7 +370,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 className="modal-dialog modal-content"
         isOpen={showCheckFlages}
         toggle={toggleCheckFlages}
-        size="md"
+        size="lg"
         style={{
           display: "flex",
           justifyContent: "center",
@@ -386,7 +386,7 @@ className="modal-dialog modal-content"
           <h3 className=" text-center" style={{ fontSize:20 }}>{vendorName+"("+vendorIDss+")"}</h3>
 </div><div className="card-body">
             <div className="row text-center" >
-            <div className=" col-6" >
+            <div className=" col-4" >
           <Link  to="/bpo"   state={{
                             myVendorID: vendorIDss,
                             myVendorName:vendorName,
@@ -455,7 +455,8 @@ className="modal-dialog modal-content"
             </div>
           </Link>
         </div> 
-        <div className=" col-6" >
+        
+        <div className=" col-4" >
           <Link   to="/bgrn"  state={{
                             myVendorID: vendorIDss,
                             myVendorName:vendorName,
@@ -524,7 +525,7 @@ className="modal-dialog modal-content"
             </div>
           </Link>
         </div> 
-        <div className=" col-6" >
+        <div className=" col-4" >
           <Link  to="/bgr"  state={{
                             myVendorID: vendorIDss,
                             myVendorName:vendorName,
@@ -594,7 +595,7 @@ className="modal-dialog modal-content"
             </div>
           </Link>
         </div> 
-        <div className=" col-6" >
+        <div className=" col-4" >
           <Link        to="/bmc"   state={{
                             myVendorID: vendorIDss,
                             myVendorName:vendorName,
@@ -638,6 +639,78 @@ className="modal-dialog modal-content"
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className=" col-4" >
+     
+           <Link to="/rscsupport"   state={{
+                            myVendorID: vendorIDss,
+                            myVendorName:vendorName,
+                          }}   style={{
+            textDecoration: 'none',
+
+          }}
+          >
+            <div
+              className="card info-card sales-card"
+              style={
+                {
+                  backgroundColor:"#EBEBFF"
+                  // float: "left",
+                }
+              }
+            >
+              <h5
+                className="card-title"
+                style={{
+                  margin: 10,
+                  color: "black",
+                }}
+              >
+                Receive Support
+              </h5>
+
+              <div className="card-body">
+                {/* <h5 className="card-title">
+                    Sales <span>| Today</span>
+                  </h5> */}
+                <div className="row">
+                  <div className="col-md-4">
+                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <IconContext.Provider
+                        value={{ color: "#0275d8", size: "60px" }}
+                      >
+                        {" "}
+                        <FaComments />
+                      </IconContext.Provider>
+                    </div>
+                  </div>
+                  <div className="col-md-8 text-right" >
+                    <span style={{
+                      color: "#FF7F50",
+                      fontWeight: 700,
+                      fontSize: 30,
+                    }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_DATA}</span>{" "}
+                    <span style={{
+
+
+                    }} className="text-muted small pt-2 ps-1 text-right"></span><br></br>
+                    <span style={{
+                      fontWeight: 700,
+                      fontSize: 30,
+                      color: "#6495ED",
+                    }} className="text-success small pt-1 fw-bold text-right"> {"1"}</span>{" "}
+                    <span style={{
+
+
+                    }} className="text-muted small pt-2 ps-1">Total Pending</span><br></br>
+
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </Link>

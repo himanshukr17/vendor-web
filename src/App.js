@@ -39,6 +39,10 @@ import ScreenAuth from './Screens/AdminScreen/ScreenAuth';
 import RoleManagement from './Screens/AdminScreen/RoleManagement';
 import CustomerSupport from './Screens/CardsScreens/CustomerSupport';
 import RecSupport from './Screens/BuyerScreen/RecSupport';
+import CreateScreen from './Screens/ScreenAuth/CreateScreen';
+import CreateModule from './Screens/ScreenAuth/CreateModule';
+import CreateAuthorization from './Screens/ScreenAuth/CreateAuthorization';
+import AdminScreen from './Screens/BuyerScreen/AdminScreen';
 function App() {
   const userType = localStorage.getItem('userType');
   const userID = localStorage.getItem('userId');
@@ -53,6 +57,10 @@ function App() {
         (<Routes>
           <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
+          <Route path="/createweb" element={<CreateScreen />} exact />
+          <Route path="/createmobile" element={<CreateModule />} exact />
+          <Route path="/admin" element={<AdminScreen />} exact />
+          <Route path="/createauth" element={<CreateAuthorization/>} exact />
           <Route path="/checkStatus" element={<CheckStatus />} exact />
           <Route path="/signup" element={<SignUp />} exact />
           <Route path="/forgot_password" element={<ForgotPassword />} exact />
@@ -73,7 +81,7 @@ function App() {
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
-          <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact />
+          {/* <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact /> */}
           <Route path="/support" element={<Protected><CustomerSupport /></Protected>} exact />
 
         <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact /> 
@@ -95,7 +103,7 @@ function App() {
 
           <Route path="/rscsupport" element={<Protected><RecSupport /></Protected>} exact />
           <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />
-          <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact />
+          {/* <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact /> */}
           <Route path="/vp" element={<Protected><VendorProfile /></Protected>} exact />
           <Route path="/mv" element={<Protected><ManageVendors /></Protected>} exact />
           <Route path="/new" element={<Protected><NewSupplier /></Protected>} exact />

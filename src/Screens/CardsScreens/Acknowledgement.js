@@ -108,13 +108,12 @@ function Acknowledgement() {
   }
   const handleSearch = (event) => {
     var searchElements = event.target.value;
-    // setQuery(searchElements);
     var length = Number(searchElements.length)
-    console.log(searchElements.length);
     if (length > 0) {
       // setTBody('')
-      const searchDatas = tbody.filter((item) => item.STATUS.toLowerCase().includes(searchElements) || dateFormat((item.DOCUMENT_DATE), "ddd, mmm dS,yyyy").toLowerCase().includes(searchElements) || (item.PO_NO).toString().toLowerCase().includes(searchElements) || (item.purchase_order[0].PLANT_ID).toString().toLowerCase().includes(searchElements));
+      const searchDatas = tbody.filter((item) =>   (item.PO_NO).toString().includes(searchElements) );
       setTBody(searchDatas);
+      console.log("searchDatas",searchDatas);
       // if()
       if (searchDatas.length == 0) {
         setIsPurchaseOrderEmpty(false)
@@ -275,7 +274,7 @@ function Acknowledgement() {
       <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
       <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
       <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li> 
+      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li>  */}
       <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
       <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
       <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
@@ -313,7 +312,7 @@ function Acknowledgement() {
               <div className="card-body">
                 <p className="text-right" style={{ marginTop: "-30px" }}></p>
                 <table className="table table-light table-bordered table-hover">
-                  <thead className="table-light">
+                  <thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
                     <tr
                       className="text-center"
                       style={{
@@ -421,6 +420,7 @@ function Acknowledgement() {
                                     type="button"
                                     onClick={(e) => {
                                       togglePODetailsFlagACK();
+                                      setClickedPOsDataArr(po.acknowledge_detail);
                                       setACKData(po.acknowledge_detail)
                                       setShowRemarks(po.REMARKS);
                                       setPOValue(po.PO_NO)
@@ -746,7 +746,7 @@ function Acknowledgement() {
               </tr>
             </thead>
             <tbody>
-              {ackData.map((posData, index) => {
+              {currentPosts.map((posData, index) => {
                 return (
                   <tr key={index}>
                     <td key={`col-22` + index}>

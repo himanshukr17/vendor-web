@@ -296,7 +296,7 @@ const BuyerPurchaseOrders =(props)=> {
        
           <p className="text-right" style={{ marginTop: "-24px" , marginBottom: "1px" }}>*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
-            <thead className="table-light">
+            <thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
               <tr
                 className="text-center"
                 style={{

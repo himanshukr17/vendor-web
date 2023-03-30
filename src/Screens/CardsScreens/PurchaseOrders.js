@@ -25,7 +25,8 @@ function PurchaseOrders() {
   const [sort, setSort] = useState("ASC");
   // const [query, setQuery]=useState("")
   const [filterData, setFilterdata] = useState([])
- 
+  const [tableDataLength,setTableDataLength]=useState("")
+
 
   const headers = [
     { label: "Material Description", key: "MATERIAL_DESCRIPTION" },
@@ -52,19 +53,19 @@ function PurchaseOrders() {
   const [PONmbrShow,setPONmbrShow]=useState("")
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      axios.post(AxioxExpPort + "createcompany/po",{
-      "user":vendorId
+  const fetchPosts = async () => {
+    axios.post(AxioxExpPort + "createcompany/po",{
+    "user":vendorId
+    })
+      .then((response) => {
+        setTBody(response.data);
+         console.log("response.data",response.data);
+         setTableDataLength(response.data.length)
+        setFilterdata(response.data);
       })
-        .then((response) => {
-          setTBody(response.data);
-           console.log("response.data",response.data);
 
-          setFilterdata(response.data);
-        })
-
-    }
+  }
+  useEffect(() => {
     fetchPosts()
   }, []);
 
@@ -260,7 +261,7 @@ function PurchaseOrders() {
       <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
       <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
       <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li> 
+      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li>  */}
       <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
       <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
       <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
@@ -310,7 +311,7 @@ function PurchaseOrders() {
        
           <p className="text-right" style={{ marginTop: "-24px" , marginBottom: "1px" }}>*Exc GST</p>
           <table className="table table-light table-bordered table-hover">
-            <thead className="table-light">
+            <thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
               <tr
                 className="text-center"
                 style={{
@@ -331,22 +332,20 @@ function PurchaseOrders() {
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">INCO Term 2</th>
                 <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{backgroundColor:"#4F51C0", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
                  <th onClick={() => sorting("STATUS")} className="text-center" style={{backgroundColor:"#4F51C0", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th> 
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                <th className="text-center noPrint" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
 
             <tbody>
-              {isPurchaseOrderEmpty ? (
+              {isPurchaseOrderEmpty && tableDataLength>0 ? (
                 tbody.map((po, index) => {
                   let total = 0
-                  po.Details.map((price,idx) => {
-                    total = total + price.NET_PRICE * price.ORDER_QUANTITY
-                  });
                   let totalsQty = 0
-                  po.Details.map((price,idx) => {
-
+                  po.Details.map(price => {
+                    total = total + price.NET_PRICE * price.ORDER_QUANTITY
                     totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
                   });
+                
 
                   return (
                     <tr
@@ -471,7 +470,7 @@ function PurchaseOrders() {
                       </td>
                       <td
                         key={`col-13` + index}
-                        className="text-center"
+                        className="text-center noPrint"
                         style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                       >
                         <CSVLink filename={"PO_No:"+po.PO_NO+".csv"} className="btn" data={po.Details} headers={headers} messageTop={messageTop}

@@ -503,11 +503,11 @@ function Profile() {
 
         <Footer />
       </div>
-      <button className="fab">
+      {/* <button className="fab">
       <i className="material-icons"  onClick={() => {
             togglePODetailsFlag();
           }}><AiOutlineMessage size={40}/></i>
-    </button>
+    </button> */}
       <Modal
         size="md"
         isOpen={showCheckFlages}

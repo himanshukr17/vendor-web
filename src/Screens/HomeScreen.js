@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import '../StyleSheets/Scrollbar.css'
-import '../StyleSheets/Carousel.css'
+// import '../StyleSheets/Carousel.css'
 import { AxioxExpPort } from "./AxioxExpPort"
 import 'chartjs-plugin-datalabels';
 import dateFormat from 'dateformat';
 import { FaWpforms } from "react-icons/fa";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader  
 import { Carousel } from 'react-responsive-carousel';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 // import { Carousel as CarouselItem } from 'react-responsive-carousel';
 function HomeScreen() {
-  const [carouselKey, setCarouselKey] = useState(Math.random());
-
+  const [carouselKey] = useState(Math.random());
   const vendorId = localStorage.getItem('userId');
   const [lablesAll, setLablesAll] = useState("")
   const [podata, setPodata] = useState([])
@@ -29,7 +30,21 @@ function HomeScreen() {
   const [feedDataShow, setFeedDataShow] = useState("")
   const [feedDataShowINV, setFeedDataShowINV] = useState("")
   const [feedDataINV, setFeedDataINV] = useState("")
+
+  const [poHomeDetails, setPoHomeDetails] = useState('')
+  const [slides, setSlides] = useState([])
+  const [returnHomeDetails, setReturnHomeDetails] = useState('')
+  const [invHomeDetails, setInvHomeDetails] = useState('')
   // const scrollableContent=[]
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000 // set the interval in milliseconds
+  };
   const getmonth = new Set()
   const fetchActivityFeed = async () => {
     axios.get(AxioxExpPort + "purchase_order/last_week_po?id=" + vendorId)
@@ -38,9 +53,15 @@ function HomeScreen() {
         setFeedDataShow(response.data[0].po_data.length)
         setFeedDataINV(response.data[0].invoice_data.length)
         setFeedDataShowINV(response.data[0].invoice_data)
-        console.log("response.dataresponse.data", response.data[0].po_data)
+        // console.log("response.dataresponse.data", response.data[0].po_data)
       })
+    axios.get(AxioxExpPort + "last_updated/data?id=" + vendorId)
+      .then((response) => {
+        setSlides(response.data);
+      })
+
   }
+
   const fetchPosts = async () => {
     axios.post(AxioxExpPort + "createcompany/po", {
       "user": vendorId
@@ -78,61 +99,22 @@ function HomeScreen() {
     // console.log("new Date(item.DOCUMENT_DATE).getMonth() + 1",getmonth)
   })
   const arr = Array.from(getmonth);
-  // arr.sort(function(a, b) {
-  //     return a - b;
-  //   });
-// Slider data
-  const slides = [
+  // poHomeDetails.details.map(item=>{
+  //   console.log(item.P)
+  // })
+  const titleArr = [
     {
-      title: 'Latest Purchase Order',
-      totalQty: "12",
-      date: "12/12/2022",
-      PLANT_ID: "Plant1",
-      PLANT_DESCRIPTION: "Plant1",
-      UNIT: "unit",
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: 'https://via.placeholder.com/300x200/ff0000/ffffff'
+      title: 'Latest Purchase Order'
     },
     {
-      title: 'Latest Goods Receipt',
-      totalQty: "12",
-      date: "12/12/2022",
-      PLANT_ID: "Plant2",
-      PLANT_DESCRIPTION: "Plant1",
-      UNIT: "unit",
-      description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      image: 'https://via.placeholder.com/300x200/00ff00/ffffff'
-    },
-    {
-      title: 'Latest Invoice Approved',
-      totalQty: "12",
-      date: "12/12/2022",
-      PLANT_ID: "Plant3",
-      PLANT_DESCRIPTION: "Plant1",
-      UNIT: "unit",
-      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      image: 'https://via.placeholder.com/300x200/0000ff/ffffff'
-    },
-    {
-      title: 'Latest Invoice Pending',
-      totalQty: "12",
-      date: "12/12/2022",
-      PLANT_ID: "Plant3",
-      PLANT_DESCRIPTION: "Plant1",
-      UNIT: "unit",
-      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      image: 'https://via.placeholder.com/300x200/0000ff/ffffff'
+      title: 'Latest Goods Receipt'
     }
     ,
     {
-      title: 'Latest Goods Return',
-      totalQty: "12",
-      date: "12/12/2022",
-      PLANT_ID: "Plant3",
-      PLANT_DESCRIPTION: "Plant1",
-      UNIT: "unit",
-      description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      image: 'https://via.placeholder.com/300x200/0000ff/ffffff'
+      title: 'Latest Goods Return'
+    },
+    {
+      title: 'Latest Invoice Data'
     }
   ];
   const labels = []
@@ -157,12 +139,12 @@ function HomeScreen() {
 
   // slider style part
   const myStyles = {
-    backgroundImage: 'linear-gradient(-30deg,#D6B4E0 ,#C9DFF2)',
-    padding:10,
-    
-  }
- 
-  
+    backgroundImage: `url("https://media.istockphoto.com/id/1177802719/vector/abstract-financial-chart-with-up-arrow-graph-in-stock-market-in-blue-colour-background.jpg?s=612x612&w=0&k=20&c=dcP9q6pIcSBYUT-l_LKHdVAzlDhXGsDMg4_CKwMFaUA=")`,
+    borderRadius: "10px"
+  };
+
+
+
   // bar graph setup and data 
   const data = {
     labels: labels.reverse(),
@@ -170,10 +152,8 @@ function HomeScreen() {
       {
         fill: true,
         label: "Lakh(INR)",
-        // backgroundColor: "#e6e6e6",
-        // borderColor: "#4F51C0",
-        borderColor: '#6A5ACD',
-        backgroundColor: '#D8BFD8',
+        borderColor: '#4F51C0',
+        backgroundColor: '#4F51C0',
         data: chartdatass.reverse(),
       },
     ],
@@ -189,19 +169,25 @@ function HomeScreen() {
         align: 'top'
       }
     },
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-            callback: (value, index, values) => '₹ ' + value.toLocaleString('en-IN')
-          }
-        }
-      ]
-    }
+    // scales: {
+    //   yAxes: [
+    //     {
+    //       ticks: {
+    //         beginAtZero: true,
+    //         callback: (value, index, values) => '₹ ' + value.toLocaleString('en-IN')
+    //       }
+    //     }
+    //   ]
+    // }
   };
-
-
+  const carouselRef = useRef(null);
+  let resetTimeout;
+  var ArrayTEmp = [];
+  ArrayTEmp.push(slides)
+  const handleHover = () => {
+    // Start autoplay when the mouse hovers over the carousel
+    carouselRef.current.startAutoplay();
+  };
   return (
     <div
       style={{ marginTop: 22 }}
@@ -211,80 +197,93 @@ function HomeScreen() {
         style={{
           margin: 0,
           marginRight: "1%",
-          
         }}
       >
         <div className="col-md-8">
           <div className="col-lg-12">
-          <div style={{marginRight:"1.5%",marginLeft:"2%", marginTop:"1.5%"}}>
+            <div style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "2%", marginTop: "1.5%" }}>
+              <Slider {...settings} >
+                {ArrayTEmp[0].map((slide, index) => {
+                  console.log("slide", slide)
+                  let total = 0
+                  let totalsQty = 0
+                  slide.Details.map(price => {
+                    total = total + price.NET_PRICE * price.ORDER_QUANTITY
+                    totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+                  });
+                  return (
 
-     
-          <Carousel key={carouselKey} autoPlay={1000} showArrows={false} infiniteLoop={true} showStatus={false}>
-              {slides.map((slide, index) => (
-                <div
-                  className="card "
-                  style={myStyles}
-                >
-                  <h5
-                    className="card-title text-center"
-                    style={{
-                      color: "#4F51C0",
-                      marginTop: 5,
-                      fontWeight: 'bold'
+                    <div
+                      key={index}
+                      className="card "
 
-                    }}
-                  >
-                    {slide.title}
-                  </h5>
-                  <div className="row text-left" style={{
-                    marginLeft: 15,
-                    marginBottom: 3
-                  }}>
-                    <div className="col-md-8" style={{ marginTop: 1 }}>
-                      <p style={{ color: "#800000" }}>PO Number:</p><br />
-                      <p style={{
-                        fontWeight: "bold"
-                      }}>{slide.PO_NO}</p>
+                    >
+                      <div className="card-body" style={myStyles}>
+                        <h5
+                          style={{
+                            color: "#fff",
+                            fontWeight: "bold",
+                            textAlign: "center" // added style
+                          }}
+                        >
+                          {index == 0 && "Latest Purchase Order" || index == 1 && "Latest Goods Receipt" || index == 2 && "Latest Goods Return" || index == 3 && "Latest Invoice Data"}
+                        </h5>
+                        <div className="row text-left" style={{
+
+                          marginBottom: 3
+                        }} >
+                          <div className="col-md-9" style={{ marginTop: 1 }}>
+                            <a style={{ color: "#4F51C0" }}>PO Number:</a><br />
+                            <p style={{
+                              fontWeight: "bold",
+                              color: "#fff"
+                            }}>{slide.PO_NO}</p>
+
+                          </div>
+
+                          <div className="col-md-3" style={{ marginTop: 1 }}>
+                            <a style={{ color: "#4F51C0" }}>Date:</a><br />
+                            <a
+                              style={{
+                                fontWeight: "bold",
+                                color: "#fff"
+
+                              }}
+                            >{dateFormat((slide.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a>
+                          </div>
+                          <div className="col-md-12" style={{ marginTop: 3 }}>
+                            <a style={{ color: "#4F51C0" }}>Plant: </a>
+                            <a style={{
+                              color: "#fff"
+                            }}>{slide.Details[0].PLANT_ID + "(" + slide.Details[0].PLANT_DESCRIPTION + ")"}</a>
+                          </div>
+                          <div className="col-md-12" style={{ marginTop: 1 }}>
+                            <a style={{ color: "#4F51C0" }}>Unit: </a>
+                            <a style={{
+                              color: "#fff"
+                            }}>{slide.Details[0].UNIT}</a>
+                          </div>
+                          <div className="col-md-12" style={{ marginTop: 1 }}>
+                            <a style={{ color: "#4F51C0" }}>Total Quantity: </a>
+                            <a style={{
+                              color: "#fff"
+                            }}>{totalsQty}</a>
+                          </div>
+                          <div className="col-md-12" style={{ marginTop: 1, marginBottom: 10 }}>
+                            <a style={{ color: "#4F51C0" }}>Total Net Value: </a>
+                            <a style={{
+                              color: "#fff"
+                            }}>{Number(total)}</a>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="col-md-4" style={{ marginTop: 1 }}>
-                      <a style={{ color: "#800000" }}>Date:</a><br />
-                      <a
-                        style={{
-                          fontWeight: "bold"
-                        }}
-                      >{dateFormat((slide.date), "ddd, mmm dS,yyyy")}</a>
-                    </div>
-                    <div className="col-md-12" style={{ marginTop: 1 }}>
-                      <a style={{ color: "#800000" }}>Plant: </a>
-                      <a style={{
-                        color: "#4B4B4B"
-                      }}>{slide.PLANT_ID + "(" + slide.PLANT_DESCRIPTION + ")"}</a>
-                    </div>
-                    <div className="col-md-12" style={{ marginTop: 1 }}>
-                      <a style={{ color: "#800000" }}>Unit: </a>
-                      <a style={{
-                        color: "#4B4B4B"
-                      }}>{slide.UNIT}</a>
-                    </div>
-                    <div className="col-md-12" style={{ marginTop: 1 }}>
-                      <a style={{ color: "#800000" }}>Total Quantity: </a>
-                      <a style={{
-                        color: "#4B4B4B"
-                      }}>{slide.totalQty}</a>
-                    </div>
-                    <div className="col-md-12" style={{ marginTop: 1, marginBottom: 10 }}>
-                      <a style={{ color: "#800000" }}>Total Net Value: </a>
-                      <a style={{
-                        color: "#4B4B4B"
-                      }}>{Number(slide.total)}</a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </Carousel>
+                  )
+                })}
+              </Slider>
             </div>
-       
-            <div className="col-md-12" style={{ marginTop:"-3.5%"}}  >
+
+            <div className="col-md-12" style={{ marginTop: "1%" }}  >
               <div
                 className="card info-card sales-card"
                 style={
@@ -309,6 +308,7 @@ function HomeScreen() {
               </div>
             </div>
           </div>
+
         </div>
         <div className="col-md-4" >
           <div className="card" style={{ marginRight: "2.5%" }}>
@@ -336,13 +336,14 @@ function HomeScreen() {
                               <p style={{ marginBottom: 5, borderBottom: " 1px solid #aaa", width: "100%" }}></p>
                             </div>
                           </div>
+
                         </>
                       )
                     })
                     :
                     ""
                 }
-                    {/* <p className="text-center" style={{ color: "gray" }}> {"No Order data available"}</p> */}
+                {/* <p className="text-center" style={{ color: "gray" }}> {"No Order data available"}</p> */}
                 {
                   feedDataINV > 0 ?
                     feedDataShowINV.map(item => {
@@ -365,7 +366,7 @@ function HomeScreen() {
                     :
                     ""
                 }
-                    {/* <p className="text-center" style={{ color: "gray" }}> {"No Invoice data available"}</p> */}
+                {/* <p className="text-center" style={{ color: "gray" }}> {"No Invoice data available"}</p> */}
               </div>
             </div>
           </div>

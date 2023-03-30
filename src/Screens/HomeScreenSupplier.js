@@ -314,73 +314,7 @@ function HomeScreenSupplier() {
             </div>
           </Link>
         </div>
-        <div className="col-lg-3 col-6">
-          <Link to="/rscsupport" style={{
-            textDecoration: 'none',
-
-          }}>
-            <div
-              className="card info-card sales-card"
-              style={
-                {
-                  backgroundColor:"#EBEBFF"
-                  // float: "left",
-                }
-              }
-            >
-              <h5
-                className="card-title"
-                style={{
-                  margin: 10,
-                  color: "black",
-                }}
-              >
-                Receive Support
-              </h5>
-
-              <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-                <div className="row">
-                  <div className="col-md-4">
-                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <IconContext.Provider
-                        value={{ color: "#0275d8", size: "60px" }}
-                      >
-                        {" "}
-                        <FaComments />
-                      </IconContext.Provider>
-                    </div>
-                  </div>
-                  <div className="col-md-8 text-right" >
-                    <span style={{
-                      color: "#FF7F50",
-                      fontWeight: 700,
-                      fontSize: 30,
-                    }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_DATA}</span>{" "}
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                    <span style={{
-                      fontWeight: 700,
-                      fontSize: 30,
-                      color: "#6495ED",
-                    }} className="text-success small pt-1 fw-bold text-right"> {"1"}</span>{" "}
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1">Total Pending</span><br></br>
-
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-          </Link>
-        </div>
+       
 
 
      

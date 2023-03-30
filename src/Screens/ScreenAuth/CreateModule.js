@@ -1,8 +1,13 @@
 import React from 'react'
+import AdminSidebar from '../../Components/AdminSidebar'
+import NavHeader from '../../Components/NavHeader'
 
 function CreateModule() {
   return (
-    <div>CreateModule</div>
+    <div>
+    <NavHeader/>
+    <AdminSidebar/>
+    </div>
   )
 }
 
