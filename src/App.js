@@ -76,7 +76,7 @@ function App() {
         (<Routes>
           <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
-          {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
+          <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> 
           {/* <Route path="/PurchaseOrderSupplier" element={<Protected><PurchaseOrderSupplier /></Protected>} exact /> */}
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />

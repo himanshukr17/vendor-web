@@ -66,7 +66,7 @@ background: #5dceff;
  .bg-transparent{
   transition: background-color 2s ease 0s;
   background-color:rgba(240, 241, 242, 0.9)!important
-} 
+}
 
 .navbar-bg-active{
   background: #5dceff;
@@ -377,22 +377,22 @@ background: #9d9d9d;
 .page_404  img{ width:100%;}
 
 .four_zero_four_bg{
- 
+
  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
     height: 600px;
     background-position: center;
  }
- 
- 
+
+
  .four_zero_four_bg h1{
  font-size:80px;
  }
- 
+
   .four_zero_four_bg h3{
 			 font-size:80px;
 			 }
-			 
-			 .link_404{			 
+
+			 .link_404{
 	color: #fff!important;
     padding: 10px 20px;
     background: #39ac31;
@@ -402,7 +402,7 @@ background: #9d9d9d;
 
 
 
-  
+
 .pdf-container{
   width: 100%;
   height: 300px;
@@ -465,11 +465,11 @@ background: #9d9d9d;
   /* width: 100px;
   height: 100px; */
    width:100px;
-   
+
   background: "#228B22" ;
   position: relative;
   animation-name: example;
-  animation-duration: 3s;  
+  animation-duration: 3s;
   animation-fill-mode: forwards;
   float: left;
 }
@@ -504,7 +504,7 @@ background: #9d9d9d;
 }
 
 @-webkit-keyframes fadein {
-  from {bottom: 0; opacity: 0;} 
+  from {bottom: 0; opacity: 0;}
   to {bottom: 30px; opacity: 1;}
 }
 
@@ -514,7 +514,7 @@ background: #9d9d9d;
 }
 
 @-webkit-keyframes fadeout {
-  from {bottom: 30px; opacity: 1;} 
+  from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
 
@@ -542,7 +542,7 @@ background: #9d9d9d;
   font-size: 17px;
   width: 45%;
   /* border-radius: 20px; */
-  
+
 
 }
 .navTabs button{
@@ -640,7 +640,7 @@ background: #9d9d9d;
 }
 .navtabnavtab-item.activess{
   background-color: #4F51C0;
-   border-bottom: 2px solid #fff; 
+   border-bottom: 2px solid #fff;
 }
 
 
@@ -672,9 +672,8 @@ background: #9d9d9d;
     top: 0;
     background-color: #fff;
 }
-
-
-/* footer {
+/* 
+footer {
   position: fixed;
   bottom: 0;
   width: 100%;

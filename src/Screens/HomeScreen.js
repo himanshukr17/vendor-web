@@ -2,17 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import '../StyleSheets/Scrollbar.css'
-// import '../StyleSheets/Carousel.css'
 import { AxioxExpPort } from "./AxioxExpPort"
 import 'chartjs-plugin-datalabels';
 import dateFormat from 'dateformat';
 import { FaWpforms } from "react-icons/fa";
-import { Carousel } from 'react-responsive-carousel';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-// import { Carousel as CarouselItem } from 'react-responsive-carousel';
 function HomeScreen() {
   const [carouselKey] = useState(Math.random());
   const vendorId = localStorage.getItem('userId');
@@ -230,7 +227,7 @@ function HomeScreen() {
                         </h5>
                         <div className="row text-left" style={{
 
-                          marginBottom: 3
+                          marginBottom: -3
                         }} >
                           <div className="col-md-9" style={{ marginTop: 1 }}>
                             <a style={{ color: "#4F51C0" }}>PO Number:</a><br />
@@ -372,9 +369,6 @@ function HomeScreen() {
           </div>
         </div>
       </div>
-
-
-
       {/* <div className="col-lg-3 col-6">
           <Link >
             <div

@@ -52,9 +52,6 @@ const RoleManagement = () => {
       })
       axios.get(AxioxExpPort + "industry/all")
       .then((response) => {
-        // (response.data).map((val,index)=>{
-        //   setLanguageArr({vaval.})
-        // })
         setRoleDesc(response.data);
 
       })
