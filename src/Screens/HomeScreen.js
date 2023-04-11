@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import '../StyleSheets/Scrollbar.css'
 import { AxioxExpPort } from "./AxioxExpPort"
 import 'chartjs-plugin-datalabels';
@@ -200,13 +200,13 @@ function HomeScreen() {
         }}
       >
         <div className="col-md-2">
-        <div style={{marginTop: "30px"}}>
+        <div >
          <Sidebar/> 
 
          {/* <SectionList/> */}
         </div>
         </div>
-        <div className="col-md-7">
+        <div className="col-md-7" style={{marginTop:'2%'}}>
           <div className="col-lg-12">
             <div style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "4%", marginTop: "1.5%" }}>
               <Slider {...settings} >
@@ -296,8 +296,8 @@ function HomeScreen() {
                 style={
                   {
                     backgroundColor: "white",
-                    marginLeft: "4%",
-                    marginRight: "3%",
+                    marginLeft: "3%",
+                    marginRight: "0.5%",
                   }
                 }
               >
@@ -311,18 +311,18 @@ function HomeScreen() {
                 >
                   Purchase order of Last 3 months
                 </h5>
-                <Bar data={data} height={145} options={options} />
+                <Line data={data} height={145} options={options} />
               </div>
             </div>
           </div>
         </div>
-        <div className="col-md-3" >
+        <div className="col-md-3" style={{marginTop:'2%'}} >
           <div className="card" style={{ marginTop: "3%"  }}>
             <p style={{ fontSize: "15px", marginTop: "2%", marginLeft: "2%" }} >Activity Feed</p>
             <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
             <div className="card-body scrollable-content" style={{
               overflowY: "scroll",
-              height: "585px",
+              height: "540px",
               marginRight: "-20px",
             }}>
               <div className="row">
@@ -377,7 +377,6 @@ function HomeScreen() {
             </div>
           </div>
         </div>
-        
       </div>
       {/* <div className="col-lg-3 col-6">
           <Link >
