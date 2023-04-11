@@ -1,9 +1,107 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FaMegaport, FaUserTie,FaUsers } from "react-icons/fa";
+import { Link, NavLink } from "react-router-dom";
+import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser, FaUserTie } from "react-icons/fa";
+import { MdMessage } from "react-icons/md";
+import { BiAnalyse, BiFontFamily, BiSearch } from "react-icons/bi";
+import { BiCog } from "react-icons/bi";
+import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
+import { BsCartCheck } from "react-icons/bs";
+import { useState } from "react";
+
 import { IconContext } from "react-icons";
-import { COLORS } from "../Constants/theme";
-const NavHeader = () => {
+import { AnimatePresence, motion } from "framer-motion";
+import SidebarMenu from "./SidebarMenu";
+const routes = [
+  {
+    path: "/",
+    name: "Dashboard",
+    icon: <FaHome />,
+  },
+  {
+    path: "/#",
+    name: "Master",
+    icon: <AiTwotoneFileExclamation />,
+    subRoutes: [
+      {
+        path: "//#",
+        name: "Vendor ",
+        icon: <FaUser />,
+      },
+      {
+        path: "//#",
+        name: "Material",
+        icon: <FaLock />,
+      },
+      {
+        path: "//#",
+        name: "Price Master",
+        icon: <FaMoneyBill />,
+      },
+    ],
+  },
+  {
+    path: "/order",
+    name: "Order",
+    icon: <BsCartCheck />,
+  },
+  {
+    path: "/#",
+    name: " Transaction Data",
+    icon: <BiCog />,
+    exact: true,
+    subRoutes: [
+      {
+        path: "/pos",
+        name: " Purchase Order  ",
+        icon: <FaUser />,
+      },
+      {
+        path: "/res",
+        name: "Goods Receipt",
+        icon: <BsCartCheck />,
+      },
+      {
+        path: "/ackn",
+        name: "Order to confirm",
+        icon: <FaMoneyBill />,
+      },
+      {
+        path: "/inv",
+        name: " Invoice Pending",
+        icon: <FaMoneyBill />,
+      },
+    ],
+  },
+  {
+    path: "/#",
+    name: " Document",
+    icon: <BiCog />,
+    exact: true,
+    subRoutes: [
+      {
+        path: "/mcs",
+        name: " My Documents ",
+        icon: <FaUser />,
+      }
+    ],
+  },
+  {
+    path: "/#",
+    name: "Online Services",
+    icon: <BiCog />,
+    exact: true,
+    subRoutes: [
+      {
+        path: "/support",
+        name: "Customer Support",
+        icon: <FaUser />,
+      }
+    ],
+  }
+];
+
+const SideBar = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(true);
+  const toggle = () => setIsOpen(!isOpen);
   const [navbar, setNabar] = useState(false);
   const changeBackground = () => {
     if (window.scrollY >= 80) {
@@ -12,12 +110,45 @@ const NavHeader = () => {
       setNabar(false);
     }
   };
-  const navigate = useNavigate();
-  const companyName=localStorage.getItem('userCompany');
-  window.addEventListener("scroll", changeBackground);
+  const inputAnimation = {
+    hidden: {
+      width: 0,
+      padding: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+    show: {
+      width: "140px",
+      padding: "5px 15px",
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
 
+  const showAnimation = {
+    hidden: {
+      width: 0,
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+    show: {
+      opacity: 1,
+      width: "auto",
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+  const companyName=localStorage.getItem('userCompany');
+  const [imageView, setImageView]=useState("")
   return (
-    <div >
+    <>
+    
+      <div className="main-container" >
       <nav
         // style={{
         //   backgroundColor: "#fff",
@@ -35,7 +166,9 @@ const NavHeader = () => {
           <a className="navbar-brand" >
             <p className="text-center" style={{ fontSize:"20px"}}>{companyName}</p>
           </a>
-         
+          <div className="bars" style={{marginLeft:'-60%'}}>
+              {/* <FaBars color={'black'} onClick={toggle} /> */}
+            </div>
         <a style={{fontSize:"17px"}}>             <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
             <span style={{color:"#14CA96", fontSize:"25px"}}> Connect</span></a>
           <button
@@ -256,8 +389,97 @@ const NavHeader = () => {
 
           
       </nav>
-    </div>
+        <motion.div
+          animate={{
+            width: isOpen ? "230px" : "45px",
+
+            transition: {
+              duration: 0.5,
+              type: "spring",
+              damping: 10,
+            },
+          }}
+          className={`sidebar `}
+        >
+          <div className="top_section">
+            <AnimatePresence>
+              {isOpen && (
+                <motion.h1
+                  variants={showAnimation}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  className="logo"
+                >
+                  {/* <span style={{color:"#1F87D0",  fontSize:"20px"}}>Vendor</span>
+            <span style={{color:"#14CA96", fontSize:"20px"}}> Connect</span> */}
+                </motion.h1>
+              )}
+            </AnimatePresence>
+
+           
+          </div>
+           <div >
+            
+                {/* <p style={{marginLeft:10, marginTop:2, fontSize:15, fontFamily:"cursive", alignItems:"center", display:"flex", justifyContent:"center"}}> */}
+            <AnimatePresence>
+              {isOpen && (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                {
+                    imageView?
+  <img height={'50%'} width={'50%'} style={{borderRadius:'50%'}} src=""/>
+ : <img height={'50%'} width={'50%'} style={{borderRadius:'50%'}} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"/>
+                }
+</div>
+
+              )}
+            </AnimatePresence>
+          </div>
+          <section className="routes">
+            {routes.map((route, index) => {
+              if (route.subRoutes) {
+                return (
+                  <SidebarMenu
+                    setIsOpen={setIsOpen}
+                    route={route}
+                    showAnimation={showAnimation}
+                    isOpen={isOpen}
+                  />
+                );
+              }
+
+              return (
+                <Link
+                  to={route.path}
+                  key={index}
+                  className="link"
+                  activeClassName="active"
+                >
+                  <div className="icon">{route.icon}</div>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        variants={showAnimation}
+                        initial="hidden"
+                        animate="show"
+                        exit="hidden"
+                        className="link_text"
+                      >
+                        {route.name}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Link>
+              );
+            })}
+          </section>
+        </motion.div>
+
+        <main>{children}</main>
+        
+      </div>
+    </>
   );
 };
 
-export default NavHeader;
+export default SideBar;

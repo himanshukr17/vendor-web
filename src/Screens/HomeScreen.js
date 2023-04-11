@@ -9,6 +9,8 @@ import { FaWpforms } from "react-icons/fa";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import SectionList from "../Components/SectionList";
+import Sidebar from "../Components/Sidebar";
 
 function HomeScreen() {
   const [carouselKey] = useState(Math.random());
@@ -189,6 +191,7 @@ function HomeScreen() {
     <div
       style={{ marginTop: 22 }}
     >
+    
       <div
         className="row"
         style={{
@@ -196,9 +199,16 @@ function HomeScreen() {
           marginRight: "1%",
         }}
       >
-        <div className="col-md-8">
+        <div className="col-md-2">
+        <div style={{marginTop: "30px"}}>
+         <Sidebar/> 
+
+         {/* <SectionList/> */}
+        </div>
+        </div>
+        <div className="col-md-7">
           <div className="col-lg-12">
-            <div style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "2%", marginTop: "1.5%" }}>
+            <div style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "4%", marginTop: "1.5%" }}>
               <Slider {...settings} >
                 {ArrayTEmp[0].map((slide, index) => {
                   console.log("slide", slide)
@@ -305,10 +315,9 @@ function HomeScreen() {
               </div>
             </div>
           </div>
-
         </div>
-        <div className="col-md-4" >
-          <div className="card" style={{ marginRight: "2.5%" }}>
+        <div className="col-md-3" >
+          <div className="card" style={{ marginTop: "3%"  }}>
             <p style={{ fontSize: "15px", marginTop: "2%", marginLeft: "2%" }} >Activity Feed</p>
             <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
             <div className="card-body scrollable-content" style={{
@@ -317,9 +326,9 @@ function HomeScreen() {
               marginRight: "-20px",
             }}>
               <div className="row">
-                {
-                  feedDataShow > 0 ?
-                    feedsData.map(itemsss => {
+                {  feedDataShow > 0  &&  feedDataINV > 0 ?
+                
+                    (feedsData.map(itemsss => {
                       return (
                         <>
                           <div className="row" >
@@ -336,14 +345,11 @@ function HomeScreen() {
 
                         </>
                       )
-                    })
-                    :
-                    ""
-                }
-                {/* <p className="text-center" style={{ color: "gray" }}> {"No Order data available"}</p> */}
-                {
-                  feedDataINV > 0 ?
-                    feedDataShowINV.map(item => {
+                    }))
+                   
+                
+            
+                   ( feedDataShowINV.map(item => {
                       return (
                         <>
                           <div className="row" >
@@ -360,14 +366,18 @@ function HomeScreen() {
                         </>
                       )
                     })
-                    :
-                    ""
+                   )
+                   :
+                   <>
+                    <img src='../Images/nodataavailable.gif' width={'90%'} height={'90%'}/>
+                   </>
                 }
                 {/* <p className="text-center" style={{ color: "gray" }}> {"No Invoice data available"}</p> */}
               </div>
             </div>
           </div>
         </div>
+        
       </div>
       {/* <div className="col-lg-3 col-6">
           <Link >

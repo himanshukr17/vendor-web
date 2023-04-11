@@ -333,7 +333,7 @@ function InvoiceDisplay () {
     
             <p className="text-right" style={{ marginTop: "-20px" }}>*Exc GST</p>
             <table className="table table-light table-bordered table-hover">
-              <thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
+              <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
                 <tr
                   className="text-center"
                   style={{
@@ -349,7 +349,7 @@ function InvoiceDisplay () {
                   <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
                   <th onClick={() => sorting("SUPPLIER_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date{showArrowDOC?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
                   <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
-                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Itam Count</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
                   <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
                 </tr>
               </thead>

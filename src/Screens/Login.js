@@ -106,7 +106,7 @@ function Login() {
       heading: {
         fontFamily: 'Arial',
         fontSize: '2.5rem',
-        color: '#a7bfe8',
+        color: '#1F87D0',
         textShadow: '1px 1px 2px #000',
         marginBottom: '0.8rem',
       },
@@ -124,7 +124,7 @@ function Login() {
 
             <div className="col-md-6 left ">
               <div style={stylesWelcome.container}>
-                <h1 style={stylesWelcome.heading}>Welcome Back</h1>
+                <h1 style={stylesWelcome.heading}>Vendor <span style={{color:'#14CA96'}}>Connect</span></h1>
               </div>
               {/* <h1>Hello World.</h1> */}
               {/* <img src={"https://rupeekx.com/assets/images/slider/login.gif"} width={"110%"}  style={{marginTop:50, display:"block", marginLeft:"auto",marginRight:"auto"}} alt="Cartoons" /> */}

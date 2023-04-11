@@ -291,7 +291,7 @@ const BuyerGoodsReturn=(props)=> {
 
 <p className="text-right" >*Exc GST</p>
 <table className="table table-light table-bordered table-hover">
-<thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
+<thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
   <tr
     className="text-center"
     style={{

@@ -189,7 +189,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
            <div className="card-body">
             <p className="text-right" style={{ fontFamily:"Serif",marginTop: "-35px",marginBottom: "1px", size:60 }}></p>
             <table className="table table-light table-bordered ">
-              <thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
+              <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
                 <tr
                   className="text-center"
                   style={{

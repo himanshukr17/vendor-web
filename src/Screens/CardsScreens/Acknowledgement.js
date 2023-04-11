@@ -312,7 +312,7 @@ function Acknowledgement() {
               <div className="card-body">
                 <p className="text-right" style={{ marginTop: "-30px" }}></p>
                 <table className="table table-light table-bordered table-hover">
-                  <thead className="table-light" style={{ position: "sticky", top: 60, backgroundColor: "#fff", zIndex: 1 }}>
+                  <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
                     <tr
                       className="text-center"
                       style={{

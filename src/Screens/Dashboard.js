@@ -9,15 +9,12 @@ import HomeScreen from "./HomeScreen";
 function Dashboard() {
   return (
     <>
-      <NavHeader />
+    {/* <NavHeader  /> */}
       {/* <Navbar/> */}
       <div
-        style={{
-          marginTop: 64,
-          marginBottom:15
-        }}
+       
       >
-      <NavTab />
+       
         <HomeScreen />
       </div>
 
