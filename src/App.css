@@ -1,7 +1,10 @@
+body {
+  background-color: gray;
+}
 .App_Content {
   text-align: center;
    /* background-color:#385094; */
-   background-color:#ffffff;
+   background-color:#949494;
      /* background-image: linear-gradient(135deg, #FAB2FF 10%, #1904E5 100%);
   background-image: linear-gradient(135deg,#385094 10%, #0d0525 100%); */
 }
@@ -679,12 +682,12 @@ main {
 }
 
 /* Sidebar */
-.sidebar {
+.sidebarSS {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1; /* higher than header's z-index */
-  background: rgb(0, 7, 61);
+  background: #082A4C;
   color: white;
   height: 100vh;
   overflow-y: auto;
@@ -770,6 +773,10 @@ main {
 }
 .menu_container .link {
   padding-left: 20px;
-  border-bottom: #fff 0.5px solid;
-  border-color: black;
+  border-bottom: black 0.5px solid;
+
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

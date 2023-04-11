@@ -209,6 +209,15 @@ function CheckStatus() {
         </div>
 
 
+        {
+          itensData <=0 &&
+
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '84vh' }}>
+          <h2 style={{ marginBottom: '1rem', fontSize: '2rem', fontWeight: 'bold', color: '#4F51C0', textAlign: 'center' }}>
+  Search according to your phone number
+</h2>  <img src="../Images/statusSearch.gif" style={{width:"50%", height:"80%"}} alt="loading" />
+</div>
+        }
         <div style={{ width: "100%" }}>
           {itensData == 1 &&
             <Chrono

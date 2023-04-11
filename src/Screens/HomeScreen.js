@@ -27,7 +27,7 @@ function HomeScreen() {
   const [podetailss, setPoDetailss] = useState([])
   const [feedsData, setFeedsData] = useState([])
   const [feedDataShow, setFeedDataShow] = useState("")
-  const [feedDataShowINV, setFeedDataShowINV] = useState("")
+  const [feedDataShowINV, setFeedDataShowINV] = useState([])
   const [feedDataINV, setFeedDataINV] = useState("")
 
   const [poHomeDetails, setPoHomeDetails] = useState('')
@@ -52,13 +52,14 @@ function HomeScreen() {
         setFeedDataShow(response.data[0].po_data.length)
         setFeedDataINV(response.data[0].invoice_data.length)
         setFeedDataShowINV(response.data[0].invoice_data)
-        // console.log("response.dataresponse.data", response.data[0].po_data)
+        console.log("response.dataresponse.data",response.data[0].invoice_data)
+        
       })
-    axios.get(AxioxExpPort + "last_updated/data?id=" + vendorId)
+      axios.get(AxioxExpPort + "last_updated/data?id=" + vendorId)
       .then((response) => {
         setSlides(response.data);
       })
-
+      console.log("feedsData",feedsData)
   }
 
   const fetchPosts = async () => {
@@ -69,6 +70,7 @@ function HomeScreen() {
         setLablesAll(response.data.length);
         setPoDetail(response.data[0])
         //setPoDetails(response.data[0])
+       // console.log("response.dataresponse.data", response.data)
         let total = 0;
         let totalQty = 0;
         response.data[0].Details.map(price => {
@@ -138,7 +140,7 @@ function HomeScreen() {
 
   // slider style part
   const myStyles = {
-    backgroundImage: `url("https://media.istockphoto.com/id/1177802719/vector/abstract-financial-chart-with-up-arrow-graph-in-stock-market-in-blue-colour-background.jpg?s=612x612&w=0&k=20&c=dcP9q6pIcSBYUT-l_LKHdVAzlDhXGsDMg4_CKwMFaUA=")`,
+    backgroundImage: `url("https://media.istockphoto.com/id/880896186/vector/financial-growth-revenue-graph-vector-illustration-trend-lines-columns-market-economy.jpg?s=612x612&w=0&k=20&c=IQrkvp7bLcb52-C1zty-FDLoPbSoTJXE4hU0-PKHcYY=")`,
     borderRadius: "10px"
   };
 
@@ -152,7 +154,7 @@ function HomeScreen() {
         fill: true,
         label: "Lakh(INR)",
         borderColor: '#4F51C0',
-        backgroundColor: '#4F51C0',
+         backgroundColor: 'white',
         data: chartdatass.reverse(),
       },
     ],
@@ -206,9 +208,14 @@ function HomeScreen() {
          {/* <SectionList/> */}
         </div>
         </div>
+
         <div className="col-md-7" style={{marginTop:'2%'}}>
-          <div className="col-lg-12">
-            <div style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "4%", marginTop: "1.5%" }}>
+          <div className="col-lg-12" >
+
+            <div    className="card"  style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "4%", marginTop: "1.5%" }}>
+            <div style={{padding:25}}>
+
+
               <Slider {...settings} >
                 {ArrayTEmp[0].map((slide, index) => {
                   console.log("slide", slide)
@@ -228,7 +235,7 @@ function HomeScreen() {
                       <div className="card-body" style={myStyles}>
                         <h5
                           style={{
-                            color: "#fff",
+                            color: "#7B241C ",
                             fontWeight: "bold",
                             textAlign: "center" // added style
                           }}
@@ -243,7 +250,7 @@ function HomeScreen() {
                             <a style={{ color: "#4F51C0" }}>PO Number:</a><br />
                             <p style={{
                               fontWeight: "bold",
-                              color: "#fff"
+                              color: "#7B241C "
                             }}>{slide.PO_NO ? slide.PO_NO: 'Will be update soon'}</p>
 
                           </div>
@@ -253,7 +260,7 @@ function HomeScreen() {
                             <a
                               style={{
                                 fontWeight: "bold",
-                                color: "#fff"
+                                color: "#7B241C "
 
                               }}
                             >{dateFormat((slide.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a>
@@ -261,25 +268,25 @@ function HomeScreen() {
                           <div className="col-md-12" style={{ marginTop: 3 }}>
                             <a style={{ color: "#4F51C0" }}>Plant: </a>
                             <a style={{
-                              color: "#fff"
+                              color: "#7B241C "
                             }}>{slide.Details[0].PLANT_ID + "(" + slide.Details[0].PLANT_DESCRIPTION + ")"}</a>
                           </div>
                           <div className="col-md-12" style={{ marginTop: 1 }}>
                             <a style={{ color: "#4F51C0" }}>Unit: </a>
                             <a style={{
-                              color: "#fff"
+                              color: "#7B241C "
                             }}>{slide.Details[0].UNIT ?slide.Details[0].UNIT :0}</a>
                           </div>
                           <div className="col-md-12" style={{ marginTop: 1 }}>
                             <a style={{ color: "#4F51C0" }}>Total Quantity: </a>
                             <a style={{
-                              color: "#fff"
+                              color: "#7B241C "
                             }}>{totalsQty?totalsQty:0}</a>
                           </div>
                           <div className="col-md-12" style={{ marginTop: 1, marginBottom: 10 }}>
                             <a style={{ color: "#4F51C0" }}>Total Net Value: </a>
                             <a style={{
-                              color: "#fff"
+                              color: "#7B241C "
                             }}>{Number(total)?Number(total):0}</a>
                           </div>
                         </div>
@@ -288,6 +295,7 @@ function HomeScreen() {
                   )
                 })}
               </Slider>
+              </div>
             </div>
 
             <div className="col-md-12" style={{ marginTop: "1%" }}  >
@@ -298,6 +306,8 @@ function HomeScreen() {
                     backgroundColor: "white",
                     marginLeft: "3%",
                     marginRight: "0.5%",
+                    
+                   
                   }
                 }
               >
@@ -322,13 +332,20 @@ function HomeScreen() {
             <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
             <div className="card-body scrollable-content" style={{
               overflowY: "scroll",
-              height: "540px",
+              height: "596px",
               marginRight: "-20px",
             }}>
               <div className="row">
                 {  feedDataShow > 0  &&  feedDataINV > 0 ?
                 
-                    (feedsData.map(itemsss => {
+                   
+            
+                  <img src='../Images/nodataavailable.gif' width={'90%'} height={'90%'}/>
+
+                 
+                   :
+                   <>
+                   {feedsData.map(itemsss => {
                       return (
                         <>
                           <div className="row" >
@@ -345,11 +362,12 @@ function HomeScreen() {
 
                         </>
                       )
-                    }))
-                   
-                
-            
-                   ( feedDataShowINV.map(item => {
+                    })
+
+                     
+                    
+                    }
+                    {feedDataShowINV.map(item => {
                       return (
                         <>
                           <div className="row" >
@@ -365,11 +383,8 @@ function HomeScreen() {
                           </div>
                         </>
                       )
-                    })
-                   )
-                   :
-                   <>
-                    <img src='../Images/nodataavailable.gif' width={'90%'} height={'90%'}/>
+                    })}
+                   
                    </>
                 }
                 {/* <p className="text-center" style={{ color: "gray" }}> {"No Invoice data available"}</p> */}

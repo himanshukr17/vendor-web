@@ -51,7 +51,7 @@ function App() {
   console.log('userTypeDef', userType)
   //localStorage.clear() 
   return (
-    <div className="App">
+    <div className="App" style={{backgroundColor:'#EDEAEA'}}>
       {
         userType === null &&
         (<Routes>

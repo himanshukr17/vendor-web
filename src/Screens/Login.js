@@ -28,6 +28,7 @@ function Login() {
   } else {
 
     const vendorLogin = () => {
+
       setVendorLg(true)
       setSupplierLg(false);
 
@@ -97,6 +98,17 @@ function Login() {
       alignItems: 'center',
     };
 
+
+  const stylePow =  {
+      backgroundColor: '#f2f2f2',
+      padding: '10px',
+      textAlign: 'center',
+      fontSize: '12px',
+      color: '#888',
+      position: 'absolute',
+      bottom: 0,
+      width: '100%'
+    }
     const stylesWelcome = {
       container: {
         display: 'flex',
@@ -118,19 +130,29 @@ function Login() {
 
         <div style={styles} >
 
-          <div
+        <h1 style={{
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      color: '#fff',
+    }}>
+      Vendor Portal
+    </h1>          <div
             className="box-form"
           >
-
-            <div className="col-md-6 left ">
-              <div style={stylesWelcome.container}>
-                <h1 style={stylesWelcome.heading}>Vendor <span style={{color:'#14CA96'}}>Connect</span></h1>
-              </div>
-              {/* <h1>Hello World.</h1> */}
-              {/* <img src={"https://rupeekx.com/assets/images/slider/login.gif"} width={"110%"}  style={{marginTop:50, display:"block", marginLeft:"auto",marginRight:"auto"}} alt="Cartoons" /> */}
-              {/* <img src={"https://i.pinimg.com/originals/7a/db/71/7adb71ffcc3085a7d85cd4f0d1fbf5cc.gif"} width={"100%"}  alt="Cartoons" /> */}
-              <img src={"https://backdocket.com/wp-content/uploads/2020/01/FEATURESPAGE.gif"} style={{ display: "block", marginLeft: "auto", marginRight: "auto" }} width={"100%"} alt="Cartoons" />
-            </div>
+  <div className="col-md-6 left">
+  <a style={{ position: 'absolute', top: '10px', left: '10px' }}>
+    <img src="../Images/Picture1.png" style={{ width: "50%", height: "90%" }} />
+  </a>
+  <img src={"../Images/loginimg.png"} style={{ display: "block", marginLeft: "auto", marginRight: "auto", marginTop:'5%' }} width={"100%"} alt="Cartoons" />
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "30px" }}>
+    <p style={{ fontSize: "16px", fontWeight: "bold", marginRight: "10px", color: "#555" }}>Powered by</p>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#f8d7da", borderRadius: "10px", padding: "5px 10px" }}>
+      <p style={{ fontSize: "16px", fontWeight: "bold", color: "#721c24" }}>Samishti Infotech Pvt Ltd.</p>
+      <img src="https://www.samishti.com/img/logo.png" alt="Logo" style={{ width: "30px", height: "30px", marginLeft: "10px" }} />
+    </div>
+  </div>
+</div>
             <div className="col-md-6 right">
               <div className="tab">
                 <button className={btnVActive} style={{ color: btnVActiveColor }} type="button" onClick={() => { vendorLogin(); setUserTypeGet(false) }}>Supplier Login</button>

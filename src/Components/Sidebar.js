@@ -37,13 +37,7 @@ const routes = [
         icon: <FaMoneyBill />,
       },
     ],
-  },
-  {
-    path: "/order",
-    name: "Order",
-    icon: <BsCartCheck />,
-  },
-  {
+  },{
     path: "/#",
     name: " Transaction Data",
     icon: <BiCog />,
@@ -399,7 +393,7 @@ const SideBar = ({ children }) => {
               damping: 10,
             },
           }}
-          className={`sidebar `}
+          className={`sidebarSS `}
         >
           <div className="top_section">
             <AnimatePresence>
