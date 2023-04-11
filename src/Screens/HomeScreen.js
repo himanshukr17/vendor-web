@@ -234,7 +234,7 @@ function HomeScreen() {
                             <p style={{
                               fontWeight: "bold",
                               color: "#fff"
-                            }}>{slide.PO_NO}</p>
+                            }}>{slide.PO_NO ? slide.PO_NO: 'Will be update soon'}</p>
 
                           </div>
 
@@ -258,19 +258,19 @@ function HomeScreen() {
                             <a style={{ color: "#4F51C0" }}>Unit: </a>
                             <a style={{
                               color: "#fff"
-                            }}>{slide.Details[0].UNIT}</a>
+                            }}>{slide.Details[0].UNIT ?slide.Details[0].UNIT :0}</a>
                           </div>
                           <div className="col-md-12" style={{ marginTop: 1 }}>
                             <a style={{ color: "#4F51C0" }}>Total Quantity: </a>
                             <a style={{
                               color: "#fff"
-                            }}>{totalsQty}</a>
+                            }}>{totalsQty?totalsQty:0}</a>
                           </div>
                           <div className="col-md-12" style={{ marginTop: 1, marginBottom: 10 }}>
                             <a style={{ color: "#4F51C0" }}>Total Net Value: </a>
                             <a style={{
                               color: "#fff"
-                            }}>{Number(total)}</a>
+                            }}>{Number(total)?Number(total):0}</a>
                           </div>
                         </div>
                       </div>

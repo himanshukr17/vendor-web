@@ -76,7 +76,6 @@ function App() {
         (<Routes>
           <Route path="/" element={<Login />} exact />
           <Route path="/notfound" element={<ErrorPage />} exact />
-          <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> 
           {/* <Route path="/PurchaseOrderSupplier" element={<Protected><PurchaseOrderSupplier /></Protected>} exact /> */}
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
@@ -100,6 +99,7 @@ function App() {
           <Route path="/" element={<Login />} exact />
           <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
           {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
+          <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> 
 
           <Route path="/rscsupport" element={<Protected><RecSupport /></Protected>} exact />
           <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />
