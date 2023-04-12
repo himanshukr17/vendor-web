@@ -44,17 +44,21 @@ function Receiveables() {
     { label: "Invoice Quantity", key: "DELIVERY_QTY" },
     { label: "Manufacturing Part No", key: "MANUFACTURE_PART_NO" },
   ];
+  const [loading, setLoading] = useState(false);
 
+  const fetchData = async () => {
+    setLoading(true)
+    axios.get(AxioxExpPort + "received/get?id=" + vendorId)
+      .then((response) => {
+        setTBody(response.data);
+        setFilterdata(response.data)
+        setTimeout(() => {
+          setLoading(false);
+        });
+        console.log("response.data.length", response.data);
+      }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
+  }
   useEffect(() => {
-    const fetchData = async () => {
-      axios.get(AxioxExpPort + "received/get?id=" + vendorId)
-        .then((response) => {
-          setTBody(response.data);
-          setFilterdata(response.data)
-
-          console.log("response.data.length", response.data);
-        }).catch((err) => { console.log("response.data.length",err.data);setIsPurchaseOrderEmpty(false)})
-    }
     fetchData()
   }, []);
   const[showArrow,setShowArrow]=useState(false)
@@ -216,6 +220,12 @@ function Receiveables() {
   return (
     <>
       <NavHeader />
+      {
+      loading && 
+      <div className="loader-container">
+      	  <div className="spinnerCircle"></div>
+        </div>
+    }
       <div
         className="card-body"
         style={{

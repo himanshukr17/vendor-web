@@ -42,11 +42,17 @@ function GoodsReturn() {
   const [emptyModalTable, setEmptyModalTable] = useState([]);
   const vendorId = localStorage.getItem('userId');
   const [poNumber,setPoNumber]=useState("")
+  const [loading, setLoading] = useState(false);
+
   const fetchData = async () => {
+    setLoading(true)
     axios.get(AxioxExpPort + "good_return/get?id=" + vendorId)
       .then((response) => {
         setTBody(response.data);
         setFilterData(response.data)
+        setTimeout(() => {
+          setLoading(false);
+        });
         console.log("response.data", response.data);
       })
   }
@@ -206,6 +212,12 @@ function GoodsReturn() {
   return (
     <>
       <NavHeader />
+      {
+      loading && 
+      <div className="loader-container">
+      	  <div className="spinnerCircle"></div>
+        </div>
+    }
       <div
         className="card-body"
         style={{
@@ -317,8 +329,8 @@ function GoodsReturn() {
                 }}
               >
                 <th onClick={() => sorting("GRN_NO")} className="text-center" style={{width: "5%", backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
-                <th  className="text-center" style={{ backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th  className="text-center" style={{ backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th  className="text-center" style={{  width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th  className="text-center" style={{ width: "5%", backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
                 <th onClick={() => sorting("POSTING_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
                 <th onClick={() => sortingDOC("DOCUMENT_DATE")} className="text-center" style={{ width: "12%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}scope="col">Document Date{showArrowDOC?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
                 <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>

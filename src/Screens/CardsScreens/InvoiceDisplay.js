@@ -59,20 +59,24 @@ function InvoiceDisplay () {
     const [showThree,setShowThree]=useState(false)
     const[showArrowDOC,setShowArrowDOC]=useState(false)
     const[showArrowINV,setShowArrowINV]=useState(false)
+    const [loading, setLoading] = useState(false);
 
+    const fetchPosts = async () => {
+      setLoading(true)
+      axios.get(AxioxExpPort +"invoice/all?id="+vendorId)
+        .then((response) => {
+          setTBody(response.data);
+          // console.log("response.data",response.data);
+          // console.log("response.data.length",response.data)
+          console.log("response.data.length",response.data)
+          setFilterdata(response.data);
+          setTimeout(() => {
+        setLoading(false);
+      });
+        }).catch((err) => {setIsPurchaseOrderEmpty(false)})
+
+    }
     useEffect(() => {
-      const fetchPosts = async () => {
-        axios.get(AxioxExpPort +"invoice/all?id="+vendorId)
-          .then((response) => {
-            setTBody(response.data);
-            // console.log("response.data",response.data);
-            // console.log("response.data.length",response.data)
-            console.log("response.data.length",response.data)
-            setFilterdata(response.data);
-            
-          }).catch((err) => {setIsPurchaseOrderEmpty(false)})
-  
-      }
       fetchPosts()
     }, []);
   
@@ -234,6 +238,12 @@ function InvoiceDisplay () {
     return (
       <>
         <NavHeader />
+        {
+      loading && 
+      <div className="loader-container">
+      	  <div className="spinnerCircle"></div>
+        </div>
+    }
         <div
         className="card-body"
         style={{

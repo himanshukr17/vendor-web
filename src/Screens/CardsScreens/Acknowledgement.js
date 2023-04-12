@@ -26,6 +26,8 @@ function Acknowledgement() {
   const [sort, setSort] = useState("ASC");
   // const [query, setQuery]=useState("")
   const [filterData, setFilterdata] = useState([])
+  const [loading, setLoading] = useState(false);
+
   const headers = [
     { label: "Material No", key: "MATERIAL" },
     { label: "Material Description", key: "MATERIAL_DESCRIPTION" },
@@ -55,14 +57,20 @@ function Acknowledgement() {
   const [remark, setRemark] = useState(false)
   const [showRemarks, setShowRemarks]=useState("") 
   const fetchData = async () => {
+     setLoading(true)
     axios.get(AxioxExpPort + "purchase_order/po_data?id=" + vendorId)
       .then((response) => {
         setTBody(response.data);
         setFilterdata(response.data);
+        setTimeout(() => {
+          setLoading(false);
+        });
         console.log("response.data", response.data);
       })
   }
   useEffect(() => {
+   
+ 
     
     fetchData();
   }, []);
@@ -230,6 +238,12 @@ function Acknowledgement() {
   return (
     <>
       <NavHeader />
+      {
+      loading && 
+      <div className="loader-container">
+      	  <div className="spinnerCircle"></div>
+        </div>
+    }
       <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
 
       <div

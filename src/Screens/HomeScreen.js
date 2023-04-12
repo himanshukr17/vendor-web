@@ -29,7 +29,7 @@ function HomeScreen() {
   const [feedDataShow, setFeedDataShow] = useState("")
   const [feedDataShowINV, setFeedDataShowINV] = useState([])
   const [feedDataINV, setFeedDataINV] = useState("")
-
+  const [loading, setLoading] = useState(false);
   const [poHomeDetails, setPoHomeDetails] = useState('')
   const [slides, setSlides] = useState([])
   const [returnHomeDetails, setReturnHomeDetails] = useState('')
@@ -70,7 +70,7 @@ function HomeScreen() {
         setLablesAll(response.data.length);
         setPoDetail(response.data[0])
         //setPoDetails(response.data[0])
-       // console.log("response.dataresponse.data", response.data)
+       console.log("response.dataresponse.data", response.data.length)
         let total = 0;
         let totalQty = 0;
         response.data[0].Details.map(price => {
@@ -85,10 +85,19 @@ function HomeScreen() {
         setPodata(response.data.filter(items => {
           return new Date(items.DOCUMENT_DATE).getFullYear() == new Date().getFullYear() && (new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 1 || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 2)
         }))
+
+       
+        
       })
   }
 
   useEffect(() => {
+  
+     setLoading(true)
+ 
+    setTimeout(() => {
+     setLoading(false);
+   }, 2000);
 
     fetchPosts();
     fetchActivityFeed();
@@ -193,7 +202,12 @@ function HomeScreen() {
     <div
       style={{ marginTop: 22 }}
     >
-    
+    {
+      loading && 
+      <div className="loader-container">
+      	  <div className="spinnerCircle"></div>
+        </div>
+    }
       <div
         className="row"
         style={{

@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser, FaUserTie } from "react-icons/fa";
+import { FaBars, FaDochub, FaFileInvoiceDollar, FaGoodreads, FaHome, FaInvision, FaJediOrder, FaLock, FaMoneyBill, FaServicestack, FaUser, FaUserTie } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
-import { BiAnalyse, BiFontFamily, BiSearch } from "react-icons/bi";
+import { BiAnalyse, BiFontFamily, BiMessage, BiSearch, BiTransferAlt } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
@@ -40,13 +40,13 @@ const routes = [
   },{
     path: "/#",
     name: " Transaction Data",
-    icon: <BiCog />,
+    icon: <BiTransferAlt />,
     exact: true,
     subRoutes: [
       {
         path: "/pos",
         name: " Purchase Order  ",
-        icon: <FaUser />,
+        icon: <FaJediOrder />,
       },
       {
         path: "/res",
@@ -61,14 +61,19 @@ const routes = [
       {
         path: "/inv",
         name: " Invoice Pending",
-        icon: <FaMoneyBill />,
+        icon: <FaFileInvoiceDollar />,
+      },
+      {
+        path: "/grs",
+        name: " Goods Return",
+        icon: <FaGoodreads />,
       },
     ],
   },
   {
     path: "/#",
     name: " Document",
-    icon: <BiCog />,
+    icon: <FaDochub />,
     exact: true,
     subRoutes: [
       {
@@ -81,13 +86,13 @@ const routes = [
   {
     path: "/#",
     name: "Online Services",
-    icon: <BiCog />,
+    icon: <FaServicestack />,
     exact: true,
     subRoutes: [
       {
         path: "/support",
         name: "Customer Support",
-        icon: <FaUser />,
+        icon: <BiMessage />,
       }
     ],
   }

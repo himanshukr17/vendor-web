@@ -50,10 +50,16 @@ function CustomerSupport() {
     { NAME: "POR Declearation Certificate", KEY_VALUE: "POR" },
     { NAME: "Due Diligence Form", KEY_VALUE: "DILIGENCE" }
   ]);
+  const [loading, setLoading] = useState(false);
+
   const fetchPosts = async () => {
+    setLoading(true)
     axios.get(AxioxExpPort + "feedback/get_data?id=" + vendorId)
       .then((response) => {
         setTBody(response.data);
+        setTimeout(() => {
+          setLoading(false);
+        });
         setClickedPOsDataArr(response.data)
         setTableDataLength(response.data.length)
         console.log("response.data", response.data);
@@ -123,6 +129,12 @@ function CustomerSupport() {
   return (
     <div>
       <NavHeader />
+      {
+      loading && 
+      <div className="loader-container">
+      	  <div className="spinnerCircle"></div>
+        </div>
+    }
       <div id="snackbar" style={{ backgroundColor: toasterColor, borderRadius: "50px" }}>{toaster}</div>
 
       <div

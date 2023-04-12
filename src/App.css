@@ -780,3 +780,37 @@ main {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+
+:root {
+  --spinner-color: #3d5af1;
+}
+
+.loader-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+
+.spinnerCircle {
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: var(--spinner-color) transparent var(--spinner-color) transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
+}
+
+@keyframes spin-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

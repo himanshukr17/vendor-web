@@ -50,6 +50,7 @@ function App() {
   const [isLoggedIn, setisLoggedIn] = useState(null);
   console.log('userTypeDef', userType)
   //localStorage.clear() 
+  
   return (
     <div className="App" style={{backgroundColor:'#EDEAEA'}}>
       {

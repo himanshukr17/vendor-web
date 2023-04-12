@@ -118,10 +118,11 @@ function Login() {
       heading: {
         fontFamily: 'Arial',
         fontSize: '2.5rem',
-        color: '#1F87D0',
+        color: '#fff',
         textShadow: '1px 1px 2px #000',
         marginBottom: '0.8rem',
-      },
+        textAlign: 'center',
+      }
 
     };
 
@@ -130,29 +131,10 @@ function Login() {
 
         <div style={styles} >
 
-        <h1 style={{
-      position: 'absolute',
-      top: '10px',
-      right: '10px',
-      color: '#fff',
-    }}>
-      Vendor Portal
-    </h1>          <div
+              <div
             className="box-form"
           >
-  <div className="col-md-6 left">
-  <a style={{ position: 'absolute', top: '10px', left: '10px' }}>
-    <img src="../Images/Picture1.png" style={{ width: "50%", height: "90%" }} />
-  </a>
-  <img src={"../Images/loginimg.png"} style={{ display: "block", marginLeft: "auto", marginRight: "auto", marginTop:'5%' }} width={"100%"} alt="Cartoons" />
-  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "30px" }}>
-    <p style={{ fontSize: "16px", fontWeight: "bold", marginRight: "10px", color: "#555" }}>Powered by</p>
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#f8d7da", borderRadius: "10px", padding: "5px 10px" }}>
-      <p style={{ fontSize: "16px", fontWeight: "bold", color: "#721c24" }}>Samishti Infotech Pvt Ltd.</p>
-      <img src="https://www.samishti.com/img/logo.png" alt="Logo" style={{ width: "30px", height: "30px", marginLeft: "10px" }} />
-    </div>
-  </div>
-</div>
+  
             <div className="col-md-6 right">
               <div className="tab">
                 <button className={btnVActive} style={{ color: btnVActiveColor }} type="button" onClick={() => { vendorLogin(); setUserTypeGet(false) }}>Supplier Login</button>
@@ -255,6 +237,22 @@ function Login() {
                 </>
               }
             </div>
+            <div className="col-md-6 left">
+            <h1 style={stylesWelcome.heading}>Vendor Connect</h1>
+
+  {/* <a style={{ position: 'absolute', top: '10px', left: '10px' }}>
+    <img src="../Images/Picture1.png" style={{ width: "50%", height: "90%" }} />
+  </a> */}
+  <img src={"../Images/loginimg.png"} style={{ display: "block", marginLeft: "auto", marginRight: "auto"}} width={"100%"} alt="Cartoons" />
+  <div style={{ position: "absolute", bottom: "10px", right: "10px", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+  <p style={{ fontSize: "15px",marginTop:'5%', fontWeight: "bold",  color: "#fff" }}>Powered by</p>
+    <img src="../Images/Picture1.png" alt="Logo" style={{ width: "40%", height: "70%", marginLeft: "5px" }} />
+  
+</div>
+
+
+
+</div>
           </div>
         </div>
       </>

@@ -52,8 +52,10 @@ function PurchaseOrders() {
   const [emptyModalTable, setEmptyModalTable] = useState([]);
   const [PONmbrShow,setPONmbrShow]=useState("")
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
+  const [loading, setLoading] = useState(false);
 
   const fetchPosts = async () => {
+    setLoading(true)
     axios.post(AxioxExpPort + "createcompany/po",{
     "user":vendorId
     })
@@ -61,11 +63,17 @@ function PurchaseOrders() {
         setTBody(response.data);
          console.log("response.data",response.data);
          setTableDataLength(response.data.length)
+         setTimeout(() => {
+          setLoading(false);
+        });
         setFilterdata(response.data);
       })
 
   }
   useEffect(() => {
+    
+    
+
     fetchPosts()
   }, []);
 
@@ -215,6 +223,12 @@ function PurchaseOrders() {
   return (
     <>
       <NavHeader />
+      {
+      loading && 
+      <div className="loader-container">
+      	  <div className="spinnerCircle"></div>
+        </div>
+    }
       <div
         className="card-body"
         style={{
