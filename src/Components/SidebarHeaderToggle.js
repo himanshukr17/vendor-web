@@ -9,7 +9,7 @@ import { useState } from "react";
 
 import { IconContext } from "react-icons";
 import { AnimatePresence, motion } from "framer-motion";
-import SidebarMenu from "./SidebarMenu";
+import SidebarMenuHeader from "./SidebarMenuHeader";
 const routes = [
   {
     path: "/",
@@ -98,8 +98,8 @@ const routes = [
   }
 ];
 
-const SideBar = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(true);
+const SidebarHeaderToggle = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   const [navbar, setNabar] = useState(false);
   const changeBackground = () => {
@@ -166,7 +166,7 @@ const SideBar = ({ children }) => {
             <p className="text-center" style={{ fontSize:"20px"}}>{companyName}</p>
           </a>
           <div className="bars" style={{marginLeft:'-60%'}}>
-              {/* <FaBars color={'black'} onClick={toggle} /> */}
+               <FaBars color={'black'} onClick={toggle} /> 
             </div>
         <a style={{fontSize:"17px"}}>             <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
             <span style={{color:"#14CA96", fontSize:"25px"}}> Connect</span></a>
@@ -438,7 +438,7 @@ const SideBar = ({ children }) => {
             {routes.map((route, index) => {
               if (route.subRoutes) {
                 return (
-                  <SidebarMenu
+                  <SidebarMenuHeader
                     setIsOpen={setIsOpen}
                     route={route}
                     showAnimation={showAnimation}
@@ -481,4 +481,4 @@ const SideBar = ({ children }) => {
   );
 };
 
-export default SideBar;
+export default SidebarHeaderToggle;

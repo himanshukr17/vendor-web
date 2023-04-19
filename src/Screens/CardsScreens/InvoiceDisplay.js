@@ -18,6 +18,7 @@ import dateFormat from 'dateformat';
 import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
+import SidebarHeaderToggle from "../../Components/SidebarHeaderToggle";
 function InvoiceDisplay () {
     const vendorId = localStorage.getItem('userId');
     // console.log("locationID.state.",locationID.state)
@@ -237,7 +238,7 @@ function InvoiceDisplay () {
     const paginate = pageNumber => setCurrentPage(pageNumber)
     return (
       <>
-        <NavHeader />
+        <SidebarHeaderToggle />
         {
       loading && 
       <div className="loader-container">
@@ -247,7 +248,7 @@ function InvoiceDisplay () {
         <div
         className="card-body"
         style={{
-          marginTop: "4%",
+          marginTop: "2%",
         }}
       >
         <div
@@ -260,7 +261,7 @@ function InvoiceDisplay () {
                 <div className="col-md-10">
 
                
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' , marginLeft:'40px' }}>
   <h4 className="form-check-label">
   Invoice Details
   </h4>
@@ -300,8 +301,8 @@ function InvoiceDisplay () {
                
               </div>
             </div>
-            <div className="card" style={{marginTop:10}}>
-            <div className="card-body">
+            <div className="card" >
+            <div className="card-body" style={{marginLeft:'30px'}}>
             <div className="row">
               <div className="col-md-2 noPrint" >
               <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button>{" "}
@@ -340,9 +341,9 @@ function InvoiceDisplay () {
   
   
           </div>
-    
+<div style={{marginLeft:'30px'}}>   
             <p className="text-right" style={{ marginTop: "-20px" }}>*Exc GST</p>
-            <table className="table table-light table-bordered table-hover">
+            <table className="table table-light table-bordered table-hover" >
               <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
                 <tr
                   className="text-center"
@@ -494,6 +495,7 @@ function InvoiceDisplay () {
                 )}
               </tbody>
             </table>
+          </div>
           </div>
         </div>
      

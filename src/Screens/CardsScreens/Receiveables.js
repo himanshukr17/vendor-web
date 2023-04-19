@@ -17,6 +17,7 @@ import { FaFileCsv } from "react-icons/fa";
 import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
+import SidebarHeaderToggle from "../../Components/SidebarHeaderToggle";
 
 function Receiveables() {
   const navigate = useNavigate();
@@ -219,7 +220,7 @@ function Receiveables() {
 
   return (
     <>
-      <NavHeader />
+      <SidebarHeaderToggle />
       {
       loading && 
       <div className="loader-container">
@@ -229,7 +230,7 @@ function Receiveables() {
       <div
         className="card-body"
         style={{
-          marginTop: "4%",
+          marginTop: "2%",
         }}
       >
         <div
@@ -239,7 +240,7 @@ function Receiveables() {
               <div className="row" style={{ marginBottom:10}}>
                
                 <div className="col-md-10">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft:'40px' }}>
   <h4 className="form-check-label">
   Goods Receipt Notes/Number  </h4>
   <button  style={{
@@ -275,8 +276,8 @@ function Receiveables() {
                
               </div>
             </div>
-            <div className="card" style={{marginTop:10}}>
-            <div className="card-body">
+            <div className="card" style={{marginTop:10, marginLeft:8 }}>
+            <div className="card-body" style={{ marginLeft:30}}>
             <div className="row" >
             <div className="col-md-1">
               <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAll}>Show All</button>
@@ -313,7 +314,7 @@ function Receiveables() {
 
         </div>
 
-        <div >
+        <div  style={{ marginLeft:30}} >
           {/* <p className="text-right" style={{ marginTop: "-30px" }}>{" "}</p> */}
           <table className="table table-light table-bordered table-hover">
             <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>

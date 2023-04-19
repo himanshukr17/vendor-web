@@ -8,6 +8,7 @@ import {  FaComments, FaFileContract, FaUsers } from "react-icons/fa";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { AiFillReconciliation, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { AxioxExpPort } from "./AxioxExpPort"
+import Footer from "../Components/Footer";
 
 function HomeScreenSupplier() {
 

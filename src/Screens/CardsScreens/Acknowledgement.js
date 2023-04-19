@@ -18,6 +18,7 @@ import dateFormat from 'dateformat';
 import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
+import SidebarHeaderToggle from "../../Components/SidebarHeaderToggle";
 function Acknowledgement() {
   const navigate = useNavigate();
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
@@ -237,7 +238,7 @@ function Acknowledgement() {
   const paginate = pageNumber => setCurrentPage(pageNumber)
   return (
     <>
-      <NavHeader />
+      <SidebarHeaderToggle />
       {
       loading && 
       <div className="loader-container">
@@ -249,7 +250,7 @@ function Acknowledgement() {
       <div
         className="card-body"
         style={{
-          marginTop: "4%",
+          marginTop: "2%",
         }}
       >
         <div>
@@ -258,7 +259,7 @@ function Acknowledgement() {
               <div className="row" style={{ marginBottom: 10 }}>
                 <div className="col-md-10">
                
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginLeft:'40px' }}>
   <h4 className="form-check-label">
   Acknowledgement
   </h4>
@@ -295,9 +296,9 @@ function Acknowledgement() {
 
               </div>
             </div>
-            <div className="card" style={{ marginTop: 10 }}>
-              <div className="card-body">
-                <div className="row">
+            <div className="card"  >
+              <div className="card-body" style={{marginLeft:'30px'}} >
+                <div className="row" >
                   <div className="col-md-1">
                     <button type="button" style={{ width: "100%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button>
                   </div>
@@ -323,7 +324,7 @@ function Acknowledgement() {
                   </div>
                 </div>
               </div>
-              <div className="card-body">
+              <div className="card-body" style={{marginLeft:'30px'}}>
                 <p className="text-right" style={{ marginTop: "-30px" }}></p>
                 <table className="table table-light table-bordered table-hover">
                   <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>

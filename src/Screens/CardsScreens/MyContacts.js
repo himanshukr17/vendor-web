@@ -8,6 +8,7 @@ import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { Modal, ModalBody } from "reactstrap";
+import SidebarHeaderToggle from "../../Components/SidebarHeaderToggle";
 function MyContact() {
   const navigate = useNavigate();
   const [userInfo, setuserInfo] = useState({
@@ -132,24 +133,24 @@ function MyContact() {
 
   return (
     <>
-    <NavHeader />
+    <SidebarHeaderToggle />
       <div id="snackbar" style={{backgroundColor:toasterColor, borderRadius:"50px"}}>{toaster}</div>
+        <div style={{marginLeft:40}}>
 
       <div
         className="card-body"
         style={{
-          marginTop: "4%",
+          marginTop: "2%",
         }}
       >
-        <div>
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-12" style={{}}>
               <div className="row" style={{ marginBottom: 10 }}>
                 <div className="col-md-10">
                
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', }}>
   <h4 className="form-check-label">
-  Acknowledgement
+  My Documents
   </h4>
   <button  style={{
       marginLeft: '10px',
@@ -195,7 +196,7 @@ function MyContact() {
           ></div> */}
         </div>
         <div className="card">
-        <div className="card-body">
+        <div className="card-body" >
 
         
         <div style={{marginTop:"1%"}} >
@@ -270,7 +271,6 @@ function MyContact() {
           </div>
         </div>
         </div>
-      </div>
       </div>
      
       <div className="card-body"   >
@@ -396,6 +396,7 @@ function MyContact() {
         </div>
       </div>
     
+      </div>
       <Modal
         size="md"
         isOpen={showCheckFlages}

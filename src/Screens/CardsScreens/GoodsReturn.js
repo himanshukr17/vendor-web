@@ -16,6 +16,7 @@ import { BsHash } from "react-icons/bs";
 import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";
+import SidebarHeaderToggle from "../../Components/SidebarHeaderToggle";
 function GoodsReturn() {
   const navigate = useNavigate();
   const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
@@ -211,7 +212,7 @@ function GoodsReturn() {
 
   return (
     <>
-      <NavHeader />
+      <SidebarHeaderToggle />
       {
       loading && 
       <div className="loader-container">
@@ -221,7 +222,7 @@ function GoodsReturn() {
       <div
         className="card-body"
         style={{
-          marginTop: "4%",
+          marginTop: "2%",
         }}
       >
         <div
@@ -234,7 +235,7 @@ function GoodsReturn() {
                 <div className="col-md-10">
 
                   
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center',marginLeft:'40px' }}>
   <h4 className="form-check-label">
   Goods Return
   </h4>
@@ -276,7 +277,7 @@ function GoodsReturn() {
               </div>
             </div>
             <div className="card" style={{marginTop:10}}>
-            <div className="card-body">
+            <div className="card-body" style={{marginLeft:'28px'}}>
             <div className="row">
 
             <div className="col-md-2 noPrint">

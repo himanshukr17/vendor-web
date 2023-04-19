@@ -63,11 +63,13 @@ function HomeScreen() {
   }
 
   const fetchPosts = async () => {
+    setLoading(true)
     axios.post(AxioxExpPort + "createcompany/po", {
       "user": vendorId
     })
       .then((response) => {
         setLablesAll(response.data.length);
+      
         setPoDetail(response.data[0])
         //setPoDetails(response.data[0])
        console.log("response.dataresponse.data", response.data.length)
@@ -85,7 +87,9 @@ function HomeScreen() {
         setPodata(response.data.filter(items => {
           return new Date(items.DOCUMENT_DATE).getFullYear() == new Date().getFullYear() && (new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 1 || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() || new Date(items.DOCUMENT_DATE).getMonth() == new Date().getMonth() - 2)
         }))
-
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
        
         
       })
@@ -93,11 +97,9 @@ function HomeScreen() {
 
   useEffect(() => {
   
-     setLoading(true)
+
  
-    setTimeout(() => {
-     setLoading(false);
-   }, 2000);
+   
 
     fetchPosts();
     fetchActivityFeed();

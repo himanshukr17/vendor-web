@@ -691,7 +691,16 @@ main {
   color: white;
   height: 100vh;
   overflow-y: auto;
+  @media (max-width: 768px) {
+    width: 60px;
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    width: 150px;
+  }
 }
+
+
 .top_section {
   display: flex;
   margin-top: 19%;
@@ -708,22 +717,6 @@ main {
 }
 .hide {
   display: none;
-}
-
-.search {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-  height: 30px;
-  padding: 10px;
-}
-.search input {
-  border: none;
-  margin-left: 10px;
-  border-radius: 5px;
-  background: rgb(238, 238, 238);
-
-  color: white;
 }
 
 .routes {

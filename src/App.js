@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "./App.css";
 import { BrowserRouter, Route, Routes, Link, Router } from "react-router-dom";
-import SignUp from "./Screens/SignUp";
+import SignUp from "./Screens/SignupOld";
 import Login from "./Screens/Login";
 import Graph from "./Components/Graph";
 import Dashboard from "./Screens/Dashboard";
@@ -43,6 +43,10 @@ import CreateScreen from './Screens/ScreenAuth/CreateScreen';
 import CreateModule from './Screens/ScreenAuth/CreateModule';
 import CreateAuthorization from './Screens/ScreenAuth/CreateAuthorization';
 import AdminScreen from './Screens/BuyerScreen/AdminScreen';
+import SignupNew from './Screens/SignupNew';
+import NewLogin from './Screens/NewLogin';
+// import SignupNew from './Screens/Signup';
+// import Signup from './Screens/Signup';
 function App() {
   const userType = localStorage.getItem('userType');
   const userID = localStorage.getItem('userId');
@@ -52,18 +56,20 @@ function App() {
   //localStorage.clear() 
   
   return (
-    <div className="App" style={{backgroundColor:'#EDEAEA'}}>
+<div className="App" >
       {
         userType === null &&
         (<Routes>
-          <Route path="/" element={<Login />} exact />
+          {/* <Route path="/" element={<Login />} exact /> */}
+          <Route path="/" element={<NewLogin />} exact />
+          {/* <Route path="/signupnew" element={<SignupNew />} exact /> */}
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/createweb" element={<CreateScreen />} exact />
           <Route path="/createmobile" element={<CreateModule />} exact />
           <Route path="/admin" element={<AdminScreen />} exact />
           <Route path="/createauth" element={<CreateAuthorization/>} exact />
           <Route path="/checkStatus" element={<CheckStatus />} exact />
-          <Route path="/signup" element={<SignUp />} exact />
+          <Route path="/signup" element={<SignupNew />} exact />
           <Route path="/forgot_password" element={<ForgotPassword />} exact />
           {/* <Route path="/pos" element={<PurchaseOrders />} exact /> */}
           <Route path="/PurchaseOrderSupplier" element={<PurchaseOrderSupplier />} exact />
@@ -72,13 +78,16 @@ function App() {
         </Routes>)
       }
       {
-        userType === "false" &&
+        userType ==='supplier' &&
 
         (<Routes>
-          <Route path="/" element={<Login />} exact />
+          {/* <Route path="/" element={<Login />} exact /> */}
+          <Route path="/" element={<NewLogin />} exact />
+
           <Route path="/notfound" element={<ErrorPage />} exact />
           {/* <Route path="/PurchaseOrderSupplier" element={<Protected><PurchaseOrderSupplier /></Protected>} exact /> */}
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
+          <Route path="/home" element={<Protected><Acknowledgement /></Protected>} exact />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
           {/* <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact /> */}
@@ -94,13 +103,15 @@ function App() {
           <Route path='*' exact={true} element={<NotFound404 />} />
         </Routes>
         )}
-      {userType === "true" &&
+      {userType ==='buyer' &&
       
         (<Routes>
-          <Route path="/" element={<Login />} exact />
-          <Route path="/home" element={<Protected><DashboardSupplier /></Protected>} exact />
+          {/* <Route path="/" element={<Login />} exact /> */}
+          <Route path="/" element={<NewLogin />} exact />
+
+          <Route path="/home" element={<DashboardSupplier />} exact />
           {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
-          <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> 
+          <Route path="/AdminManageVendor" element={<Protected><AdminManageVendor /></Protected>} exact /> 
 
           <Route path="/rscsupport" element={<Protected><RecSupport /></Protected>} exact />
           <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />

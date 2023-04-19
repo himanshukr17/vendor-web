@@ -17,6 +17,7 @@ import dateFormat from 'dateformat';
 import { AiFillAccountBook, AiFillReconciliation, AiOutlineWallet } from "react-icons/ai";
 import { BsFillCartCheckFill, BsFillCartXFill } from "react-icons/bs";
 import { FaFileContract, FaFileInvoiceDollar } from "react-icons/fa";       
+import SidebarHeaderToggle from "../../Components/SidebarHeaderToggle";
 function PurchaseOrders() {
   const navigate = useNavigate();
   const [isPurchaseOrderEmpty, setIsPurchaseOrderEmpty] = useState(true);
@@ -222,7 +223,7 @@ function PurchaseOrders() {
   const paginate = pageNumber => setCurrentPage(pageNumber)
   return (
     <>
-      <NavHeader />
+     
       {
       loading && 
       <div className="loader-container">
@@ -232,18 +233,20 @@ function PurchaseOrders() {
       <div
         className="card-body"
         style={{
-          marginTop: "4%",
+          marginTop: "2%",
         }}
       >
+      <SidebarHeaderToggle  />
         <div
           
         >
           <div className="row">
             <div className="col-md-12">
-              <div className="row" style={{ marginBottom:10}}>
+              <div className="row" >
+               
                
                 <div className="col-lg-10">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft:'40px' }}>
   <h4 className="form-check-label">
     Purchase Order
   </h4>
@@ -282,8 +285,9 @@ function PurchaseOrders() {
                
               </div>
             </div>
-            <div className="card" style={{marginTop:10}}>
-            <div className="card-body">
+            <div className="card" style={{marginTop:10, marginLeft:'15px'}}>
+            
+            <div className="card-body" >
             <div className="row">
             <div className="col-md-2">
             <button type="button" style={{ width: "45%", height: 35, borderRadius: 5 }} onClick={handelAllPO}>Show All</button> {" "}
@@ -324,7 +328,7 @@ function PurchaseOrders() {
         </div>
        
           <p className="text-right" style={{ marginTop: "-24px" , marginBottom: "1px" }}>*Exc GST</p>
-          <table className="table table-light table-bordered table-hover">
+          <table className="table table-light table-bordered table-hover" style={{marginLeft:8.5}}>
             <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
               <tr
                 className="text-center"

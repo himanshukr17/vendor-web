@@ -1,0 +1,265 @@
+.login-bg {
+    background-image: url('../../public/Images/13390.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    opacity: 0.9;
+    
+    position: relative; /* add position relative */
+    z-index: 1; /* add z-index to be behind wave */
+  }
+  
+  
+.wave {
+    background: rgba(00, 245, 160, 0.07);
+    border-radius: 1000% 1000% 0 0;
+    position: fixed;
+    width: 200%;
+    height: 10em;
+    animation: wave 10s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    bottom: 0;
+    left: 0;
+    animation: wave 10s -3s infinite;
+    z-index: 2;
+     /* add z-index to be on top of login-bg */
+}
+
+.wave:nth-of-type(2) {
+    bottom: -1.25em;
+    animation: wave 18s linear reverse infinite;
+    opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+    bottom: -2.5em;
+    animation: wave 20s -1s reverse infinite;
+    opacity: 0.9;
+}
+
+@keyframes wave {
+    2% {
+        transform: translateX(1);
+    }
+
+    25% {
+        transform: translateX(-25%);
+    }
+
+    50% {
+        transform: translateX(-50%);
+    }
+
+    75% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(1);
+    }
+}
+
+
+.box-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 100px;
+  height: auto;
+  /* set a height for the container */
+}
+  
+  .login-box {
+    color: #fff;
+    margin-top: -100px;
+    padding: 40px;
+    border-radius: 10px;
+    width: 400px;
+    margin-left: 20px;
+    position: relative;
+     box-shadow: inset 0 0 5px #03a9f4, 0 0 10px #03a9f4; 
+
+  }
+  
+  /* .login-box:before {
+   content: "";
+    position: absolute; 
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 0px;
+    border-radius: inherit;
+    border: 2px solid #03a9f4;
+    opacity: 50;
+    animation: pulse 60s infinite;
+  }  */
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.7;
+      box-shadow: inset 0 0 10px #03a9f4, 0 0 10px #03a9f4;
+
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.3;
+      
+    }
+    100% {
+      transform: scale(0.8);
+      opacity: 0.7;
+      box-shadow: inset 0 0 10px #03a9f4, 0 0 10px #03a9f4;
+
+    }
+  }
+  
+  
+  .user-box {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #009060;
+    border: none;
+    border-bottom: 1px solid #10c192;
+    outline: none;
+    background: transparent;
+  }
+  
+  .user-box label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #10b5b5;
+    pointer-events: none;
+    transition: 0.5s;
+  }
+  
+  .user-box input:focus ~ label,
+  .user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #03a9f4;
+    font-size: 12px;
+  }
+  
+  button[type="submit"] {
+    background-color: #03a9f4;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0288d1;
+  }
+  
+
+
+  .login {
+    overflow: hidden;
+  
+    border-radius: 10px;
+    
+    width: 450px;
+    
+    transition: transform 300ms, box-shadow 300ms;
+    box-shadow: 5px 10px 10px rgba(2, 120, 144, 0.2);
+  }
+  
+  .login::before,
+  .login::after {
+    content: '';
+    position: absolute;
+    width: 850px;
+    height: 850px;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 45%;
+    border-bottom-left-radius: 35%;
+    border-bottom-right-radius: 40%;
+    z-index: -1;
+  }
+  
+  .login::before {
+    left: 40%;
+    bottom: -130%;
+    background-color: rgba(39, 231, 48, 0.15);
+    animation: wawes 6s infinite linear;
+  }
+  
+  .login::after {
+    left: 35%;
+    bottom: -125%;
+    background-color: rgba(73, 213, 255, 0.2);
+    animation: wawes 7s infinite;
+  }
+
+  @keyframes wawes {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .toggle-container {
+    display: flex;
+    position: relative;
+    height: 40px;
+    width: 100px;
+    border-radius: 15px;
+    cursor: pointer;
+     /* margin-right: -30px;  */
+    overflow: hidden;
+  }
+  
+  .toggle-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 0 1px;
+    font-size: 0.0001px;
+
+    background-color: transparent;
+    border: none;
+    outline: none;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .toggle-button.active {
+    background: linear-gradient(to right, #00b2ff, #007f00);
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .toggle-button:nth-child(1) {
+    z-index: 2;
+    transition: width 0.3s ease-in-out 0.15s;
+  }
+  
+  .toggle-button:nth-child(2) {
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .toggle-button.active:nth-child(1) {
+    width: 30;
+  }
+  
+  .toggle-button.active:nth-child(2) {
+    width: 200%;
+  }
+  

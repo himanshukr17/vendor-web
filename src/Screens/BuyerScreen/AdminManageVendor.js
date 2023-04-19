@@ -22,42 +22,52 @@ function AdminManageVendor() {
   const [allSuppliersDD, setAllSuppliersDD] = useState([]);
   const [selectBuyer, setSelectBuyer] = useState([]);
   const [allBuyers, setAllBuyers] = useState([]);
-
   const toggleCheckFlages = () => setShowCheckFlages(!showCheckFlages);
+  const [buyerName,setBuyerName]=useState('');
+  const [buyerID,setBuyerID]=useState('');
+  const [suppliersName,setSupplierName]=useState([]);
+  const [suppliersID,setSupplierID]=useState([]);
+  const [selectedSupplier,setSelectdSupplier]=useState([])
+  const fetchData = async () => {
+    var tempArr = [];
+    var tempArr2 = [];
+    axios.get(AxioxExpPort + "buyer/all_buyer").then((response) => {
+      //  setTBody(response.data);
+      response.data.map((items, index) => {
+        tempArr.push({
+          value: items.BUYER_ID, label: items.COMPANY_NAME
+        })
+      })
+      setAllBuyers(tempArr);
+    })
+
+    axios.get(AxioxExpPort + "createcompany/all_supplier").then((res) => {
+      console.log("response.data", res.data);
+      res.data.map((itemss, index) => {
+        tempArr2.push({
+          value: itemss.VENDOR_ID, label: itemss.FIRST_NAME + " " + itemss.LAST_NAME
+        })
+      })
+      setAllSupplier(tempArr2);
+    })
+  }
+  const [tableData,setTableData]=useState([])
+
+  const tableDataFetch= async()=>{
+    axios.get(AxioxExpPort + "mapping/all_data")
+    .then((response) => {
+      console.log('tableData',response.data);
+      setTableData(response.data)
+    })
+  }
   useEffect(() => {
-    const fetchData = async () => {
-      var tempArr = [];
-      var tempArr2 = [];
-      axios.get(AxioxExpPort + "buyer/all_buyer").then((response) => {
-        //  setTBody(response.data);
-        response.data.map((items, index) => {
-          tempArr.push({
-            value: items.BUYER_ID, label: items.COMPANY_NAME
-          })
-        })
-
-        setAllBuyers(tempArr);
-      })
-
-      axios.get(AxioxExpPort + "createcompany/all_supplier").then((res) => {
-        console.log("response.data", res.data);
-        res.data.map((itemss, index) => {
-          tempArr2.push({
-            value: itemss.VENDOR_ID, label: itemss.FIRST_NAME + " " + itemss.LAST_NAME
-          })
-        })
-
-        setAllSupplier(tempArr2);
-      })
-
-    }
-    fetchData()
+    tableDataFetch();
+    fetchData();
   }, [])
   const handeleSave = () => {
     var tempArrs = []
     allSuppliersDD.map((item, index) => {
-      tempArrs.push(item.value)
-
+    tempArrs.push(item.value)
     })
     console.log(selectBuyer.value)
     try {
@@ -67,17 +77,45 @@ function AdminManageVendor() {
       }).then((res) => {
         navigate("/AdminManageVendor")
       })
-
     } catch {
-
-
     }
   }
-  // alert(optionVal)
+
+  const handleClick = (val) => {
+    toggleCheckFlages();
+    setSupplierName(val.supplier_details);
+    setBuyerName(val.BUYER_NAME);
+    setBuyerID(val.BUYER_ID);
+  };
+
+const tempArr3 = suppliersName.map(itemss => ({
+  value: itemss.SUPPLIER_ID,
+  label: itemss.SUPPLIER_NAME
+}));
 
 
+const seveSuppliers=()=>{
+  console.log('suppliersID',suppliersID);
+  const tempArr3 = suppliersName.map(itemss => (itemss.SUPPLIER_ID));
 
+  if(suppliersID.length > 0){
+    axios.post(AxioxExpPort + "mapping/assign", {
+      "supplier":tempArr3,
+      "buyer":buyerName
+    })
+      .then((res) => {  
+        console.log('buyerName',res)
+        tableDataFetch();
+        fetchData();
+        toggleCheckFlages();
 
+      })
+  }else{
+    toggleCheckFlages();
+  }
+ 
+
+}
 
 
   return (
@@ -160,52 +198,59 @@ function AdminManageVendor() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                
                 <td className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Buyer</td>
                 <td className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Supplier</td>
                 <td className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">Action</td>
               </tr>
             </thead>
             <tbody>
-              <tr style={{
-                backgroundColor: "white",
-                borderColor: "#000",
-              }}
-                className="table-light">
-              
-                <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>2</td>
-                <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>3</td>
-                <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}><IconContext.Provider
-                      value={{ color: "green", size: "30px" }}
-                    >
-                      {" "}
-                      <FaUserCog />
-                    </IconContext.Provider></td>
-              </tr>
-              <tr>
-                <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>2</td>
-                <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}>3</td>
-                <td className="text-center"
-                  style={{ width: "10%", borderColor: COLORS.gray10 }}><IconContext.Provider
-                      value={{ color: "green", size: "30px" }}
-                    >
-                      {" "}
-                      <FaUserCog />
-                    </IconContext.Provider></td>
-              </tr>
-            </tbody>
+    {tableData.map((val, index) => {
+      return (
+        <tr
+          style={{
+            backgroundColor: "white",
+            borderColor: "#000"
+          }}
+          className="table-light"
+          key={index}
+        >
+          <td
+            // className="text-center"
+            style={{  borderColor: COLORS.gray10 }}
+          >
+            {val.BUYER_NAME}
+          </td>
+          <td
+          
+            style={{ width: "10%",  borderColor: COLORS.gray10 }}
+          >
+            {val.supplier_details.map((valus, idx) => {
+              return <div key={idx}>{valus.SUPPLIER_NAME }                        <span className="badge badge-success" style={{marginLeft:5}} >{valus.SUPPLIER_ID}</span>
+</div>;
+            })}
+          </td>
+          <td
+            className="text-center"
+            style={{ borderColor: COLORS.gray10 }}
+          >
+            <IconContext.Provider
+              value={{ color: "green", size: "30px" }}
+            >
+ <FaUserCog
+      type="button"
+      onClick={() => handleClick(val)}
+    />            </IconContext.Provider>
+          </td>
+        </tr>
+      );
+    })}
+  </tbody>
           </table>
-
         </div>
       </div>
 
       <Modal
-        size="lg"
+        
         isOpen={showCheckFlages}
         toggle={toggleCheckFlages}
         style={{
@@ -214,16 +259,56 @@ function AdminManageVendor() {
 
         }}
       >
-        <ModalBody
-
-        >
-          <div className="modal-header model-lg"
-            style={{ marginTop: '-10px' }}
-          >
-            hi
+      <ModalBody>
+      <div className=" card-info">
+      <div className="card-header">
+        <h3 className="card-title">Edit Suppliers</h3>
+      </div>
+        <div className="card-body">
+          <div className="form-group row">
+            <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
+              Buyer
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="email"
+                className="form-control"
+                id="inputEmail3"
+                placeholder={buyerName}
+                readOnly
+              />
+            </div>
           </div>
-          hi
-        </ModalBody>
+          <div className="form-group row">
+            <label
+              htmlFor="inputPassword3"
+              className="col-sm-2 col-form-label"
+            >
+              Suppliers
+            </label>
+            <div className="col-sm-10">
+            <Select
+  isMulti
+  defaultValue={tempArr3} // <-- pass supplierID instead of selectedSupplier
+  onChange={(e) => { setSupplierID(e); }} // <-- update supplierID when the selection changes
+  placeholder="--Select Suppliers--"
+  options={allSupplier}
+/>
+          </div>
+          </div>
+         
+        </div>
+        <div className="card-footer">
+          <button onClick={seveSuppliers} className="btn btn-info">
+           Save
+          </button>
+          <a type="button" onClick={toggleCheckFlages} className="btn btn-default float-right">
+            Cancel
+          </a>
+        </div>
+    </div>
+      </ModalBody>
+      
       </Modal>
     </>
   );
