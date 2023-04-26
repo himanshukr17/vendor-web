@@ -45,6 +45,7 @@ import CreateAuthorization from './Screens/ScreenAuth/CreateAuthorization';
 import AdminScreen from './Screens/BuyerScreen/AdminScreen';
 import SignupNew from './Screens/SignupNew';
 import NewLogin from './Screens/NewLogin';
+import Ageing from './Screens/CardsScreens/Ageing';
 // import SignupNew from './Screens/Signup';
 // import Signup from './Screens/Signup';
 function App() {
@@ -86,8 +87,9 @@ function App() {
 
           <Route path="/notfound" element={<ErrorPage />} exact />
           {/* <Route path="/PurchaseOrderSupplier" element={<Protected><PurchaseOrderSupplier /></Protected>} exact /> */}
+          <Route path="/ageing" element={<Protected><Ageing /></Protected>} exact />
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
-          <Route path="/home" element={<Protected><Acknowledgement /></Protected>} exact />
+          {/* <Route path="/home" element={<Protected><Acknowledgement /></Protected>} exact /> */}
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
           {/* <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact /> */}

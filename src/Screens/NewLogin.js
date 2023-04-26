@@ -1,27 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../StyleSheets/NewLogin.css'
 import { Link, redirect, useNavigate } from "react-router-dom";
 import { AxioxExpPort } from "./AxioxExpPort"
+
 function NewLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-
-  
- // const [userName, setUserName] = useState(0);
- 
   const [wrongDetail, setWrongDetail] = useState("")
   const axios = require('axios')
-
- 
+  useEffect(() => {
+    const userType = localStorage.getItem('userType');
+    if (userType === 'supplier') {
+      window.location.href = '/dashboard'
+        } else if (userType === 'buyer') {
+          window.location.href = '/home'
+        }
+  }, []);
 const stylesWelcome = {
   container: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
- 
-
     heading: {
       fontFamily: 'Arial',
       fontSize: '2rem',
@@ -30,7 +30,8 @@ const stylesWelcome = {
       marginBottom: '0.8rem',
       textAlign: 'left',
       marginLeft:'1%',
-      marginTop:'10px'
+      marginTop:'10px',
+      animation: 'colorchanges 5s ease-in-out infinite'
     },
     headingg: {
       fontFamily: 'Arial',
@@ -39,21 +40,16 @@ const stylesWelcome = {
       textShadow: '0.5px 0.5px 0px #000',
       marginBottom: '1rem',
       textAlign: 'center',
-
     }
-
   };
   //localStorage.clear() 
   const [isActive, setIsActive] = useState(true);
-
   const handleToggle = () => {
     setIsActive(!isActive);
   };
-  const loginHandle = (e) => {
+  const loginHandle = async(e) => {
     e.preventDefault();
     if (isActive) {
-      
-     
       axios.post(AxioxExpPort + 'createcompany/login_mob', {
         user: username,
         pass: password
@@ -94,41 +90,26 @@ const stylesWelcome = {
 
   return (
     <>
-
     <div className='login-bg' >
     <div >
     <div style={stylesWelcome.container}>
-
-    <span style={stylesWelcome.heading}><span style={{
-      fontFamily: 'Arial',
-      fontSize: '2rem',
-      color: '#1F87D0',
-      textShadow: '#000',
-      textAlign: 'left',
-      textShadow: '0px 0px 0px #000',
-
-     
-     }}>Welcome to </span>Vendor Connect</span>
-    <div className="toggle-container" onClick={handleToggle}>
-        <button
-          className={`toggle-button  ${isActive ? "active" : ""}`}
-          style={{ width: isActive ? "100px" : "0" }}
-        >
-          Buyer
-        </button>
-        <button
-          className={`toggle-button ${!isActive ? "active" : ""}`}
-          style={{ width: !isActive ? "100px" : "0" }}
-        >
-          Supplier
-        </button>
-      </div>
+    <span style={stylesWelcome.heading}>Vendor Connect</span>
   </div>
     <div className="box-container ">
   <div className="login-box login">
+
   {isActive &&
   <>
-    <br/>
+  <span style={{
+  display: 'block',
+  fontFamily: 'sans-serif',
+  fontSize: '1.5rem',
+  textAlign: 'center',
+  margin: '0 auto',
+  marginBottom: '1%',
+}}>
+    <h2 style={stylesWelcome.headingg}>Login as Supplier </h2>
+</span>
     <form onSubmit={loginHandle}>
     
       <div className="user-box">
@@ -153,11 +134,23 @@ const stylesWelcome = {
       <button type="submit">Login</button>
       <div style={{ flexDirection:'row'}}>
       <br/>
-        <Link to="/forgot_password">
+        <Link to="/forgot_password" className="no-underline">
           <p style={{ color: '#0f1c2e' }}>Forget password?</p>
         </Link>
-        <br/>
-    <h2 style={stylesWelcome.headingg}>Login as Supplier </h2>
+        <div className="toggle-container" onClick={handleToggle}>
+        <button
+          className={`toggle-button  ${isActive ? "active" : ""}`}
+          style={{ width: isActive ? "100px" : "0" }}
+        >
+         Go to Buyer
+        </button>
+        <button
+          className={`toggle-button ${!isActive ? "active" : ""}`}
+          style={{ width: !isActive ? "100px" : "0" }}
+        >
+         Go to Supplier
+        </button>
+      </div>
         <p
                     style={{
                       // marginTop: "20%",
@@ -166,11 +159,11 @@ const stylesWelcome = {
                     }}
                   >
                     Already Applied? Check Status of application{" "}
-                    <Link to="/checkStatus"> Here </Link>
+                    <Link to="/checkStatus" className="no-underline"> Here </Link>
                   </p>
       <div style={{ textAlign: 'right' }}>
       <span style={{ color: 'black' }}>
-      <Link to="/signup">Creat Your Account</Link>
+      <Link to="/signup" className="no-underline">Create Your Account</Link>
     </span>
     </div>
     </div>
@@ -179,7 +172,16 @@ const stylesWelcome = {
   }
   {!isActive &&
   <>
-    <br/>
+  <span style={{
+  display: 'block',
+  fontFamily: 'sans-serif',
+  fontSize: '1.5rem',
+  textAlign: 'center',
+  margin: '0 auto',
+  marginBottom: '1%',
+}}>
+    <h2 style={stylesWelcome.headingg}>Login as Buyer</h2>
+</span>
     <form onSubmit={loginHandle}>
     
       <div className="user-box">
@@ -208,9 +210,21 @@ const stylesWelcome = {
         <Link to="/forgot_password">
           <p style={{ color: '#0f1c2e' }}>Forget password?</p>
         </Link>
-        <br/>
-    <h2 style={stylesWelcome.headingg}>Login as Buyer </h2>
-        
+    
+        <div className="toggle-container" onClick={handleToggle}>
+        <button
+          className={`toggle-button  ${isActive ? "active" : ""}`}
+          style={{ width: isActive ? "100px" : "0" }}
+        >
+          Go to Buyer
+        </button>
+        <button
+          className={`toggle-button ${!isActive ? "active" : ""}`}
+          style={{ width: !isActive ? "100px" : "0" }}
+        >
+          Go to Supplier
+        </button>
+      </div>        
      
     </div>
     </form>
@@ -224,11 +238,10 @@ const stylesWelcome = {
     <img src="../Images/Picture1.png" alt="Logo" style={{ width: "40%", height: "70%", marginLeft: "5px" }} />
   
 </div>
-   <div style={{ position: "absolute", bottom: "10px", right: "unset", left: "10px", display: "flex", alignItems: "center", justifyContent: "flex-start", width:'45%' }}>
+   <div style={{ position: "absolute", bottom: "10px", right: "unset", left: "10px", display: "flex", alignItems: "center", justifyContent: "flex-start", width:'50%' }}>
    <p style={{ 
-  fontSize: "13px", 
+  fontSize: "14px", 
   marginTop: '5%', 
-  fontWeight: "bold", 
   color: "#00C2A5", 
   textShadow: "0.5px 0px 0px #999999",
   fontFamily: "Helvetica, Arial, sans-serif",

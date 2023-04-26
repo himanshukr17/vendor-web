@@ -3,7 +3,7 @@ import { FaBars, FaDochub, FaFileInvoiceDollar, FaGoodreads, FaHome, FaInvision,
 import { MdMessage } from "react-icons/md";
 import { BiAnalyse, BiFontFamily, BiMessage, BiSearch, BiTransferAlt } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
-import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
+import { AiFillHeart, AiFillPieChart, AiOutlineLeft, AiOutlineRight, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
 
@@ -12,32 +12,40 @@ import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenuHeader from "./SidebarMenuHeader";
 const routes = [
   {
-    path: "/",
+    path: "/dashboard",
     name: "Dashboard",
     icon: <FaHome />,
   },
   {
-    path: "/#",
-    name: "Master",
-    icon: <AiTwotoneFileExclamation />,
-    subRoutes: [
-      {
-        path: "//#",
-        name: "Vendor ",
-        icon: <FaUser />,
-      },
-      {
-        path: "//#",
-        name: "Material",
-        icon: <FaLock />,
-      },
-      {
-        path: "//#",
-        name: "Price Master",
-        icon: <FaMoneyBill />,
-      },
-    ],
-  },{
+    path: "/ageing",
+    name: "Ageing Data",
+    icon: <AiFillPieChart />,
+  }
+  ,
+  // {
+  //   path: "/#",
+  //   name: "Master",
+  //   icon: <AiTwotoneFileExclamation />,
+  //   subRoutes: [
+  //     {
+  //       path: "//#",
+  //       name: "Vendor ",
+  //       icon: <FaUser />,
+  //     },
+  //     {
+  //       path: "//#",
+  //       name: "Material",
+  //       icon: <FaLock />,
+  //     },
+  //     {
+  //       path: "//#",
+  //       name: "Price Master",
+  //       icon: <FaMoneyBill />,
+  //     },
+  //   ],
+  // },
+  
+  {
     path: "/#",
     name: " Transaction Data",
     icon: <BiTransferAlt />,
@@ -101,6 +109,7 @@ const routes = [
 const SidebarHeaderToggle = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+ 
   const [navbar, setNabar] = useState(false);
   const changeBackground = () => {
     if (window.scrollY >= 80) {
@@ -157,18 +166,13 @@ const SidebarHeaderToggle = ({ children }) => {
             ? "navbar navbar-expand-lg navbar-light fixed-top bg-light"
             : "navbar navbar-expand-lg navbar-light fixed-top navbar-bg-active bg-light"
         }
-        
       >
 
         <div className="container-fluid" >
-        
           <a className="navbar-brand" >
-            <p className="text-center" style={{ fontSize:"20px"}}>{companyName}</p>
+            <p className="text-center" style={{ fontSize:"20px"}} >{companyName}</p>
           </a>
-          <div className="bars" style={{marginLeft:'-60%'}}>
-               <FaBars color={'black'} onClick={toggle} /> 
-            </div>
-        <a style={{fontSize:"17px"}}>             <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
+        <a style={{fontSize:"17px", }} >             <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
             <span style={{color:"#14CA96", fontSize:"25px"}}> Connect</span></a>
           <button
             className="navbar-toggler"
@@ -259,6 +263,7 @@ const SidebarHeaderToggle = ({ children }) => {
            
                
           <div className="btn-group dropstart">
+
                 
                 <a
                   type="button"
@@ -400,6 +405,7 @@ const SidebarHeaderToggle = ({ children }) => {
   className={`sidebarSS `}
   style={{ position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 100 }}
 >
+
           <div className="top_section">
             <AnimatePresence>
               {isOpen && (
@@ -411,6 +417,9 @@ const SidebarHeaderToggle = ({ children }) => {
                   className="logo"
                 >
                   {/* <span style={{color:"#1F87D0",  fontSize:"20px"}}>Vendor</span>
+<div className="bars" style={{marginLeft:''}}>
+               <FaBars color={'white'} onClick={toggle} /> 
+            </div>
             <span style={{color:"#14CA96", fontSize:"20px"}}> Connect</span> */}
                 </motion.h1>
               )}
@@ -433,8 +442,21 @@ const SidebarHeaderToggle = ({ children }) => {
 
               )}
             </AnimatePresence>
-          </div>
+                     </div>
           <section className="routes">
+          <div style={{float: 'right', marginLeft: '7px', marginTop:'10px'}} onClick={toggle}>
+  <span type="button" style={{display: 'inline-block', borderRadius: '50%', width: '25px', height: '25px', border: '2px solid white', position: 'relative', overflow: 'hidden'}}>
+  {isOpen?
+  
+  <AiOutlineLeft  color={'#8FECFF '} style={{animation: 'rollingleft 2s linear infinite'}} size={20}  /> 
+  :
+
+  <AiOutlineRight color={'#8FECFF '} size={20} style={{animation: 'rollingright 2s linear infinite'}}/> 
+}    
+  </span>
+</div>
+
+         
             {routes.map((route, index) => {
               if (route.subRoutes) {
                 return (

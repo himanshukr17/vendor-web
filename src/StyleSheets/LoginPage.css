@@ -1,13 +1,4 @@
-body {
-  background-color:#ffffff;
-  background-size: cover;
-  background-repeat: no-repeat;
-  /* background-attachment: fixed; */
-  font-family: "Open Sans", sans-serif;
-  
-  /* margin: 0; height: 100%; overflow: hidden; */
-  color: #333333;
-}
+
 
 .box-form {
   margin: 0 auto;

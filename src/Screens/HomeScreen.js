@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Bar, Line } from "react-chartjs-2";
+import { Line, Pie } from "react-chartjs-2";
 import '../StyleSheets/Scrollbar.css'
 import { AxioxExpPort } from "./AxioxExpPort"
 import 'chartjs-plugin-datalabels';
@@ -9,9 +9,31 @@ import { FaWpforms } from "react-icons/fa";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import SectionList from "../Components/SectionList";
 import Sidebar from "../Components/Sidebar";
+import CountUp from 'react-countup';
 
+const datass = {
+  labels: ['0-30 Days', '31-60 Days', '61-90 Days', '91-120 Days', 'Above 120 Days'],
+  datasets: [
+    {
+      data: [300, 50, 100, 40, 10],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
+    },
+  ],
+};
+
+const optionsss = {
+  maintainAspectRatio: false,
+  responsive: true,
+  legend: {
+    position: 'bottom',
+    labels: {
+      fontColor: '#333',
+      fontSize: 12,
+    },
+  },
+};
 function HomeScreen() {
   const [carouselKey] = useState(Math.random());
   const vendorId = localStorage.getItem('userId');
@@ -52,14 +74,13 @@ function HomeScreen() {
         setFeedDataShow(response.data[0].po_data.length)
         setFeedDataINV(response.data[0].invoice_data.length)
         setFeedDataShowINV(response.data[0].invoice_data)
-        console.log("response.dataresponse.data",response.data[0].invoice_data)
-        
+        // console.log("response.dataresponse.data", response.data[0].invoice_data.length)
       })
-      axios.get(AxioxExpPort + "last_updated/data?id=" + vendorId)
+    axios.get(AxioxExpPort + "last_updated/data?id=" + vendorId)
       .then((response) => {
         setSlides(response.data);
       })
-      console.log("feedsData",feedsData)
+    console.log("feedsData", feedsData)
   }
 
   const fetchPosts = async () => {
@@ -69,10 +90,9 @@ function HomeScreen() {
     })
       .then((response) => {
         setLablesAll(response.data.length);
-      
         setPoDetail(response.data[0])
         //setPoDetails(response.data[0])
-       console.log("response.dataresponse.data", response.data.length)
+        // console.log("response.dataresponse.data", response.data.length)
         let total = 0;
         let totalQty = 0;
         response.data[0].Details.map(price => {
@@ -90,17 +110,18 @@ function HomeScreen() {
         setTimeout(() => {
           setLoading(false);
         }, 1000);
-       
-        
+      })
+  }
+
+  const fetchHomeCount = async () => {
+    axios.get(AxioxExpPort + "count/all?id=" + vendorId)
+      .then((response) => {
+        setDashboardData(response.data);
       })
   }
 
   useEffect(() => {
-  
-
- 
-   
-
+    fetchHomeCount()
     fetchPosts();
     fetchActivityFeed();
 
@@ -137,7 +158,6 @@ function HomeScreen() {
   arr.map(items => {
     let tot = 0
     podata.map(mon => {
-
       if (new Date(mon.DOCUMENT_DATE).getMonth() + 1 == items) {
         mon.Details.map(sum => {
           tot = tot + (sum.ORDER_QUANTITY * sum.NET_PRICE)
@@ -146,7 +166,6 @@ function HomeScreen() {
     })
     // chartdatass.push(Number(tot) / 100000)
     chartdatass.push(Number(tot))
-
   })
 
   // slider style part
@@ -154,26 +173,27 @@ function HomeScreen() {
     backgroundImage: `url("https://media.istockphoto.com/id/880896186/vector/financial-growth-revenue-graph-vector-illustration-trend-lines-columns-market-economy.jpg?s=612x612&w=0&k=20&c=IQrkvp7bLcb52-C1zty-FDLoPbSoTJXE4hU0-PKHcYY=")`,
     borderRadius: "10px"
   };
-
-
-
   // bar graph setup and data 
   const data = {
     labels: labels.reverse(),
     datasets: [
       {
+
+        lineTension: 0.2, 
         fill: true,
         label: "Lakh(INR)",
         borderColor: '#4F51C0',
-         backgroundColor: 'white',
+        backgroundColor: 'white',
         data: chartdatass.reverse(),
       },
     ],
   };
 
   const options = {
+    bezierCurve : false,
     plugins: {
       datalabels: {
+        
         display: true,
         color: 'white',
         formatter: (value, context) => '₹ ' + value,
@@ -200,16 +220,19 @@ function HomeScreen() {
     // Start autoplay when the mouse hovers over the carousel
     carouselRef.current.startAutoplay();
   };
+
+
+
   return (
     <div
       style={{ marginTop: 22 }}
     >
-    {
-      loading && 
-      <div className="loader-container">
-      	  <div className="spinnerCircle"></div>
+      {
+        loading &&
+        <div className="loader-container">
+          <div className="spinnerCircle"></div>
         </div>
-    }
+      }
       <div
         className="row"
         style={{
@@ -218,150 +241,174 @@ function HomeScreen() {
         }}
       >
         <div className="col-md-2">
-        <div >
-         <Sidebar/> 
+          <div >
+            <Sidebar />
 
-         {/* <SectionList/> */}
+            {/* <SectionList/> */}
+          </div>
         </div>
-        </div>
+        <div className="col-md-7">
+          <div className="row" style={{ marginLeft: "2.2%", marginTop: "6%", alignItems: "center" }}>
+            <div className="col-sm-2 " >
+              <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#14CA96,#1F87D0, #fff)', padding: '25px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}>
 
-        <div className="col-md-7" style={{marginTop:'2%'}}>
-          <div className="col-lg-12" >
-
-            <div    className="card"  style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "4%", marginTop: "1.5%" }}>
-            <div style={{padding:25}}>
-
-
-              <Slider {...settings} >
-                {ArrayTEmp[0].map((slide, index) => {
-                  console.log("slide", slide)
-                  let total = 0
-                  let totalsQty = 0
-                  slide.Details.map(price => {
-                    total = total + price.NET_PRICE * price.ORDER_QUANTITY
-                    totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
-                  });
-                  return (
-
-                    <div
-                      key={index}
-                      className="card "
-
-                    >
-                      <div className="card-body" style={myStyles}>
-                        <h5
-                          style={{
-                            color: "#7B241C ",
-                            fontWeight: "bold",
-                            textAlign: "center" // added style
-                          }}
-                        >
-                          {index == 0 && "Latest Purchase Order" || index == 1 && "Latest Goods Receipt" || index == 2 && "Latest Goods Return" || index == 3 && "Latest Invoice Data"}
-                        </h5>
-                        <div className="row text-left" style={{
-
-                          marginBottom: -3
-                        }} >
-                          <div className="col-md-9" style={{ marginTop: 1 }}>
-                            <a style={{ color: "#4F51C0" }}>PO Number:</a><br />
-                            <p style={{
-                              fontWeight: "bold",
-                              color: "#7B241C "
-                            }}>{slide.PO_NO ? slide.PO_NO: 'Will be update soon'}</p>
-
-                          </div>
-
-                          <div className="col-md-3" style={{ marginTop: 1 }}>
-                            <a style={{ color: "#4F51C0" }}>Date:</a><br />
-                            <a
-                              style={{
-                                fontWeight: "bold",
-                                color: "#7B241C "
-
-                              }}
-                            >{dateFormat((slide.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a>
-                          </div>
-                          <div className="col-md-12" style={{ marginTop: 3 }}>
-                            <a style={{ color: "#4F51C0" }}>Plant: </a>
-                            <a style={{
-                              color: "#7B241C "
-                            }}>{slide.Details[0].PLANT_ID + "(" + slide.Details[0].PLANT_DESCRIPTION + ")"}</a>
-                          </div>
-                          <div className="col-md-12" style={{ marginTop: 1 }}>
-                            <a style={{ color: "#4F51C0" }}>Unit: </a>
-                            <a style={{
-                              color: "#7B241C "
-                            }}>{slide.Details[0].UNIT ?slide.Details[0].UNIT :0}</a>
-                          </div>
-                          <div className="col-md-12" style={{ marginTop: 1 }}>
-                            <a style={{ color: "#4F51C0" }}>Total Quantity: </a>
-                            <a style={{
-                              color: "#7B241C "
-                            }}>{totalsQty?totalsQty:0}</a>
-                          </div>
-                          <div className="col-md-12" style={{ marginTop: 1, marginBottom: 10 }}>
-                            <a style={{ color: "#4F51C0" }}>Total Net Value: </a>
-                            <a style={{
-                              color: "#7B241C "
-                            }}>{Number(total)?Number(total):0}</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </Slider>
+                  <CountUp duration={3}
+                    start={0}
+                    end={isNaN(Number(dashboardData.OPEN_PO) + Number(dashboardData.CLOSE_PO)) ? 0 : Number(dashboardData.OPEN_PO) + Number(dashboardData.CLOSE_PO)} />
+                </span>                  <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Total_Order</span>
               </div>
             </div>
+            <div className="col-sm-2 " >
+              <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
+                  start={0}
+                  end={Number(dashboardData.RECEIVED_PO) ? Number(dashboardData.RECEIVED_PO) : 0} /></span>
+                <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>GRN</span>
+              </div>
+            </div>
+            <div className="col-sm-2 " >
+              <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}>{'0'}</span>
+                <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Invoice_Book</span>
+              </div>
+            </div>
+            <div className="col-sm-2 " >
+              <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
+                  start={0}
+                  end={Number(lablesAll) ? Number(lablesAll) : 0} /></span>
+                <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Order_to_Confirm</span>
+              </div>
+            </div>
+            <div className="col-sm-2 " >
+              <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
+                  start={0}
+                  end={Number(dashboardData.INVOICE_COUNT) ? Number(dashboardData.INVOICE_COUNT) : 0} /></span>
+                <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Pending_Invoice</span>
 
-            <div className="col-md-12" style={{ marginTop: "1%" }}  >
-              <div
-                className="card info-card sales-card"
-                style={
-                  {
-                    backgroundColor: "white",
-                    marginLeft: "3%",
-                    marginRight: "0.5%",
-                    
-                   
-                  }
-                }
-              >
-                <h5
-                  className="card-title"
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 4,
-                    color: "black",
-                  }}
-                >
-                  Purchase order of Last 3 months
-                </h5>
-                <Line data={data} height={145} options={options} />
+              </div>
+            </div>
+            <div className="col-sm-2 " >
+              <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
+                  start={0}
+                  end={Number(dashboardData.RETURN_PO) ? Number(dashboardData.RETURN_PO) : 0} /></span>
+                <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Goods_Return</span>
               </div>
             </div>
           </div>
+          <div className="col-lg-12" >
+            <div className="card" style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "4%" }}>
+              <div style={{ padding: 25 }}>
+                <Slider {...settings} >
+                  {ArrayTEmp[0].map((slide, index) => {
+                    console.log("slide", slide)
+                    let total = 0
+                    let totalsQty = 0
+                    slide.Details.map(price => {
+                      total = total + price.NET_PRICE * price.ORDER_QUANTITY
+                      totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+                    });
+                    return (
+
+                      <div
+                        key={index}
+                        className="card "
+
+                      >
+                        <div className="card-body" style={myStyles}>
+                          <h5
+                            style={{
+                              color: "#7B241C ",
+                              fontWeight: "bold",
+                              textAlign: "center" // added style
+                            }}
+                          >
+
+                            {index == 0 && "Latest Purchase Order" || index == 1 && "Latest Goods Receipt" || index == 2 && "Latest Goods Return" || index == 3 && "Latest Invoice Data"}
+                          </h5>
+                          <div className="row text-left" style={{
+
+                            marginBottom: -3
+                          }} >
+                            <div className="col-md-9" style={{ marginTop: 1 }}>
+                              <a style={{ color: "#4F51C0" }}>PO Number:</a><br />
+                              <p style={{
+                                fontWeight: "bold",
+                                color: "#7B241C "
+                              }}>{slide.PO_NO ? slide.PO_NO : 'Will be update soon'}</p>
+
+                            </div>
+
+                            <div className="col-md-3" style={{ marginTop: 1 }}>
+                              <a style={{ color: "#4F51C0" }}>Date:</a><br />
+                              <a
+                                style={{
+                                  fontWeight: "bold",
+                                  color: "#7B241C "
+
+                                }}
+                              >{dateFormat((slide.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a>
+                            </div>
+                            <div className="col-md-12" style={{ marginTop: 3 }}>
+                              <a style={{ color: "#4F51C0" }}>Plant: </a>
+                              <a style={{
+                                color: "#7B241C "
+                              }}>{slide.Details[0].PLANT_ID + "(" + slide.Details[0].PLANT_DESCRIPTION + ")"}</a>
+                            </div>
+                            <div className="col-md-12" style={{ marginTop: 1 }}>
+                              <a style={{ color: "#4F51C0" }}>Unit: </a>
+                              <a style={{
+                                color: "#7B241C "
+                              }}>{slide.Details[0].UNIT ? slide.Details[0].UNIT : 0}</a>
+                            </div>
+                            <div className="col-md-12" style={{ marginTop: 1 }}>
+                              <a style={{ color: "#4F51C0" }}>Total Quantity: </a>
+                              <a style={{
+                                color: "#7B241C "
+                              }}>{totalsQty ? totalsQty : 0}</a>
+                            </div>
+                            <div className="col-md-12" style={{ marginTop: 1, marginBottom: 10 }}>
+                              <a style={{ color: "#4F51C0" }}>Total Net Value: </a>
+                              <a style={{
+                                color: "#7B241C "
+                              }}>{Number(total) ? Number(total) : 0}</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </Slider>
+              </div>
+            </div>
+
+
+          </div>
         </div>
-        <div className="col-md-3" style={{marginTop:'2%'}} >
-          <div className="card" style={{ marginTop: "3%"  }}>
+        <div className="col-md-3" style={{ marginTop: '2%' }} >
+          <div className="card" style={{ marginTop: "3%" }}>
             <p style={{ fontSize: "15px", marginTop: "2%", marginLeft: "2%" }} >Activity Feed</p>
             <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
             <div className="card-body scrollable-content" style={{
               overflowY: "scroll",
-              height: "596px",
+              height: "350px",
               marginRight: "-20px",
             }}>
               <div className="row">
-                {  feedDataShow > 0  &&  feedDataINV > 0 ?
-                
-                   
-            
-                  <img src='../Images/nodataavailable.gif' width={'90%'} height={'90%'}/>
+                {Number(feedDataShow) === 0 && Number(feedDataINV) === 0 ?
 
-                 
-                   :
-                   <>
-                   {feedsData.map(itemsss => {
+
+                  <img src='../Images/nodataavailable.gif' width={'90%'} height={'90%'} />
+
+
+
+                  :
+                  <>
+                    {feedsData.map(itemsss => {
+                      //console.log("jgfsdywgv", itemsss)
                       return (
                         <>
                           <div className="row" >
@@ -379,9 +426,6 @@ function HomeScreen() {
                         </>
                       )
                     })
-
-                     
-                    
                     }
                     {feedDataShowINV.map(item => {
                       return (
@@ -400,12 +444,49 @@ function HomeScreen() {
                         </>
                       )
                     })}
-                   
-                   </>
+
+                  </>
                 }
                 {/* <p className="text-center" style={{ color: "gray" }}> {"No Invoice data available"}</p> */}
               </div>
             </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-2">
+          </div>
+          <div className="col-md-6"   >
+            <div
+              className="card info-card sales-card"
+              style={{ textAlign: 'center', borderRadius: "10px", marginLeft: "6%" }}
+            >
+              <h5
+                className="card-title"
+                style={{
+                  marginLeft: 10,
+                  marginTop: 4,
+                  color: "black",
+                }}
+              >
+                Purchase order of Last 3 months
+              </h5>
+              <Line data={data} height={145} options={options} />
+            </div>
+          </div>
+          <div className="col-md-4"   >
+
+            <div className='card' style={{ textAlign: 'center', borderRadius: "10px", marginLeft: "4%", width:'100%'}}>
+              <div className='card-body'>
+                <Pie
+                  data={datass}
+                  options={optionsss}
+                  width={'245px'}
+                  height={'245px'}
+                />
+              </div>
+              <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Ageing Data Pi Chart</p>
+            </div>
+
           </div>
         </div>
       </div>
@@ -492,33 +573,6 @@ function HomeScreen() {
             <Bar data={data} />
           </div>
         </div> */}
-
-      {/* <>
-          <center>
-            
-            <h3
-              style={{
-                color: "white",
-              }}
-            >
-              Click on below button to download PDF file
-            </h3>
-            <button onClick={onButtonClick}>Download PDF</button>
-          </center>
-        </>
-
-        <form onSubmit={submitForm}>
-          <input
-            type="text"
-            onChange={(e) => setSuperHero(e.target.value)}
-            placeholder={"Superhero Name"}
-          />
-          <br />
-          <input type="file" onChange={(e) => setUploadFile(e.target.files)} />
-          <br />
-          <input type="submit" />
-        </form> */}
-
 
     </div>
 

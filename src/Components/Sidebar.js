@@ -3,7 +3,7 @@ import { FaBars, FaDochub, FaFileInvoiceDollar, FaGoodreads, FaHome, FaInvision,
 import { MdMessage } from "react-icons/md";
 import { BiAnalyse, BiFontFamily, BiMessage, BiSearch, BiTransferAlt } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
-import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
+import { AiFillHeart, AiFillPieChart, AiOutlineLeft, AiOutlineRight, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
 
@@ -12,32 +12,39 @@ import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
 const routes = [
   {
-    path: "/",
+    path: "/dashboard",
     name: "Dashboard",
     icon: <FaHome />,
   },
   {
-    path: "/#",
-    name: "Master",
-    icon: <AiTwotoneFileExclamation />,
-    subRoutes: [
-      {
-        path: "//#",
-        name: "Vendor ",
-        icon: <FaUser />,
-      },
-      {
-        path: "//#",
-        name: "Material",
-        icon: <FaLock />,
-      },
-      {
-        path: "//#",
-        name: "Price Master",
-        icon: <FaMoneyBill />,
-      },
-    ],
-  },{
+    path: "/ageing",
+    name: "Ageing Data",
+    icon: <AiFillPieChart />,
+  },
+  // {
+  //   path: "/#",
+  //   name: "Master",
+  //   icon: <AiTwotoneFileExclamation />,
+  //   subRoutes: [
+  //     {
+  //       path: "//#",
+  //       name: "Vendor ",
+  //       icon: <FaUser />,
+  //     },
+  //     {
+  //       path: "//#",
+  //       name: "Material",
+  //       icon: <FaLock />,
+  //     },
+  //     {
+  //       path: "//#",
+  //       name: "Price Master",
+  //       icon: <FaMoneyBill />,
+  //     },
+  //   ],
+  // },
+  
+  {
     path: "/#",
     name: " Transaction Data",
     icon: <BiTransferAlt />,
@@ -435,6 +442,19 @@ const SideBar = ({ children }) => {
             </AnimatePresence>
           </div>
           <section className="routes">
+
+          <div id="mobile-only" className="my-div" style={{float: 'right', marginLeft: '7px', marginTop:'45px'}} onClick={toggle}>
+  <span type="button" style={{display: 'inline-block', borderRadius: '50%', width: '25px', height: '25px', border: '2px solid white', position: 'relative', overflow: 'hidden'}}>
+  {isOpen?
+  
+  <AiOutlineLeft  color={'#8FECFF '} style={{animation: 'rollingleft 2s linear infinite'}} size={20}  /> 
+  :
+
+  <AiOutlineRight color={'#8FECFF '} size={20} style={{animation: 'rollingright 2s linear infinite'}}/> 
+}    
+  </span>
+</div>
+
             {routes.map((route, index) => {
               if (route.subRoutes) {
                 return (

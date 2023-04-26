@@ -1,5 +1,5 @@
 .login-bg {
-    background-image: url('../../public/Images/13390.jpg');
+    background-image: url('../../public/Images/13390.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -10,7 +10,7 @@
     z-index: 1; /* add z-index to be behind wave */
   }
   
-  
+ 
 .wave {
     background: rgba(00, 245, 160, 0.07);
     border-radius: 1000% 1000% 0 0;
@@ -66,7 +66,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 100px;
+  margin-top: 90px;
   height: auto;
   /* set a height for the container */
 }
@@ -175,8 +175,8 @@
     
     width: 450px;
     
-    transition: transform 300ms, box-shadow 300ms;
-    box-shadow: 5px 10px 10px rgba(2, 120, 144, 0.2);
+    transition: transform 300ms, box-shadow 350ms;
+    box-shadow: 5px 10px 10px rgba(2, 104, 144, 0.2);
   }
   
   .login::before,
@@ -218,7 +218,9 @@
   .toggle-container {
     display: flex;
     position: relative;
-    height: 40px;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     width: 100px;
     border-radius: 15px;
     cursor: pointer;
@@ -244,7 +246,7 @@
     background: linear-gradient(to right, #00b2ff, #007f00);
     color: white;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 10px;
   }
   .toggle-button:nth-child(1) {
     z-index: 2;
@@ -262,4 +264,58 @@
   .toggle-button.active:nth-child(2) {
     width: 200%;
   }
+  
+  .animated-text {
+    position: relative;
+    color: #1F87D0;
+    text-shadow: 1px 0px 0px #000;
+  }
+  
+  .animated-text span {
+    position: relative;
+    display: inline-block;
+    animation: letter-color 3s ease-in-out infinite;
+  }
+  
+  @keyframes letter-color {
+    0% {
+      color: #1F87D0;
+    }
+    20% {
+      color: #FBBF24;
+    }
+    40% {
+      color: #EF4444;
+    }
+    60% {
+      color: #10B981;
+    }
+    80% {
+      color: #8B5CF6;
+    }
+    100% {
+      color: #1F87D0;
+    }
+  }
+  @keyframes colorchanges {
+    0% {
+      color: #1F87D0;
+    }
+    25% {
+      color: #10B981;
+    }
+    50% {
+      color: #1F87D0;
+    }
+    75% {
+      color: #10B981;
+    }
+    100% {
+      color: #1F87D0;
+    }
+  }
+
+  
+  
+  
   
