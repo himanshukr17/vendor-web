@@ -69,13 +69,13 @@ function AdminManageVendor() {
     allSuppliersDD.map((item, index) => {
     tempArrs.push(item.value)
     })
-    console.log(selectBuyer.value)
+    // console.log(selectBuyer.value)
     try {
       axios.post(AxioxExpPort + 'mapping/assign', {
         buyer: selectBuyer.value,
         supplier: tempArrs
       }).then((res) => {
-        navigate("/AdminManageVendor")
+        tableDataFetch();
       })
     } catch {
     }
@@ -95,20 +95,20 @@ const tempArr3 = suppliersName.map(itemss => ({
 
 
 const seveSuppliers=()=>{
-  console.log('suppliersID',suppliersID);
-  const tempArr3 = suppliersName.map(itemss => (itemss.SUPPLIER_ID));
-
+   console.log('tempArr3',suppliersID);
+  const tempArr4 = suppliersID.map(itemss => (itemss.value));
+  
   if(suppliersID.length > 0){
-    axios.post(AxioxExpPort + "mapping/assign", {
-      "supplier":tempArr3,
-      "buyer":buyerName
-    })
-      .then((res) => {  
-        console.log('buyerName',res)
-        tableDataFetch();
-        fetchData();
-        toggleCheckFlages();
-
+    console.log('suppliersID',tempArr4);
+     axios.post(AxioxExpPort + "mapping/assign", {
+       "supplier":tempArr3,
+       "buyer":buyerName
+     })
+       .then((res) => {  
+         console.log('buyerName',res)
+         tableDataFetch();
+         fetchData();  
+         toggleCheckFlages();
       })
   }else{
     toggleCheckFlages();
@@ -122,48 +122,32 @@ const seveSuppliers=()=>{
     <>
       <NavHeader />
       <div
-        className="card"
+       
         style={{
+          marginLeft: "1%",
           marginTop: "5%",
+          marginRight:'0.8%'
 
         }}
       >
-        <div
-          className="card-body"
-          style={{
-            display: "flex",
-          }}
-        >
-{/* 
-          <div className="form-check form-check-inline">
-            <button
-              className="btn btn"
-
-              onClick={() => {
-                navigate("/dashboard");
-              }}
-            >
-              <IconContext.Provider value={{ color: "#000", size: "22px" }}>
-                <AiOutlineArrowLeft />
-              </IconContext.Provider>
-            </button>
-          </div> */}
-          <div className="form-check form-check-inline">
-            <h4 className="form-check-label" htmlFor="inlineRadio2">
-              {/* {location.PROJECT} */}
-              {/* {location.state.name} */}
+        
+         
+      <div className="row">
+        <div className="col-md-10">
+        <div className="form-check form-check-inline">
+            <h4 className="form-check-label" htmlFor="inlineRadio2" style={{marginLeft:18}}>
+           
               Manage Vendor
             </h4>
           </div>
-          <div
-            className="form-check form-check-inline"
-            style={{
-              float: "right",
-            }}
-          ></div>
         </div>
-        <div className="container" style={{ marginTop: -15 }} >
-          <div className="row">
+       
+          <div className="col-md-2 text-right" >Go to Home</div>
+      </div>
+      
+        <div className="card-body" style={{ marginTop: '1.2%' }} >
+          <div className="row" style={{marginLeft:-12}}>
+          
             <div className="col-md-3">
               <Select
                 placeholder="--Select Buyer--"
@@ -180,15 +164,12 @@ const seveSuppliers=()=>{
               />
             </div>
             <div className="col-md-1">
-              <button type="submit" id="submitBtn" className="btn btn-dark" onClick={handeleSave} > Save </button>
+              <a type="submit" id="submitBtn" className="btn btn-dark" style={{marginTop:-0}} onClick={handeleSave} > Save </a>
             </div>
           </div>
           <br />
-        </div>
 
-      </div>
-      <div className="card-body" style={{ marginTop: "-35px", }}  >
-        <div className="row" >
+          <div className="row" >
           <table className="table table-light table-bordered ">
             <thead className="table-light">
               <tr
@@ -247,7 +228,11 @@ const seveSuppliers=()=>{
   </tbody>
           </table>
         </div>
-      </div>
+        </div>
+        
+    
+         
+          </div>
 
       <Modal
         

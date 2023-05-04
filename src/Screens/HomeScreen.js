@@ -4,6 +4,9 @@ import { Line, Pie } from "react-chartjs-2";
 import '../StyleSheets/Scrollbar.css'
 import { AxioxExpPort } from "./AxioxExpPort"
 import 'chartjs-plugin-datalabels';
+import { useSelector } from 'react-redux';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 import dateFormat from 'dateformat';
 import { FaWpforms } from "react-icons/fa";
 import Slider from 'react-slick';
@@ -12,35 +15,18 @@ import 'slick-carousel/slick/slick-theme.css';
 import Sidebar from "../Components/Sidebar";
 import CountUp from 'react-countup';
 
-const datass = {
-  labels: ['0-30 Days', '31-60 Days', '61-90 Days', '91-120 Days', 'Above 120 Days'],
-  datasets: [
-    {
-      data: [300, 50, 100, 40, 10],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
-    },
-  ],
-};
 
-const optionsss = {
-  maintainAspectRatio: false,
-  responsive: true,
-  legend: {
-    position: 'bottom',
-    labels: {
-      fontColor: '#333',
-      fontSize: 12,
-    },
-  },
-};
 function HomeScreen() {
+  const stateData=useSelector(state=>state)
+
   const [carouselKey] = useState(Math.random());
   const vendorId = localStorage.getItem('userId');
   const [lablesAll, setLablesAll] = useState("")
   const [podata, setPodata] = useState([])
   const [dashboardData, setDashboardData] = useState("")
-  var now = new Date();
+  var rightNow = new Date();
+  var currentDate = rightNow.toISOString().slice(0,10).replace(/-/g,"");
+
   var daysOfYear = [];
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
   // console.log(new Date(props.po[60].DOCUMENT_DATE).getMonth())
@@ -56,6 +42,10 @@ function HomeScreen() {
   const [slides, setSlides] = useState([])
   const [returnHomeDetails, setReturnHomeDetails] = useState('')
   const [invHomeDetails, setInvHomeDetails] = useState('')
+  const [cartPieData,setCartPieData]=useState([]);
+  const [paiLabel,setPaiLabel]=useState([]);
+  const [apiData,setApiData]=useState([]);
+
   // const scrollableContent=[]
   const settings = {
     dots: true,
@@ -66,7 +56,60 @@ function HomeScreen() {
     autoplay: true,
     autoplaySpeed: 2000 // set the interval in milliseconds
   };
+
   const getmonth = new Set()
+  // Pie Chart Code
+  // const datass = {
+  //   labels: paiLabel,
+  //   datasets: [
+  //     {
+  //       data: cartPieData,
+  //       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
+  //       hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
+  //     },
+  //   ],
+  // };
+  
+  // const optionsss = {
+  //   maintainAspectRatio: false,
+  //   responsive: true,
+  //   legend: {
+  //     position: 'bottom',
+  //     labels: {
+  //       fontColor: '#333',
+  //       fontSize: 12,
+  //     },
+  //   },
+  //   plugins: {
+  //     datalabels: {
+  //       formatter: (value, ctx) => {
+  //         let sum = 0;
+  //         let dataArr = ctx.chart.data.datasets[0].data;
+  //         dataArr.map((data) => {
+  //           sum += data;
+  //         });
+  //         let percentage = ((value * 100) / sum).toFixed(2) + '%';
+  //         return percentage;
+  //       },
+  //     },
+  //   },
+  // };
+
+  // const fetchPostsData = async () => {
+  //   axios.post(AxioxExpPort + "aging/get",
+  //     {"DATE":currentDate,"VENDORCODE":vendorId}
+  //   )
+  //     .then((response) => {
+  //        //console.log("response.data",response.data[0]);
+         
+  //        setApiData(response.data)
+      
+        
+  //     });
+  // }
+  
+  
+
   const fetchActivityFeed = async () => {
     axios.get(AxioxExpPort + "purchase_order/last_week_po?id=" + vendorId)
       .then((response) => {
@@ -123,10 +166,29 @@ function HomeScreen() {
   useEffect(() => {
     fetchHomeCount()
     fetchPosts();
+    // fetchPostsData();
     fetchActivityFeed();
 
   }, []);
+  const getTheTableDataPie = () => {
+    const tempArry = [];
+    stateData.cart.forEach((items, index) => {
+      var amt = 0;
+      apiData.forEach(item => {
+        if (item.DAYS >= Number(items.value) && item.DAYS <= (items.toValue ? Number(items.toValue) : 365)) {
+          amt = amt + Number(item.TOTAL_OVERDUE);
+        }
+      });
+      tempArry.push(amt)
+    });
+    //console.log('setPaiData', tempArry)
+    setCartPieData(tempArry)
+  }
 
+  useEffect(() => {
+    getTheTableDataPie();
+  }, [stateData.cart, apiData]);
+  
   podata.map(item => {
     getmonth.add(new Date(item.DOCUMENT_DATE).getMonth() + 1)
     // console.log("new Date(item.DOCUMENT_DATE).getMonth() + 1",getmonth)
@@ -183,7 +245,7 @@ function HomeScreen() {
         fill: true,
         label: "Lakh(INR)",
         borderColor: '#4F51C0',
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         data: chartdatass.reverse(),
       },
     ],
@@ -243,7 +305,6 @@ function HomeScreen() {
         <div className="col-md-2">
           <div >
             <Sidebar />
-
             {/* <SectionList/> */}
           </div>
         </div>
@@ -259,7 +320,7 @@ function HomeScreen() {
                 </span>                  <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Total_Order</span>
               </div>
             </div>
-            <div className="col-sm-2 " >
+            <div className="col-sm-2 " style={{alignItems:"center"}} >
               <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
                   start={0}
@@ -300,7 +361,8 @@ function HomeScreen() {
             </div>
           </div>
           <div className="col-lg-12" >
-            <div className="card" style={{ marginRight: "1.5%", borderRadius: "10px", marginLeft: "4%" }}>
+          
+            <div className="card" style={{ borderRadius: "10px", marginLeft: "3%",marginRight:'-0.4%'  }}>
               <div style={{ padding: 25 }}>
                 <Slider {...settings} >
                   {ArrayTEmp[0].map((slide, index) => {
@@ -387,6 +449,24 @@ function HomeScreen() {
 
 
           </div>
+          <div style={{width:'100%'}}>
+          <div
+              className="card info-card sales-card"
+              style={{ textAlign: 'center', borderRadius: "10px", marginLeft: "4%",marginRight:'0.5%' }}
+            >
+              <h5
+                className="card-title"
+                style={{
+                  marginLeft: 10,
+                  marginTop: 4,
+                  color: "black",
+                }}
+              >
+                Purchase order of Last 3 months
+              </h5>
+              <Line data={data} height={145} options={options} />
+            </div>
+            </div>
         </div>
         <div className="col-md-3" style={{ marginTop: '2%' }} >
           <div className="card" style={{ marginTop: "3%" }}>
@@ -394,17 +474,12 @@ function HomeScreen() {
             <p style={{ borderBottom: "1px solid #aaa", width: "100%" }}></p>
             <div className="card-body scrollable-content" style={{
               overflowY: "scroll",
-              height: "350px",
+              height: "730px",
               marginRight: "-20px",
             }}>
               <div className="row">
                 {Number(feedDataShow) === 0 && Number(feedDataINV) === 0 ?
-
-
                   <img src='../Images/nodataavailable.gif' width={'90%'} height={'90%'} />
-
-
-
                   :
                   <>
                     {feedsData.map(itemsss => {
@@ -456,36 +531,34 @@ function HomeScreen() {
           <div className="col-md-2">
           </div>
           <div className="col-md-6"   >
-            <div
-              className="card info-card sales-card"
-              style={{ textAlign: 'center', borderRadius: "10px", marginLeft: "6%" }}
-            >
-              <h5
-                className="card-title"
-                style={{
-                  marginLeft: 10,
-                  marginTop: 4,
-                  color: "black",
-                }}
-              >
-                Purchase order of Last 3 months
-              </h5>
-              <Line data={data} height={145} options={options} />
-            </div>
+           
           </div>
           <div className="col-md-4"   >
 
-            <div className='card' style={{ textAlign: 'center', borderRadius: "10px", marginLeft: "4%", width:'100%'}}>
+            {/* <div className='card' style={{ textAlign: 'center', borderRadius: "10px", marginLeft: "4%",height:"300px", width:'101%'}}>
               <div className='card-body'>
+              {stateData.cart.length >0 ?
                 <Pie
                   data={datass}
                   options={optionsss}
-                  width={'245px'}
-                  height={'245px'}
+                  width={'225px'}
+                  height={'225px'}
+                  plugins={[ChartDataLabels]}
+
                 />
-              </div>
+                :
+                <>
+                <p> No data available</p>
+                <img
+                src={"https://www.animestudiotutor.com/images/morph.gif"}
+                    width={'220px'}
+                  height={'220px'}
+                />
+                </>
+              }
+              </div> 
               <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Ageing Data Pi Chart</p>
-            </div>
+            </div>*/}
 
           </div>
         </div>

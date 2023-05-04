@@ -9,8 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import SidebarHeaderToggle from "../../Components/SidebarHeaderToggle";
 import { COLORS } from '../../Constants/theme';
 import { Pie } from 'react-chartjs-2';
-import { createStore } from 'redux';
-import store from '../../Reducer/Store';
+
 import {addItem} from '../../Reducer/bucketSlice'
 import axios from 'axios';
 import { AxioxExpPort } from '../AxioxExpPort';
@@ -30,8 +29,9 @@ function Ageing() {
  const [outstanding,setOutstanding]=useState('');
  const [totalOverDue,settotalOverDue]=useState('');
  const [totalNotDue,settotalNotDue]=useState('');
- const [paiLabel,setPaiLabel]=useState([])
- const [pieData,setPaiData]=useState([])
+ const [paiLabel,setPaiLabel]=useState([]);
+ const [pieData,setPaiData]=useState([]);
+ const [cartPieData,setCartPieData]=useState([])
 
  let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
  const data = {
@@ -39,6 +39,16 @@ function Ageing() {
   datasets: [
     {
       data: pieData,
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
+    },
+  ],
+};
+ const datass = {
+  labels: paiLabel,
+  datasets: [
+    {
+      data: cartPieData,
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
       hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#37A82C', '#D424A5'],
     },
@@ -71,13 +81,13 @@ const options = {
 };
 
  const fetchPosts = async () => {
-  setLoading(true)
+   setLoading(true)
   axios.post(AxioxExpPort + "aging/get",
     {"DATE":currentDate,"VENDORCODE":vendorId}
   )
     .then((response) => {
-       console.log("response.data",response.data[0]);
-       setLoading(false);
+     // console.log("response.data",response.data);
+     setLoading(false);
        setApiData(response.data)
        setVendorDtl(response.data[0].VENDOR_CODE)
        setVendorDtlName(response.data[0].VENDOR_NAME)
@@ -87,7 +97,7 @@ const options = {
        var overDue=0;
        var notDue=0;
        response.data.forEach(item => {
-         console.log('outstand',item)
+         //console.log('outstand',item)
          outstand = outstand + Number(item.TOTAL_OUTSTANDING)
          overDue = overDue + Number(item.TOTAL_OVERDUE)
          notDue = notDue + Number(item.NOT_DUE)
@@ -101,7 +111,7 @@ const options = {
 
   
   const [inputFields, setInputFields] = useState([
-    { id: 1, value: "", disabled: false },
+    { id: 1, value:0, disabled: true },
     { id: 2, value: "", disabled: false }
   ]);
   const [inputFieldsTo, setInputFieldsTo] = useState([
@@ -114,8 +124,9 @@ const options = {
     if (inputFields.length < 5) {
       const values = [...inputFields];
       //console.log(values, values)
-      values.push({ id: inputFields.length + 1, value: "" });
+      values.push({ id: inputFields.length + 1, value: Number(inputFields[inputFields.length-1].toValue)+1,disabled: true });
       setInputFields(values);
+      console.log('inputFieldsinputFields',inputFields[inputFields.length-1].toValue)
     }
   };
   const handleInputChangeFrom = (id, event) => {
@@ -177,7 +188,7 @@ inputFields.map(items=>{
       amt = amt + Number(item.TOTAL_OVERDUE)
     }
   })
-  console.log('amt',amt)
+ // console.log('amt',amt)
 })
     }else{
       alert("Please check the Bucket input");
@@ -195,6 +206,20 @@ inputFields.map(items=>{
   
   const getTheTableData = () => {
   const tempArry = [];
+  inputFields.forEach((items, index) => {
+    var amt = 0;
+    apiData.forEach(item => {
+      if (item.DAYS >= Number(items.value) && item.DAYS <= (items.toValue ? Number(items.toValue) : 365)) {
+        amt = amt + Number(item.TOTAL_OVERDUE);
+      }
+    });
+    tempArry.push(amt)
+  });
+  //console.log('setPaiData', tempArry)
+  setPaiData(tempArry)
+}
+  const getTheTableDataPie = () => {
+  const tempArry = [];
   stateData.cart.forEach((items, index) => {
     var amt = 0;
     apiData.forEach(item => {
@@ -204,8 +229,8 @@ inputFields.map(items=>{
     });
     tempArry.push(amt)
   });
-  console.log('setPaiData', tempArry)
-  setPaiData(tempArry)
+  //console.log('setPaiData', tempArry)
+  setCartPieData(tempArry)
 }
 
 useEffect(() => {
@@ -216,6 +241,10 @@ useEffect(() => {
 useEffect(() => {
   getTheTableData();
 }, [inputFields, apiData]);
+
+useEffect(() => {
+  getTheTableDataPie();
+}, [stateData.cart, apiData]);
 
   return (
     <div>  {
@@ -244,7 +273,7 @@ useEffect(() => {
                     <h4 className="form-check-label">
                       Ageing data
                     </h4>
-                    <button style={{
+                    {/* <button style={{
                       marginLeft: '10px',
                       padding: '7px 14px',
                       backgroundColor: "#4F51C0",
@@ -252,13 +281,13 @@ useEffect(() => {
                       borderRadius: '5px',
                       border: 'none',
                       cursor: 'pointer'
-                    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+                    }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
                   </div>
 
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{ marginTop: 10 }}>
 
-                  <IconContext.Provider value={{ color: "red", marginTop: -210, size: "20px" }}>
+                  <IconContext.Provider value={{ color: "#3a91e8", marginTop: -210, size: "20px" }}>
                     <AiOutlineHome type="button" onClick={() => {
                       navigate("/dashboard");
                     }} />
@@ -276,27 +305,27 @@ useEffect(() => {
           <div className='col-md-7'>
             <div className='card' style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 8)' }}>
 
-              <p style={{ fontSize: "15px", marginTop: "2%", paddingBottom: "5px", borderBottom: "1px solid black" }}><p style={{ marginLeft: '20px', }}>Supplier Details</p></p>
+              <p style={{ fontSize: "15px", marginTop: "2%", paddingBottom: "5px", borderBottom: "1px solid #000" }}><p style={{ marginLeft: '20px',color:'#000' }}>Supplier Details</p></p>
 
               <div className='card-body'>
                 <div className='row'>
                   <div className='col-md-6'>
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                      Supplier Code: <span style={{ color: "#033E3E", fontSize: 18, }}>{vendorDtl}</span>
+                      Supplier Code: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{vendorDtl}</span>
                     </p>
 
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                      Supplier Name: <span style={{ color: "#033E3E", fontSize: 15, }}>{vendorDtlName}</span>
+                      Supplier Name: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{vendorDtlName}</span>
                     </p>
 
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                      Total Overdues: <span style={{ color: "#033E3E", fontSize: 18, }}>{num.format(Number(totalOverDue))}</span>
+                      Total Overdues: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{num.format(Number(totalOverDue))}</span>
                     </p>
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                     Total Not Dues: <span style={{ color: "#033E3E", fontSize: 18, }}>{num.format(Number(totalNotDue))}</span>
+                     Total Not Dues: <span style={{ color: "#033E3E", fontSize: 19, fontFamily:'bold'}}>{num.format(Number(totalNotDue))}</span>
                     </p>
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                      Total Outstanding: <span style={{ color: "#033E3E", fontSize: 18, }}>{num.format(Number(outstanding))}</span>
+                      Total Outstanding: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{num.format(Number(outstanding))}</span>
                     </p>
                   </div>
 
@@ -411,6 +440,16 @@ useEffect(() => {
           <div className='col-md-5'>
             <div className='card' style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 8)', textAlign: 'center' }}>
               <div className='card-body'>
+              {stateData.cart.length > 0 ?
+                <Pie
+                  data={datass}
+                  options={options}
+                  width={'200%'}
+                  height={'200%'}
+                  plugins={[ChartDataLabels]}
+
+                />  
+                :
                 <Pie
                   data={data}
                   options={options}
@@ -418,7 +457,7 @@ useEffect(() => {
                   height={'200%'}
                   plugins={[ChartDataLabels]}
 
-                />
+                />              }
               </div>
               <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Ageing Data Pi Chart</p>
             </div>
@@ -513,16 +552,19 @@ useEffect(() => {
         <td
           key={`col-2-${index}`} // Add a unique key for each table cell
           className="text-center"
-          style={{ borderColor: 'black' }}
-        >
-        <div className='row'>
+          style={{
+              borderColor: "black",
+              borderRight: "1px solid #000",
+               // Add a vertical line after every column
+            }}        >
+        <div className='row' style={{marginTop:'3%'}}>
           <div className='col-md-6' style={{color:'#922B21'}}>
-          {((Number(amt)/Number(outstanding))*100).toFixed(2)}
+       <p style={{fontSize:'16px',fontFamily:'bold'}}>{((Number(amt)/Number(outstanding))*100).toFixed(2) +'%'}</p>
             
           </div>
           <div className='col-md-6'  style={{color:'#4A235A '}}>
 
-          {(amt).toFixed(2)}
+          <p style={{fontSize:'16px', fontFamily:'bold'}}>  {num.format(Number((amt)).toFixed(2))}</p>
           </div>
         </div>
         </td>

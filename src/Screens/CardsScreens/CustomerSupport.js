@@ -36,7 +36,7 @@ function CustomerSupport() {
   const [optionDoctype, setOptionDocType] = useState("")
   const data = tbody;
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(4);
+  const [postsPerPage, setPostsPerPage] = useState(6);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = tbody.slice(indexOfFirstPost, indexOfLastPost);
@@ -152,7 +152,7 @@ function CustomerSupport() {
                     <h4 className="form-check-label">
                       Customer Support
                     </h4>
-                    <button style={{
+                    {/* <button style={{
                       marginLeft: '10px',
                       padding: '7px 14px',
                       backgroundColor: "#4F51C0",
@@ -160,12 +160,12 @@ function CustomerSupport() {
                       borderRadius: '5px',
                       border: 'none',
                       cursor: 'pointer'
-                    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+                    }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
                   </div>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{ marginTop: 10 }}>
 
-                  <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                  <IconContext.Provider value={{ color: "#3a91e8", size: "22px" }}>
                     <AiOutlineHome type="button" onClick={() => {
                       navigate("/dashboard");
                     }} />
@@ -185,7 +185,7 @@ function CustomerSupport() {
 
         <div className='row '>
           <div className='col-md-7' >
-            <img src="../../../Images/41676.gif" width={"30%"} style={{ display: "block", marginLeft: "auto", marginRight: "auto" }} height={150} alt="Cartoons" />
+            {/* <img src="../../../Images/41676.gif" width={"30%"} style={{ display: "block", marginLeft: "auto", marginRight: "auto" }} height={150} alt="Cartoons" /> */}
 
             <div className="card">
               <div className="card-body">

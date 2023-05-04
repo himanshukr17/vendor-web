@@ -162,34 +162,41 @@ function PurchaseOrders() {
     setTBody(filterData);
   }
   var tempArray=[];
-  tbody.map(csvItems=>{
-    var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
-    let total = 0
-    csvItems.Details.map((price,idx) => {
-      total = total + price.NET_PRICE * price.ORDER_QUANTITY
-    });
-    let totalsQty = 0
-    csvItems.Details.map((price,idx) => {
-      totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
-    });
-    tempArray.push({
-      "id":csvItems._id,
-      "PO_NO":csvItems.PO_NO,
-      "DOC_DATE":tempDAte,
-      "TOTAL_QTY":totalsQty,
-      "TOTAL_ITEM":csvItems.Details.length,
-      "COMPANY_CODE":csvItems.Details[0].COMPANY_CODE,
-      "PURCHASEING_GRP":csvItems.Details[0].PURCHASING_GROUP,
-      "PURCHASING_ORG":csvItems.PURCHASE_ORG,
-      "PAYMENT_TERM":csvItems.PAYMENT_KEY +"("+csvItems.PAY_DESC+")",
-      "EXCHANGE_RATE":csvItems.Details[0].EXCHANGE_RATE,
-      "INCO_ITEM_1":csvItems.INCO_1,
-      "INCO_ITEM_2":csvItems.INCO_2,
-      "TOTAL_VAL":total,
-      "STATUS":csvItems.STATUS
-
-    })
-  })
+  const csvDatass = tbody.flatMap(item => item.Details.map(detail => {
+    // var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+    // let total = 0
+    // csvItems.Details.map((price,idx) => {
+    //   total = total + price.NET_PRICE * price.ORDER_QUANTITY
+    // });
+    // let totalsQty = 0
+    // csvItems.Details.map((price,idx) => {
+    //   totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+    // });
+    return {
+      // Vendor_ID: item.Vendor_ID,
+      PO_NO: item.PO_NO,
+      DOCUMENT_DATE: dateFormat(item.DOCUMENT_DATE, "dd/mm/yyyy"),
+      PAYMENT_TERM: item.PAYMENT_KEY +"("+item.PAY_DESC+")",
+      PURCHASE_ORG: item.PURCHASE_ORG,
+      PLANT_ID: detail.PLANT_ID,
+      PLANT_DESCRIPTION: detail.PLANT_DESCRIPTION,
+      COMPANY_CODE: detail.COMPANY_CODE,
+      PURCHASING_GROUP: detail.PURCHASING_GROUP,
+      EXCHANGE_RATE: detail.EXCHANGE_RATE,
+      INCO_1: item.INCO_1,
+      INCO_2: item.INCO_2,
+      STATUS: item.STATUS,
+      MATERIAL: detail.MATERIAL,
+      MATERIAL_DESCRIPTION: detail.MATERIAL_DESCRIPTION,
+      MANUFACTURE_PART_NO: detail.MANUFACTURE_PART_NO,
+      UNIT: detail.UNIT,
+      ITEM_CATEGORY: detail.ITEM_CATEGORY,
+      ORDER_QUANTITY: detail.ORDER_QUANTITY,
+      DELIVERED_QUANTITY: detail.DELIVERED_QUANTITY,
+      PENDING_QUANTITY: detail.PENDING_QUANTITY,
+      NET_PRICE: detail.NET_PRICE,
+    }
+  }))
   const companyData = [
     { label: 'Company Name:', value: 'Acme Corporation' },
   ];
@@ -250,7 +257,7 @@ function PurchaseOrders() {
   <h4 className="form-check-label">
     Purchase Order
   </h4>
-  <button  style={{
+  {/* <button  style={{
       marginLeft: '10px',
       padding: '7px 14px',
       backgroundColor:"#4F51C0",
@@ -258,13 +265,13 @@ function PurchaseOrders() {
       borderRadius: '5px',
       border: 'none',
       cursor: 'pointer'
-    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
 </div>
 
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                   
-                    <IconContext.Provider value={{ color: "red",marginTop:-210, size: "20px" }}>
+                    <IconContext.Provider value={{ color: "#3a91e8",marginTop:-210, size: "20px" }}>
                       <AiOutlineHome type="button"   onClick={() => {
                       navigate("/dashboard");
                     }} />
@@ -316,7 +323,7 @@ function PurchaseOrders() {
               />
             </div>
             <div className="col-md-1 noPrint">
-            <CSVLink  filename={"ID:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+            <CSVLink  filename={"ID:"+vendorId+".csv"}  data={csvDatass} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
         <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
 
             </div>

@@ -809,9 +809,9 @@ Background: linear-gradient(135deg, #4f7ac0, #a3c3d9, #6b9bd6);  color: white;
 }
 
 .spinnerCircle {
-  width: 64px;
-  height: 64px;
-  border: 8px solid;
+  width: 50px;
+  height: 50px;
+  border: 4px solid;
   border-color: var(--spinner-color) transparent var(--spinner-color) transparent;
   border-radius: 50%;
   animation: spin-anim 1.2s linear infinite;

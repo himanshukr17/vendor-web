@@ -178,27 +178,57 @@ function Receiveables() {
     setTBody(filterData);
   }
   var tempArray=[];
-  tbody.map(csvItems=>{
-    var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
-    let total = 0
-    csvItems.received_datas.map((price,idx) => {
-      total = total + price.NET_PRICE * price.ORDER_QUANTITY
-    });
-    let totalsQty = 0
-    csvItems.received_datas.map((price,idx) => {
-      totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
-    });
-    tempArray.push({
-      "id":csvItems._id,
-      "GRN_NO":csvItems.GRN_NO,
-      "GRN_REF":csvItems.GRN_REF,
-      "INVOICE_DATE":csvItems.DOCUMENT_DATE,
-      "COMPANY_CODE":csvItems.received_datas[0].COMPANY_CODE,
-      "PLANT":csvItems.received_datas[0].PLANT_ID+"("+csvItems.received_datas[0].PLANT_NAME+")",
-      "TOTAL_ITEM":csvItems.received_datas.length
+  
+  
+  const csvDatass = tbody.flatMap(csvItems => csvItems.received_datas.map(detail => {
+      var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+      console.log(csvItems)
+      // var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+      // let total = 0
+      // csvItems.Details.map((price,idx) => {
+      //   total = total + price.NET_PRICE * price.ORDER_QUANTITY
+      // });
+      // let totalsQty = 0
+      // csvItems.Details.map((price,idx) => {
+      //   totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+      // });
+      return {
+        // Vendor_ID: item.Vendor_ID,
+        "GRN_NO":csvItems.GRN_NO,
+             "INVOICE_NO":csvItems.GRN_REF,
+             "INVOICE_DATE":tempDAte,
+             "POSTING_DATE":dateFormat(detail.RECEIVING_DATE, "dd/mm/yyyy"),
+             "COMPANY_CODE":csvItems.received_datas[0].COMPANY_CODE,
+             "PLANT":csvItems.received_datas[0].PLANT_ID+"("+csvItems.received_datas[0].PLANT_NAME+")",
+             "MATERIAL_NO": detail.MATERIAL_NO,
+             "MATERIAL_DESCRIPTION": detail.MATERIAL_DOCUMENT,
+             "GR_QUANTITY": detail.GR_QTY,
+             "UNIT": detail.UNIT,
+             "INVOICE_QUANTITY": detail.DELIVERY_QTY,
+             "MANUFACTURE_PART_NO": detail.MANUFACTURE_PART_NO,
 
-    })
-  })
+  
+      }
+    }))
+  //   let total = 0
+  //   csvItems.received_datas.map((price,idx) => {
+  //     total = total + price.NET_PRICE * price.ORDER_QUANTITY
+  //   });
+  //   let totalsQty = 0
+  //   csvItems.received_datas.map((price,idx) => {
+  //     totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+  //   });
+  //   tempArray.push({
+  //     "id":csvItems._id,
+  //     "GRN_NO":csvItems.GRN_NO,
+  //     "GRN_REF":csvItems.GRN_REF,
+  //     "INVOICE_DATE":csvItems.DOCUMENT_DATE,
+  //     "COMPANY_CODE":csvItems.received_datas[0].COMPANY_CODE,
+  //     "PLANT":csvItems.received_datas[0].PLANT_ID+"("+csvItems.received_datas[0].PLANT_NAME+")",
+  //     "TOTAL_ITEM":csvItems.received_datas.length
+
+ // })
+  // })
 
   const headersTempArray=[
     { label: "GR Number", key: "GRN_NO" },
@@ -243,7 +273,7 @@ function Receiveables() {
                 <div style={{ display: 'flex', alignItems: 'center', marginLeft:'40px' }}>
   <h4 className="form-check-label">
   Goods Receipt Notes/Number  </h4>
-  <button  style={{
+  {/* <button  style={{
       marginLeft: '10px',
       padding: '7px 14px',
       backgroundColor:"#4F51C0",
@@ -251,11 +281,11 @@ function Receiveables() {
       borderRadius: '5px',
       border: 'none',
       cursor: 'pointer'
-    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
 </div>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
-                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                    <IconContext.Provider value={{ color: "#3a91e8", size: "22px" }}>
                       <AiOutlineHome type="button"   onClick={() => {
                       navigate("/dashboard");
                     }} />
@@ -303,7 +333,7 @@ function Receiveables() {
               />
             </div>
             <div className="col-md-1 noPrint">
-            <CSVLink  filename={"ID:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+            <CSVLink  filename={"ID:"+vendorId+".csv"}  data={csvDatass}  ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
         <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
 
             </div>

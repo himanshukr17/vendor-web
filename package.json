@@ -32,6 +32,7 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.7.0",
     "react-slick": "^0.29.0",
+    "react-step-progress-bar": "^1.0.3",
     "reactstrap": "^9.1.4",
     "redux": "^4.2.0",
     "rsuite": "^5.32.0",

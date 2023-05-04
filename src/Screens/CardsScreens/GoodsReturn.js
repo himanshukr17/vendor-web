@@ -161,30 +161,60 @@ function GoodsReturn() {
 
 
   var tempArray=[];
-  tbody.map(csvItems=>{
-    var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
-    var POSTDAte=dateFormat(csvItems.POSTING_DATE, "dd/mm/yyyy");
-    let total = 0;
-    csvItems.return_order.map((itemsPrice) =>
-                    total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY )
-    let totalsQty = 0
-    csvItems.return_order.map((price) => {
-      totalsQty = totalsQty + Number(price.RETURN_QTY)
-    });
-    tempArray.push({
-      "id":csvItems._id,
+  console.log('smk',tbody)
+  const csvDatass = tbody.flatMap(csvItems => csvItems.return_order.map(detail => {
+    // var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+    // let total = 0
+    // csvItems.Details.map((price,idx) => {
+    //   total = total + price.NET_PRICE * price.ORDER_QUANTITY
+    // });
+    // let totalsQty = 0
+    // csvItems.Details.map((price,idx) => {
+    //   totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+    // });
+    return {
+      // Vendor_ID: item.Vendor_ID,
       "GR_NO":csvItems.GRN_NO,
-      "PO_NO":csvItems.return_order[0].PO_NO,
+      "PO_NO":detail.PO_NO,
       "COMPANY_CODE":csvItems.COMPANY_CODE,
-      "POST_DATE":POSTDAte,
-      "DOC_DATE":tempDAte,
+      "POST_DATE":dateFormat(csvItems.POSTING_DATE, "dd/mm/yyyy"),
+      "DOC_DATE":dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy"),
       "PLANT":csvItems.PLANT_ID+"("+csvItems.PLANT_DESCRIPTION+")",
-      "RETURN_QTY":totalsQty,
-      "TOTAL_ITEM":csvItems.return_order.length,
-      "TOTAL_VAL":total
+      MATERIAL_DESCRIPTION: detail.MATERIAL_TEXT,
+      MATERIAL_NO: detail.MATERIAL_NO,
+      GR_NO: detail.GRN_NO,
+      MANUFACTURE_PART_NO: detail.MANUFACTURE_PART_NO,
+      RETURN_QUANTITY: detail.RETURN_QTY,
+      UNIT: detail.UNIT,
+      NET_PRICE: detail.AMOUNT,
+      
 
-    })
-  })
+    }
+  }))
+  // tbody.map(csvItems=>{
+  //   var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+  //   var POSTDAte=dateFormat(csvItems.POSTING_DATE, "dd/mm/yyyy");
+  //   let total = 0;
+  //   csvItems.return_order.map((itemsPrice) =>
+  //                   total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY )
+  //   let totalsQty = 0
+  //   csvItems.return_order.map((price) => {
+  //     totalsQty = totalsQty + Number(price.RETURN_QTY)
+  //   });
+  //   tempArray.push({
+  //     "id":csvItems._id,
+  //     "GR_NO":csvItems.GRN_NO,
+  //     "PO_NO":csvItems.return_order[0].PO_NO,
+  //     "COMPANY_CODE":csvItems.COMPANY_CODE,
+  //     "POST_DATE":POSTDAte,
+  //     "DOC_DATE":tempDAte,
+  //     "PLANT":csvItems.PLANT_ID+"("+csvItems.PLANT_DESCRIPTION+")",
+  //     "RETURN_QTY":totalsQty,
+  //     "TOTAL_ITEM":csvItems.return_order.length,
+  //     "TOTAL_VAL":total
+
+  //   })
+  // })
 
   const headersTempArray=[
     { label: "GR Number", key: "GR_NO" },
@@ -239,7 +269,7 @@ function GoodsReturn() {
   <h4 className="form-check-label">
   Goods Return
   </h4>
-  <button  style={{
+  {/* <button  style={{
       marginLeft: '10px',
       padding: '7px 14px',
       backgroundColor:"#4F51C0",
@@ -247,12 +277,12 @@ function GoodsReturn() {
       borderRadius: '5px',
       border: 'none',
       cursor: 'pointer'
-    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
 </div>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                   
-                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                    <IconContext.Provider value={{ color: "#3a91e8", size: "22px" }}>
                       <AiOutlineHome  type="button"  onClick={() => {
                       navigate("/dashboard");
                     }} />
@@ -309,7 +339,7 @@ function GoodsReturn() {
               />
             </div>
             <div className="col-md-1 noPrint">
-            <CSVLink  filename={"GR:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+            <CSVLink  filename={"GR:"+vendorId+".csv"}  data={csvDatass} ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
         <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
 
             </div>

@@ -185,28 +185,59 @@ function InvoiceDisplay () {
     }
 
     var tempArray=[];
-    tbody.map(csvItems=>{
-      var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+   
+    const csvDatass = tbody.flatMap(csvItems => csvItems.invoice_details.map(detail => {
       console.log("csvItems",csvItems)
+      var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
       var POSTDAte=dateFormat(csvItems.POSTING_DATE, "dd/mm/yyyy");
-      let total = 0;
-      csvItems.invoice_details.map((itemsPrice) =>
-      total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY )
+        // var tempDAte=dateFormat(csvItems.DOCUMENT_DATE, "dd/mm/yyyy");
+        // let total = 0
+        // csvItems.Details.map((price,idx) => {
+        //   total = total + price.NET_PRICE * price.ORDER_QUANTITY
+        // });
+        // let totalsQty = 0
+        // csvItems.Details.map((price,idx) => {
+        //   totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
+        // });
+        return {
+          "INVOICE_NUMBER":csvItems.INVOICE_NUMBER,
+          "MIRO_NO":csvItems.MIRO_NO,
+          "COMPANY_CODE":csvItems.COMPANY_CODE,
+          "PLANT":detail.PLANT_ID+"("+detail.PLANT_DESCRIPTION+")",
+          "YEAR":csvItems.YEAR,
+          "POST_DATE":POSTDAte,
+          "DOC_DATE":tempDAte,
+          "MATERIAL_NO":detail.MATERIAL,
+          "MATERIAL_DESCRIPTION":detail.MATERIAL_DESCRIPTION,
+          "TAX_AMOUNT":detail.TAX_AMOUNT,
+          "CURRENCY":detail.CURRENCY,
+          "LINE_ITEM":detail.LINE,
+          "Invoice_Reduction_Category":detail.REDUCE_AMT,
+          "Supplier_Invoice_Amount":detail.TOTAL_AMT,
+          "Supplier_Invoice_Quantity":detail.TOTAL_QTY,
+          "REMARK":detail.REMARKS,
+          
+    
+        }
+      }))
+      // let total = 0;
+      // csvItems.invoice_details.map((itemsPrice) =>
+      // total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY )
       
-      tempArray.push({
-        "id":csvItems._id,
-        "INVOICE_NUMBER":csvItems.INVOICE_NUMBER,
-        "MIRO_NO":csvItems.MIRO_NO,
-        "COMPANY_CODE":csvItems.COMPANY_CODE,
-        "PLANT":csvItems.invoice_details[0].PLANT_ID+"("+csvItems.invoice_details[0].PLANT_DESCRIPTION+")",
-        "YEAR":csvItems.YEAR,
-        "POST_DATE":POSTDAte,
-        "DOC_DATE":tempDAte,
-        "TOTAL_ITEM":csvItems.invoice_details.length,
-        "TOTAL_VAL":csvItems.TOTAL_PO_VALUE
+      // tempArray.push({
+      //   "id":csvItems._id,
+      //   "INVOICE_NUMBER":csvItems.INVOICE_NUMBER,
+      //   "MIRO_NO":csvItems.MIRO_NO,
+      //   "COMPANY_CODE":csvItems.COMPANY_CODE,
+      //   "PLANT":csvItems.invoice_details[0].PLANT_ID+"("+csvItems.invoice_details[0].PLANT_DESCRIPTION+")",
+      //   "YEAR":csvItems.YEAR,
+      //   "POST_DATE":POSTDAte,
+      //   "DOC_DATE":tempDAte,
+      //   "TOTAL_ITEM":csvItems.invoice_details.length,
+      //   "TOTAL_VAL":csvItems.TOTAL_PO_VALUE
   
-      })
-    })
+      // })
+   
     
     const headersTempArray=[
       { label: "Invoice Number", key: "INVOICE_NUMBER" },
@@ -265,7 +296,7 @@ function InvoiceDisplay () {
   <h4 className="form-check-label">
   Invoice Details
   </h4>
-  <button  style={{
+  {/* <button  style={{
       marginLeft: '10px',
       padding: '7px 14px',
       backgroundColor:"#4F51C0",
@@ -273,12 +304,12 @@ function InvoiceDisplay () {
       borderRadius: '5px',
       border: 'none',
       cursor: 'pointer'
-    }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+    }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
 </div>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{marginTop:10}}>
                   
-                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                    <IconContext.Provider value={{ color: "#3a91e8", size: "22px" }}>
                       <AiOutlineHome type="button"   onClick={() => {
                       navigate("/dashboard");
                     }} />
@@ -335,7 +366,7 @@ function InvoiceDisplay () {
   
               <div className="col-md-1 noPrint">
                 <button onClick={printPage} type="button" style={{ backgroundColor:"#4F51C0", width: "45%", height: 35, borderRadius: 5 }} > <AiFillFilePdf size={20} style={{color:"white"}}/></button>{" "}
-              <CSVLink  filename={"INV:"+vendorId+".csv"}  data={tempArray}  headers={headersTempArray} ><button type="button" style={{backgroundColor:"#4F51C0", width: "45%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+              <CSVLink  filename={"INV:"+vendorId+".csv"}  data={csvDatass}  ><button type="button" style={{backgroundColor:"#4F51C0", width: "45%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
               </div>
             </div>
   

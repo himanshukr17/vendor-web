@@ -98,7 +98,7 @@ function Profile() {
                       <h4 className="form-check-label">
                         View Profile
                       </h4>
-                      <button style={{
+                      {/* <button style={{
                         marginLeft: '10px',
                         padding: '7px 14px',
                         backgroundColor: "#4F51C0",
@@ -106,12 +106,12 @@ function Profile() {
                         borderRadius: '5px',
                         border: 'none',
                         cursor: 'pointer'
-                      }} onClick={() => { window.history.go(-1) }}>Go Back</button>
+                      }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
                     </div>
                   </div>
                   <div className="col-md-2 text-end noPrint" style={{ marginTop: 10 }}>
 
-                    <IconContext.Provider value={{ color: "red", size: "22px" }}>
+                    <IconContext.Provider value={{ color: "#3a91e8", size: "22px" }}>
                       <AiOutlineHome type="button" onClick={() => {
                         navigate("/dashboard");
                       }} />

@@ -46,6 +46,7 @@ import AdminScreen from './Screens/BuyerScreen/AdminScreen';
 import SignupNew from './Screens/SignupNew';
 import NewLogin from './Screens/NewLogin';
 import Ageing from './Screens/CardsScreens/Ageing';
+import PricePartApproval from './Screens/BuyerScreen/PricePartApproval';
 // import SignupNew from './Screens/Signup';
 // import Signup from './Screens/Signup';
 function App() {
@@ -63,6 +64,9 @@ function App() {
         (<Routes>
           {/* <Route path="/" element={<Login />} exact /> */}
           <Route path="/" element={<NewLogin />} exact />
+          <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> 
+          <Route path="/ageing" element={<><Ageing /></>} exact />
+
           {/* <Route path="/signupnew" element={<SignupNew />} exact /> */}
           <Route path="/notfound" element={<ErrorPage />} exact />
           <Route path="/createweb" element={<CreateScreen />} exact />
@@ -74,7 +78,6 @@ function App() {
           <Route path="/forgot_password" element={<ForgotPassword />} exact />
           {/* <Route path="/pos" element={<PurchaseOrders />} exact /> */}
           <Route path="/PurchaseOrderSupplier" element={<PurchaseOrderSupplier />} exact />
-
           <Route path='*' exact={true} element={<ErrorPage />} />
         </Routes>)
       }
@@ -114,6 +117,7 @@ function App() {
           <Route path="/home" element={<DashboardSupplier />} exact />
           {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
           <Route path="/AdminManageVendor" element={<Protected><AdminManageVendor /></Protected>} exact /> 
+          <Route path="/priceapproval" element={<Protected><PricePartApproval /></Protected>} exact /> 
 
           <Route path="/rscsupport" element={<Protected><RecSupport /></Protected>} exact />
           <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />

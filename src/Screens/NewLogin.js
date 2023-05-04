@@ -72,18 +72,18 @@ const stylesWelcome = {
         })
     } else {
       var bUser = (username).toString()
-      axios.get(AxioxExpPort + 'buyer/buyer_login?buyer=' + username + '&&password=' + password)
+      //  alert(username)
+      axios.get(AxioxExpPort + 'buyer/buyer_login?buyer='+ Number(username) +'&&password='+ password)
         .then((res) => {
-          console.log('resresres',('buyer'))
            localStorage.setItem('userType', ('buyer'));
            localStorage.setItem('token', (res.data[0]._id));
            localStorage.setItem('userId', (res.data[0].BUYER_ID));
            localStorage.setItem('userCompany', (res.data[0].COMPANY_NAME));
-           if (res.data[0].BUYER_ID == 1) {
-             window.location.href = "/adminManageVendor"
-           } else {
-             window.location.href = "/home"
-           }
+             if (res.data[0].IS_ADMIN === 1) {
+               window.location.href = "/adminManageVendor"
+             } else {
+               window.location.href = "/home"
+             }
         }).catch((err) => { localStorage.clear(); setWrongDetail("Please check Username or Password") })
     }
   }
