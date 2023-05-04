@@ -266,7 +266,7 @@ function Acknowledgement() {
   {/* <button  style={{
       marginLeft: '10px',
       padding: '7px 14px',
-      backgroundColor:"#4F51C0",
+      backgroundColor:"#02a5ab",
       color: '#fff',
       borderRadius: '5px',
       border: 'none',
@@ -286,13 +286,13 @@ function Acknowledgement() {
             Transaction Data    
           </a>
           <ul className="dropdown-menu" style={{width:"95%"}}>
-      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
-      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li>  */}
-      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
+      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Purchase Order   </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Goods Receipt    </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Order to confirm </a></Link></li> 
+      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Invoice Booked   </a></Link></li>  */}
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Invoice Pending  </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Goods Return     </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> My Documents     </a></Link></li> </ul>  </div>
 
               </div>
             </div>
@@ -335,13 +335,13 @@ function Acknowledgement() {
                         borderColor: COLORS.gray10,
                       }}
                     >
-                      <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                      <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Date{showArrow ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</th>
-                      <th className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
-                      <th className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
-                      <th className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
-                      <th onClick={() => sorting("ACKNOWLEDGE")} className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Status</th>
-                      <th className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                      <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                      <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Date{showArrow ? <AiOutlineArrowDown /> : <AiOutlineArrowUp />}</th>
+                      <th className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
+                      <th className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
+                      <th className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
+                      <th onClick={() => sorting("ACKNOWLEDGE")} className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Status</th>
+                      <th className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -516,7 +516,7 @@ function Acknowledgement() {
 
             </div>
             <div className="col-md-2 text-end noPrint">
-              <button type="button" title="Submit and acknowledge" onClick={saveCheck} style={{ width: "80%", height: 35, borderWidth: 3, fontFamily: "serif", borderRadius: 5, color: "#4F51C0", borderColor: "#4F51C0" }}>Acknowledge</button>
+              <button type="button" title="Submit and acknowledge" onClick={saveCheck} style={{ width: "80%", height: 35, borderWidth: 3, fontFamily: "serif", borderRadius: 5, color: "#02a5ab", borderColor: "#02a5ab" }}>Acknowledge</button>
               {/* <>
            <button className="btn btn-secondary dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false" style={{
               float: "right",
@@ -550,12 +550,12 @@ function Acknowledgement() {
           <table className="table table-bordered ">
             <thead>
               <tr>
-                <th style={{ width: "2%", backgroundColor: "#4F51C0", textAlign: "center", color: "white", borderColor: COLORS.gray10 }}>Select</th>
-                <th style={{ width: "20%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
-                <th style={{ width: "10%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Price/Unit</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
-                {/* <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark*</th> */}
+                <th style={{ width: "2%", backgroundColor: "#02a5ab", textAlign: "center", color: "white", borderColor: COLORS.gray10 }}>Select</th>
+                <th style={{ width: "20%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
+                <th style={{ width: "10%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
+                <th style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Price/Unit</th>
+                <th style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
+                {/* <th style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Remark*</th> */}
               </tr>
             </thead>
             <tbody>
@@ -753,11 +753,11 @@ function Acknowledgement() {
           <table className="table table-bordered ">
             <thead>
               <tr>
-                <th style={{ width: "20%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
-                <th style={{ width: "10%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
-                <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Acknowledge Quantity</th>
-                {/* <th style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }}>Remark</th> */}
+                <th style={{ width: "20%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
+                <th style={{ width: "10%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Material No</th>
+                <th style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Order Quantity</th>
+                <th style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Acknowledge Quantity</th>
+                {/* <th style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Remark</th> */}
               </tr>
             </thead>
             <tbody>

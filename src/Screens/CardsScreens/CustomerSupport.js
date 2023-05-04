@@ -155,7 +155,7 @@ function CustomerSupport() {
                     {/* <button style={{
                       marginLeft: '10px',
                       padding: '7px 14px',
-                      backgroundColor: "#4F51C0",
+                      backgroundColor: "#02a5ab",
                       color: '#fff',
                       borderRadius: '5px',
                       border: 'none',
@@ -199,10 +199,10 @@ function CustomerSupport() {
                         borderColor: COLORS.gray10,
                       }}
                     >
-                      <th className="text-center" style={{ width: "10%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Subject Type</th>
-                      <th className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Document</th>
-                      <th className="text-center" style={{ width: "10%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Description</th>
-                      <th className="text-center" style={{ width: "5%", backgroundColor: "#4F51C0", color: "white", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                      <th className="text-center" style={{ width: "10%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Subject Type</th>
+                      <th className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Document</th>
+                      <th className="text-center" style={{ width: "10%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Description</th>
+                      <th className="text-center" style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }} scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>

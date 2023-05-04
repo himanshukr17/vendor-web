@@ -299,7 +299,7 @@ function InvoiceDisplay () {
   {/* <button  style={{
       marginLeft: '10px',
       padding: '7px 14px',
-      backgroundColor:"#4F51C0",
+      backgroundColor:"#02a5ab",
       color: '#fff',
       borderRadius: '5px',
       border: 'none',
@@ -322,13 +322,13 @@ function InvoiceDisplay () {
             Transaction Data    
           </a>
           <ul className="dropdown-menu" style={{width:"95%"}}>
-      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
-      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li>  */}
-      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
+      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Purchase Order   </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Goods Receipt    </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Order to confirm </a></Link></li> 
+      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Invoice Booked   </a></Link></li>  */}
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Invoice Pending  </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Goods Return     </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> My Documents     </a></Link></li> </ul>  </div>
                
               </div>
             </div>
@@ -365,8 +365,8 @@ function InvoiceDisplay () {
               </div>
   
               <div className="col-md-1 noPrint">
-                <button onClick={printPage} type="button" style={{ backgroundColor:"#4F51C0", width: "45%", height: 35, borderRadius: 5 }} > <AiFillFilePdf size={20} style={{color:"white"}}/></button>{" "}
-              <CSVLink  filename={"INV:"+vendorId+".csv"}  data={csvDatass}  ><button type="button" style={{backgroundColor:"#4F51C0", width: "45%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+                <button onClick={printPage} type="button" style={{ backgroundColor:"#02a5ab", width: "45%", height: 35, borderRadius: 5 }} > <AiFillFilePdf size={20} style={{color:"white"}}/></button>{" "}
+              <CSVLink  filename={"INV:"+vendorId+".csv"}  data={csvDatass}  ><button type="button" style={{backgroundColor:"#02a5ab", width: "45%", fontFamily:"bold", height: 35, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
               </div>
             </div>
   
@@ -383,16 +383,16 @@ function InvoiceDisplay () {
                     borderColor: COLORS.gray10,
                   }}
                 >
-                  <th className="text-center" onClick={() => sortingINV("INVOICE_NUMBER")} style={{ width: "11%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number{showArrowINV?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                  <th  className="text-center"   style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
-                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
-                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
-                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
-                  <th onClick={() => sorting("SUPPLIER_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date{showArrowDOC?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
-                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
-                  <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                  <th className="text-center" onClick={() => sortingINV("INVOICE_NUMBER")} style={{ width: "11%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number{showArrowINV?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                  <th  className="text-center"   style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Miro No</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Fiscal Year</th>
+                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
+                  <th onClick={() => sorting("SUPPLIER_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date{showArrowDOC?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                  <th  className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Invoice Value*</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
+                  <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
                 </tr>
               </thead>
   
@@ -617,15 +617,15 @@ function InvoiceDisplay () {
             <table className="table table-bordered ">
               <thead>
                 {/* <th>Line</th> */}
-                <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Number</th>
-                <th style={{ width: "20%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Tax Amount</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Currency</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Line Item</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Invoice Reduction Category</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Supplier Invoice Amount</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Supplier Invoice Quantity</th>
-                <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Remark</th>
+                <th style={{ width: "10%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Material Number</th>
+                <th style={{ width: "20%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
+                <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Tax Amount</th>
+                <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Currency</th>
+                <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Line Item</th>
+                <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Invoice Reduction Category</th>
+                <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Supplier Invoice Amount</th>
+                <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Supplier Invoice Quantity</th>
+                <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Remark</th>
             
   
               </thead>

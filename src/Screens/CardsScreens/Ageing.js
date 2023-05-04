@@ -62,7 +62,7 @@ const options = {
     position: 'bottom',
     labels: {
       fontColor: '#333',
-      fontSize: 12,
+      fontSize: 8,
     },
   },
   plugins: {
@@ -179,17 +179,18 @@ const options = {
       //setAgeingThead(inputFields);
       // //console.log(apiData)
       
-      dispatch(addItem(inputFields))
+dispatch(addItem(inputFields))
 var amt=0;
-getTheTableData();
+// getTheTableData();
 inputFields.map(items=>{
-  apiData.map(item=>{
-    if (item.DAYS >= Number(items.value) && item.DAYS <= Number(items.toValue)) {
-      amt = amt + Number(item.TOTAL_OVERDUE)
-    }
-  })
- // console.log('amt',amt)
-})
+    apiData.map(item=>{
+  console.log('inputFields',item.DAYS)
+//     if (item.DAYS >= Number(items.value) && item.DAYS <= Number(items.toValue)) {
+//       amt = + Number(item.TOTAL_OVERDUE)
+//     }
+   })
+//  // console.log('amt',amt)
+ })
     }else{
       alert("Please check the Bucket input");
     }
@@ -276,7 +277,7 @@ useEffect(() => {
                     {/* <button style={{
                       marginLeft: '10px',
                       padding: '7px 14px',
-                      backgroundColor: "#4F51C0",
+                      backgroundColor: "#02a5ab",
                       color: '#fff',
                       borderRadius: '5px',
                       border: 'none',
@@ -311,7 +312,7 @@ useEffect(() => {
                 <div className='row'>
                   <div className='col-md-6'>
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                      Supplier Code: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{vendorDtl}</span>
+                      Supplier Code: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{Number(vendorDtl)}</span>
                     </p>
 
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
@@ -319,13 +320,13 @@ useEffect(() => {
                     </p>
 
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                      Total Overdues: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{num.format(Number(totalOverDue))}</span>
+                      Total Overdues: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{ num.format(Math.abs(Number(totalOverDue))) }</span> {Number(totalOverDue)<0  && <span className="badge badge-success"   >{'credit'}</span>}
                     </p>
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                     Total Not Dues: <span style={{ color: "#033E3E", fontSize: 19, fontFamily:'bold'}}>{num.format(Number(totalNotDue))}</span>
+                     Total Not Dues: <span style={{ color: "#033E3E", fontSize: 19, fontFamily:'bold'}}>{num.format(Math.abs(Number(totalNotDue)))}</span>
                     </p>
                     <p className="text-sm-left" style={{ color: "#151B54", fontSize: 16 }}>
-                      Total Outstanding: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{num.format(Number(outstanding))}</span>
+                      Total Outstanding: <span style={{ color: "#033E3E", fontSize: 19,fontFamily:'bold' }}>{num.format(Math.abs(Number(outstanding)))}</span>
                     </p>
                   </div>
 
@@ -459,7 +460,7 @@ useEffect(() => {
 
                 />              }
               </div>
-              <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Ageing Data Pi Chart</p>
+              <p style={{ fontSize: '13px', fontWeight: 'bold' }}>Ageing Data</p>
             </div>
           </div>
           {stateData.cart.length > 0 &&
@@ -474,8 +475,7 @@ useEffect(() => {
                         style={{
                           backgroundColor: "#1F87D1",
                           color: "white",
-                          borderColor: "COLORS.gray10",
-                          width: '200%'
+                          borderColor: "#000",
                         }}
                       >
                         {/* <th
@@ -516,7 +516,7 @@ useEffect(() => {
             backgroundColor: "#1F87D1",
             color: "white",
             width: '10%',
-            borderColor: COLORS.white,
+            
           }}
           scope="col"
         >
@@ -534,6 +534,7 @@ useEffect(() => {
         style={{
           backgroundColor: "white",
           borderColor: "#000",
+       
         }}
         className="table-light"
       >
@@ -555,16 +556,30 @@ useEffect(() => {
           style={{
               borderColor: "black",
               borderRight: "1px solid #000",
+              borderLeft: "1px solid #000",
+              borderBottom: "1px solid #000",
                // Add a vertical line after every column
             }}        >
-        <div className='row' style={{marginTop:'3%'}}>
+            
+        <div className='row' style={{  borderBottom: "1px solid #000", marginLeft:'0.2%',marginRight:'0.2%',padding:10  }}>
+        
+          <div className='col-md-6' style={{color:'#000'}}>
+          <p style={{fontSize:'16px', fontFamily:'bold'}}>  {"Percentage"}</p>
+            
+          </div>
+          <div className='col-md-6'  style={{color:'#000 '}}>
+
+       <p style={{fontSize:'16px', fontFamily:'bold'}}>{"Amonunt (₹)"}</p>
+          </div>
+        </div>
+        <div className='row'style={{padding:8}} >
           <div className='col-md-6' style={{color:'#922B21'}}>
-       <p style={{fontSize:'16px',fontFamily:'bold'}}>{((Number(amt)/Number(outstanding))*100).toFixed(2) +'%'}</p>
+       <p style={{fontSize:'15px',fontFamily:'bold'}}>{((Math.abs(Number(amt))/Math.abs(Number(outstanding)))*100).toFixed(2) +'%'}</p>
             
           </div>
           <div className='col-md-6'  style={{color:'#4A235A '}}>
 
-          <p style={{fontSize:'16px', fontFamily:'bold'}}>  {num.format(Number((amt)).toFixed(2))}</p>
+          <p style={{fontSize:'15px', fontFamily:'bold'}}>  {num.format(Math.abs(Number((amt))).toFixed(2))}</p>
           </div>
         </div>
         </td>

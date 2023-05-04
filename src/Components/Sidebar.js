@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { FaBars, FaDochub, FaFileInvoiceDollar, FaGoodreads, FaHome, FaInvision, FaJediOrder, FaLock, FaMoneyBill, FaServicestack, FaUser, FaUserTie } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
-import { BiAnalyse, BiFontFamily, BiMessage, BiSearch, BiTransferAlt } from "react-icons/bi";
+import { BiAnalyse, BiFontFamily, BiMessage, BiSearch,BiLogOut, BiTransferAlt } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiFillPieChart, AiOutlineLeft, AiOutlineRight, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
@@ -167,242 +167,50 @@ const SideBar = ({ children }) => {
         
       >
 
-        <div className="container-fluid" >
+<div className="container-fluid">
+  <a className="navbar-brand">
+    <p className="text-center" style={{ fontSize: "20px" }}>
+      {companyName}
+    </p>
+  </a>
+  <div className="bars" style={{ marginLeft: "-60%" }}>
+    {/* <FaBars color={'black'} onClick={toggle} /> */}
+  </div>
+  <div style={{ display: "flex", alignItems: "center" }}>
+    <a
+      style={{
+        fontSize: "25px",
+        position: "relative",
+        color: "#1F87D0",
+        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+      }}
+    >
+      Vendor
+    </a>
+    <a
+      style={{
+        fontSize: "25px",
+        position: "relative",
+        color: "#14CA96",
+        marginLeft: "5px",
+        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+      }}
+    >
+      Connect
+    </a>
+  </div>
+</div>
+
         
-          <a className="navbar-brand" >
-            <p className="text-center" style={{ fontSize:"20px"}}>{companyName}</p>
-          </a>
-          <div className="bars" style={{marginLeft:'-60%'}}>
-              {/* <FaBars color={'black'} onClick={toggle} /> */}
-            </div>
-        <a style={{fontSize:"17px"}}>             <span style={{color:"#1F87D0",  fontSize:"25px"}}>Vendor</span>
-            <span style={{color:"#14CA96", fontSize:"25px"}}> Connect</span></a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          
-          
-          
-             {/* <li className="nav-item">
-              <Link to="/pos">
-                <a className="nav-link active" aria-current="page" >
-                Purchase Orders
-                
-                </a>
-              </Link>
-              </li>
-              <li className="nav-item">
-              <Link to="/pos">
-                <a className="nav-link active" aria-current="page" >
-                Goods Return
-
-                
-                </a>
-              </Link>
-              </li>
-
-              <li className="nav-item">
-              <Link to="/pos">
-                <a className="nav-link active" aria-current="page" >
-                Goods Return
-
-                
-                </a>
-              </Link>
-              </li> */}
-              {/* <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Action
-                    </a>
-                  </li> */}
-                  {/* <li>
-                    <a className="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
-                    </a>
-                  </li> */}
-                 
-            
-            
-            {/* <form className="d-flex">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form> */}
-      
-          
-        </div>
-        <div
-            className="collapse navbar-collapse "
-            id="navbarSupportedContent"
-          >
-    
-           
-               
-          <div className="btn-group dropstart">
-                
-                <a
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                 <div className="card-icon rounded-circle d-flex align-items-center text-right">
-                    <IconContext.Provider
-                      value={{ color: "#0275d8", size: "25px" }}
-                    >
-                      {" "}
-                      <FaUserTie />
-                    </IconContext.Provider>
-                  </div>
-                </a>
-                <ul className="dropdown-menu">
-                  {/* Dropdown menu links */}
-                  {/* <li>
-                    <button
-                      style={{
-                        textAlign: "center",
-                      }}
-                      className="dropdown-item"
-                      data-bs-toggle="modal"
-                      data-bs-target="#projectEditModal"
-                      type="button"
-                    >
-                      Profile 
-                    </button>
-                  </li> */}
-
-                
-                  <li></li>
-                  
-                    {/* <>
-                      <li>
-                        <hr className="dropdown-divider"></hr>
-                      </li>
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          type="button"
-                          style={{
-                            textAlign: "center",
-                          }}
-                          onClick={(e) => {
-                           
-                          }}
-                        >
-                          Logout
-                        </button>
-                      </li>
-                    </> */}
-                    <li>
-                    <Link to="/profile">
-                    <button
-                      className="dropdown-item"
-                      type="button"
-                      // style={{
-                      //   textAlign: "center",
-                      // }}
-                      onClick={(e) => {
-                      
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          textAlign: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <h6 style={{}}>Profile</h6>
-                        <div
-                          style={{
-                            marginLeft: "10%",
-                            // display: "flex",
-                          }}
-                        >
-                        </div>
-                      </div>
-                    </button>
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider"></hr>
-                  </li>
-
-                  <li>
-                
-                    <button
-                      className="dropdown-item"
-                      type="button"
-                      // style={{
-                      //   textAlign: "center",
-                      // }}
-                      onClick={() => {
-                        localStorage.clear() 
-                       
-                        window.location.href="/"                 
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          textAlign: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <h6 style={{}}>Logout</h6>
-                        <div
-                          style={{
-                            marginLeft: "10%",
-                            // display: "flex",
-                          }}
-                        >
-                        </div>
-                      </div>
-                    </button>
-                   
-                  </li>
-                </ul>
-              </div>
-
-          </div>
-
-
-          
       </nav>
       <motion.div
   animate={{
     width: isOpen ? "230px" : "45px",
-    transition: {
-      duration: 0.5,
-      type: "spring",
-      damping: 10,
-    },
+    // transition: {
+    //   duration: 0.5,
+    //   type: "spring",
+    //   damping: 10,
+    // },
   }}
   className={`sidebarSS `}
   style={{ position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 100 }}
@@ -428,18 +236,19 @@ const SideBar = ({ children }) => {
            <div >
             
                 {/* <p style={{marginLeft:10, marginTop:2, fontSize:15, fontFamily:"cursive", alignItems:"center", display:"flex", justifyContent:"center"}}> */}
-            <AnimatePresence>
-              {isOpen && (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                {
-                    imageView?
-  <img height={'50%'} width={'50%'} style={{borderRadius:'50%'}} src=""/>
- : <img height={'50%'} width={'50%'} style={{borderRadius:'50%'}} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"/>
-                }
-</div>
-
-              )}
-            </AnimatePresence>
+                <AnimatePresence>
+  {isOpen && (
+    <Link to="/profile">
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        {
+          imageView ?
+          <img height={'50%'} width={'50%'} style={{borderRadius:'50%'}} src={''}/>
+          : <img height={'50%'} width={'50%'} style={{borderRadius:'50%'}} src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"/>
+        }
+      </div>
+    </Link>
+  )}
+</AnimatePresence>
           </div>
           <section className="routes">
 
@@ -447,10 +256,10 @@ const SideBar = ({ children }) => {
   <span type="button" style={{display: 'inline-block', borderRadius: '50%', width: '25px', height: '25px', border: '2px solid white', position: 'relative', overflow: 'hidden'}}>
   {isOpen?
   
-  <AiOutlineLeft  color={'#8FECFF '} style={{animation: 'rollingleft 2s linear infinite'}} size={20}  /> 
+  <AiOutlineLeft  color={'#8FECFF '} size={20}  /> 
   :
 
-  <AiOutlineRight color={'#8FECFF '} size={20} style={{animation: 'rollingright 2s linear infinite'}}/> 
+  <AiOutlineRight color={'#8FECFF '} size={20} /> 
 }    
   </span>
 </div>
@@ -491,11 +300,39 @@ const SideBar = ({ children }) => {
                 </Link>
               );
             })}
+            {isOpen?
+  
+  <div className="card-icon rounded-circle d-flex align-items-center justify-content-left" style={{marginTop:"75%", marginLeft:'10px',cursor: "pointer"}}  onClick={() => {
+            localStorage.clear() 
+           
+            window.location.href="/"                 
+          }}>
+<IconContext.Provider value={{ color: "#fff", size: "25px" }}>
+<BiLogOut />
+</IconContext.Provider>
+<div style={{ marginLeft: '5px', fontSize: 15 }}>Logout</div>
+</div>
+:
+<div style={{marginLeft:'10px'}} >
+<div className="card-icon rounded-circle d-flex align-items-center justify-content-center" style={{position: 'absolute', bottom:20, marginleft: "50px", zIndex: 100,  fontSize: 15, cursor: "pointer" }}  onClick={() => {
+            localStorage.clear() 
+           
+            window.location.href="/"                 
+          }}>
+<IconContext.Provider
+          value={{ color: "#fff", size: "25px" }}
+        >
+          {" "}
+          <BiLogOut /> 
+        </IconContext.Provider>
+</div>
+</div>
+       }
           </section>
         </motion.div>
 
         <main>{children}</main>
-        
+     
       </div>
     </>
   );

@@ -276,7 +276,7 @@ function Receiveables() {
   {/* <button  style={{
       marginLeft: '10px',
       padding: '7px 14px',
-      backgroundColor:"#4F51C0",
+      backgroundColor:"#02a5ab",
       color: '#fff',
       borderRadius: '5px',
       border: 'none',
@@ -296,13 +296,13 @@ function Receiveables() {
             Transaction Data    
           </a>
           <ul className="dropdown-menu" style={{width:"95%"}}>
-      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Purchase Order   </a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Receipt    </a></Link></li>
-      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Order to confirm </a></Link></li> 
-      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Booked   </a></Link></li>  */}
-      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Invoice Pending  </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> Goods Return     </a></Link></li> 
-      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#4F51C0"}}> My Documents     </a></Link></li> </ul>  </div>
+      <li className="row" ><Link style={{ }}  to="/pos"><BsFillCartCheckFill  color={"#F07857"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Purchase Order   </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/res"><AiFillReconciliation color={"#43A5BE"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Goods Receipt    </a></Link></li>
+      <li className="row" ><Link style={{ }}  to="/ackn"><AiOutlineWallet     color={"#F5C26B"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Order to confirm </a></Link></li> 
+      {/* <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"#4FB06D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Invoice Booked   </a></Link></li>  */}
+      <li className="row" ><Link style={{ }}  to="/inv"><FaFileInvoiceDollar  color={"pink"}    size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Invoice Pending  </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/grs"><BsFillCartXFill      color={"#53BDAS"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> Goods Return     </a></Link></li> 
+      <li className="row" ><Link style={{ }}  to="/mcs"><FaFileContract       color={"#BE398D"} size={15} />  <a style={{marginLeft:10, marginRight:7, color:"#02a5ab"}}> My Documents     </a></Link></li> </ul>  </div>
                
               </div>
             </div>
@@ -333,8 +333,8 @@ function Receiveables() {
               />
             </div>
             <div className="col-md-1 noPrint">
-            <CSVLink  filename={"ID:"+vendorId+".csv"}  data={csvDatass}  ><button type="button" style={{ width: "47%", backgroundColor:"#4F51C0", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
-        <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#4F51C0", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
+            <CSVLink  filename={"ID:"+vendorId+".csv"}  data={csvDatass}  ><button type="button" style={{ width: "47%", backgroundColor:"#02a5ab", height: 33, borderRadius: 5 }} ><FaFileCsv size={20} style={{color:"white"}}/></button></CSVLink>{" "}
+        <button onClick={printData} type="button" style={{ width: "47%", height: 33,backgroundColor:"#02a5ab", borderRadius: 5 }} > <AiFillFilePdf style={{color:"white"}} size={20}/></button>{" "} 
 
             </div>
 
@@ -355,16 +355,16 @@ function Receiveables() {
                   borderColor: COLORS.gray10,
                 }}
               >
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
-                <th onClick={() => sortingINVNO("GRN_REF")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number{showArrowINVNO?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
-                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                <th  className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">GR Number</th>
+                <th onClick={() => sortingINVNO("GRN_REF")} className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Number{showArrowINVNO?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Invoice Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Posting Date</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th  className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Plant</th>
                 {/* <th onClick={()=>sorting("received_datas[0].GRN_NO")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Number</th> */}
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
+                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
                 {/* <th onClick={() => sorting("GRN_REF")} className="text-center" style={{ width: "5%", borderColor: COLORS.gray10 }} scope="col">GR Reference No</th> */}
-               <th className="text-center" style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th> 
+               <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th> 
 
               </tr>
             </thead>
@@ -548,14 +548,14 @@ function Receiveables() {
 
           <table className="table table-bordered table-striped">
             <thead>
-              <th style={{ width: "10%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material No</th>
-              <th style={{ width: "20%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>GR Quantity</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Unit</th>
-              {/* style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }} <th>PO Date</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Received Date</th> */}
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Invoice Quantity</th>
-              <th style={{ width: "5%",backgroundColor:"#4F51C0", color:"white", borderColor: COLORS.gray10 }}>Manufacturing Part No</th>
+              <th style={{ width: "10%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Material No</th>
+              <th style={{ width: "20%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Material Description</th>
+              <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>GR Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Unit</th>
+              {/* style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} <th>PO Date</th>
+              <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Received Date</th> */}
+              <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Invoice Quantity</th>
+              <th style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }}>Manufacturing Part No</th>
             </thead>
             <tbody>
               {modalDataStatus ? (

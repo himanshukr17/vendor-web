@@ -50,7 +50,10 @@ const SidebarMenuHeader = ({ route, showAnimation, isOpen, setIsOpen }) => {
   return (
     <>
       <div className="menu"  onClick={toggleMenu}>
+
         <div className="menu_item">
+        {/* <a  color={'#8FECFF '} style={{animation: 'rollingleft 2s linear infinite'}} size={20}> lkeghy</a> */}
+
           <div className="icon">{route.icon}</div>
           <AnimatePresence>
             {isOpen && (
@@ -80,6 +83,7 @@ const SidebarMenuHeader = ({ route, showAnimation, isOpen, setIsOpen }) => {
           </motion.div>
         )}
       </div>{" "}
+      
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -100,6 +104,7 @@ const SidebarMenuHeader = ({ route, showAnimation, isOpen, setIsOpen }) => {
           </motion.div>
         )}{" "}
       </AnimatePresence>
+
     </>
   );
 };
