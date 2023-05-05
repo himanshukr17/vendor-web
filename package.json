@@ -37,6 +37,7 @@
     "redux": "^4.2.0",
     "rsuite": "^5.32.0",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^5.3.10",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

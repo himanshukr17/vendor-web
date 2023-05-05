@@ -302,7 +302,7 @@ const SideBar = ({ children }) => {
             })}
             {isOpen?
   
-  <div className="card-icon rounded-circle d-flex align-items-center justify-content-left" style={{marginTop:"75%", marginLeft:'10px',cursor: "pointer"}}  onClick={() => {
+  <div className="card-icon rounded-circle d-flex align-items-center justify-content-left" style={{marginTop:"80%", marginLeft:'10px',cursor: "pointer"}}  onClick={() => {
             localStorage.clear() 
            
             window.location.href="/"                 
