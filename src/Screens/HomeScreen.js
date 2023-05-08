@@ -14,6 +14,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Sidebar from "../Components/Sidebar";
 import CountUp from 'react-countup';
+import { Link } from "react-router-dom";
 
 
 function HomeScreen() {
@@ -245,7 +246,7 @@ function HomeScreen() {
         fill: true,
         label: "Lakh(INR)",
         borderColor: '#4F51C0',
-        // backgroundColor: 'white',
+        backgroundColor: 'transparent',
         data: chartdatass.reverse(),
       },
     ],
@@ -314,48 +315,61 @@ function HomeScreen() {
               <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#14CA96,#1F87D0, #fff)', padding: '25px' }}>
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}>
 
+               <Link to='/pos'  style={{ textDecoration: 'none', color:"#fff"}}>
                   <CountUp duration={3}
                     start={0}
                     end={isNaN(Number(dashboardData.OPEN_PO) + Number(dashboardData.CLOSE_PO)) ? 0 : Number(dashboardData.OPEN_PO) + Number(dashboardData.CLOSE_PO)} />
-                </span>                  <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Total_Order</span>
+                </Link>
+                </span>                  
+                <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Total_Order</span>
               </div>
             </div>
             <div className="col-sm-2 " style={{alignItems:"center"}} >
               <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
-                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
+              <Link to='/res'  style={{ textDecoration: 'none', color:"#fff"}}>
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}>
+                <CountUp duration={3}
                   start={0}
-                  end={Number(dashboardData.RECEIVED_PO) ? Number(dashboardData.RECEIVED_PO) : 0} /></span>
+                  end={Number(dashboardData.RECEIVED_PO) ? Number(dashboardData.RECEIVED_PO) : 0} /></span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>GRN</span>
               </div>
             </div>
             <div className="col-sm-2 " >
               <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
-                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}>{'0'}</span>
+              <Link to='/dashboard'  style={{ textDecoration: 'none', color:"#fff"}}>
+
+                <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}>{'0'}</span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Invoice_Book</span>
               </div>
             </div>
             <div className="col-sm-2 " >
               <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+              <Link to='/ackn'  style={{ textDecoration: 'none', color:"#fff"}}>
+
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
                   start={0}
-                  end={Number(lablesAll) ? Number(lablesAll) : 0} /></span>
+                  end={Number(lablesAll) ? Number(lablesAll) : 0} /></span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Order_to_Confirm</span>
               </div>
             </div>
             <div className="col-sm-2 " >
               <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+              <Link to='/inv'  style={{ textDecoration: 'none', color:"#fff"}}>
+
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
                   start={0}
-                  end={Number(dashboardData.INVOICE_COUNT) ? Number(dashboardData.INVOICE_COUNT) : 0} /></span>
+                  end={Number(dashboardData.INVOICE_COUNT) ? Number(dashboardData.INVOICE_COUNT) : 0} /></span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Pending_Invoice</span>
 
               </div>
             </div>
             <div className="col-sm-2 " >
               <div className="card" style={{ boxShadow: '5px 10px 10px rgba(2, 104, 144, 0.6)', width: '100px', height: '100px', alignItems: 'center', background: 'linear-gradient(30deg, #14CA96,#1F87D0, #fff)', padding: '25px' }}>
+              <Link to='/grs'  style={{ textDecoration: 'none', color:"#fff"}}>
+
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
                   start={0}
-                  end={Number(dashboardData.RETURN_PO) ? Number(dashboardData.RETURN_PO) : 0} /></span>
+                  end={Number(dashboardData.RETURN_PO) ? Number(dashboardData.RETURN_PO) : 0} /></span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Goods_Return</span>
               </div>
             </div>

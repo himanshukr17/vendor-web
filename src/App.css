@@ -55516,7 +55516,7 @@ main {
 
 /* Sidebar */
 .sidebarSS {
-  position: fixed;
+  position: flex;
   top: 0;
   left: 0;
   z-index: 1;
@@ -55693,4 +55693,8 @@ a {
 .add-button {
   position: absolute;
   bottom: 0;
+}
+
+.link-style {
+  text-decoration: none;
 }

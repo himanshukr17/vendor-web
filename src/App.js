@@ -47,6 +47,7 @@ import SignupNew from './Screens/SignupNew';
 import NewLogin from './Screens/NewLogin';
 import Ageing from './Screens/CardsScreens/Ageing';
 import PricePartApproval from './Screens/BuyerScreen/PricePartApproval';
+import Ledger from './Screens/CardsScreens/Ledger';
 // import SignupNew from './Screens/Signup';
 // import Signup from './Screens/Signup';
 function App() {
@@ -97,7 +98,7 @@ function App() {
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
           {/* <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact /> */}
           <Route path="/support" element={<Protected><CustomerSupport /></Protected>} exact />
-
+          <Route path="/ledger" element={<Protected><Ledger /></Protected>} exact /> 
         <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact /> 
           <Route path="/grs" element={<Protected><GoodsReturn /></Protected>} exact />
           <Route path="/mcs" element={<Protected><MyContact /></Protected>} exact />

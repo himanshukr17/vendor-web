@@ -4,7 +4,7 @@ import { MdMessage } from "react-icons/md";
 import { BiAnalyse, BiFontFamily, BiMessage, BiSearch,BiLogOut, BiTransferAlt } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiFillPieChart, AiOutlineLeft, AiOutlineRight, AiTwotoneFileExclamation } from "react-icons/ai";
-import { BsCartCheck } from "react-icons/bs";
+import { BsCartCheck, BsFillFileTextFill } from "react-icons/bs";
 import { useState } from "react";
 
 import { IconContext } from "react-icons";
@@ -20,6 +20,11 @@ const routes = [
     path: "/ageing",
     name: "Ageing Data",
     icon: <AiFillPieChart />,
+  },
+  {
+    path: "/ledger",
+    name: "Ledger",
+    icon: <BsFillFileTextFill />,
   },
   // {
   //   path: "/#",

@@ -6,13 +6,17 @@
 }
 
 .App{
-	display: flex;
+	display: fix;
 	flex-direction: column;
 	width: 100%;
-	
-	background-color: #ffffff;
-	background: linear-gradient(315deg, #aaaaaa 3%, #D9DDDC 38%);
+	height: 100vh;
+		color: #333333;
 
-	font-family: "Open Sans", sans-serif;
-	color: #333333;
 }
+
+body {
+	background-color: #ffffff;
+	background: linear-gradient(315deg, #a1a4a4 3%, #D9DDDC 38%);
+	
+	color: #333333;
+  }
