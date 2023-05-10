@@ -131,7 +131,7 @@ Ledger Details
 
 
 
-        <table className="table table-light table-bordered table-hover" responsive>
+        <table className="table table-light table-bordered table-hover table-responsive" responsive>
           <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
             <tr
               className="text-center"

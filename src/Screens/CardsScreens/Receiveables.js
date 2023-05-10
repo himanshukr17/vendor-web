@@ -346,7 +346,7 @@ function Receiveables() {
 
         <div  style={{ marginLeft:30}} >
           {/* <p className="text-right" style={{ marginTop: "-30px" }}>{" "}</p> */}
-          <table className="table table-light table-bordered table-hover">
+          <table className="table table-light table-bordered table-hover ">
             <thead className="table-light" style={{ position: "sticky", top: 50, backgroundColor: "#fff", zIndex: 1 }}>
               <tr
                 className="text-center"

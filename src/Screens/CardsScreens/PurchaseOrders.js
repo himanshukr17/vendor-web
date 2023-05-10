@@ -344,20 +344,20 @@ function PurchaseOrders() {
                   borderColor: "COLORS.gray10",
                 }}
               >
-                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
-                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{ backgroundColor:"#02a5ab", color:"white",width: "5%", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab",textSizeAdjust:"", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Group</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Org</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Payment Term</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Exchange Rate</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">INCO Term 1</th>
-                <th className="text-center" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">INCO Term 2</th>
-                <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{backgroundColor:"#02a5ab", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
-                 <th onClick={() => sorting("STATUS")} className="text-center" style={{backgroundColor:"#02a5ab", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th> 
-                <th className="text-center noPrint" style={{ width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
+                <th onClick={() => sorting("PO_NO")} className="text-center" style={{ fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">PO Number</th>
+                <th onClick={() => sorting("DOCUMENT_DATE")} className="text-center" style={{  fontSize:12, backgroundColor:"#02a5ab", color:"white",width: "5%", borderColor: COLORS.gray10 }} scope="col">Date{showArrow?<AiOutlineArrowDown/>:<AiOutlineArrowUp/>}</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab",textSizeAdjust:"", color:"white", borderColor: COLORS.gray10 }} scope="col">Total Quantity</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Item Count</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Company Code</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Group</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Purchasing Org</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Payment Term</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Exchange Rate</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">INCO Term 1</th>
+                <th className="text-center" style={{  fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">INCO Term 2</th>
+                <th onClick={() => sorting("NET_PRICE")} className="text-center" style={{  fontSize:12, backgroundColor:"#02a5ab", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Total Net Value*</th>
+                 <th onClick={() => sorting("STATUS")} className="text-center" style={{ fontSize:12 ,backgroundColor:"#02a5ab", color:"white", width: "5%", borderColor: COLORS.gray10 }} scope="col">Status</th> 
+                <th className="text-center noPrint" style={{ fontSize:12, width: "5%",backgroundColor:"#02a5ab", color:"white", borderColor: COLORS.gray10 }} scope="col">Action</th>
               </tr>
             </thead>
 
@@ -701,4 +701,3 @@ function PurchaseOrders() {
 }
 
 export default PurchaseOrders;
-

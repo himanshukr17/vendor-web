@@ -55698,3 +55698,10 @@ a {
 .link-style {
   text-decoration: none;
 }
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
