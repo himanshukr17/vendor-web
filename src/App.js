@@ -48,6 +48,10 @@ import NewLogin from './Screens/NewLogin';
 import Ageing from './Screens/CardsScreens/Ageing';
 import PricePartApproval from './Screens/BuyerScreen/PricePartApproval';
 import Ledger from './Screens/CardsScreens/Ledger';
+import PPASupplier from './Screens/CardsScreens/PPASupplier';
+import EventApprove from './Screens/BuyerScreen/EventApprove';
+import InvitedEvents from './Screens/InvitedEvents';
+// import PendingInvoices from './Screens/PendingInvoices';
 // import SignupNew from './Screens/Signup';
 // import Signup from './Screens/Signup';
 function App() {
@@ -67,9 +71,9 @@ function App() {
           <Route path="/" element={<NewLogin />} exact />
           <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> 
           <Route path="/ageing" element={<><Ageing /></>} exact />
-
           {/* <Route path="/signupnew" element={<SignupNew />} exact /> */}
           <Route path="/notfound" element={<ErrorPage />} exact />
+          {/* <Route path="/PendingInvoices" element={<PendingInvoices />} exact /> */}
           <Route path="/createweb" element={<CreateScreen />} exact />
           <Route path="/createmobile" element={<CreateModule />} exact />
           <Route path="/admin" element={<AdminScreen />} exact />
@@ -95,8 +99,9 @@ function App() {
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
           {/* <Route path="/home" element={<Protected><Acknowledgement /></Protected>} exact /> */}
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
+          <Route path="/invitedevents" element={<Protected><InvitedEvents /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
-          {/* <Route path="/role" element={<Protected><RoleManagement /></Protected>} exact /> */}
+         <Route path="/PPASupplier" element={<Protected><PPASupplier /></Protected>} exact />
           <Route path="/support" element={<Protected><CustomerSupport /></Protected>} exact />
           <Route path="/ledger" element={<Protected><Ledger /></Protected>} exact /> 
         <Route path="/pos" element={<Protected><PurchaseOrders /></Protected>} exact /> 
@@ -119,6 +124,7 @@ function App() {
           {/* <Route path="/AdminManageVendor" element={<AdminManageVendor />} exact /> */}
           <Route path="/AdminManageVendor" element={<Protected><AdminManageVendor /></Protected>} exact /> 
           <Route path="/priceapproval" element={<Protected><PricePartApproval /></Protected>} exact /> 
+          <Route path="/approveEvent" element={<Protected><EventApprove /></Protected>} exact /> 
 
           <Route path="/rscsupport" element={<Protected><RecSupport /></Protected>} exact />
           <Route path="/screen" element={<Protected><ScreenAuth /></Protected>} exact />

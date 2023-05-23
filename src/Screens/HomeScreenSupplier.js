@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // import { AiFillAccountBook, AiOutlineArrowRight } from "react-icons/ai";
 import { IconContext } from "react-icons";
 import {  FaComments, FaFileContract, FaUsers } from "react-icons/fa";
-import { BsFillCartCheckFill } from "react-icons/bs";
+import { BsFillCalendar2EventFill, BsFillCartCheckFill } from "react-icons/bs";
 import { AiFillReconciliation, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { AxioxExpPort } from "./AxioxExpPort"
 import Footer from "../Components/Footer";
@@ -109,7 +109,7 @@ function HomeScreenSupplier() {
         }}
       >
         <div id="google_translate_element"></div>
-        <div className="col-lg-3 col-6">
+        <div className="col-lg-2 col-6">
           <Link to="/new"
             style={{
               textDecoration: 'none',
@@ -143,7 +143,7 @@ function HomeScreenSupplier() {
                   </h5> */}
 
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-2">
                     <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <IconContext.Provider
                         value={{ color: "#0275d8", size: "60px" }}
@@ -153,7 +153,7 @@ function HomeScreenSupplier() {
                       </IconContext.Provider>
                     </div>
                   </div>
-                  <div className="col-md-8 text-right">
+                  <div className="col-md-10 text-right">
 
                     <span style={{
                       color: "#FF6347",
@@ -203,7 +203,7 @@ function HomeScreenSupplier() {
             </div>
           </Link>
         </div>
-        <div className="col-lg-3 col-6" >
+        <div className="col-lg-2 col-6" >
           <Link to="/mv" style={{
             textDecoration: 'none',
 
@@ -248,7 +248,7 @@ function HomeScreenSupplier() {
             </div>
           </Link>
         </div> 
-        <div className="col-lg-3 col-6">
+        <div className="col-lg-2 col-6">
           <Link to="/vdtls" style={{
             textDecoration: 'none',
 
@@ -273,49 +273,24 @@ function HomeScreenSupplier() {
               </h5>
 
               <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
-                <div className="row">
-                  <div className="col-md-4">
-                    <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <IconContext.Provider
-                        value={{ color: "#0275d8", size: "60px" }}
-                      >
-                        {" "}
-                        <AiFillReconciliation />
-                      </IconContext.Provider>
-                    </div>
-                  </div>
-                  <div className="col-md-8 text-right" >
-                    <span style={{
-                      color: "#FF7F50",
-                      fontWeight: 700,
-                      fontSize: 30,
-                    }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_DATA}</span>{" "}
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                    <span style={{
-                      fontWeight: 700,
-                      fontSize: 30,
-                      color: "#6495ED",
-                    }} className="text-success small pt-1 fw-bold text-right"> {inActiveSupp+activeSupp}</span>{" "}
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1">Total Suppliers</span><br></br>
-
-                  </div>
-
-                </div>
-
-              </div>
+               
+               <div className="row">
+                 <div className="col-md-12">
+                   <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                     <IconContext.Provider
+                       value={{ color: "#0275d8", size: "90px" }}
+                     >
+                       {" "}
+                       <AiFillReconciliation />
+                     </IconContext.Provider>
+                   </div>
+                 </div>
+               </div>
+             </div>
             </div>
           </Link>
         </div>
-        <div className="col-lg-3 col-6">
+        <div className="col-lg-2 col-6">
           <Link to="/priceapproval" style={{
             textDecoration: 'none',
 
@@ -340,59 +315,28 @@ function HomeScreenSupplier() {
               </h5>
 
               <div className="card-body">
-                {/* <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> */}
+               
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-12">
                     <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <IconContext.Provider
-                        value={{ color: "#0275d8", size: "60px" }}
+                        value={{ color: "#0275d8", size: "90px" }}
                       >
                         {" "}
-                        <AiFillReconciliation />
+                        <AiOutlineUsergroupAdd />
                       </IconContext.Provider>
                     </div>
                   </div>
-                  <div className="col-md-8 text-right" >
-                    <span style={{
-                      color: "#FF7F50",
-                      fontWeight: 700,
-                      fontSize: 30,
-                    }} className=" small pt-1 fw-bold text-right">{dashboardData.RETURN_DATA}</span>{" "}
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1 text-right"></span><br></br>
-                    <span style={{
-                      fontWeight: 700,
-                      fontSize: 30,
-                      color: "#6495ED",
-                    }} className="text-success small pt-1 fw-bold text-right"> {inActiveSupp+activeSupp}</span>{" "}
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1">Total Suppliers</span><br></br>
-
-                  </div>
-
                 </div>
-
               </div>
             </div>
           </Link>
         </div>
-       
-
-
-     
-
-        {/* <div className="col-lg-3 col-6">
-          <Link to="/pordersuppli" style={{
+        <div className="col-lg-2 col-6">
+          <Link to="/approveEvent" style={{
             textDecoration: 'none',
 
           }}>
-
             <div
               className="card info-card sales-card"
               style={
@@ -409,109 +353,26 @@ function HomeScreenSupplier() {
                   color: "black",
                 }}
               >
-                Purchase Order
+                Event Approval
               </h5>
-              <div className="filter">
-                <a className="icon" href="#" data-bs-toggle=""></a>
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">
-                    Sales <span>| Today</span>
-                  </h5> 
 
+              <div className="card-body">
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-12">
                     <div className="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <IconContext.Provider
-                        value={{ color: "#0275d8", size: "85px" }}
+                        value={{ color: "#0275d8", size: "90px" }}
                       >
                         {" "}
-                        <BsFillCartCheckFill />
+                        <BsFillCalendar2EventFill />
                       </IconContext.Provider>
                     </div>
                   </div>
-                  <div className="col-md-8 text-right">
-
-
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1">Create
-                    </span>
-                    <br></br>
-                    <span style={{
-
-
-                    }} className="text-muted small pt-2 ps-1">Display</span>
-
-                    <br></br>
-                    <span style={{
-                    }} className="text-muted small pt-2 ps-1">Change</span>
-
-                    <br></br>
-                  </div>
-
                 </div>
               </div>
             </div>
           </Link>
-
         </div>
-
- */}
-
-
-        {/* 
-        <div
-          style={{
-            display: "flex",
-          }}
-        > */}
-        {/* <div
-          className="card"
-          style={{
-            height: 60,
-            width: "50%",
-            margin: 20,
-          }}
-        ></div> */}
-        {/* <div
-            className="card"
-            style={{
-              height: 350,
-              width: "45%",
-              margin: "1%",
-            }}
-          >
-            <Bar data={data} />
-          </div>
-        </div> */}
-
-        {/* <>
-          <center>
-            
-            <h3
-              style={{
-                color: "white",
-              }}
-            >
-              Click on below button to download PDF file
-            </h3>
-            <button onClick={onButtonClick}>Download PDF</button>
-          </center>
-        </>
-
-        <form onSubmit={submitForm}>
-          <input
-            type="text"
-            onChange={(e) => setSuperHero(e.target.value)}
-            placeholder={"Superhero Name"}
-          />
-          <br />
-          <input type="file" onChange={(e) => setUploadFile(e.target.files)} />
-          <br />
-          <input type="submit" />
-        </form> */}
       </div>
     </div>
   );

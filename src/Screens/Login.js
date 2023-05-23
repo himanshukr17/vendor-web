@@ -26,12 +26,9 @@ function Login() {
   } else if (userType == "true") {
     window.location.href = '/home'
   } else {
-
     const vendorLogin = () => {
-
       setVendorLg(true)
       setSupplierLg(false);
-
       // alert("shd")
       setBtnVActiveColor('white')
       setBtnVActive('active')
@@ -45,9 +42,7 @@ function Login() {
       setBtnVActiveColor('black')
       setBtnVActive('tablinks')
       setBtnSActive('tablinks active')
-
     }
-
 
     const loginHandle = (e) => {
       e.preventDefault();

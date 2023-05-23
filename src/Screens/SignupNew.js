@@ -484,7 +484,7 @@ const SignupNew = () => {
                                 </div>
                                 <div className='col-md-6'>
                                     <label >Business Role*</label>
-                                    <select className="form-control" type="text"  onChange={(e) => { setBusinessRole(e.target.value) }}
+                                    <select className="form-control" aria-label="Default select example" type="text"  onChange={(e) => { setBusinessRole(e.target.value) }}
                                     >
                                         <option selected disabled>--Select Business Role--</option>
                                         {roleDesc.map((val, index) => {
@@ -651,7 +651,7 @@ const SignupNew = () => {
 
                                 <div className='col-md-4'>
                     <label >Country*</label>
-                                <select className="form-control" type="text" onChange={(e) => { setCountry(e.target.value); stSt(e.target.value) }}
+                                <select className="form-control" aria-label="Default select example" type="text" onChange={(e) => { setCountry(e.target.value); stSt(e.target.value) }}
                     >
                       <option selected disabled>--Select Country--</option>
                       {countrys.map((countries) => {
@@ -667,7 +667,7 @@ const SignupNew = () => {
                                 </div>
                                 <div className='col-md-4'>
                     <label >State*</label>
-                                <select className="form-control" type="text" onChange={(e) => {
+                                <select className="form-control"  aria-label="Default select example" type="text" onChange={(e) => {
                       setState(e.target.value);
                     }}
                     >
@@ -687,7 +687,7 @@ const SignupNew = () => {
                                 <div className='row'>   
                                 <div className='col-md-4'>
                     <label >Language*</label>
-                                <select className="form-control" type="text" onChange={(e) => { setLanguage(e.target.value); stSt(e.target.value) }}
+                                <select className="form-control"  aria-label="Default select example"type="text" onChange={(e) => { setLanguage(e.target.value); stSt(e.target.value) }}
                     >
                       <option selected disabled>--Select Language--</option>
                        {languageArr.map((val,index) => {
