@@ -1,10 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
-import { FaBars, FaDochub, FaFileInvoiceDollar, FaGoodreads, FaHome, FaInvision, FaJediOrder, FaLock, FaMoneyBill, FaServicestack, FaUser, FaUserTie } from "react-icons/fa";
+import { FaBars, FaDochub, FaFileInvoiceDollar, FaGoodreads, FaHome, FaInvision, FaJediOrder, FaLock, FaMoneyBill, FaServicestack, FaTruckMoving, FaUser, FaUserTie } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { BiAnalyse, BiFontFamily, BiLogOut, BiMessage, BiSearch, BiTransferAlt } from "react-icons/bi";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiFillPieChart, AiOutlineLeft, AiOutlineRight, AiTwotoneFileExclamation } from "react-icons/ai";
-import { BsCartCheck, BsFillFileTextFill } from "react-icons/bs";
+import { BsCartCheck, BsFillCalendar2EventFill, BsFillFileTextFill } from "react-icons/bs";
 import { useState } from "react";
 
 import { IconContext } from "react-icons";
@@ -25,6 +25,17 @@ const routes = [
     path: "/ledger",
     name: "Ledger",
     icon: <BsFillFileTextFill />,
+  },
+  
+  {
+    path: "/invitedevents",
+    name: "Invited Events",
+    icon: <BsFillCalendar2EventFill />,
+  },
+  {
+    path: "/shipment",
+    name: "Advance Shipment",
+    icon: <FaTruckMoving />,
   },
   // {
   //   path: "/#",

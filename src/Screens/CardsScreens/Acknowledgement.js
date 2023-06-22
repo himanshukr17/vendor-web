@@ -104,7 +104,7 @@ function Acknowledgement() {
       setTBody(sorted);
       setSort("DSC")
       setShowArrow(!showArrow)
-      console.log("response.data", tbody);
+      // console.log("response.data", tbody);
     }
     if (sort === "DSC") {
       const sorted = [...tbody].sort((a, b) =>
@@ -122,7 +122,7 @@ function Acknowledgement() {
       // setTBody('')
       const searchDatas = tbody.filter((item) =>   (item.PO_NO).toString().includes(searchElements) );
       setTBody(searchDatas);
-      console.log("searchDatas",searchDatas);
+      // console.log("searchDatas",searchDatas);
       // if()
       if (searchDatas.length == 0) {
         setIsPurchaseOrderEmpty(false)
@@ -137,11 +137,11 @@ function Acknowledgement() {
     var searchElements = event.target.value;
     // setQuery(searchElements);
     var length = Number(searchElements.length)
-    console.log("lengthlength", emptyModalTable)
+    // console.log("lengthlength", emptyModalTable)
     if (length > 0) {
       // setTBody('')
       const searchDatas = ClickedPOsDataArr.filter((item) => item.MATERIAL_DESCRIPTION.toLowerCase().includes(searchElements) || item.MATERIAL.toLowerCase().includes(searchElements));
-      console.log("searchElements.length", searchDatas);
+      // console.log("searchElements.length", searchDatas);
       setClickedPOsDataArr(searchDatas);
       if (searchDatas.length == 0) {
         setModalDataStatus(false)
@@ -157,13 +157,13 @@ function Acknowledgement() {
   }
   const [poValue, setPOValue] = useState("")
   const handleCheck = (id) => {
-    const updatedData = currentPosts.map((row, index) => {
+    const updatedData = ClickedPOsDataArr.map((row, index) => {
       if (index === id) {
         return { ...row, PREVIOUS_QTY: row.ORDER_QUANTITY, ORDER_QUANTITYss: row.ORDER_QUANTITY, IS_CHECKED: !row.IS_CHECKED };
       }
       return row;
     });
-    console.log("updatedData", updatedData)
+    // console.log("updatedData", updatedData)
 
     setEmptyModalTable(updatedData);
     setClickedPOsDataArr(updatedData);
@@ -171,9 +171,9 @@ function Acknowledgement() {
   let num = Intl.NumberFormat('en-IN', { style: "currency", currency: "INR" });
   var tolto = []
   var toltoACK = []
-  console.log("totalValue", tolto)
+  // console.log("totalValue", tolto)
   const saveCheck= () => {
-    currentPosts.map(tempIt => {
+    ClickedPOsDataArr.map(tempIt => {
       if (tempIt.IS_CHECKED) {
         togglePODetailsFlagACKRemark();
       }else{
@@ -193,7 +193,7 @@ function Acknowledgement() {
      var MATERIALDES = [];
      var ORDER_QUANTITY = [];
      
-     currentPosts.map(tempIt => {
+     ClickedPOsDataArr.map(tempIt => {
        if (tempIt.IS_CHECKED) {
          ITEM_CATEGORY.push(tempIt.ITEM_CATEGORY);
          MATERIAL.push(tempIt.MATERIAL);
@@ -202,16 +202,21 @@ function Acknowledgement() {
         
        }
      })
+    //  console.log(ITEM_CATEGORY)
+    //  console.log(poValue)
+    //  console.log(MATERIAL)
+    //  console.log(MATERIALDES)
+    //  console.log(ORDER_QUANTITY)
      if (handleInputValsss.length > 0) {
        setCheckRemark(false)
-       axios.post(AxioxExpPort + "acknowledge/insert", {
-         "ITEM_CATEGORY": ITEM_CATEGORY,
-         "PO_NO": poValue,
-         "MATERIAL": MATERIAL,
-         "MATERIAL_DESCRIPTION": MATERIALDES,
-         "ORDER_QUANTITY": ORDER_QUANTITY,
-         "remarks": handleInputValsss
-       })
+      //  axios.post(AxioxExpPort + "acknowledge/insert", {
+      //    "ITEM_CATEGORY": ITEM_CATEGORY,
+      //    "PO_NO": poValue,
+      //    "MATERIAL": MATERIAL,
+      //    "MATERIAL_DESCRIPTION": MATERIALDES,
+      //    "ORDER_QUANTITY": ORDER_QUANTITY,
+      //    "remarks": handleInputValsss
+      //  })
          .then((res) => {
           fetchData();togglePODetailsFlagACKRemark();
           togglePODetailsFlag();
@@ -365,7 +370,7 @@ function Acknowledgement() {
                             className="table-light"
                           >
                             <td
-                              key={`col-1` + index}
+                              
                               className="text-center"
                               style={{ width: "5%", borderColor: COLORS.gray10 }}
                             >
@@ -380,35 +385,35 @@ function Acknowledgement() {
                               <br />
                             </td>
                             <td
-                              key={`col-2` + index}
+                              
                               className="text-center"
                               style={{ width: "5%", borderColor: COLORS.gray10 }}
                             >
                               {dateFormat(po.DOCUMENT_DATE, "dd/mm/yyyy")}
                             </td>
                             <td
-                              key={`col-2` + index}
+                              
                               className="text-center"
                               style={{ width: "5%", borderColor: COLORS.gray10 }}
                             >
                               {totalsQty}
                             </td>
                             <td
-                              key={`col-2` + index}
+                              
                               className="text-center"
                               style={{ width: "5%", borderColor: COLORS.gray10 }}
                             >
                               {po.purchase_order.length}
                             </td>
                             <td
-                              key={`col-2` + index}
+                              
                               className="text-center"
                               style={{ width: "5%", borderColor: COLORS.gray10 }}
                             >
                               {num.format(Number(total))}
                             </td>
                             <td
-                              key={`col-2` + index}
+                              
                               className="text-center"
                               style={{ width: "5%", borderColor: COLORS.gray10 }}
                             >
@@ -419,7 +424,7 @@ function Acknowledgement() {
                               }
                             </td>
                             <td
-                              key={`col-13` + index}
+                              
                               className="text-center"
                               style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                             >
@@ -548,7 +553,10 @@ function Acknowledgement() {
             </div>
           </div>
           <table className="table table-bordered ">
-            <thead>
+           
+                    <td colSpan={5}>
+                    <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                    <thead style={{ position: 'sticky', top: '0' }}>
               <tr>
                 <th style={{ width: "2%", backgroundColor: "#02a5ab", textAlign: "center", color: "white", borderColor: COLORS.gray10 }}>Select</th>
                 <th style={{ width: "20%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Material Description</th>
@@ -558,9 +566,9 @@ function Acknowledgement() {
                 {/* <th style={{ width: "5%", backgroundColor: "#02a5ab", color: "white", borderColor: COLORS.gray10 }}>Remark*</th> */}
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {modalDataStatus ? (
-                currentPosts.map((posData, index) => {
+                ClickedPOsDataArr.map((posData, index) => {
 
                   if (posData.IS_CHECKED == "false") {
                     posData.IS_CHECKED = false
@@ -568,12 +576,13 @@ function Acknowledgement() {
                   var total = 0;
                   toltoACK.push(Number(posData.ORDER_QUANTITYss = posData.ORDER_QUANTITYss || 0) * posData.PRICE_PER_UNIT)
                   tolto.push(posData.ORDER_QUANTITY * posData.PRICE_PER_UNIT)
-                  console.log("tolto", toltoACK)
+                  {/* console.log("tolto", toltoACK) */}
                   {/* console.log("toltoACK",toltoACK)
                         Array.prototype.splice.apply(toltoACK, [0, tolto.length].concat(tolto)); */}
                   return (
-                    <tr key={index}>
-                      <td key={`col-21` + index} className="text-center" >
+            
+                    <tr key={index} >
+                      <td className="text-center"  style={{ width: "2%"}}>
                         <input type="checkbox"
                           value="0"
                           checked={posData.IS_CHECKED}
@@ -581,16 +590,16 @@ function Acknowledgement() {
                         />
                       </td>
 
-                      <td key={`col-22` + index}>
+                      <td  style={{ width: "20%"}}>
                         {posData.MATERIAL_DESCRIPTION}
                       </td>
-                      <td key={`col-23` + index}>
+                      <td  style={{ width: "10%"}}>
                         {(posData.MATERIAL).toString()}
                       </td>
-                      <td key={`col-24` + index}>
+                      <td  style={{ width: "5%"}}>
                         {num.format(Number(posData.PRICE_PER_UNIT))}
                       </td>
-                      <td key={`col-25` + index}
+                      <td 
                         style={{
                           width: "5%"
                         }}
@@ -607,9 +616,9 @@ function Acknowledgement() {
                               placeholder={posData.ORDER_QUANTITY}
                               max={posData.PREVIOUS_QTY}
                               onChange={(e) => {
-                                console.log("posData", posData)
+                                // console.log("posData", posData)
                                 const newValue = Number(e.target.value);
-                                const updatedData = currentPosts.map((r, inx) => {
+                                const updatedData = ClickedPOsDataArr.map((r, inx) => {
                                   if (inx === index) {
                                     return { ...r, PREVIOUS_QTY: posData.ORDER_QUANTITY, ORDER_QUANTITYss: newValue };
                                   }
@@ -643,6 +652,7 @@ function Acknowledgement() {
                         </td>
                       } */}
                     </tr>
+                   
                   )
                 })
               ) :
@@ -654,12 +664,15 @@ function Acknowledgement() {
                   </tr>
                 )
               }
+                    
             </tbody>
+              </div>
+                    </td>
           </table>
           <div className="row">
             
             <div className="col-md-6">
-              <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
+            {/* <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} /> */}
             </div>
             <div className="modal-footer"><a
                 className="navbar-brand text-end"
@@ -764,27 +777,27 @@ function Acknowledgement() {
               {currentPosts.map((posData, index) => {
                 return (
                   <tr key={index}>
-                    <td key={`col-22` + index}>
+                    <td >
                       {posData.MATERIAL_DESCRIPTION}
                     </td>
-                    <td key={`col-23` + index}>
+                    <td >
                       {(posData.MATERIAL).toString()}
                     </td>
-                    <td key={`col-25` + index}
+                    <td 
                       style={{
                         width: "5%"
                       }}
                     >
                       {posData.ORDER_QUANTITY}
                     </td>
-                    <td key={`col-25` + index}
+                    <td 
                       style={{
                         width: "5%"
                       }}
                     >
                       {posData.ACKNOWLEDGE_QUANTITY}
                     </td>
-                    {/* <td key={`col-25` + index}
+                    {/* <td 
                       style={{
                         width: "5%"
                       }}
@@ -870,3 +883,646 @@ function Acknowledgement() {
 }
 
 export default Acknowledgement
+
+
+{/* 
+[
+  {
+      "PO_NO": 4480005765,
+      "DOCUMENT_DATE": "2023-02-17T00:00:00.000Z",
+      "Vendor_ID": 582246,
+      "STATUS": "Open",
+      "PAY_DESC": "Cash n Carry",
+      "PAYMENT_KEY": "0001",
+      "PURCHASE_ORG": "PUHO",
+      "INCO_1": "CFR",
+      "INCO_2": "costs and frieght",
+      "ACKNOWLEDGE": 1,
+      "REMARKS": "jjj",
+      "purchase_order": [
+          {
+              "PO_NO": 4480005765,
+              "ITEM": 2,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-17T00:00:00.000Z",
+              "ORDER_QUANTITY": 4,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "PRICE_PER_UNIT": 25,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4480005765,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-17T00:00:00.000Z",
+              "ORDER_QUANTITY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "PRICE_PER_UNIT": 25,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4480005765,
+              "ITEM": 3,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-17T00:00:00.000Z",
+              "ORDER_QUANTITY": 4,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "PRICE_PER_UNIT": 25,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4480005765,
+              "ITEM": 3,
+              "SCHEDULE_LINE": 2,
+              "REQUIRED_DELIVERY_DATE": "2023-02-17T00:00:00.000Z",
+              "ORDER_QUANTITY": 4,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "PRICE_PER_UNIT": 25,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4480005765,
+              "ITEM": 3,
+              "SCHEDULE_LINE": 3,
+              "REQUIRED_DELIVERY_DATE": "2023-02-17T00:00:00.000Z",
+              "ORDER_QUANTITY": 4,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "PRICE_PER_UNIT": 25,
+              "IS_CHECKED": "false"
+          }
+      ],
+      "acknowledge_detail": [
+          {
+              "ITEM_CATEGORY": 1,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -2,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -4,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 1,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -2,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -4,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 1,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -2,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -4,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 1,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -2,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -4,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 1,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -2,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -4,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 1,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -2,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -4,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 1,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -2,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          },
+          {
+              "ITEM_CATEGORY": 2,
+              "MATERIAL": "601000031272",
+              "MATERIAL_DESCRIPTION": "test batch new",
+              "ORDER_QUANTITY": -4,
+              "PO_NO": 4480005765,
+              "ACKNOWLEDGE_QUANTITY": 0
+          }
+      ]
+  },
+  {
+      "PO_NO": 4500037486,
+      "DOCUMENT_DATE": "2022-11-23T00:00:00.000Z",
+      "Vendor_ID": 582246,
+      "STATUS": "Open",
+      "PAY_DESC": "Cash n Carry",
+      "PAYMENT_KEY": "0001",
+      "PURCHASE_ORG": "PUHO",
+      "INCO_1": "",
+      "INCO_2": "",
+      "purchase_order": [
+          {
+              "PO_NO": 4500037486,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-02T00:00:00.000Z",
+              "ORDER_QUANTITY": 130,
+              "MATERIAL": "601000031115",
+              "MATERIAL_DESCRIPTION": "test material 1",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037486,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-02T00:00:00.000Z",
+              "ORDER_QUANTITY": 130,
+              "MATERIAL": "601000031115",
+              "MATERIAL_DESCRIPTION": "test material 1",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037486,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-02T00:00:00.000Z",
+              "ORDER_QUANTITY": 130,
+              "MATERIAL": "601000031115",
+              "MATERIAL_DESCRIPTION": "test material 1",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037486,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-02T00:00:00.000Z",
+              "ORDER_QUANTITY": 130,
+              "MATERIAL": "601000031115",
+              "MATERIAL_DESCRIPTION": "test material 1",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037486,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-02T00:00:00.000Z",
+              "ORDER_QUANTITY": 130,
+              "MATERIAL": "601000031115",
+              "MATERIAL_DESCRIPTION": "test material 1",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037486,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-02T00:00:00.000Z",
+              "ORDER_QUANTITY": 130,
+              "MATERIAL": "601000031115",
+              "MATERIAL_DESCRIPTION": "test material 1",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037486,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2023-02-02T00:00:00.000Z",
+              "ORDER_QUANTITY": 130,
+              "MATERIAL": "601000031115",
+              "MATERIAL_DESCRIPTION": "test material 1",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          }
+      ],
+      "acknowledge_detail": []
+  },
+  {
+      "PO_NO": 4500037487,
+      "DOCUMENT_DATE": "2022-11-23T00:00:00.000Z",
+      "Vendor_ID": 582246,
+      "STATUS": "Open",
+      "PAY_DESC": "Cash n Carry",
+      "PAYMENT_KEY": "0001",
+      "PURCHASE_ORG": "PUHO",
+      "INCO_1": "",
+      "INCO_2": "",
+      "purchase_order": [
+          {
+              "PO_NO": 4500037487,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 100,
+              "MATERIAL": "601000031120",
+              "MATERIAL_DESCRIPTION": "test material 2 batch",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037487,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 100,
+              "MATERIAL": "601000031120",
+              "MATERIAL_DESCRIPTION": "test material 2 batch",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037487,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 100,
+              "MATERIAL": "601000031120",
+              "MATERIAL_DESCRIPTION": "test material 2 batch",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037487,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 100,
+              "MATERIAL": "601000031120",
+              "MATERIAL_DESCRIPTION": "test material 2 batch",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037487,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 100,
+              "MATERIAL": "601000031120",
+              "MATERIAL_DESCRIPTION": "test material 2 batch",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037487,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 100,
+              "MATERIAL": "601000031120",
+              "MATERIAL_DESCRIPTION": "test material 2 batch",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037487,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 100,
+              "MATERIAL": "601000031120",
+              "MATERIAL_DESCRIPTION": "test material 2 batch",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          }
+      ],
+      "acknowledge_detail": []
+  },
+  {
+      "PO_NO": 4500037488,
+      "DOCUMENT_DATE": "2022-11-23T00:00:00.000Z",
+      "Vendor_ID": 582246,
+      "STATUS": "Open",
+      "PAY_DESC": "Cash n Carry",
+      "PAYMENT_KEY": "0001",
+      "PURCHASE_ORG": "PUHO",
+      "INCO_1": "",
+      "INCO_2": "",
+      "purchase_order": [
+          {
+              "PO_NO": 4500037488,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 50,
+              "MATERIAL": "601000031119",
+              "MATERIAL_DESCRIPTION": "TEST_MAT:2",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037488,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 50,
+              "MATERIAL": "601000031119",
+              "MATERIAL_DESCRIPTION": "TEST_MAT:2",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037488,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 50,
+              "MATERIAL": "601000031119",
+              "MATERIAL_DESCRIPTION": "TEST_MAT:2",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037488,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 50,
+              "MATERIAL": "601000031119",
+              "MATERIAL_DESCRIPTION": "TEST_MAT:2",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037488,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 50,
+              "MATERIAL": "601000031119",
+              "MATERIAL_DESCRIPTION": "TEST_MAT:2",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037488,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 50,
+              "MATERIAL": "601000031119",
+              "MATERIAL_DESCRIPTION": "TEST_MAT:2",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037488,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-23T00:00:00.000Z",
+              "ORDER_QUANTITY": 50,
+              "MATERIAL": "601000031119",
+              "MATERIAL_DESCRIPTION": "TEST_MAT:2",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          }
+      ],
+      "acknowledge_detail": []
+  },
+  {
+      "PO_NO": 4500037492,
+      "DOCUMENT_DATE": "2022-11-24T00:00:00.000Z",
+      "Vendor_ID": 582246,
+      "STATUS": "Open",
+      "PAY_DESC": "Cash n Carry",
+      "PAYMENT_KEY": "0001",
+      "PURCHASE_ORG": "PUHO",
+      "INCO_1": "",
+      "INCO_2": "",
+      "purchase_order": [
+          {
+              "PO_NO": 4500037492,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037492,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037492,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037492,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037492,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037492,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037492,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          }
+      ],
+      "acknowledge_detail": []
+  },
+  {
+      "PO_NO": 4500037493,
+      "DOCUMENT_DATE": "2022-11-24T00:00:00.000Z",
+      "Vendor_ID": 582246,
+      "STATUS": "Open",
+      "PAY_DESC": "Cash n Carry",
+      "PAYMENT_KEY": "0001",
+      "PURCHASE_ORG": "PUHO",
+      "INCO_1": "",
+      "INCO_2": "",
+      "purchase_order": [
+          {
+              "PO_NO": 4500037493,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037493,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037493,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037493,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037493,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037493,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          },
+          {
+              "PO_NO": 4500037493,
+              "ITEM": 1,
+              "SCHEDULE_LINE": 1,
+              "REQUIRED_DELIVERY_DATE": "2022-11-28T00:00:00.000Z",
+              "ORDER_QUANTITY": 10,
+              "MATERIAL": "601000031129",
+              "MATERIAL_DESCRIPTION": "TEST_FG_BATCH",
+              "PRICE_PER_UNIT": 100,
+              "IS_CHECKED": "false"
+          }
+      ],
+      "acknowledge_detail": []
+  }]*/}

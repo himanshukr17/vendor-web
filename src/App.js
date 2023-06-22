@@ -51,6 +51,7 @@ import Ledger from './Screens/CardsScreens/Ledger';
 import PPASupplier from './Screens/CardsScreens/PPASupplier';
 import EventApprove from './Screens/BuyerScreen/EventApprove';
 import InvitedEvents from './Screens/InvitedEvents';
+import AdvanceShipment from './Screens/CardsScreens/AdvanceShipment';
 // import PendingInvoices from './Screens/PendingInvoices';
 // import SignupNew from './Screens/Signup';
 // import Signup from './Screens/Signup';
@@ -97,7 +98,7 @@ function App() {
           {/* <Route path="/PurchaseOrderSupplier" element={<Protected><PurchaseOrderSupplier /></Protected>} exact /> */}
           <Route path="/ageing" element={<Protected><Ageing /></Protected>} exact />
           <Route path="/Ackn" element={<Protected><Acknowledgement /></Protected>} exact />
-          {/* <Route path="/home" element={<Protected><Acknowledgement /></Protected>} exact /> */}
+           <Route path="/shipment" element={<Protected><AdvanceShipment /></Protected>} exact /> 
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} exact />
           <Route path="/invitedevents" element={<Protected><InvitedEvents /></Protected>} exact />
           <Route path="/graph" element={<Protected><Graph /></Protected>} exact />
