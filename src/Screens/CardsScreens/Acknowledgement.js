@@ -268,15 +268,7 @@ function Acknowledgement() {
   <h4 className="form-check-label">
   Acknowledgement
   </h4>
-  {/* <button  style={{
-      marginLeft: '10px',
-      padding: '7px 14px',
-      backgroundColor:"#02a5ab",
-      color: '#fff',
-      borderRadius: '5px',
-      border: 'none',
-      cursor: 'pointer'
-    }} onClick={() => { window.history.go(-1) }}>Go Back</button> */}
+  
 </div>
                 </div>
                 <div className="col-md-2 text-end noPrint" style={{ marginTop: 10 }}>
@@ -428,10 +420,7 @@ function Acknowledgement() {
                               className="text-center"
                               style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                             >
-                              {/* <CSVLink className="btn" data={po.Details} headers={headers}
-                        // setClickedPOsDataArr(val.Details)
-                        //  laery
-                        > */}
+                              
                               {po.ACKNOWLEDGE == 1 ?
                                 <IconContext.Provider
                                   value={{ color: "green", size: "22px" }}
