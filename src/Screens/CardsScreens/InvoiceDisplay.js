@@ -64,7 +64,7 @@ function InvoiceDisplay () {
 
     const fetchPosts = async () => {
       setLoading(true)
-      axios.get(AxioxExpPort +"invoice/all?id="+vendorId)
+     await axios.get(AxioxExpPort +"invoice/all?id="+vendorId)
         .then((response) => {
           setTBody(response.data);
           // console.log("response.data",response.data);
@@ -422,13 +422,13 @@ function InvoiceDisplay () {
                           type="button"
                             onClick={(e) => {
                               togglePODetailsFlag();
-                              setClickedInvoiceDataArr(po.invoice_details);
-                              setEmptyModalTable(po.invoice_details);
-                              setInvoiceNumber(po.INVOICE_NUMBER);
+                              setClickedInvoiceDataArr(po?.invoice_details);
+                              setEmptyModalTable(po?.invoice_details);
+                              setInvoiceNumber(po?.INVOICE_NUMBER);
   
                             }}
                           >
-                            {po.INVOICE_NUMBER.toString()}
+                            {po?.INVOICE_NUMBER.toString()}
                           </a>
                           <br />
                         </td>
@@ -437,7 +437,7 @@ function InvoiceDisplay () {
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {po.MIRO_NO}
+                          {po?.MIRO_NO}
                         </td>
                         <td
                           key={`col-1`+ index}
@@ -445,14 +445,14 @@ function InvoiceDisplay () {
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
                         
-                            {po.COMPANY_CODE}
+                            {po?.COMPANY_CODE}
                         </td>
                         <td
                           key={`col-1`+ index}
                           className="text-center"
                           style={{ width: "13%", borderColor: COLORS.gray10 }}
                         >
-                            {po.invoice_details[0].PLANT_ID+"("+po.invoice_details[0].PLANT_DESCRIPTION+")"}                         
+                            {po?.invoice_details[0]?.PLANT_ID+"("+po?.invoice_details[0]?.PLANT_DESCRIPTION+")"}                         
                         </td>
                         
                         <td
@@ -461,7 +461,7 @@ function InvoiceDisplay () {
                           style={{ width: "5%", borderColor: COLORS.gray10 }}
                         >
                         
-                            {po.YEAR}
+                            {po?.YEAR}
                        
                          
                         </td>
@@ -471,14 +471,14 @@ function InvoiceDisplay () {
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {dateFormat(po.BUYER_DATE, "dd/mm/yyyy")}
+                          {dateFormat(po?.BUYER_DATE, "dd/mm/yyyy")}
                         </td>
                         <td
                           key={`col-3` + index}
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {dateFormat(po.SUPPLIER_DATE, "dd/mm/yyyy")}
+                          {dateFormat(po?.SUPPLIER_DATE, "dd/mm/yyyy")}
                         </td>
                        
                       
@@ -488,21 +488,21 @@ function InvoiceDisplay () {
                           className="text-center"
                           style={{ width: "10%", borderColor: COLORS.gray10 }}
                         >
-                          {num.format(Number(po.TOTAL_PO_VALUE))}
+                          {num.format(Number(po?.TOTAL_PO_VALUE))}
                         </td>
                         <td
                           key={`col-6` + index}
                           className="text-center"
                           style={{ width: "5%", borderColor: COLORS.gray10 }}
                         >
-                          {po.invoice_details.length}
+                          {po?.invoice_details.length}
                         </td>
                         <td
                           key={`col-7` + index}
                           className="text-center"
                           style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                         >
-                          <CSVLink className="btn" filename={"INV"+po.INVOICE_NUMBER+".csv"} data={po.invoice_details} headers={headers}
+                          <CSVLink className="btn" filename={"INV"+po?.INVOICE_NUMBER+".csv"} data={po?.invoice_details} headers={headers}
                           // setClickedInvoiceDataArr(val.purchase_order)
                           //  laery
                           >

@@ -59,7 +59,7 @@ function AdvanceShipment() {
     const [showRemarks, setShowRemarks] = useState("")
     const fetchData = async () => {
         setLoading(true)
-        axios.get(AxioxExpPort + "as/advance?id=" + vendorId)
+       await axios.get(AxioxExpPort + "as/advance?id=" + vendorId)
             .then((response) => {
                 setTBody(response.data);
                 setFilterdata(response.data);
@@ -172,12 +172,36 @@ function AdvanceShipment() {
     var tolto = []
     var toltoACK = []
     //   console.log("totalValue", tolto)
-    const saveCheck = () => {
+    const saveCheck =async () => {
         const checkedItems = currentPosts.filter(tempIt => tempIt.IS_CHECKED);
-
+console.log(checkedItems);
         if (checkedItems.length > 0 && handleInputValsss.length > 0) {
-            togglePODetailsFlagACKRemark();
-            setCheckRemark(false);
+            // togglePODetailsFlagACKRemark();
+
+            if (checkedItems.length > 0 && handleInputValsss.length > 0) {
+                // Both conditions are true, so perform the Axios POST request
+                // console.log("data", checkedItems);
+               await axios.post(AxioxExpPort + "as/advanceshipment", checkedItems)
+                    .then((response) => {
+                        // The Axios request was successful
+                        // You can display a success alert here
+                        alert("Success! The data was submitted.");
+                        // Optionally, you can perform additional actions after success
+                        setCheckRemark(false);
+                        fetchData();
+                        togglePODetailsFlag();
+                    })
+                    .catch((error) => {
+                        // Handle any errors that occur during the Axios request
+                        console.error("Error:", error);
+                        // Optionally, you can display an error alert here
+                        alert("An error occurred while submitting the data.");
+                    });
+                } else {
+                alert("Error occurred while submitting the data. Will update soon");
+                // Incomplete else block, consider adding code here.
+            }
+            
         } else {
             setRemark(true);
             setCheckRemark(true);
@@ -372,12 +396,12 @@ function AdvanceShipment() {
                                         {isPurchaseOrderEmpty ? (
                                             tbody.map((po, index) => {
                                                 let total = 0
-                                                po.Details.map((price) => {
+                                                po?.Details.map((price) => {
                                                     {/* total = total + price.PRICE_PER_UNIT * price.ORDER_QUANTITY */}
                                                     total = price.NET_PRICE
                                                 });
                                                 let totalsQty = 0
-                                                po.Details.map((price) => {
+                                                po?.Details.map((price) => {
                                                     totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
                                                 });
                                                 return (
@@ -400,7 +424,7 @@ function AdvanceShipment() {
                                                             }}
 
                                                             >
-                                                                {po.PO_NO}
+                                                                {po?.PO_NO}
                                                             </a>
                                                             <br />
                                                         </td>
@@ -409,7 +433,7 @@ function AdvanceShipment() {
                                                             className="text-center"
                                                             style={{ width: "5%", borderColor: COLORS.gray10 }}
                                                         >
-                                                            {dateFormat(po.DOCUMENT_DATE, "dd/mm/yyyy")}
+                                                            {dateFormat(po?.DOCUMENT_DATE, "dd/mm/yyyy")}
                                                         </td>
                                                         <td
 
@@ -423,7 +447,7 @@ function AdvanceShipment() {
                                                             className="text-center"
                                                             style={{ width: "5%", borderColor: COLORS.gray10 }}
                                                         >
-                                                            {po.Details.length}
+                                                            {po?.Details.length}
                                                         </td>
                                                         <td
 
@@ -437,7 +461,7 @@ function AdvanceShipment() {
                                                             className="text-center"
                                                             style={{ width: "5%", borderColor: COLORS.gray10 }}
                                                         >
-                                                            {po.STATUS === 'Open' ?
+                                                            {po?.STATUS === 'Open' ?
                                                                 <span className="badge badge-warning" >Open</span>
                                                                 :
                                                                 <span className="badge badge-success" >Close</span>
@@ -448,22 +472,23 @@ function AdvanceShipment() {
                                                             className="text-center"
                                                             style={{ marginwidth: "5%", borderColor: COLORS.gray10 }}
                                                         >
-                                                            {/* <CSVLink className="btn" data={po.Details} headers={headers}
+                                                            {/* <CSVLink className="btn" data={po?.Details} headers={headers}
                         // setClickedPOsDataArr(val.Details)
                         //  laery
                         > */}
-                                                            {po.STATUS === 'Close' ?
+                                                            {po?.STATUS === 'Close' ?
                                                                 <IconContext.Provider
                                                                     value={{ color: "green", size: "22px" }}
                                                                 >
                                                                     <AiOutlineEdit
                                                                         type="button"
-                                                                        onClick={(e) => {
+                                                                        onClick={() => {
+                                                                            console.log("po?.Details",po?.Details)
                                                                             togglePODetailsFlagACK();
-                                                                            setClickedPOsDataArr(po.Details);
-                                                                            setACKData(po.Details)
-                                                                            setShowRemarks(po.REMARKS);
-                                                                            setPOValue(po.PO_NO)
+                                                                            setClickedPOsDataArr(po?.Details);
+                                                                            setACKData(po?.Details)
+                                                                            setShowRemarks(po?.REMARKS);
+                                                                            setPOValue(po?.PO_NO)
                                                                         }}
                                                                     />
                                                                 </IconContext.Provider>
@@ -475,10 +500,10 @@ function AdvanceShipment() {
                                                                         type="button"
                                                                         onClick={(e) => {
                                                                             togglePODetailsFlag();
-                                                                            setClickedPOsDataArr(po.Details);
-                                                                            setEmptyModalTable(po.Details);
-                                                                            setPOValue(po.PO_NO)
-                                                                            setACKVALValue(po.ACKNOWLEDGE)
+                                                                            setClickedPOsDataArr(po?.Details);
+                                                                            setEmptyModalTable(po?.Details);
+                                                                            setPOValue(po?.PO_NO)
+                                                                            setACKVALValue(po?.ACKNOWLEDGE)
 
                                                                         }}
                                                                     />
@@ -541,7 +566,7 @@ function AdvanceShipment() {
 
                             </div>
                             <div className="col-md-2 text-end noPrint">
-                                <button type="button" title="Submit and acknowledge" onClick={saveCheck} style={{ width: "80%", height: 35, borderWidth: 3, fontFamily: "serif", borderRadius: 5,color: "#02a5ab", borderColor: "#02a5ab"  }}>Next</button>
+                                <button type="button" title="Submit and acknowledge" onClick={saveCheck} style={{ width: "80%", height: 35, borderWidth: 3, fontFamily: "serif", borderRadius: 5,color: "#02a5ab", borderColor: "#02a5ab"  }}>Submit</button>
                                 {/* <>
            <button className="btn btn-secondary dropdown-toggle" type="button"  data-bs-toggle="dropdown" aria-expanded="false" style={{
               float: "right",
@@ -595,9 +620,7 @@ function AdvanceShipment() {
                   var total = 0;
                   toltoACK.push(Number(posData.ORDER_QUANTITYss = posData.ORDER_QUANTITYss || 0) * posData.PRICE_PER_UNIT)
                   tolto.push(posData.ORDER_QUANTITY * posData.PRICE_PER_UNIT)
-                  {/* console.log("tolto", toltoACK) */}
-                  {/* console.log("toltoACK",toltoACK)
-                        Array.prototype.splice.apply(toltoACK, [0, tolto.length].concat(tolto)); */}
+                 
                   return (
             
                     <tr key={index} >
@@ -650,26 +673,7 @@ function AdvanceShipment() {
                             posData.ORDER_QUANTITY
                         }
                       </td>
-                      {/* {
-                        posData.IS_CHECKED &&
-                        <td>
 
-                          <input className="form-control" placeholder="Remark " style={{ width: "100%" }} onChange={(e) => {
-                            setHandleInputValss(e.target.value);
-                            setCheckRemark(true)
-                            const remark = e.target.value;
-                            console.log("remark", remark)
-                            const updatedData = currentPosts.map((r, inx) => {
-                              if (inx === index) {
-                                return { ...r, ACK_REMARK: remark };
-                              }
-                              return r;
-                            });
-                            setEmptyModalTable(updatedData);
-                            setClickedPOsDataArr(updatedData);
-                          }} />
-                        </td>
-                      } */}
                     </tr>
                    
                   )
@@ -748,7 +752,7 @@ function AdvanceShipment() {
                     </div>
                 </div>
             </Modal>
-            {/* <Modal
+           <Modal
                 className="modal-dialog modal-content"
 
                 size="lg"
@@ -761,7 +765,7 @@ function AdvanceShipment() {
             >
                 <div className="card card-info">
                     <div className="card-header">
-                        <h3 className="card-title">   Order Details333333</h3>
+                        <h3 className="card-title">   Order Details</h3>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span onClick={() => {
                                 togglePODetailsFlagACK();
@@ -842,11 +846,13 @@ function AdvanceShipment() {
                             </tbody>
                         </table>
                         <div className="row">
-                            <div className="col-md-12">
+                            <div className="col-md-12" style={{margin:10}}>
                                 <Pagination postPerPage={postsPerPage} totalPosts={ClickedPOsDataArr.length} paginate={paginate} />
                             </div>
 
                             <div className="modal-footer">
+                            {
+                                showRemarks?
                                 <a
                                     className="navbar-brand"
 
@@ -861,13 +867,17 @@ function AdvanceShipment() {
                                     Remarks:
                                     <p style={{ color: COLORS.gray60, float: "right" }}>{" " + showRemarks}</p>
                                 </a>
+                                :
+                                null
+                            }
+                               
 
 
                             </div>
                         </div>
                     </div>
                 </div>
-            </Modal> */}
+            </Modal>
             <Modal
                 className="modal-dialog modal-xl"
                 size="lg"

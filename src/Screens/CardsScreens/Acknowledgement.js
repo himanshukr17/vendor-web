@@ -209,15 +209,15 @@ function Acknowledgement() {
     //  console.log(ORDER_QUANTITY)
      if (handleInputValsss.length > 0) {
        setCheckRemark(false)
-      //  axios.post(AxioxExpPort + "acknowledge/insert", {
-      //    "ITEM_CATEGORY": ITEM_CATEGORY,
-      //    "PO_NO": poValue,
-      //    "MATERIAL": MATERIAL,
-      //    "MATERIAL_DESCRIPTION": MATERIALDES,
-      //    "ORDER_QUANTITY": ORDER_QUANTITY,
-      //    "remarks": handleInputValsss
-      //  })
-         .then((res) => {
+        axios.post(AxioxExpPort + "acknowledge/insert", {
+          "ITEM_CATEGORY": ITEM_CATEGORY,
+          "PO_NO": poValue,
+          "MATERIAL": MATERIAL,
+          "MATERIAL_DESCRIPTION": MATERIALDES,
+          "ORDER_QUANTITY": ORDER_QUANTITY,
+          "remarks": handleInputValsss
+        })
+     .then((res) => {
           fetchData();togglePODetailsFlagACKRemark();
           togglePODetailsFlag();
           setToaster("Order is approved and acknowledge")
@@ -346,7 +346,9 @@ function Acknowledgement() {
                       tbody.map((po, index) => {
                         let total = 0
                         po.purchase_order.map((price, idx) => {
-                          total = total + price.PRICE_PER_UNIT * price.ORDER_QUANTITY
+                      console.log("ss",price.PRICE_PER_UNIT)
+                      {/* console.log("qs",price.ORDER_QUANTITY) */}
+                          total = total + Number(price.PRICE_PER_UNIT) * Number(price.ORDER_QUANTITY)
                         });
                         let totalsQty = 0
                         po.purchase_order.map((price, idx) => {

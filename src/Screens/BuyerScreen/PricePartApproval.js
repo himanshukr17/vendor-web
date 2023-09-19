@@ -31,9 +31,9 @@ function PricePartApproval() {
     const [purcCate, setPurcCate] = useState('')
     const [source, setSource] = useState('')
     const [eventType,setEventType]=useState('')
+const [data,setData]=useState([])
 
-
-
+const vendorId = localStorage.getItem('userId');
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
     };
@@ -43,48 +43,16 @@ function PricePartApproval() {
         setCurrentStep(currentStep - 1);
     };
 
-    const uploadPan = () => {
-        // Handle uploading PAN here
-        console.log(currentStep);
-        if(currentStep===4){
-            alert('done')
-        }else{
-        handleNextStep();
-    }
-    };
 
-    const data = [
-        { id: 1, name: '123456', country: 'Niger', city: 'Oud-Turnhout', salary: '$36,738' },
-        { id: 2, name: '43666', country: 'Curaçao', city: 'Sinaai-Waas', salary: '$23,789' },
-        { id: 3, name: '6567', country: 'Netherlands', city: 'Baileux', salary: '$56,142' },
-        { id: 4, name: '66556', country: 'Korea, South', city: 'Overland Park', salary: '$38,735' },
-        { id: 5, name: '67877', country: 'Malawi', city: 'Feldkirchen in Kärnten', salary: '$63,542' },
-        { id: 6, name: '123456', country: 'Chile', city: 'Gloucester', salary: '$78,615' },
-        { id: 7, name: '123456', country: 'Portugal', city: 'Gloucester', salary: '$98,615' },
-        { id: 8, name: '123456', country: 'Portugal', city: 'Gloucester', salary: '$98,615' },
-        { id: 9, name: '123456', country: 'Portugal', city: 'Gloucester', salary: '$98,615' },
-        { id: 10, name: '123456', country: 'Portugal', city: 'Gloucester', salary: '$98,615' },
-        { id: 11, name: '123456', country: 'Portugal', city: 'Gloucester', salary: '$98,615' },
-        { id: 12, name: '123456', country: 'Portugal', city: 'Gloucester', salary: '$98,615' },
-    ];
+  
 
     const [storeArr, setStoreArr] = useState({})
-    const handleRowClick = (id) => {
-        if (!filteredData) {
-            return;
-        }
-        setSelectedRow(id);
-        const getSelectedRow = filteredData.find((RFO) => RFO.id === id);
-        console.log('selectedRow', getSelectedRow);
-        setStoreArr(getSelectedRow)
-
-    };
     const handleSearchChange = (event) => {
         setSearch(event.target.value);
     };
 
     const filteredData = data.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase())
+        item.RFQNO.toString().toLowerCase().includes(search.toLowerCase())
     );
     const onChangeValue = (event) => {
         
@@ -105,10 +73,80 @@ function PricePartApproval() {
             setSelectdSupplier(tempArr2);
         })
     }
-    useEffect(() => {
-        fetchData();
-    }, [])
+    const fetchDataRQL = async () => {
+        try {
+          const response = await axios.get(AxioxExpPort + 'rfq/all_data');
+          setData(response.data)
+        } catch (error) {
+            console.log(error);
+        }
+      };
 
+      useEffect(() => {
+        fetchData();
+        fetchDataRQL();
+    }, [])
+   
+    const uploadPan = async() => {
+        // Handle uploading PAN here
+        const checkedItems = selectedSupplier.filter(item => item.checked);
+    
+        // Extract VENDOR_ID values from the checked items
+        const vendorIds = checkedItems.map(item => item.VENDOR_ID);
+    //   console.log( "EVENT_START_DATE": dateFormat(startDate, "dd-mm-yyyy"),
+    //   "EVENT_END_DATE": dateFormat(endDate, "dd-mm-yyyy"),);
+      const dateE=dateFormat(endDate, "dd-mm-yyyy")
+      const dateS=dateFormat(startDate, "dd-mm-yyyy")
+       console.log({  "PROJECT_NAME":"shagun",
+       "PROJECT_NAME": projectName,
+       "PROJECT_DESCRIPTION": projectDesc,
+       "TEST_PROJECT": testProject,
+       "DIVISION": division,
+       "PURCHASE_CATEGORY": purcCate,
+       "SOURCE": source,
+       "EVENT_TYPE": eventType,
+       "EVENT_START_DATE":dateS.toString(),
+       "EVENT_END_DATE":dateE.toString(), "supplier": vendorIds, // Use the correct variable name
+       "rfq": storeArr.RFQNO});
+        if (currentStep === 4) {
+           await axios.post(`${AxioxExpPort}part_price/add?id=${vendorIds}`, {  "PROJECT_NAME":"shagun",
+            "PROJECT_NAME": projectName,
+            "PROJECT_DESCRIPTION": projectDesc,
+            "TEST_PROJECT": testProject,
+            "DIVISION": division,
+            "PURCHASE_CATEGORY": purcCate,
+            "SOURCE": source,
+            "EVENT_TYPE": eventType,
+            "EVENT_START_DATE":dateS.toString(),
+            "EVENT_END_DATE":dateE.toString(), "supplier": vendorIds, // Use the correct variable name
+            "rfq": storeArr.RFQNO})
+            .then((res) => {
+                console.log('resres', res);
+                setToaster("Project created successfully")
+                var xz = document.getElementById("snackbar");
+                setToasterColor("green")
+                xz.className = "show";
+    
+                setTimeout(function () {
+                    xz.className = xz.className.replace("show", "");
+                    setCurrentStep(0);
+                }, 2000)
+            })
+            .catch((err) => {
+                console.log(err);
+                setToaster("Project is not created, try again ")
+                var xz = document.getElementById("snackbar");
+                setToasterColor("red")
+                xz.className = "show";
+                setTimeout(function () {
+                    xz.className = xz.className.replace("show", "");
+                }, 3000)
+            });
+        } else {
+            handleNextStep();
+        }
+    };
+    
 
 
     return (
@@ -156,10 +194,10 @@ function PricePartApproval() {
                                                 padding: '10px',
                                                 borderRadius: '10px',
                                                 boxShadow: '0 4px 6px rgba(0, 0, 0, 0.5)'
-                                            }}>                                                <h2 style={{ marginBottom: '10px' }}><span style={{ fontSize: '20px', color: 'red' }}>RFQ Number: </span>{storeArr.name}</h2>
+                                            }}>                                                <h3 style={{ marginBottom: '10px' }}><span style={{ fontSize: '20px', color: 'red' }}>RFQ Number: </span>{storeArr.RFQNO}</h3>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <p style={{ margin: 0 }}>{"Comodity: " + storeArr.country}</p>
-                                                    <p style={{ margin: 0 }}>{"Project ID: " + storeArr.city}</p>
+                                                    <p style={{ margin: 0 }}>{"Comodity: " + storeArr.HSNCODE}</p>
+                                                    <p style={{ margin: 0 }}>{"Project ID: " + storeArr.CITY}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -240,25 +278,25 @@ function PricePartApproval() {
                                                     <thead className="text-primary" style={{ position: 'sticky', top: 0, background: '#fff', marginTop: '-10' }}>
                                                         <tr  >
                                                             <th className="text-center">RFQ Number</th>
-                                                            <th className="text-center">Comodity</th>
-                                                            <th className="text-center">Project ID</th>
+                                                            <th className="text-center">Creayed By</th>
+                                                            {/* <th className="text-center">Project ID</th> */}
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {filteredData.map((item) => (
                                                             console.log(item),
                                                             <tr
-                                                                key={item.id}
+                                                                key={item._id}
                                                                 onClick={() => {
-                                                                    handleRowClick(item.id);
+                                                                    setStoreArr(item)
                                                                     uploadPan();
                                                                 }}
-                                                                className={selectedRow === item.id ? 'selected' : ''}
+                                                                className={selectedRow === item._id ? 'selected' : ''}
                                                                 style={{ cursor: "pointer" }}
                                                             >
-                                                                <td className="text-center">{item.name}</td>
-                                                                <td className="text-center">{item.country}</td>
-                                                                <td className="text-center">{item.city}</td>
+                                                                <td className="text-center">{item.RFQNO}</td>
+                                                                <td className="text-center">{item.CREATEDBY}</td>
+                                                                {/* <td className="text-center">{item.CITY}</td> */}
                                                             </tr>
                                                         ))}
                                                     </tbody>
@@ -314,9 +352,9 @@ function PricePartApproval() {
                                                         <option selected disabled>--Select Division--</option>
                                                         {/* {languageArr.map((val,index) => {
                         return ( */}
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION1'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION2'}</option>
+                                                        <option key={'index'} value={1}>{'DESCRIPTION'}</option>
+                                                        <option key={'index'} value={2}>{'DESCRIPTION1'}</option>
+                                                        <option key={'index'} value={3}>{'DESCRIPTION2'}</option>
                                                         {/* );
                       })}  */}
                                                     </select>
@@ -328,9 +366,9 @@ function PricePartApproval() {
                                                         <option selected disabled>--Select Purchase Category--</option>
                                                         {/* {languageArr.map((val,index) => {
                         return ( */}
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'Purchase Category'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'Purchase Category1'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'Purchase Category'}</option>
+                                                        <option key={'index'} value={"tue"}>{'Purchase Category'}</option>
+                                                        <option key={'index'} value={"tue"}>{'Purchase Category1'}</option>
+                                                        <option key={'index'} value={"tue"}>{'Purchase Category'}</option>
                                                         {/* );
                       })}  */}
                                                     </select>
@@ -340,9 +378,9 @@ function PricePartApproval() {
                                                     <select className="form-control" aria-label="Default select example" onChange={(e)=>{setSource(e.target.value)}}>
 
                                                         <option selected disabled>--Select Source--</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION1'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION2'}</option>
+                                                        <option key={'index'} value={"wtr"}>{'DESCRIPTION'}</option>
+                                                        <option key={'index'} value={"wtr"}>{'DESCRIPTION1'}</option>
+                                                        <option key={'index'} value={"wtr"}>{'DESCRIPTION2'}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -357,9 +395,9 @@ function PricePartApproval() {
                                                     <label >Event Type*</label>
                                                     <select className="form-control" aria-label="Default select example" onChange={(e)=>{setEventType(e.target.value)}}>
                                                         <option selected disabled>--Select Event--</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION1'}</option>
-                                                        <option key={'index'} value={'val.LANGUAGE'}>{'DESCRIPTION2'}</option>
+                                                        <option key={'index'} value={"uewy"}>{'DESCRIPTION'}</option>
+                                                        <option key={'index'} value={"uewy"}>{'DESCRIPTION1'}</option>
+                                                        <option key={'index'} value={"uewy"}>{'DESCRIPTION2'}</option>
                                                     </select>
                                                 </div>
                                                 <div className='col-md-3' style={{ marginTop: '1.5%' }}>
@@ -395,7 +433,7 @@ function PricePartApproval() {
                                                                 </thead>
                                                                 <tbody>
                                                                     {selectedSupplier.map((item, index) => (
-                                                                        <tr key={`supplier-${item.value}-${index}`}>
+                                                                        <tr key={`supplier-${item.value}-${index}`} >
                                                                             {item.value != null &&
                                                                                 <>                                                                       <td className="text-center" key={`col+1` + index}>
                                                                                     <input

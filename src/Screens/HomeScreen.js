@@ -176,8 +176,8 @@ function HomeScreen() {
     stateData.cart.forEach((items, index) => {
       var amt = 0;
       apiData.forEach(item => {
-        if (item.DAYS >= Number(items.value) && item.DAYS <= (items.toValue ? Number(items.toValue) : 365)) {
-          amt = amt + Number(item.TOTAL_OVERDUE);
+        if (item?.DAYS >= Number(items.value) && item?.DAYS <= (items.toValue ? Number(items.toValue) : 365)) {
+          amt = amt + Number(item?.TOTAL_OVERDUE);
         }
       });
       tempArry.push(amt)
@@ -191,12 +191,12 @@ function HomeScreen() {
   }, [stateData.cart, apiData]);
   
   podata.map(item => {
-    getmonth.add(new Date(item.DOCUMENT_DATE).getMonth() + 1)
-    // console.log("new Date(item.DOCUMENT_DATE).getMonth() + 1",getmonth)
+    getmonth.add(new Date(item?.DOCUMENT_DATE).getMonth() + 1)
+    // console.log("new Date(item?.DOCUMENT_DATE).getMonth() + 1",getmonth)
   })
   const arr = Array.from(getmonth);
   // poHomeDetails.details.map(item=>{
-  //   console.log(item.P)
+  //   console.log(item?.P)
   // })
   const titleArr = [
     {
@@ -318,7 +318,7 @@ function HomeScreen() {
                <Link to='/pos'  style={{ textDecoration: 'none', color:"#fff"}}>
                   <CountUp duration={3}
                     start={0}
-                    end={isNaN(Number(dashboardData.OPEN_PO) + Number(dashboardData.CLOSE_PO)) ? 0 : Number(dashboardData.OPEN_PO) + Number(dashboardData.CLOSE_PO)} />
+                    end={isNaN(Number(dashboardData?.OPEN_PO) + Number(dashboardData?.CLOSE_PO)) ? 0 : Number(dashboardData?.OPEN_PO) + Number(dashboardData?.CLOSE_PO)} />
                 </Link>
                 </span>                  
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Total_Order</span>
@@ -330,7 +330,7 @@ function HomeScreen() {
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}>
                 <CountUp duration={3}
                   start={0}
-                  end={Number(dashboardData.RECEIVED_PO) ? Number(dashboardData.RECEIVED_PO) : 0} /></span></Link>
+                  end={Number(dashboardData?.RECEIVED_PO) ? Number(dashboardData?.RECEIVED_PO) : 0} /></span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>GRN</span>
               </div>
             </div>
@@ -358,7 +358,7 @@ function HomeScreen() {
 
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
                   start={0}
-                  end={Number(dashboardData.INVOICE_COUNT) ? Number(dashboardData.INVOICE_COUNT) : 0} /></span></Link>
+                  end={Number(dashboardData?.INVOICE_COUNT) ? Number(dashboardData?.INVOICE_COUNT) : 0} /></span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Pending_Invoice</span>
 
               </div>
@@ -369,7 +369,7 @@ function HomeScreen() {
 
                 <span style={{ fontSize: '2rem', fontWeight: 'bold', color: '#FFFFFF' }}><CountUp duration={3}
                   start={0}
-                  end={Number(dashboardData.RETURN_PO) ? Number(dashboardData.RETURN_PO) : 0} /></span></Link>
+                  end={Number(dashboardData?.RETURN_PO) ? Number(dashboardData?.RETURN_PO) : 0} /></span></Link>
                 <span style={{ fontSize: '0.7rem', color: '#FFFFFF', marginTop: '15%' }}>Goods_Return</span>
               </div>
             </div>
@@ -383,7 +383,7 @@ function HomeScreen() {
                     console.log("slide", slide)
                     let total = 0
                     let totalsQty = 0
-                    slide.Details.map(price => {
+                    slide?.Details.map(price => {
                       total = total + price.NET_PRICE * price.ORDER_QUANTITY
                       totalsQty = totalsQty + Number(price.ORDER_QUANTITY)
                     });
@@ -414,7 +414,7 @@ function HomeScreen() {
                               <p style={{
                                 fontWeight: "bold",
                                 color: "#7B241C "
-                              }}>{slide.PO_NO ? slide.PO_NO : 'Will be update soon'}</p>
+                              }}>{slide?.PO_NO ? slide?.PO_NO : 'Will be update soon'}</p>
 
                             </div>
 
@@ -426,19 +426,19 @@ function HomeScreen() {
                                   color: "#7B241C "
 
                                 }}
-                              >{dateFormat((slide.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a>
+                              >{dateFormat((slide?.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a>
                             </div>
                             <div className="col-md-12" style={{ marginTop: 3 }}>
                               <a style={{ color: "#4F51C0" }}>Plant: </a>
                               <a style={{
                                 color: "#7B241C "
-                              }}>{slide.Details[0].PLANT_ID + "(" + slide.Details[0].PLANT_DESCRIPTION + ")"}</a>
+                              }}>{slide?.Details[0].PLANT_ID + "(" + slide?.Details[0].PLANT_DESCRIPTION + ")"}</a>
                             </div>
                             <div className="col-md-12" style={{ marginTop: 1 }}>
                               <a style={{ color: "#4F51C0" }}>Unit: </a>
                               <a style={{
                                 color: "#7B241C "
-                              }}>{slide.Details[0].UNIT ? slide.Details[0].UNIT : 0}</a>
+                              }}>{slide?.Details[0].UNIT ? slide?.Details[0].UNIT : 0}</a>
                             </div>
                             <div className="col-md-12" style={{ marginTop: 1 }}>
                               <a style={{ color: "#4F51C0" }}>Total Quantity: </a>
@@ -506,8 +506,8 @@ function HomeScreen() {
                             </div>
                             <div className="col-md-10">
                               <a style={{ color: "green" }}>Order Received</a> <br />
-                              <a style={{ color: "gray" }}> {dateFormat((itemsss.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a><br />
-                              <a style={{ color: "black " }}>{itemsss.PO_NO}</a><br />
+                              <a style={{ color: "gray" }}> {dateFormat((itemsss?.DOCUMENT_DATE), "ddd, mmm dS,yyyy")}</a><br />
+                              <a style={{ color: "black " }}>{itemsss?.PO_NO}</a><br />
                               <p style={{ marginBottom: 5, borderBottom: " 1px solid #aaa", width: "100%" }}></p>
                             </div>
                           </div>
@@ -525,8 +525,8 @@ function HomeScreen() {
                             </div>
                             <div className="col-md-10">
                               <a style={{ color: "green" }}>Invoice Created</a> <br />
-                              <a style={{ color: "gray" }}> {dateFormat((item.BUYER_DATE), "ddd, mmm dS,yyyy")}</a><br />
-                              <a style={{ color: "black " }}>{item.INVOICE_NO}</a><br />
+                              <a style={{ color: "gray" }}> {dateFormat((item?.BUYER_DATE), "ddd, mmm dS,yyyy")}</a><br />
+                              <a style={{ color: "black " }}>{item?.INVOICE_NO}</a><br />
                               <p style={{ marginBottom: 5, borderBottom: " 1px solid #aaa", width: "100%" }}></p>
                             </div>
                           </div>
@@ -614,7 +614,7 @@ function HomeScreen() {
                         color: "#FF7F50",
                         fontWeight: 700,
                         fontSize: 30,
-                      }} className="text-success small pt-1 fw-bold text-right">{dashboardData.GOODS_RECEIPT_ACKNOWLEDGE}</span>{" "}
+                      }} className="text-success small pt-1 fw-bold text-right">{dashboardData?.GOODS_RECEIPT_ACKNOWLEDGE}</span>{" "}
                     <span   style={{
                       
                        

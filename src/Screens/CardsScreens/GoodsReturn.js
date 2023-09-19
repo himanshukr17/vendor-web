@@ -376,11 +376,11 @@ function GoodsReturn() {
               {isPurchaseOrderEmpty ? (
                 tbody.map((val, index) => {
                   let total = 0;
-                  val.return_order.map((itemsPrice) =>
+                  val?.return_order.map((itemsPrice) =>
                     total = total + itemsPrice.PER_UNIT_PRICE * itemsPrice.RETURN_QTY
                   )
                   let totalQtuy = 0;
-                  val.return_order.map((itemsPrices) =>
+                  val?.return_order.map((itemsPrices) =>
                   totalQtuy = totalQtuy + itemsPrices.RETURN_QTY
                   )
                   return (
@@ -405,12 +405,12 @@ function GoodsReturn() {
                           type="button"
                           onClick={(e) => {
                             togglePODetailsFlag();
-                            setPoNumber(val.GRN_NO)
-                            setClickGRData(val.return_order)
-                            setEmptyModalTable(val.return_order)
+                            setPoNumber(val?.GRN_NO)
+                            setClickGRData(val?.return_order)
+                            setEmptyModalTable(val?.return_order)
                           }}
                         >
-                          {(val.GRN_NO)}
+                          {(val?.GRN_NO)}
                         </a>
                         <br />
                       </td>
@@ -419,35 +419,35 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.return_order[0].PO_NO}
+                        {val?.return_order[0].PO_NO}
                       </td>
                       <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.COMPANY_CODE}
+                        {val?.COMPANY_CODE}
                       </td>
                       <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {dateFormat(val.POSTING_DATE, "dd/mm/yyyy")}
+                        {dateFormat(val?.POSTING_DATE, "dd/mm/yyyy")}
                       </td>
                       <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {dateFormat(val.DOCUMENT_DATE, "dd/mm/yyyy")}
+                        {dateFormat(val?.DOCUMENT_DATE, "dd/mm/yyyy")}
                       </td>
                       <td
                         key={`col-2` + index}
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.PLANT_ID+"("+val.PLANT_DESCRIPTION+")"}
+                        {val?.PLANT_ID+"("+val?.PLANT_DESCRIPTION+")"}
                       </td>
                       <td
                         key={`col-2` + index}
@@ -461,7 +461,7 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "5%", borderColor: COLORS.gray10 }}
                       >
-                        {val.return_order.length}                      </td>
+                        {val?.return_order.length}                      </td>
 
                       <td
                         key={`col-3` + index}
@@ -476,10 +476,10 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.STATUS == 'Open' &&
+                        {val?.STATUS == 'Open' &&
                           <span className="badge badge-success" >Open</span>
                         }
-                        {val.STATUS == 'Close' &&
+                        {val?.STATUS == 'Close' &&
                           <span className="badge badge-danger" >Close</span>
                         }
                       </td> */}
@@ -488,7 +488,7 @@ function GoodsReturn() {
                         className="text-center"
                         style={{ width: "5%", color:"white", borderColor: COLORS.gray10 }}
                       >
-                        <CSVLink filename={"GR_No:"+val.GRN_NO+".csv"} className="btn" data={val.return_order} headers={headers}>
+                        <CSVLink filename={"GR_No:"+val?.GRN_NO+".csv"} className="btn" data={val?.return_order} headers={headers}>
                           <IconContext.Provider
                             value={{ color: "#FF7B25", size: "22px" }}
                           >
@@ -616,7 +616,7 @@ function GoodsReturn() {
                         {grsData.RETURN_QTY}
                       </td>
                       <td  key={`col-9` + index}>
-                        {grsData.UNIT}
+                        {grsData?.UNIT}
                       </td>
                       <td  key={`col-10` + index}>
                       {num.format(Number(grsData.AMOUNT))}

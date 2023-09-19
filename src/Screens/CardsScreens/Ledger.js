@@ -25,6 +25,7 @@ function Ledger() {
           .then((response) => {
             setTBody( response.data[0].item);
             // setFilterData(response.data)
+            console.log("ledger",response.data[0]);
             setPdfDownload(response.data[1].FILE_NAME)
             setTimeout(() => {
               setLoading(false);
@@ -36,7 +37,6 @@ function Ledger() {
         fetchData();
       }, []);
       function handlePdfDownload() {
-        console.log(pdfDownload)
         axios({
           url: AxioxExpPort + 'ledger/' + pdfDownload,
           method: 'GET',

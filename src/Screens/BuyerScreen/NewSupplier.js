@@ -17,7 +17,6 @@ import { CSVLink } from "react-csv";
 const NewSupplier = () => {
     //     }
     const buyerID = localStorage.getItem('userId');
-    console.log("buyerIDbuyerID", buyerID)
     const [showPODetailsFlag, setShowPODetailsFlag] = useState(false);
     const togglePODetailsFlag = () => setShowPODetailsFlag(!showPODetailsFlag);
     const navigate = useNavigate();
