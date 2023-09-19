@@ -436,7 +436,7 @@ function Receiveables() {
                         className="text-center"
                         style={{ width: "10%", borderColor: COLORS.gray10 }}
                       >
-                        {val.received_datas[0].PLANT_ID+"("+val.received_datas[0].PLANT_NAME+")"}
+                        {val.received_datas[0].PLANT_NAME}
                       </td>
                      
                      
