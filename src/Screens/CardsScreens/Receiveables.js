@@ -439,9 +439,6 @@ function Receiveables() {
                         {val.received_datas[0].PLANT_NAME}
                       </td>
                      
-                     
-                      
-
                       <td
                         key={`col-3` + index}
                         className="text-center"

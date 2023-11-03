@@ -95,21 +95,11 @@ const vendorId = localStorage.getItem('userId');
         const vendorIds = checkedItems.map(item => item.VENDOR_ID);
     //   console.log( "EVENT_START_DATE": dateFormat(startDate, "dd-mm-yyyy"),
     //   "EVENT_END_DATE": dateFormat(endDate, "dd-mm-yyyy"),);
-      const dateE=dateFormat(endDate, "dd-mm-yyyy")
-      const dateS=dateFormat(startDate, "dd-mm-yyyy")
-       console.log({  "PROJECT_NAME":"shagun",
-       "PROJECT_NAME": projectName,
-       "PROJECT_DESCRIPTION": projectDesc,
-       "TEST_PROJECT": testProject,
-       "DIVISION": division,
-       "PURCHASE_CATEGORY": purcCate,
-       "SOURCE": source,
-       "EVENT_TYPE": eventType,
-       "EVENT_START_DATE":dateS.toString(),
-       "EVENT_END_DATE":dateE.toString(), "supplier": vendorIds, // Use the correct variable name
-       "rfq": storeArr.RFQNO});
+      const dateE=dateFormat(endDate, "yyyy-mm-dd")
+      const dateS=dateFormat(startDate, "yyyy-mm-dd")
         if (currentStep === 4) {
-           await axios.post(`${AxioxExpPort}part_price/add?id=${vendorIds}`, {  "PROJECT_NAME":"shagun",
+           await axios.post(`${AxioxExpPort}part_price/add?id=${vendorIds}`,
+            { 
             "PROJECT_NAME": projectName,
             "PROJECT_DESCRIPTION": projectDesc,
             "TEST_PROJECT": testProject,
@@ -576,7 +566,7 @@ const vendorId = localStorage.getItem('userId');
                                                             <input
                                                                 className="form-control"
                                                                 type="text"
-                                                                value={division}
+                                                                value={"2"}
                                                                 placeholder="Project Name"
                                                             />
                                                             <label style={{ marginTop: '3%' }} >Source:</label>
