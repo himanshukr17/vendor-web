@@ -565,8 +565,8 @@ function Acknowledgement() {
                     posData.IS_CHECKED = false
                   }
                   var total = 0;
-                  toltoACK.push(Number(posData.ORDER_QUANTITYss = posData.ORDER_QUANTITYss || 0) * posData.PRICE_PER_UNIT)
-                  tolto.push(posData.ORDER_QUANTITY * posData.PRICE_PER_UNIT)
+                  toltoACK.push(Number(posData.ORDER_QUANTITYss = posData?.ORDER_QUANTITYss || 0) * posData?.PRICE_PER_UNIT)
+                  tolto.push(posData?.ORDER_QUANTITY * posData?.PRICE_PER_UNIT)
                   {/* console.log("tolto", toltoACK) */}
                   {/* console.log("toltoACK",toltoACK)
                         Array.prototype.splice.apply(toltoACK, [0, tolto.length].concat(tolto)); */}
@@ -576,19 +576,19 @@ function Acknowledgement() {
                       <td className="text-center"  style={{ width: "2%"}}>
                         <input type="checkbox"
                           value="0"
-                          checked={posData.IS_CHECKED}
-                          onChange={() => { handleCheck(index); setShowQtyInp(true); setHandleInputVal(posData.ORDER_QUANTITY) }}
+                          checked={posData?.IS_CHECKED}
+                          onChange={() => { handleCheck(index); setShowQtyInp(true); setHandleInputVal(posData?.ORDER_QUANTITY) }}
                         />
                       </td>
 
                       <td  style={{ width: "20%"}}>
-                        {posData.MATERIAL_DESCRIPTION}
+                        {posData?.MATERIAL_DESCRIPTION}
                       </td>
                       <td  style={{ width: "10%"}}>
-                        {(posData.MATERIAL).toString()}
+                        {posData?.MATERIAL}
                       </td>
                       <td  style={{ width: "5%"}}>
-                        {num.format(Number(posData.PRICE_PER_UNIT))}
+                        {num.format(Number(posData?.PRICE_PER_UNIT))}
                       </td>
                       <td 
                         style={{
@@ -596,22 +596,22 @@ function Acknowledgement() {
                         }}
                       >
                         {
-                          posData.IS_CHECKED ?
+                          posData?.IS_CHECKED ?
 
                             <input
                               className="form-control"
                               type="number"
-                              value={posData.ORDER_QUANTITYss}
-                              readOnly={!posData.IS_CHECKED}
+                              value={posData?.ORDER_QUANTITYss}
+                              readOnly={!posData?.IS_CHECKED}
                               min={0}
-                              placeholder={posData.ORDER_QUANTITY}
-                              max={posData.PREVIOUS_QTY}
+                              placeholder={posData?.ORDER_QUANTITY}
+                              max={posData?.PREVIOUS_QTY}
                               onChange={(e) => {
                                 // console.log("posData", posData)
                                 const newValue = Number(e.target.value);
                                 const updatedData = ClickedPOsDataArr.map((r, inx) => {
                                   if (inx === index) {
-                                    return { ...r, PREVIOUS_QTY: posData.ORDER_QUANTITY, ORDER_QUANTITYss: newValue };
+                                    return { ...r, PREVIOUS_QTY: posData?.ORDER_QUANTITY, ORDER_QUANTITYss: newValue };
                                   }
                                   return r;
                                 });
@@ -619,11 +619,11 @@ function Acknowledgement() {
                                 setClickedPOsDataArr(updatedData);
                               }}
                             /> :
-                            posData.ORDER_QUANTITY
+                            posData?.ORDER_QUANTITY
                         }
                       </td>
                       {/* {
-                        posData.IS_CHECKED &&
+                        posData?.IS_CHECKED &&
                         <td>
 
                           <input className="form-control" placeholder="Remark " style={{ width: "100%" }} onChange={(e) => {
@@ -769,31 +769,31 @@ function Acknowledgement() {
                 return (
                   <tr key={index}>
                     <td >
-                      {posData.MATERIAL_DESCRIPTION}
+                      {posData?.MATERIAL_DESCRIPTION}
                     </td>
                     <td >
-                      {(posData.MATERIAL).toString()}
+                      {posData?.MATERIAL}
                     </td>
                     <td 
                       style={{
                         width: "5%"
                       }}
                     >
-                      {posData.ORDER_QUANTITY}
+                      {posData?.ORDER_QUANTITY}
                     </td>
                     <td 
                       style={{
                         width: "5%"
                       }}
                     >
-                      {posData.ACKNOWLEDGE_QUANTITY}
+                      {posData?.ACKNOWLEDGE_QUANTITY}
                     </td>
                     {/* <td 
                       style={{
                         width: "5%"
                       }}
                     >
-                      {posData.REMARKS}
+                      {posData?.REMARKS}
                     </td> */}
                   </tr>
                 )
