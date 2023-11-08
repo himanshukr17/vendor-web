@@ -408,6 +408,7 @@ function InvitedEvents() {
                   </select>
 
                 </div>
+               
               </div>
               <div className='row' style={{ marginLeft: '5%', marginTop: '1.5%' }}>
                 <div className='col-md-5' >
@@ -500,11 +501,20 @@ function InvitedEvents() {
                 </div>
                 <div className='col-md-1'></div>
                 <div className='col-md-5 text-center' >
-                  <button className="float-center" type="button" title="Submit and acknowledge" style={{ width: "50%", marginTop: 25, height: 35, borderWidth: 3, fontFamily: "serif", borderRadius: 5, color: "green", borderColor: "green" }} onClick={() => submitBiding()}>Submit</button>
+                <input
+                    type="file"
+style={{ fontWeight: 'normal', display: 'inline-block', fontSize: '15px',marginTop:25, color: '#888', marginBottom: '3px' }}
+value={bidingInput?.PricePerQuantity}
+onChange={(e) => {
+  setbidingInput({ ...bidingInput, PricePerQuantity: e.target.value });
+}}
+                  />
                 </div>
               </div>
+                <div className='col-md-12 text-center' >
+                  <button className="float-center" type="button" title="Submit and acknowledge" style={{ width: "50%", marginTop: 25, height: 35, borderWidth: 3, fontFamily: "serif", borderRadius: 5, color: "green", borderColor: "green" }} onClick={() => submitBiding()}>Submit</button>
+                </div>
             </div>
-
             {/* <img className="col-md-12" src={AxioxExpPort + 'images/' + imageSrc} /> */}
           </div>
         </div>
