@@ -1,0 +1,22 @@
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.App{
+	display: fix;
+	flex-direction: column;
+	width: 100%;
+	height: 100vh;
+		color: #333333;
+
+}
+
+body {
+	background-color: #ffffff;
+	background: linear-gradient(315deg, #a1a4a4 3%, #D9DDDC 38%);
+	
+	color: #333333;
+  }

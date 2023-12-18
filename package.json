@@ -1,0 +1,69 @@
+{
+  "name": "vendor-web",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@react-pdf-viewer/core": "3.9.0",
+    "@react-pdf-viewer/default-layout": "^3.9.0",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.27.2",
+    "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "dateformat": "^5.0.3",
+    "firebase": "^9.10.0",
+    "framer-motion": "^10.11.4",
+    "git": "^0.1.5",
+    "ionicons": "^7.2.1",
+    "multiselect-react-dropdown": "^2.0.25",
+    "pdfjs-dist": "2.6.347",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^4.3.1",
+    "react-chrono": "^1.19.2",
+    "react-countup": "^6.4.2",
+    "react-csv": "^2.2.2",
+    "react-datepicker": "^4.8.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.4.0",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.7.0",
+    "react-slick": "^0.29.0",
+    "react-step-progress-bar": "^1.0.3",
+    "reactstrap": "^9.1.4",
+    "redux": "^4.2.0",
+    "rsuite": "^5.32.0",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^5.3.10",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
